@@ -15,13 +15,28 @@
 		755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB168188DEE2C00E5C636 /* AppDelegate.m */; };
 		755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755DB16A188DEE2C00E5C636 /* Main_iPhone.storyboard */; };
 		755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755DB16D188DEE2C00E5C636 /* Main_iPad.storyboard */; };
-		755DB172188DEE2C00E5C636 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB171188DEE2C00E5C636 /* ViewController.m */; };
 		755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 755DB173188DEE2C00E5C636 /* Images.xcassets */; };
 		755DB17B188DEE2C00E5C636 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB17A188DEE2C00E5C636 /* XCTest.framework */; };
 		755DB17C188DEE2C00E5C636 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB158188DEE2C00E5C636 /* Foundation.framework */; };
 		755DB17D188DEE2C00E5C636 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB15C188DEE2C00E5C636 /* UIKit.framework */; };
 		755DB185188DEE2D00E5C636 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755DB183188DEE2D00E5C636 /* InfoPlist.strings */; };
 		755DB187188DEE2D00E5C636 /* CaracolPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */; };
+		8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */; };
+		8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC2188EB5B40066279A /* HomeViewController.m */; };
+		8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */; };
+		8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */; };
+		8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */; };
+		8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* MoviesViewController.m */; };
+		8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */; };
+		8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A0E188F16A80021AB03 /* Estrella@2x.png */; };
+		8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */; };
+		8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A13188F20FC0021AB03 /* MentirasPerfectas2.jpg */; };
+		8BF16A16188F27C50021AB03 /* Estrella.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A15188F27C50021AB03 /* Estrella.png */; };
+		8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A19188F28800021AB03 /* OpacityPattern@2x.png */; };
+		8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A1F188F29A80021AB03 /* MyUtilities.m */; };
+		8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */; };
+		8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */; };
+		8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,14 +62,36 @@
 		755DB168188DEE2C00E5C636 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		755DB16B188DEE2C00E5C636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		755DB16E188DEE2C00E5C636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		755DB170188DEE2C00E5C636 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		755DB171188DEE2C00E5C636 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		755DB173188DEE2C00E5C636 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		755DB179188DEE2C00E5C636 /* CaracolPlayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaracolPlayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		755DB17A188DEE2C00E5C636 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		755DB182188DEE2C00E5C636 /* CaracolPlayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaracolPlayTests-Info.plist"; sourceTree = "<group>"; };
 		755DB184188DEE2D00E5C636 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaracolPlayTests.m; sourceTree = "<group>"; };
+		8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarViewController.h; sourceTree = "<group>"; };
+		8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarViewController.m; sourceTree = "<group>"; };
+		8BDB8BC1188EB5B40066279A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		8BDB8BC2188EB5B40066279A /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MentirasPerfectas.jpg; path = Resources/TestImages/MentirasPerfectas.jpg; sourceTree = "<group>"; };
+		8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayLogo.png; path = Resources/TestImages/CaracolPlayLogo.png; sourceTree = "<group>"; };
+		8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
+		8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
+		8BDB8BCD188EDB860066279A /* MoviesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesViewController.h; sourceTree = "<group>"; };
+		8BDB8BCE188EDB860066279A /* MoviesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesViewController.m; sourceTree = "<group>"; };
+		8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoviesTableViewCell.h; path = CustomCells/MoviesTableViewCell.h; sourceTree = "<group>"; };
+		8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoviesTableViewCell.m; path = CustomCells/MoviesTableViewCell.m; sourceTree = "<group>"; };
+		8BF16A0E188F16A80021AB03 /* Estrella@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Estrella@2x.png"; path = "Resources/Images/Estrella@2x.png"; sourceTree = "<group>"; };
+		8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesEventsDetailsViewController.h; sourceTree = "<group>"; };
+		8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesEventsDetailsViewController.m; sourceTree = "<group>"; };
+		8BF16A13188F20FC0021AB03 /* MentirasPerfectas2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MentirasPerfectas2.jpg; path = Resources/TestImages/MentirasPerfectas2.jpg; sourceTree = "<group>"; };
+		8BF16A15188F27C50021AB03 /* Estrella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Estrella.png; path = Resources/Images/Estrella.png; sourceTree = "<group>"; };
+		8BF16A19188F28800021AB03 /* OpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OpacityPattern@2x.png"; path = "Resources/Images/OpacityPattern@2x.png"; sourceTree = "<group>"; };
+		8BF16A1E188F29A80021AB03 /* MyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUtilities.h; sourceTree = "<group>"; };
+		8BF16A1F188F29A80021AB03 /* MyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUtilities.m; sourceTree = "<group>"; };
+		8BF16A21188F361F0021AB03 /* RecommendedProdCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecommendedProdCollectionViewCell.h; path = CustomCells/RecommendedProdCollectionViewCell.h; sourceTree = "<group>"; };
+		8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecommendedProdCollectionViewCell.m; path = CustomCells/RecommendedProdCollectionViewCell.m; sourceTree = "<group>"; };
+		8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpacityPattern.png; path = Resources/Images/OpacityPattern.png; sourceTree = "<group>"; };
+		8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenPattern.png; path = Resources/Images/HomeScreenPattern.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,13 +151,12 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
-				755DB167188DEE2C00E5C636 /* AppDelegate.h */,
-				755DB168188DEE2C00E5C636 /* AppDelegate.m */,
-				755DB16A188DEE2C00E5C636 /* Main_iPhone.storyboard */,
-				755DB16D188DEE2C00E5C636 /* Main_iPad.storyboard */,
-				755DB170188DEE2C00E5C636 /* ViewController.h */,
-				755DB171188DEE2C00E5C636 /* ViewController.m */,
+				8BDB8BBC188EB5080066279A /* Main */,
+				8BDB8BBD188EB5110066279A /* View Controllers */,
+				8BF16A1D188F29A80021AB03 /* Custom Classes */,
+				8BF16A09188EEDF10021AB03 /* Custom Cells */,
 				755DB173188DEE2C00E5C636 /* Images.xcassets */,
+				8BDB8BC4188EB7DD0066279A /* Resources */,
 				755DB15F188DEE2C00E5C636 /* Supporting Files */,
 			);
 			path = CaracolPlay;
@@ -153,6 +189,85 @@
 				755DB183188DEE2D00E5C636 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BDB8BBC188EB5080066279A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				755DB167188DEE2C00E5C636 /* AppDelegate.h */,
+				755DB168188DEE2C00E5C636 /* AppDelegate.m */,
+				755DB16A188DEE2C00E5C636 /* Main_iPhone.storyboard */,
+				755DB16D188DEE2C00E5C636 /* Main_iPad.storyboard */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		8BDB8BBD188EB5110066279A /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */,
+				8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */,
+				8BDB8BC1188EB5B40066279A /* HomeViewController.h */,
+				8BDB8BC2188EB5B40066279A /* HomeViewController.m */,
+				8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */,
+				8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */,
+				8BDB8BCD188EDB860066279A /* MoviesViewController.h */,
+				8BDB8BCE188EDB860066279A /* MoviesViewController.m */,
+				8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */,
+				8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		8BDB8BC4188EB7DD0066279A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8BF16A0D188F16970021AB03 /* Images */,
+				8BDB8BC5188EB7E50066279A /* Test Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		8BDB8BC5188EB7E50066279A /* Test Images */ = {
+			isa = PBXGroup;
+			children = (
+				8BF16A13188F20FC0021AB03 /* MentirasPerfectas2.jpg */,
+				8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */,
+				8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */,
+			);
+			name = "Test Images";
+			sourceTree = "<group>";
+		};
+		8BF16A09188EEDF10021AB03 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */,
+				8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */,
+				8BF16A21188F361F0021AB03 /* RecommendedProdCollectionViewCell.h */,
+				8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */,
+			);
+			name = "Custom Cells";
+			sourceTree = "<group>";
+		};
+		8BF16A0D188F16970021AB03 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				8BF16A19188F28800021AB03 /* OpacityPattern@2x.png */,
+				8BF16A15188F27C50021AB03 /* Estrella.png */,
+				8BF16A0E188F16A80021AB03 /* Estrella@2x.png */,
+				8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */,
+				8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		8BF16A1D188F29A80021AB03 /* Custom Classes */ = {
+			isa = PBXGroup;
+			children = (
+				8BF16A1E188F29A80021AB03 /* MyUtilities.h */,
+				8BF16A1F188F29A80021AB03 /* MyUtilities.m */,
+			);
+			path = "Custom Classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,10 +346,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
+				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
 				755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */,
+				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
+				8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */,
 				755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */,
+				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
+				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
+				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
+				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,9 +376,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				755DB172188DEE2C00E5C636 /* ViewController.m in Sources */,
+				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
+				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
+				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
+				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
+				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
+				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
+				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
+				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +604,7 @@
 				755DB18C188DEE2D00E5C636 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		755DB18D188DEE2D00E5C636 /* Build configuration list for PBXNativeTarget "CaracolPlayTests" */ = {
 			isa = XCConfigurationList;
@@ -482,6 +613,7 @@
 				755DB18F188DEE2D00E5C636 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
