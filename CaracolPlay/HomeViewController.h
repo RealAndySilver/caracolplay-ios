@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyUtilities.h"
 
 @interface HomeViewController : UIViewController <UIScrollViewDelegate>
 

@@ -76,6 +76,13 @@
     pageImageView.image = image;
     [page addSubview:pageImageView];
     
+    //Create a view to add a pattern image to the main image view
+    UIView *opacityPatternView = [[UIView alloc] initWithFrame:pageImageView.frame];
+    UIImage *opacityPatternImage = [UIImage imageNamed:@"HomeScreenPattern.png"];
+    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, pageImageView.frame.size.height)];
+    opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
+    [page addSubview:opacityPatternView];
+    
     //2. Label to display the type of video (Series, movie, tv show...)
     UILabel *videoTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
                                                                         self.scrollView.frame.size.height / 1.28,

@@ -11,13 +11,20 @@
 static NSString *const cellIdentifier = @"CellIdentifier";
 
 @interface MoviesEventsDetailsViewController ()
-
+@property (strong, nonatomic) NSMutableArray *starsImageViewsArray;
+@property (nonatomic) int goldStars;
+@property (strong, nonatomic) UIImageView *starImageView1;
+@property (strong, nonatomic) UIImageView *starImageView2;
+@property (strong, nonatomic) UIImageView *starImageView3;
+@property (strong, nonatomic) UIImageView *starImageView4;
+@property (strong, nonatomic) UIImageView *starImageView5;
 @end
 
 @implementation MoviesEventsDetailsViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.goldStars = 4;
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Mentiras Perfectas";
     [self UISetup];
@@ -63,7 +70,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    [self createStarsImageViewsWithGoldStarsNumber:4];
+    //[self createStarsImageViewsWithGoldStarsNumber:4];
+    [self createStarsImageViews];
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
@@ -140,21 +148,62 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return CGSizeMake(100.0, 130.0);
 }
+
 #pragma mark - Custom Methods
 
--(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
+-(void)createStarsImageViews {
+    
+    self.starImageView1 = [self createStarImageViewAtPosition:0];
+    self.starImageView2 = [self createStarImageViewAtPosition:1];
+    self.starImageView3 = [self createStarImageViewAtPosition:2];
+    self.starImageView4 = [self createStarImageViewAtPosition:3];
+    self.starImageView5 = [self createStarImageViewAtPosition:4];
+    
+    //We have to add the views to an array to access them using an index, in the method
+    //-modifyGoldStarNumber, which is called when the user tap a star.
+    self.starsImageViewsArray = [NSMutableArray arrayWithObjects:self.starImageView1, self.starImageView2, self.starImageView3, self.starImageView4, self.starImageView5, nil];
+    
+    [self.view addSubview:self.starImageView1];
+    [self.view addSubview:self.starImageView2];
+    [self.view addSubview:self.starImageView3];
+    [self.view addSubview:self.starImageView4];
+    [self.view addSubview:self.starImageView5];
+}
+
+-(UIImageView *)createStarImageViewAtPosition:(NSUInteger)position {
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(starImageViewTap:)];
+    tapGesture.numberOfTapsRequired = 1;
+    
+    UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(115.0 + (position*30),
+                                                                  self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0,
+                                                                  20.0,
+                                                                  20.0)];
+    starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    if (self.goldStars > position) {
+        starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+    }
+    starImageView.clipsToBounds = YES;
+    starImageView.tag = position;
+    starImageView.userInteractionEnabled = YES;
+    [starImageView addGestureRecognizer:tapGesture];
+    starImageView.contentMode = UIViewContentModeScaleAspectFill;
+    return starImageView;
+}
+
+-(void)starImageViewTap:(UITapGestureRecognizer *)tapGesture {
+    self.goldStars = tapGesture.view.tag;
+    [self modifyGoldStarsNumber:self.goldStars];
+}
+
+-(void)modifyGoldStarsNumber:(NSInteger)goldStarsNumber {
     for (int i = 0; i < 5; i++) {
-        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(115.0 + (i*20),
-                                                                                   self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0,
-                                                                                   20.0,
-                                                                                   20.0)];
-        starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        if (goldStars > i) {
+        UIImageView *starImageView = self.starsImageViewsArray[i];
+        if (goldStarsNumber >= i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+        } else {
+            starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
         }
-        starImageView.clipsToBounds = YES;
-        starImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.view addSubview:starImageView];
     }
 }
 
