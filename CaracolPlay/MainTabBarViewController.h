@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
 #import "CategoriesViewController.h"
+#import "SearchViewController.h"
+#import "MyListsViewController.h"
+#import "MyAccountViewController.h"
 
 @interface MainTabBarViewController : UITabBarController
 

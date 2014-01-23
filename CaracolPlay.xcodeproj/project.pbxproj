@@ -37,6 +37,13 @@
 		8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */; };
 		8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */; };
 		8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */; };
+		8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */; };
+		8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F581891653A00A88C8C /* WatchedRecentlyTableViewCell.m */; };
+		8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */; };
+		8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5E189181A000A88C8C /* TelenovelSeriesTableViewCell.m */; };
+		8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F6118918E3200A88C8C /* SearchViewController.m */; };
+		8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F641891906900A88C8C /* MyListsViewController.m */; };
+		8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +99,20 @@
 		8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecommendedProdCollectionViewCell.m; path = CustomCells/RecommendedProdCollectionViewCell.m; sourceTree = "<group>"; };
 		8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpacityPattern.png; path = Resources/Images/OpacityPattern.png; sourceTree = "<group>"; };
 		8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenPattern.png; path = Resources/Images/HomeScreenPattern.png; sourceTree = "<group>"; };
+		8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchedRecentlyViewController.h; sourceTree = "<group>"; };
+		8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchedRecentlyViewController.m; sourceTree = "<group>"; };
+		8BFD4F571891653A00A88C8C /* WatchedRecentlyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatchedRecentlyTableViewCell.h; path = CustomCells/WatchedRecentlyTableViewCell.h; sourceTree = "<group>"; };
+		8BFD4F581891653A00A88C8C /* WatchedRecentlyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WatchedRecentlyTableViewCell.m; path = CustomCells/WatchedRecentlyTableViewCell.m; sourceTree = "<group>"; };
+		8BFD4F5A189175D800A88C8C /* TelenovelSeriesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelenovelSeriesDetailViewController.h; sourceTree = "<group>"; };
+		8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelenovelSeriesDetailViewController.m; sourceTree = "<group>"; };
+		8BFD4F5D189181A000A88C8C /* TelenovelSeriesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TelenovelSeriesTableViewCell.h; path = CustomCells/TelenovelSeriesTableViewCell.h; sourceTree = "<group>"; };
+		8BFD4F5E189181A000A88C8C /* TelenovelSeriesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TelenovelSeriesTableViewCell.m; path = CustomCells/TelenovelSeriesTableViewCell.m; sourceTree = "<group>"; };
+		8BFD4F6018918E3200A88C8C /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		8BFD4F6118918E3200A88C8C /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		8BFD4F631891906900A88C8C /* MyListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyListsViewController.h; sourceTree = "<group>"; };
+		8BFD4F641891906900A88C8C /* MyListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsViewController.m; sourceTree = "<group>"; };
+		8BFD4F661891BB0200A88C8C /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
+		8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,10 +232,20 @@
 				8BDB8BC2188EB5B40066279A /* HomeViewController.m */,
 				8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */,
 				8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */,
+				8BFD4F6018918E3200A88C8C /* SearchViewController.h */,
+				8BFD4F6118918E3200A88C8C /* SearchViewController.m */,
+				8BFD4F631891906900A88C8C /* MyListsViewController.h */,
+				8BFD4F641891906900A88C8C /* MyListsViewController.m */,
+				8BFD4F661891BB0200A88C8C /* MyAccountViewController.h */,
+				8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */,
 				8BDB8BCD188EDB860066279A /* MoviesViewController.h */,
 				8BDB8BCE188EDB860066279A /* MoviesViewController.m */,
 				8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */,
 				8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */,
+				8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */,
+				8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */,
+				8BFD4F5A189175D800A88C8C /* TelenovelSeriesDetailViewController.h */,
+				8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -245,6 +276,10 @@
 				8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */,
 				8BF16A21188F361F0021AB03 /* RecommendedProdCollectionViewCell.h */,
 				8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */,
+				8BFD4F571891653A00A88C8C /* WatchedRecentlyTableViewCell.h */,
+				8BFD4F581891653A00A88C8C /* WatchedRecentlyTableViewCell.m */,
+				8BFD4F5D189181A000A88C8C /* TelenovelSeriesTableViewCell.h */,
+				8BFD4F5E189181A000A88C8C /* TelenovelSeriesTableViewCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -378,14 +413,21 @@
 			files = (
 				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
+				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
+				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
+				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
+				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
+				8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
+				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
+				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

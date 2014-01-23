@@ -30,6 +30,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     categoriesTableView.dataSource = self;
     categoriesTableView.backgroundColor = [UIColor blackColor];
     categoriesTableView.rowHeight = 60.0;
+    categoriesTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     [self.view addSubview:categoriesTableView];
 }
 
@@ -63,7 +64,19 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 3 ) {
+    if (indexPath.row == 0) {
+        //Watched Recently
+        WatchedRecentlyViewController *watchedRecentlyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"WatchedRecently"];
+        [self.navigationController pushViewController:watchedRecentlyVC animated:YES];
+    }
+    else if (indexPath.row == 1 || indexPath.row == 2) {
+        //Telenovel/Series
+        MoviesViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
+        moviesVC.isTelenovelOrSeriesList = YES;
+        [self.navigationController pushViewController:moviesVC animated:YES];
+    }
+    else if (indexPath.row == 3 || indexPath.row == 5) {
+        //Movies
         MoviesViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
         [self.navigationController pushViewController:moviesVC animated:YES];
     }

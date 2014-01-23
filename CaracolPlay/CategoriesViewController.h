@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MoviesViewController.h"
+#import "WatchedRecentlyViewController.h"
 
 @interface CategoriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

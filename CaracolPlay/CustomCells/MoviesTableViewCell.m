@@ -9,7 +9,6 @@
 #import "MoviesTableViewCell.h"
 
 @interface MoviesTableViewCell()
-//@property (strong, nonatomic) UIImageView *starImageView;
 @end
 
 @implementation MoviesTableViewCell
@@ -30,7 +29,7 @@
         //2. Create a label to display the movie title.
         self.movieTitleLabel = [[UILabel alloc] init];
         self.movieTitleLabel.textColor = [UIColor whiteColor];
-        self.movieTitleLabel.font = [UIFont boldSystemFontOfSize:18.0];
+        self.movieTitleLabel.font = [UIFont boldSystemFontOfSize:16.0];
         [self.contentView addSubview:self.movieTitleLabel];
     }
     return self;
@@ -47,7 +46,7 @@
     [super layoutSubviews];
     CGRect contentRect = self.contentView.bounds;
     CGRect frame;
-    frame = CGRectMake(10.0, 10.0, 100.0, contentRect.size.height - 20.0);
+    frame = CGRectMake(10.0, 10.0, 80.0, contentRect.size.height - 20.0);
     self.movieImageView.frame = frame;
     
     frame = CGRectMake(self.movieImageView.frame.origin.x + self.movieImageView.frame.size.width + 10.0,

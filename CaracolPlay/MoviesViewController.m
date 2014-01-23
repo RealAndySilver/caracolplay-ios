@@ -84,8 +84,14 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
-    [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
+    if (!self.isTelenovelOrSeriesList) {
+        MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
+    }
+    else {
+        TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+        [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
+    }
 }
 
 @end
