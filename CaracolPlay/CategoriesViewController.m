@@ -7,6 +7,7 @@
 //
 
 #import "CategoriesViewController.h"
+#import <objc/message.h>
 
 static NSString *CellIdentifier = @"CellIdentifier";
 
@@ -43,6 +44,12 @@ static NSString *CellIdentifier = @"CellIdentifier";
     self.categoriesList = @[@"Vistos Recientemente", @"Telenovelas", @"Series", @"Películas", @"Noticias", @"Eventos en Vivo"];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    NSLog(@"aparecí");
+    [super viewWillAppear:animated];
+    //[self forceLandscapeMode];
+}
+
 #pragma mark - UITableViewDataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -61,7 +68,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     return cell;
 }
 
-#pragma mark - UITableViewDelegate 
+#pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
@@ -81,6 +88,39 @@ static NSString *CellIdentifier = @"CellIdentifier";
         [self.navigationController pushViewController:moviesVC animated:YES];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSUInteger) supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+-(void)forceLandscapeMode{
+    
+    if(UIDeviceOrientationIsPortrait(self.interfaceOrientation)){
+        
+        int type = [[UIDevice currentDevice] orientation];
+        
+        BOOL leftRotated=NO;
+        
+        if(type ==3){
+            
+            leftRotated=NO;
+            
+        }
+        
+        else if(type==4) {
+            
+            leftRotated=YES;
+            
+        }
+        
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            
+            objc_msgSend([UIDevice currentDevice], @selector(setOrientation:), UIInterfaceOrientationLandscapeLeft );
+            
+            NSLog(@"dentro del if portrait");
+        }
+    }
 }
 
 @end

@@ -20,4 +20,8 @@
     self.navigationItem.title = @"Buscar";
 }
 
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

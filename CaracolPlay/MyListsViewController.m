@@ -65,4 +65,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

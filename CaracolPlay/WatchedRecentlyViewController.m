@@ -64,6 +64,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+    //videoPlayerVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    //[self presentViewController:videoPlayerVC animated:YES completion:nil];
+    [self.navigationController pushViewController:videoPlayerVC animated:YES];
+}
+
+#pragma mark - Interface Orientation 
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+-(BOOL)shouldAutorotate {
+    return YES;
 }
 
 @end

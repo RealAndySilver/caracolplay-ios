@@ -12,7 +12,8 @@
 #import "SearchViewController.h"
 #import "MyListsViewController.h"
 #import "MyAccountViewController.h"
+#import "MyNavigationController.h"
 
-@interface MainTabBarViewController : UITabBarController
+@interface MainTabBarViewController : UITabBarController <UITabBarControllerDelegate>
 
 @end

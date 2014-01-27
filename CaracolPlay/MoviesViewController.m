@@ -94,4 +94,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
     }
 }
 
+#pragma mark - Interface Orientation 
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

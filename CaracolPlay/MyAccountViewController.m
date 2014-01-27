@@ -30,4 +30,10 @@
     [self UISetup];
 }
 
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

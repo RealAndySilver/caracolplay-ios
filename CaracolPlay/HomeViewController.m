@@ -139,28 +139,9 @@
     NSLog(@"Estoy en la página %d", self.pageControl.currentPage);
 }
 
-/*- (void)scrollViewDidEndDecelerating:(UIScrollView *)sender
-{
-    NSLog(@"%f",self.scrollView.contentOffset.x);
-    // The key is repositioning without animation
-    if (self.scrollView.contentOffset.x == 0) {
-        // user is scrolling to the left from image 1 to image 4
-        // reposition offset to show image 4 that is on the right in the scroll view
-        //  [scrollView scrollRectToVisible:CGRectMake(1280,0,320,416) animated:NO];
-        
-        //        [self.scrollView scrollRectToVisible:CGRectMake(6080, 0, 320, 416) animated:NO];
-        [self.scrollView setContentOffset:CGPointMake(2240, 0) animated:YES];
-    }
-    else if (self.scrollView.contentOffset.x == 2240) {
-        // user is scrolling to the right from image 4 to image 1
-        // reposition offset to show image 1 that is on the left in the scroll view
-        
-        [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-        //        [self.scrollView scrollRectToVisible:CGRectMake(0,0,320,416) animated:NO];
-        
-        //[scrollView scrollRectToVisible:CGRectMake(0, 0, 0, 0) animated:YES];
-    }
-}*/
+- (NSUInteger) supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 @end
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WatchedRecentlyTableViewCell.h"
+#import "VideoPlayerViewController.h"
 
 @interface WatchedRecentlyViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
