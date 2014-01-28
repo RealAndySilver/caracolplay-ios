@@ -24,8 +24,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
     //1. Create a TableView to display the categories
     UITableView *categoriesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
-                                                                                     self.view.frame.size.width,
-                                                                                     self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)
+                                                                                     self.view.bounds.size.width,
+                                                                                     self.view.bounds.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)
                                                                     style:UITableViewStylePlain];
     categoriesTableView.delegate = self;
     categoriesTableView.dataSource = self;
@@ -39,15 +39,12 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self UISetup];
-    
     self.categoriesList = @[@"Vistos Recientemente", @"Telenovelas", @"Series", @"Películas", @"Noticias", @"Eventos en Vivo"];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    NSLog(@"aparecí");
-    [super viewWillAppear:animated];
-    //[self forceLandscapeMode];
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self UISetup];
 }
 
 #pragma mark - UITableViewDataSource
@@ -92,35 +89,6 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 - (NSUInteger) supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;
-}
-
--(void)forceLandscapeMode{
-    
-    if(UIDeviceOrientationIsPortrait(self.interfaceOrientation)){
-        
-        int type = [[UIDevice currentDevice] orientation];
-        
-        BOOL leftRotated=NO;
-        
-        if(type ==3){
-            
-            leftRotated=NO;
-            
-        }
-        
-        else if(type==4) {
-            
-            leftRotated=YES;
-            
-        }
-        
-        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-            
-            objc_msgSend([UIDevice currentDevice], @selector(setOrientation:), UIInterfaceOrientationLandscapeLeft );
-            
-            NSLog(@"dentro del if portrait");
-        }
-    }
 }
 
 @end

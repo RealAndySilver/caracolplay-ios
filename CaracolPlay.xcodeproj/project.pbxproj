@@ -42,6 +42,20 @@
 		8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */; };
 		8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */; };
 		8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* MoviesViewController.m */; };
+		8BE7FDE0189813FE0087A7E2 /* CategoriesiPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */; };
+		8BE7FDE4189819A10087A7E2 /* CategoriesPopoverMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE3189819A10087A7E2 /* CategoriesPopoverMenuViewController.m */; };
+		8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */; };
+		8BE7FDEC189823950087A7E2 /* Inicio.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE8189823950087A7E2 /* Inicio.png */; };
+		8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE9189823950087A7E2 /* Inicio@2x.png */; };
+		8BE7FDEE189823950087A7E2 /* Loading.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDEA189823950087A7E2 /* Loading.png */; };
+		8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDEB189823950087A7E2 /* Loading@2x.png */; };
+		8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF1189826C70087A7E2 /* LoginViewController.m */; };
+		8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF3189829230087A7E2 /* BotonInicio.png */; };
+		8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF4189829230087A7E2 /* BotonInicio@2x.png */; };
+		8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF718982C6F0087A7E2 /* BotonRedimir.png */; };
+		8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF818982C6F0087A7E2 /* BotonRedimir@2x.png */; };
+		8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */; };
+		8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */; };
 		8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */; };
 		8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A0E188F16A80021AB03 /* Estrella@2x.png */; };
 		8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */; };
@@ -160,6 +174,24 @@
 		8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
 		8BDB8BCD188EDB860066279A /* MoviesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesViewController.h; sourceTree = "<group>"; };
 		8BDB8BCE188EDB860066279A /* MoviesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesViewController.m; sourceTree = "<group>"; };
+		8BE7FDDE189813FE0087A7E2 /* CategoriesiPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesiPadViewController.h; sourceTree = "<group>"; };
+		8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesiPadViewController.m; sourceTree = "<group>"; };
+		8BE7FDE2189819A10087A7E2 /* CategoriesPopoverMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesPopoverMenuViewController.h; sourceTree = "<group>"; };
+		8BE7FDE3189819A10087A7E2 /* CategoriesPopoverMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesPopoverMenuViewController.m; sourceTree = "<group>"; };
+		8BE7FDE51898234D0087A7E2 /* LoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
+		8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
+		8BE7FDE8189823950087A7E2 /* Inicio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Inicio.png; path = Resources/Images/Inicio.png; sourceTree = "<group>"; };
+		8BE7FDE9189823950087A7E2 /* Inicio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Inicio@2x.png"; path = "Resources/Images/Inicio@2x.png"; sourceTree = "<group>"; };
+		8BE7FDEA189823950087A7E2 /* Loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Loading.png; path = Resources/Images/Loading.png; sourceTree = "<group>"; };
+		8BE7FDEB189823950087A7E2 /* Loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Loading@2x.png"; path = "Resources/Images/Loading@2x.png"; sourceTree = "<group>"; };
+		8BE7FDF0189826C70087A7E2 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		8BE7FDF1189826C70087A7E2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		8BE7FDF3189829230087A7E2 /* BotonInicio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonInicio.png; path = Resources/Images/BotonInicio.png; sourceTree = "<group>"; };
+		8BE7FDF4189829230087A7E2 /* BotonInicio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonInicio@2x.png"; path = "Resources/Images/BotonInicio@2x.png"; sourceTree = "<group>"; };
+		8BE7FDF718982C6F0087A7E2 /* BotonRedimir.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonRedimir.png; path = Resources/Images/BotonRedimir.png; sourceTree = "<group>"; };
+		8BE7FDF818982C6F0087A7E2 /* BotonRedimir@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonRedimir@2x.png"; path = "Resources/Images/BotonRedimir@2x.png"; sourceTree = "<group>"; };
+		8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayHeaderWithLogo.png; path = Resources/Images/CaracolPlayHeaderWithLogo.png; sourceTree = "<group>"; };
+		8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CaracolPlayHeaderWithLogo@2x.png"; path = "Resources/Images/CaracolPlayHeaderWithLogo@2x.png"; sourceTree = "<group>"; };
 		8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoviesTableViewCell.h; path = CustomCells/MoviesTableViewCell.h; sourceTree = "<group>"; };
 		8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoviesTableViewCell.m; path = CustomCells/MoviesTableViewCell.m; sourceTree = "<group>"; };
 		8BF16A0E188F16A80021AB03 /* Estrella@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Estrella@2x.png"; path = "Resources/Images/Estrella@2x.png"; sourceTree = "<group>"; };
@@ -380,6 +412,11 @@
 		8BDB8BBD188EB5110066279A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
+				8BE7FDE51898234D0087A7E2 /* LoadingViewController.h */,
+				8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */,
+				8BE7FDF0189826C70087A7E2 /* LoginViewController.h */,
+				8BE7FDF1189826C70087A7E2 /* LoginViewController.m */,
 				8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */,
 				8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */,
 				8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */,
@@ -429,6 +466,17 @@
 			name = "Test Images";
 			sourceTree = "<group>";
 		};
+		8BE7FDE1189819740087A7E2 /* iPad ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8BE7FDDE189813FE0087A7E2 /* CategoriesiPadViewController.h */,
+				8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */,
+				8BE7FDE2189819A10087A7E2 /* CategoriesPopoverMenuViewController.h */,
+				8BE7FDE3189819A10087A7E2 /* CategoriesPopoverMenuViewController.m */,
+			);
+			name = "iPad ViewControllers";
+			sourceTree = "<group>";
+		};
 		8BF16A09188EEDF10021AB03 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,6 +495,16 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */,
+				8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */,
+				8BE7FDF718982C6F0087A7E2 /* BotonRedimir.png */,
+				8BE7FDF818982C6F0087A7E2 /* BotonRedimir@2x.png */,
+				8BE7FDF3189829230087A7E2 /* BotonInicio.png */,
+				8BE7FDF4189829230087A7E2 /* BotonInicio@2x.png */,
+				8BE7FDE8189823950087A7E2 /* Inicio.png */,
+				8BE7FDE9189823950087A7E2 /* Inicio@2x.png */,
+				8BE7FDEA189823950087A7E2 /* Loading.png */,
+				8BE7FDEB189823950087A7E2 /* Loading@2x.png */,
 				8B67769D1896F822006E2241 /* Checkmark.png */,
 				8BF16A19188F28800021AB03 /* OpacityPattern@2x.png */,
 				8BF16A15188F27C50021AB03 /* Estrella.png */,
@@ -548,13 +606,23 @@
 				8B67769E1896F822006E2241 /* Checkmark.png in Resources */,
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
 				8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */,
+				8BE7FDEC189823950087A7E2 /* Inicio.png in Resources */,
 				755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */,
+				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
+				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
+				8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */,
+				8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */,
+				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
+				8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */,
+				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
+				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
+				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,13 +644,17 @@
 				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
+				8BE7FDE4189819A10087A7E2 /* CategoriesPopoverMenuViewController.m in Sources */,
+				8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */,
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
+				8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */,
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
+				8BE7FDE0189813FE0087A7E2 /* CategoriesiPadViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,

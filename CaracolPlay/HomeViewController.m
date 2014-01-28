@@ -29,10 +29,11 @@
     
     /*-----------------------------------------------------------*/
     //1. Create a ScrollView to display the main images
+    self.scrollView = [[UIScrollView alloc] init];
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0,
                                                                      self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
-                                                                     self.view.frame.size.width,
-                                                                     self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
+                                                                     self.view.bounds.size.width,
+                                                                     self.view.bounds.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
@@ -52,17 +53,23 @@
     
     /*-------------------------------------------------------------*/
     //2. Create a PageControl to display the current page
-    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 50.0,
-                                                                       self.view.frame.size.height/1.17,
-                                                                       100.0,
-                                                                       30.0)];
+    self.pageControl = [[UIPageControl alloc] init];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.pageControl.frame =  CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height/1.17, 100.0, 30.0);
+    } else {
+        self.pageControl.frame = CGRectMake(80.0, self.view.bounds.size.height/1.17, 100.0, 30.0);
+    }
     self.pageControl.numberOfPages = numberOfPages;
     [self.view addSubview:self.pageControl];
 }
 
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self UISetup];
+}
+
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self UISetup];
 }
 
 #pragma mark - Custom Methods
@@ -140,7 +147,13 @@
 }
 
 - (NSUInteger) supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskPortrait;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        NSLog(@"Iphone");
+        return UIInterfaceOrientationMaskPortrait;
+    } else {
+        NSLog(@"iPad");
+        return UIInterfaceOrientationMaskLandscape;
+    }
 }
 
 @end

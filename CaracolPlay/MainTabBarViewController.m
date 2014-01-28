@@ -26,12 +26,21 @@
     [homeNavigationController.tabBarItem initWithTitle:@"Inicio" image:nil tag:1];
     
     //2. Second view of the TabBar - Categories
-    CategoriesViewController *categoriesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
-    MyNavigationController *categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesViewController];
-    [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:nil tag:2];
+    CategoriesiPadViewController *categoriesiPadViewController;
+    CategoriesViewController *categoriesViewController;
+    MyNavigationController *categoriesNavigationController;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        categoriesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+        categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesViewController];
+        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:nil tag:2];
+    } else {
+        categoriesiPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+        categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesiPadViewController];
+        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:nil tag:2];
+    }
     
     //3. Third view of the TabBar - Search
-    SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
+    /*SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
     MyNavigationController *SearchNavigationController = [[MyNavigationController alloc] initWithRootViewController:searchViewController];
     [SearchNavigationController.tabBarItem initWithTitle:@"Buscar" image:Nil tag:3];
     
@@ -47,7 +56,8 @@
     
     self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myListsNavigationController, myAccountNavigationController];
     self.selectedIndex = 0;
-    self.delegate = self;
+    self.delegate = self;*/
+    self.viewControllers = @[homeNavigationController, categoriesNavigationController];
 }
 
 - (BOOL)shouldAutorotate
