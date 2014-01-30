@@ -7,6 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class CheckmarkView;
+
+@protocol CheckmarkViewDelegate <NSObject>
+
+@optional
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView;
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView;
+@end
 
 @interface CheckmarkView : UIView
 
@@ -35,6 +43,9 @@
 
 /** Set if the Checkbox is checked or not. Default is NO*/
 @property (nonatomic) BOOL isChecked;
+
+/** The delegate object of the checkmark */
+@property (strong, nonatomic) id <CheckmarkViewDelegate> delegate;
 
 /** Obtain a BOOL indicating if the Checkbox is checked or not.*/
 -(BOOL)viewIsChecked;

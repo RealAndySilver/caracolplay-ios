@@ -41,6 +41,20 @@
 		8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */; };
 		8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */; };
 		8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* MoviesViewController.m */; };
+		8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A360189AB64900AF8E90 /* LineaBlanca.png */; };
+		8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */; };
+		8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A366189ADB1000AF8E90 /* HomeTabBarIcon.png */; };
+		8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A367189ADB1000AF8E90 /* HomeTabBarIcon@2x.png */; };
+		8BE7A36B189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A36A189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png */; };
+		8BE7A36E189AEEA900AF8E90 /* CategoriesTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A36C189AEEA900AF8E90 /* CategoriesTabBarIcon.png */; };
+		8BE7A36F189AEEA900AF8E90 /* SearchTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A36D189AEEA900AF8E90 /* SearchTabBarIcon@2x.png */; };
+		8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A370189AEF4C00AF8E90 /* SearchTabBarIcon.png */; };
+		8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A372189AEFBD00AF8E90 /* MyListsTabBarIcon.png */; };
+		8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A373189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png */; };
+		8BE7A378189AF17500AF8E90 /* ConfigTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A376189AF17500AF8E90 /* ConfigTabBarIcon.png */; };
+		8BE7A379189AF17500AF8E90 /* ConfigTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A377189AF17500AF8E90 /* ConfigTabBarIcon@2x.png */; };
+		8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BE7A37A189AF72A00AF8E90 /* Social.framework */; };
+		8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */; };
 		8BE7FDE0189813FE0087A7E2 /* CategoriesiPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */; };
 		8BE7FDE4189819A10087A7E2 /* CategoriesPopoverMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE3189819A10087A7E2 /* CategoriesPopoverMenuViewController.m */; };
 		8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */; };
@@ -179,6 +193,22 @@
 		8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
 		8BDB8BCD188EDB860066279A /* MoviesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesViewController.h; sourceTree = "<group>"; };
 		8BDB8BCE188EDB860066279A /* MoviesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesViewController.m; sourceTree = "<group>"; };
+		8BE7A360189AB64900AF8E90 /* LineaBlanca.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LineaBlanca.png; path = Resources/Images/LineaBlanca.png; sourceTree = "<group>"; };
+		8BE7A362189AC6F000AF8E90 /* IngresarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IngresarViewController.h; sourceTree = "<group>"; };
+		8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IngresarViewController.m; sourceTree = "<group>"; };
+		8BE7A366189ADB1000AF8E90 /* HomeTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeTabBarIcon.png; path = Resources/Images/TabBar/HomeTabBarIcon.png; sourceTree = "<group>"; };
+		8BE7A367189ADB1000AF8E90 /* HomeTabBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeTabBarIcon@2x.png"; path = "Resources/Images/TabBar/HomeTabBarIcon@2x.png"; sourceTree = "<group>"; };
+		8BE7A36A189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoriesTabBarIcon@2x.png"; path = "Resources/Images/TabBar/CategoriesTabBarIcon@2x.png"; sourceTree = "<group>"; };
+		8BE7A36C189AEEA900AF8E90 /* CategoriesTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CategoriesTabBarIcon.png; path = Resources/Images/TabBar/CategoriesTabBarIcon.png; sourceTree = "<group>"; };
+		8BE7A36D189AEEA900AF8E90 /* SearchTabBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabBarIcon@2x.png"; path = "Resources/Images/TabBar/SearchTabBarIcon@2x.png"; sourceTree = "<group>"; };
+		8BE7A370189AEF4C00AF8E90 /* SearchTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabBarIcon.png; path = Resources/Images/TabBar/SearchTabBarIcon.png; sourceTree = "<group>"; };
+		8BE7A372189AEFBD00AF8E90 /* MyListsTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyListsTabBarIcon.png; path = Resources/Images/TabBar/MyListsTabBarIcon.png; sourceTree = "<group>"; };
+		8BE7A373189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyListsTabBarIcon@2x.png"; path = "Resources/Images/TabBar/MyListsTabBarIcon@2x.png"; sourceTree = "<group>"; };
+		8BE7A376189AF17500AF8E90 /* ConfigTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ConfigTabBarIcon.png; path = Resources/Images/TabBar/ConfigTabBarIcon.png; sourceTree = "<group>"; };
+		8BE7A377189AF17500AF8E90 /* ConfigTabBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ConfigTabBarIcon@2x.png"; path = "Resources/Images/TabBar/ConfigTabBarIcon@2x.png"; sourceTree = "<group>"; };
+		8BE7A37A189AF72A00AF8E90 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		8BE7A37C189B098300AF8E90 /* RedeemCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedeemCodeViewController.h; sourceTree = "<group>"; };
+		8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedeemCodeViewController.m; sourceTree = "<group>"; };
 		8BE7FDDE189813FE0087A7E2 /* CategoriesiPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesiPadViewController.h; sourceTree = "<group>"; };
 		8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesiPadViewController.m; sourceTree = "<group>"; };
 		8BE7FDE2189819A10087A7E2 /* CategoriesPopoverMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesPopoverMenuViewController.h; sourceTree = "<group>"; };
@@ -241,6 +271,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
 				8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */,
@@ -295,6 +326,7 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BE7A37A189AF72A00AF8E90 /* Social.framework */,
 				A05C44961899CEF000E72135 /* Accelerate.framework */,
 				A05C448E1899CA2700E72135 /* QuartzCore.framework */,
 				8BD52AD81892AED300792845 /* MediaPlayer.framework */,
@@ -437,6 +469,10 @@
 				8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */,
 				8BE7FDF0189826C70087A7E2 /* LoginViewController.h */,
 				8BE7FDF1189826C70087A7E2 /* LoginViewController.m */,
+				8BE7A362189AC6F000AF8E90 /* IngresarViewController.h */,
+				8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */,
+				8BE7A37C189B098300AF8E90 /* RedeemCodeViewController.h */,
+				8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */,
 				8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */,
 				8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */,
 				8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */,
@@ -486,6 +522,23 @@
 			name = "Test Images";
 			sourceTree = "<group>";
 		};
+		8BE7A365189ADAF900AF8E90 /* TabBar Icons */ = {
+			isa = PBXGroup;
+			children = (
+				8BE7A376189AF17500AF8E90 /* ConfigTabBarIcon.png */,
+				8BE7A377189AF17500AF8E90 /* ConfigTabBarIcon@2x.png */,
+				8BE7A372189AEFBD00AF8E90 /* MyListsTabBarIcon.png */,
+				8BE7A373189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png */,
+				8BE7A370189AEF4C00AF8E90 /* SearchTabBarIcon.png */,
+				8BE7A36C189AEEA900AF8E90 /* CategoriesTabBarIcon.png */,
+				8BE7A36D189AEEA900AF8E90 /* SearchTabBarIcon@2x.png */,
+				8BE7A36A189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png */,
+				8BE7A366189ADB1000AF8E90 /* HomeTabBarIcon.png */,
+				8BE7A367189ADB1000AF8E90 /* HomeTabBarIcon@2x.png */,
+			);
+			name = "TabBar Icons";
+			sourceTree = "<group>";
+		};
 		8BE7FDE1189819740087A7E2 /* iPad ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,6 +568,8 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8BE7A365189ADAF900AF8E90 /* TabBar Icons */,
+				8BE7A360189AB64900AF8E90 /* LineaBlanca.png */,
 				A05C44901899CC8100E72135 /* AlertViewBackground.png */,
 				A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */,
 				8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */,
@@ -640,6 +695,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BE7A36F189AEEA900AF8E90 /* SearchTabBarIcon@2x.png in Resources */,
+				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
+				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
+				8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */,
 				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
 				755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */,
@@ -647,22 +706,29 @@
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
 				8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */,
 				8BE7FDEC189823950087A7E2 /* Inicio.png in Resources */,
+				8BE7A36B189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png in Resources */,
 				755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */,
 				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
 				A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */,
+				8BE7A378189AF17500AF8E90 /* ConfigTabBarIcon.png in Resources */,
+				8BE7A36E189AEEA900AF8E90 /* CategoriesTabBarIcon.png in Resources */,
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
 				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
+				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
+				8BE7A379189AF17500AF8E90 /* ConfigTabBarIcon@2x.png in Resources */,
 				8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */,
 				8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */,
 				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
+				8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */,
 				8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */,
 				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
+				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
 				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
 			);
@@ -700,6 +766,8 @@
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
+				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
+				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
@@ -846,6 +914,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (9JA65WT89C)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";

@@ -10,15 +10,18 @@
 #import "FXBlurView.h"
 
 @interface SuscriptionFormViewController ()
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameTextfield;
+@property (weak, nonatomic) IBOutlet UILabel *servicePoliticsLabel;
 @property (strong, nonatomic) CheckmarkView *checkmarkView1;
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) UIButton *nextButton;
 @property (strong, nonatomic) FXBlurView *blurView;
+@property (strong, nonatomic) FXBlurView *navigationBarBlurView;
 @end
 
 @implementation SuscriptionFormViewController
@@ -26,16 +29,19 @@
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.view.bounds.size.height - 70.0, 240.0, 40.0);
+        self.nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.servicePoliticsLabel.frame.origin.y + self.servicePoliticsLabel.frame.size.height + 20.0, 240.0, 40.0);
     } else {
-        self.nextButton.frame = CGRectMake(self.view.bounds.size.width / 2 - 120.0, self.view.bounds.size.height - 100.0, 240.0, 40.0);
+        self.nextButton.frame = CGRectMake(self.view.bounds.size.width / 2 - 120.0, self.servicePoliticsLabel.frame.origin.y + self.servicePoliticsLabel.frame.size.height + 20.0, 240.0, 40.0);
     }
+    
+    self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.nextButton.frame.origin.y + self.nextButton.frame.size.height + 180.0);
+    NSLog(@"conten size: %f", self.scrollView.contentSize.height);
+    
+    self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBarHidden = NO;
     
     //Set textfields delegates
@@ -58,25 +64,43 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(50.0, 357.0, 20.0, 20.0)];
+        self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 348.0, 20.0, 20.0)];
         self.checkmarkView1.cornerRadius = 3.0;
-        self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(50.0, 396.0, 20.0, 20.0)];
+        self.checkmarkView1.tag = 1;
+        self.checkmarkView1.delegate = self;
+        self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 387.0, 20.0, 20.0)];
         self.checkmarkView2.cornerRadius = 3.0;
+        self.checkmarkView2.tag = 2;
+        self.checkmarkView2.delegate = self;
     } else {
         self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
         self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(350.0, 465.0, 40.0, 40.0)];
         self.checkmarkView1.cornerRadius = 6.0;
+        self.checkmarkView1.delegate = self;
         self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(350.0, 525.0, 40.0, 40.0)];
         self.checkmarkView2.cornerRadius = 6.0;
+        self.checkmarkView2.delegate = self;
     }
-    [self.view addSubview:self.nextButton];
-    [self.view addSubview:self.checkmarkView1];
-    [self.view addSubview:self.checkmarkView2];
+    [self.scrollView addSubview:self.nextButton];
+    [self.scrollView addSubview:self.checkmarkView1];
+    [self.scrollView addSubview:self.checkmarkView2];
     
     self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
     self.blurView.blurRadius = 7.0;
     self.blurView.alpha = 0.0;
     [self.view addSubview:self.blurView];
+    
+    self.navigationBarBlurView = [[FXBlurView alloc] init];
+    self.navigationBarBlurView.blurRadius = 7.0;
+    self.navigationBarBlurView.alpha = 0.0;
+    [self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
+    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationBarBlurView removeFromSuperview];
+    [self.blurView removeFromSuperview];
 }
 
 -(void)goToHomeScreen {
@@ -86,13 +110,30 @@
     } else {
         /*[[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];*/
         self.blurView.alpha = 1.0;
+        self.navigationBarBlurView.alpha = 1.0;
         [ILAlertView showWithTitle:nil message:@"Error en los datos. Por favor verifícalos." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
             self.blurView.alpha = 0.0;
+            self.navigationBarBlurView.alpha = 0.0;
+            [self showErrorsInTermAndPoliticsConditions];
         }];
     }
 }
 
 #pragma mark - Custom Methods
+
+-(void)showErrorsInTermAndPoliticsConditions {
+    if (![self.checkmarkView1 viewIsChecked]) {
+        NSLog(@"chekmark 1 no chuleado");
+        self.checkmarkView1.borderWidth = 3.0;
+        self.checkmarkView1.borderColor = [UIColor redColor];
+    }
+    
+    if (![self.checkmarkView2 viewIsChecked]) {
+        NSLog(@"checkmark 2 no chuleado");
+        self.checkmarkView2.borderWidth = 3.0;
+        self.checkmarkView2.borderColor = [UIColor redColor];
+    }
+}
 
 -(void)dismissKeyboard {
     [self.nameTextfield resignFirstResponder];
@@ -115,6 +156,17 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - CheckmarkViewDelegate 
+
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
+    checkmarkView.borderColor = [UIColor whiteColor];
+    checkmarkView.borderWidth = 1.0;
+}
+
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+    NSLog(@"");
 }
 
 #pragma mark - Interface Orientation 

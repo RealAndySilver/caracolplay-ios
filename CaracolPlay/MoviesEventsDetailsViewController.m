@@ -10,7 +10,7 @@
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MoviesEventsDetailsViewController ()
+@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate>
 @property (strong, nonatomic) NSMutableArray *starsImageViewsArray;
 @property (nonatomic) int goldStars;
 @property (strong, nonatomic) UIImageView *starImageView1;
@@ -18,6 +18,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIImageView *starImageView3;
 @property (strong, nonatomic) UIImageView *starImageView4;
 @property (strong, nonatomic) UIImageView *starImageView5;
+@property (strong, nonatomic) FXBlurView *blurView;
+@property (strong, nonatomic) FXBlurView *tabBarBlurView;
+@property (strong, nonatomic) FXBlurView *navigationBarBlurView;
 @end
 
 @implementation MoviesEventsDetailsViewController
@@ -28,6 +31,18 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Mentiras Perfectas";
     [self UISetup];
+}
+
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.blurView removeFromSuperview];
+    [self.navigationBarBlurView removeFromSuperview];
+    [self.tabBarBlurView removeFromSuperview];
 }
 
 -(void)UISetup {
@@ -76,19 +91,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
                                                                               self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 90.0,
-                                                                              100.0,
+                                                                              90.0,
                                                                               30.0)];
     [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
-    watchTrailerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [watchTrailerButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 120.0, 100.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 90.0, 90.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
-    [shareButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
+    [shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:shareButton];
     
@@ -126,8 +142,24 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [collectionView registerClass:[RecommendedProdCollectionViewCell class] forCellWithReuseIdentifier:cellIdentifier];
     collectionView.delegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
-    
     [grayView addSubview:collectionView];
+    
+    //Add a blur view to display when the user shares the production but an error was produced.
+    self.blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
+    self.blurView.blurRadius = 7.0;
+    self.blurView.alpha = 0.0;
+    //[self.view addSubview:self.blurView];
+    
+    self.tabBarBlurView = [[FXBlurView alloc] initWithFrame:self.tabBarController.tabBar.frame];
+    self.tabBarBlurView.alpha = 0.0;
+    self.tabBarBlurView.blurRadius = 7.0;
+    //[self.tabBarController.view addSubview:self.tabBarBlurView];
+    
+    self.navigationBarBlurView = [[FXBlurView alloc] init];
+    self.navigationBarBlurView.alpha = 0.0;
+    self.navigationBarBlurView.blurRadius = 7.0;
+    //[self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
+    //[self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -150,6 +182,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Custom Methods
+
+-(void)shareProduction {
+    [[[UIActionSheet alloc] initWithTitle:nil
+                                delegate:self
+                       cancelButtonTitle:@"Volver"
+                  destructiveButtonTitle:nil
+                        otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
 
 -(void)createStarsImageViews {
     
@@ -203,6 +243,42 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
         } else {
             starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
+        }
+    }
+}
+
+#pragma mark - UIActionSheetDelegate 
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        //Facebook
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+            NSLog(@"Facebook está disponible");
+            SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+            [facebookViewController setInitialText:@"Mentiras perfectas, la serie que bla bla bla. Compartido a través de la app 'CaracolPlay'"];
+            [self presentViewController:facebookViewController animated:YES completion:nil];
+            
+        } else {
+            NSLog(@"Facebook no está disponible");
+            [ILAlertView showWithTitle:nil message:@"Facebook no se encuentra configurado en tu dispositivo." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:nil];
+        }
+    } else if (buttonIndex == 1) {
+        //Twitter
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
+            NSLog(@"Twitter está disponible");
+            SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            [twitterViewController setInitialText:@"Mentiras Perfectas, la serie que bla bla. Compartido a través de la app 'Caracol Play'"];
+            [self presentViewController:twitterViewController animated:YES completion:nil];
+        } else {
+            NSLog(@"Twitter no está disponible");
+            //self.blurView.alpha = 1.0;
+            //self.tabBarBlurView.alpha = 1.0;
+            //self.navigationBarBlurView.alpha = 1.0;
+            [ILAlertView showWithTitle:nil message:@"Twitter no se encuentra configurado en tu dispositivo." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
+                //self.blurView.alpha = 0.0;
+                //self.tabBarBlurView.alpha = 0.0;
+                //self.navigationBarBlurView.alpha = 0.0;
+            }];
         }
     }
 }

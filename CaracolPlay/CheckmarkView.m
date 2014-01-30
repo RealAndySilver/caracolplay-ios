@@ -21,6 +21,7 @@
         self.layer.cornerRadius = 5.0;
         self.layer.borderColor = [[UIColor whiteColor] CGColor];
         self.layer.borderWidth = 1.0;
+        self.hasBorder = YES;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
         [self addGestureRecognizer:tapGesture];
         
@@ -90,8 +91,10 @@
 -(void)tap {
     if (self.isChecked) {
         self.checkmarkImageView.image = nil;
+        [self.delegate checkmarkViewWasUnchecked:self];
     } else {
         self.checkmarkImageView.image = self.checkmarkImage;
+        [self.delegate checkmarkViewWasChecked:self];
     }
     self.isChecked = !self.isChecked;
 }

@@ -10,6 +10,6 @@
 #import "MainTabBarViewController.h"
 #import "CheckmarkView.h"
 
-@interface SuscriptionFormViewController : UIViewController <UITextFieldDelegate>
+@interface SuscriptionFormViewController : UIViewController <UITextFieldDelegate, CheckmarkViewDelegate>
 
 @end

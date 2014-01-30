@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "MyUtilities.h"
 #import "RecommendedProdCollectionViewCell.h"
+#import <Social/Social.h>
+#import "FXBlurView.h"
 
 @interface MoviesEventsDetailsViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
 

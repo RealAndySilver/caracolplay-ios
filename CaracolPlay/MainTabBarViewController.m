@@ -23,7 +23,7 @@
     //1. First view of the TabBar - Home
     HomeViewController *homeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Home"];
     MyNavigationController *homeNavigationController = [[MyNavigationController alloc] initWithRootViewController:homeViewController];
-    [homeNavigationController.tabBarItem initWithTitle:@"Inicio" image:nil tag:1];
+    [homeNavigationController.tabBarItem initWithTitle:@"Inicio" image:[UIImage imageNamed:@"HomeTabBarIcon.png"] tag:1];
     
     //2. Second view of the TabBar - Categories
     CategoriesiPadViewController *categoriesiPadViewController;
@@ -32,32 +32,31 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         categoriesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
         categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesViewController];
-        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:nil tag:2];
+        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
     } else {
         categoriesiPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
         categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesiPadViewController];
-        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:nil tag:2];
+        [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
     }
     
     //3. Third view of the TabBar - Search
-    /*SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
+    SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
     MyNavigationController *SearchNavigationController = [[MyNavigationController alloc] initWithRootViewController:searchViewController];
-    [SearchNavigationController.tabBarItem initWithTitle:@"Buscar" image:Nil tag:3];
+    [SearchNavigationController.tabBarItem initWithTitle:@"Buscar" image:[UIImage imageNamed:@"SearchTabBarIcon.png"] tag:3];
     
     //4. Fourth view of the TabBar - MyLists
     MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
-    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:nil tag:4];
+    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
     
     //5. Fifth view of the TabBar - My Account
     MyAccountViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccount"];
     MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
-    [myAccountNavigationController.tabBarItem initWithTitle:@"Mi Cuenta" image:nil tag:5];
+    [myAccountNavigationController.tabBarItem initWithTitle:@"Mi Cuenta" image:[UIImage imageNamed:@"ConfigTabBarIcon.png"] tag:5];
     
     self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myListsNavigationController, myAccountNavigationController];
-    self.selectedIndex = 0;
-    self.delegate = self;*/
-    self.viewControllers = @[homeNavigationController, categoriesNavigationController];
+    //self.delegate = self;
+    self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myListsNavigationController, myAccountNavigationController];
 }
 
 - (BOOL)shouldAutorotate
@@ -76,13 +75,13 @@
     return [[[self.viewControllers objectAtIndex:self.selectedIndex]topViewController] shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
--(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+/*-(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
     NSLog(@"me llamé");
     int selected = self.selectedIndex;
     UIViewController *con = [self.storyboard instantiateViewControllerWithIdentifier:@"Empty"];
     [[self.viewControllers objectAtIndex:selected] pushViewController:con animated:NO];
     [[self.viewControllers objectAtIndex:selected]popViewControllerAnimated:NO];
     [[self.viewControllers objectAtIndex:selected] setDelegate:nil];
-}
+}*/
 
 @end
