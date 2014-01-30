@@ -8,9 +8,10 @@
 
 #import "LoginViewController.h"
 #import "SuscriptionFormViewController.h"
+#import "FXBlurView.h"
 
 @interface LoginViewController ()
-
+@property (strong, nonatomic) FXBlurView *blurView;
 @end
 
 @implementation LoginViewController
@@ -67,9 +68,30 @@
     [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:skipButton];
+    
+    //5. boton para probar el alertview
+    UIButton *alertTestButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, 20.0, 100.0, 30.0)];
+    [alertTestButton setTitle:@"Alerta" forState:UIControlStateNormal];
+    [alertTestButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [alertTestButton addTarget:self action:@selector(showAlert) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:alertTestButton];
+    
+    //6. Add a blurview to be displayed when a low connection alert has been displayed.
+    self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
+    self.blurView.blurRadius = 7.0;
+    self.blurView.dynamic = NO;
+    self.blurView.alpha = 0.0;
+    [self.view addSubview:self.blurView];
 }
 
 #pragma mark - Button Actions 
+
+-(void)showAlert {
+    self.blurView.alpha = 1.0;
+    [ILAlertView showWithTitle:nil message:@"Tu Conexión es muy lenta. Conéctate a una red Wi-Fi" closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
+        self.blurView.alpha = 0.0;
+    }];
+}
 
 -(void)goToEnterViewController {
     

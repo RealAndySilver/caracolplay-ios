@@ -24,7 +24,6 @@
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
-		8BD52AC71892ADB100792845 /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52AC61892ADB100792845 /* libOoyalaSDK.a */; };
 		8BD52AC91892AE9600792845 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52AC81892AE9500792845 /* libxml2.dylib */; };
 		8BD52ACB1892AEA000792845 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52ACA1892AEA000792845 /* libc++.dylib */; };
 		8BD52ACD1892AEAA00792845 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52ACC1892AEAA00792845 /* CFNetwork.framework */; };
@@ -73,6 +72,13 @@
 		8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F6118918E3200A88C8C /* SearchViewController.m */; };
 		8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F641891906900A88C8C /* MyListsViewController.m */; };
 		8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */; };
+		A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C447D1899BE7400E72135 /* libOoyalaSDK.a */; };
+		A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */; };
+		A05C448D1899C87E00E72135 /* ILAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C448C1899C87E00E72135 /* ILAlertView.m */; };
+		A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C448E1899CA2700E72135 /* QuartzCore.framework */; };
+		A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44901899CC8100E72135 /* AlertViewBackground.png */; };
+		A05C44951899CEA700E72135 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C44941899CEA700E72135 /* FXBlurView.m */; };
+		A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C44961899CEF000E72135 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,7 +156,6 @@
 		8BD52AC31892AD6300792845 /* OOVASTStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTStream.h; sourceTree = "<group>"; };
 		8BD52AC41892AD6300792845 /* OOVASTWrapperAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTWrapperAd.h; sourceTree = "<group>"; };
 		8BD52AC51892AD6300792845 /* OOVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVideo.h; sourceTree = "<group>"; };
-		8BD52AC61892ADB100792845 /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		8BD52AC81892AE9500792845 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		8BD52ACA1892AEA000792845 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8BD52ACC1892AEAA00792845 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -220,6 +225,15 @@
 		8BFD4F641891906900A88C8C /* MyListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsViewController.m; sourceTree = "<group>"; };
 		8BFD4F661891BB0200A88C8C /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
 		8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
+		A05C447D1899BE7400E72135 /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
+		A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AlertViewBackground@2x.png"; path = "Resources/Images/AlertViewBackground@2x.png"; sourceTree = "<group>"; };
+		A05C448B1899C87E00E72135 /* ILAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILAlertView.h; sourceTree = "<group>"; };
+		A05C448C1899C87E00E72135 /* ILAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILAlertView.m; sourceTree = "<group>"; };
+		A05C448E1899CA2700E72135 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A05C44901899CC8100E72135 /* AlertViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AlertViewBackground.png; path = Resources/Images/AlertViewBackground.png; sourceTree = "<group>"; };
+		A05C44931899CEA700E72135 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		A05C44941899CEA700E72135 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		A05C44961899CEF000E72135 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,7 +241,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
+				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
 				8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */,
+				A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */,
 				8BD52AD71892AECF00792845 /* CoreText.framework in Frameworks */,
 				8BD52AD51892AEC400792845 /* AVFoundation.framework in Frameworks */,
 				8BD52AD31892AEBC00792845 /* CoreMedia.framework in Frameworks */,
@@ -239,7 +256,6 @@
 				755DB15B188DEE2C00E5C636 /* CoreGraphics.framework in Frameworks */,
 				755DB15D188DEE2C00E5C636 /* UIKit.framework in Frameworks */,
 				755DB159188DEE2C00E5C636 /* Foundation.framework in Frameworks */,
-				8BD52AC71892ADB100792845 /* libOoyalaSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +275,7 @@
 		755DB14C188DEE2C00E5C636 = {
 			isa = PBXGroup;
 			children = (
-				8BD52AC61892ADB100792845 /* libOoyalaSDK.a */,
+				A05C447D1899BE7400E72135 /* libOoyalaSDK.a */,
 				755DB15E188DEE2C00E5C636 /* CaracolPlay */,
 				755DB180188DEE2C00E5C636 /* CaracolPlayTests */,
 				755DB157188DEE2C00E5C636 /* Frameworks */,
@@ -279,6 +295,8 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A05C44961899CEF000E72135 /* Accelerate.framework */,
+				A05C448E1899CA2700E72135 /* QuartzCore.framework */,
 				8BD52AD81892AED300792845 /* MediaPlayer.framework */,
 				8BD52AD61892AECF00792845 /* CoreText.framework */,
 				8BD52AD41892AEC400792845 /* AVFoundation.framework */,
@@ -299,6 +317,8 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				A05C44921899CEA700E72135 /* FXBlurView */,
+				A05C448A1899C87E00E72135 /* ILAlertView */,
 				8B67769F1896F860006E2241 /* Views */,
 				8BD52A9C1892AD6300792845 /* Ooyala Headers */,
 				8BDB8BBC188EB5080066279A /* Main */,
@@ -495,6 +515,8 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A05C44901899CC8100E72135 /* AlertViewBackground.png */,
+				A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */,
 				8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */,
 				8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */,
 				8BE7FDF718982C6F0087A7E2 /* BotonRedimir.png */,
@@ -522,6 +544,24 @@
 				8BF16A1F188F29A80021AB03 /* MyUtilities.m */,
 			);
 			path = "Custom Classes";
+			sourceTree = "<group>";
+		};
+		A05C448A1899C87E00E72135 /* ILAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				A05C448B1899C87E00E72135 /* ILAlertView.h */,
+				A05C448C1899C87E00E72135 /* ILAlertView.m */,
+			);
+			path = ILAlertView;
+			sourceTree = "<group>";
+		};
+		A05C44921899CEA700E72135 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				A05C44931899CEA700E72135 /* FXBlurView.h */,
+				A05C44941899CEA700E72135 /* FXBlurView.m */,
+			);
+			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -609,7 +649,9 @@
 				8BE7FDEC189823950087A7E2 /* Inicio.png in Resources */,
 				755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */,
 				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
+				A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */,
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
+				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
@@ -663,8 +705,10 @@
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
 				8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */,
 				8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */,
+				A05C448D1899C87E00E72135 /* ILAlertView.m in Sources */,
 				8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
+				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -808,6 +852,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
+					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -825,6 +870,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
+					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
