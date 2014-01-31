@@ -30,7 +30,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
     categoriesTableView.delegate = self;
     categoriesTableView.dataSource = self;
     categoriesTableView.backgroundColor = [UIColor blackColor];
-    categoriesTableView.rowHeight = 60.0;
+    categoriesTableView.rowHeight = 50.0;
+    categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     categoriesTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     [self.view addSubview:categoriesTableView];
 }
@@ -40,10 +41,6 @@ static NSString *CellIdentifier = @"CellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.categoriesList = @[@"Vistos Recientemente", @"Telenovelas", @"Series", @"Películas", @"Noticias", @"Eventos en Vivo"];
-}
-
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
     [self UISetup];
 }
 

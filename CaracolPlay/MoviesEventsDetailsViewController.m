@@ -145,7 +145,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [grayView addSubview:collectionView];
     
     //Add a blur view to display when the user shares the production but an error was produced.
-    self.blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
+    /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
     self.blurView.blurRadius = 7.0;
     self.blurView.alpha = 0.0;
     //[self.view addSubview:self.blurView];
@@ -159,7 +159,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.navigationBarBlurView.alpha = 0.0;
     self.navigationBarBlurView.blurRadius = 7.0;
     //[self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
-    //[self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];
+    //[self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -270,15 +270,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [twitterViewController setInitialText:@"Mentiras Perfectas, la serie que bla bla. Compartido a través de la app 'Caracol Play'"];
             [self presentViewController:twitterViewController animated:YES completion:nil];
         } else {
-            NSLog(@"Twitter no está disponible");
-            //self.blurView.alpha = 1.0;
-            //self.tabBarBlurView.alpha = 1.0;
-            //self.navigationBarBlurView.alpha = 1.0;
-            [ILAlertView showWithTitle:nil message:@"Twitter no se encuentra configurado en tu dispositivo." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
-                //self.blurView.alpha = 0.0;
-                //self.tabBarBlurView.alpha = 0.0;
-                //self.navigationBarBlurView.alpha = 0.0;
-            }];
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     }
 }

@@ -24,6 +24,9 @@
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
+		8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */; };
+		8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */; };
+		8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */; };
 		8BD52AC91892AE9600792845 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52AC81892AE9500792845 /* libxml2.dylib */; };
 		8BD52ACB1892AEA000792845 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52ACA1892AEA000792845 /* libc++.dylib */; };
 		8BD52ACD1892AEAA00792845 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52ACC1892AEAA00792845 /* CFNetwork.framework */; };
@@ -69,6 +72,8 @@
 		8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDF818982C6F0087A7E2 /* BotonRedimir@2x.png */; };
 		8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */; };
 		8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */; };
+		8BE82937189BFE1E003EE7A6 /* TermsAndConditionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */; };
+		8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82939189C0309003EE7A6 /* MyAccountViewController.m */; };
 		8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */; };
 		8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A0E188F16A80021AB03 /* Estrella@2x.png */; };
 		8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */; };
@@ -85,7 +90,7 @@
 		8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5E189181A000A88C8C /* TelenovelSeriesTableViewCell.m */; };
 		8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F6118918E3200A88C8C /* SearchViewController.m */; };
 		8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F641891906900A88C8C /* MyListsViewController.m */; };
-		8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */; };
+		8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */; };
 		A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C447D1899BE7400E72135 /* libOoyalaSDK.a */; };
 		A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */; };
 		A05C448D1899C87E00E72135 /* ILAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C448C1899C87E00E72135 /* ILAlertView.m */; };
@@ -129,6 +134,9 @@
 		8B67769D1896F822006E2241 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkmark.png; path = Resources/Images/Checkmark.png; sourceTree = "<group>"; };
 		8B6776A01896F878006E2241 /* CheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckmarkView.h; sourceTree = "<group>"; };
 		8B6776A11896F878006E2241 /* CheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckmarkView.m; sourceTree = "<group>"; };
+		8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonCerrarSesion.png; path = Resources/Images/BotonCerrarSesion.png; sourceTree = "<group>"; };
+		8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonCerrarSesion@2x.png"; path = "Resources/Images/BotonCerrarSesion@2x.png"; sourceTree = "<group>"; };
+		8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FormErrorImage@2x.png"; path = "Resources/Images/FormErrorImage@2x.png"; sourceTree = "<group>"; };
 		8BD52A9D1892AD6300792845 /* OOAdSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAdSpot.h; sourceTree = "<group>"; };
 		8BD52A9E1892AD6300792845 /* OOAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAnalytics.h; sourceTree = "<group>"; };
 		8BD52A9F1892AD6300792845 /* OOAuthorizableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAuthorizableItem.h; sourceTree = "<group>"; };
@@ -227,6 +235,10 @@
 		8BE7FDF818982C6F0087A7E2 /* BotonRedimir@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonRedimir@2x.png"; path = "Resources/Images/BotonRedimir@2x.png"; sourceTree = "<group>"; };
 		8BE7FDFB189835830087A7E2 /* CaracolPlayHeaderWithLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayHeaderWithLogo.png; path = Resources/Images/CaracolPlayHeaderWithLogo.png; sourceTree = "<group>"; };
 		8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CaracolPlayHeaderWithLogo@2x.png"; path = "Resources/Images/CaracolPlayHeaderWithLogo@2x.png"; sourceTree = "<group>"; };
+		8BE82935189BFE1E003EE7A6 /* TermsAndConditionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndConditionsViewController.h; sourceTree = "<group>"; };
+		8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndConditionsViewController.m; sourceTree = "<group>"; };
+		8BE82938189C0309003EE7A6 /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
+		8BE82939189C0309003EE7A6 /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
 		8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoviesTableViewCell.h; path = CustomCells/MoviesTableViewCell.h; sourceTree = "<group>"; };
 		8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoviesTableViewCell.m; path = CustomCells/MoviesTableViewCell.m; sourceTree = "<group>"; };
 		8BF16A0E188F16A80021AB03 /* Estrella@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Estrella@2x.png"; path = "Resources/Images/Estrella@2x.png"; sourceTree = "<group>"; };
@@ -253,8 +265,8 @@
 		8BFD4F6118918E3200A88C8C /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		8BFD4F631891906900A88C8C /* MyListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyListsViewController.h; sourceTree = "<group>"; };
 		8BFD4F641891906900A88C8C /* MyListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsViewController.m; sourceTree = "<group>"; };
-		8BFD4F661891BB0200A88C8C /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
-		8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
+		8BFD4F661891BB0200A88C8C /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
+		8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		A05C447D1899BE7400E72135 /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AlertViewBackground@2x.png"; path = "Resources/Images/AlertViewBackground@2x.png"; sourceTree = "<group>"; };
 		A05C448B1899C87E00E72135 /* ILAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILAlertView.h; sourceTree = "<group>"; };
@@ -465,38 +477,13 @@
 			isa = PBXGroup;
 			children = (
 				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
-				8BE7FDE51898234D0087A7E2 /* LoadingViewController.h */,
-				8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */,
-				8BE7FDF0189826C70087A7E2 /* LoginViewController.h */,
-				8BE7FDF1189826C70087A7E2 /* LoginViewController.m */,
-				8BE7A362189AC6F000AF8E90 /* IngresarViewController.h */,
-				8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */,
-				8BE7A37C189B098300AF8E90 /* RedeemCodeViewController.h */,
-				8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */,
-				8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */,
-				8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */,
-				8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */,
-				8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */,
-				8BD52ADD189320BF00792845 /* MyNavigationController.h */,
-				8BD52ADE189320BF00792845 /* MyNavigationController.m */,
-				8BDB8BC1188EB5B40066279A /* HomeViewController.h */,
-				8BDB8BC2188EB5B40066279A /* HomeViewController.m */,
-				8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */,
-				8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */,
-				8BFD4F6018918E3200A88C8C /* SearchViewController.h */,
-				8BFD4F6118918E3200A88C8C /* SearchViewController.m */,
-				8BFD4F631891906900A88C8C /* MyListsViewController.h */,
-				8BFD4F641891906900A88C8C /* MyListsViewController.m */,
-				8BFD4F661891BB0200A88C8C /* MyAccountViewController.h */,
-				8BFD4F671891BB0200A88C8C /* MyAccountViewController.m */,
-				8BDB8BCD188EDB860066279A /* MoviesViewController.h */,
-				8BDB8BCE188EDB860066279A /* MoviesViewController.m */,
-				8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */,
-				8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */,
-				8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */,
-				8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */,
-				8BFD4F5A189175D800A88C8C /* TelenovelSeriesDetailViewController.h */,
-				8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */,
+				8BE8292E189BFD32003EE7A6 /* Loading & Login  */,
+				8BE82932189BFD8F003EE7A6 /* App Structure Controllers */,
+				8BE8292F189BFD4B003EE7A6 /* Home Section */,
+				8BE82930189BFD61003EE7A6 /* Categories Section */,
+				8BE82931189BFD79003EE7A6 /* Search Section */,
+				8BE82933189BFDA4003EE7A6 /* MyList Section */,
+				8BE82934189BFDB0003EE7A6 /* Configuration Section */,
 				8BD52ADA1892AF6500792845 /* VideoPlayerViewController.h */,
 				8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */,
 			);
@@ -550,6 +537,91 @@
 			name = "iPad ViewControllers";
 			sourceTree = "<group>";
 		};
+		8BE8292E189BFD32003EE7A6 /* Loading & Login  */ = {
+			isa = PBXGroup;
+			children = (
+				8BE7FDE51898234D0087A7E2 /* LoadingViewController.h */,
+				8BE7FDE61898234D0087A7E2 /* LoadingViewController.m */,
+				8BE7FDF0189826C70087A7E2 /* LoginViewController.h */,
+				8BE7FDF1189826C70087A7E2 /* LoginViewController.m */,
+				8BE7A362189AC6F000AF8E90 /* IngresarViewController.h */,
+				8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */,
+				8BE7A37C189B098300AF8E90 /* RedeemCodeViewController.h */,
+				8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */,
+				8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */,
+				8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */,
+			);
+			name = "Loading & Login ";
+			sourceTree = "<group>";
+		};
+		8BE8292F189BFD4B003EE7A6 /* Home Section */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8BC1188EB5B40066279A /* HomeViewController.h */,
+				8BDB8BC2188EB5B40066279A /* HomeViewController.m */,
+			);
+			name = "Home Section";
+			sourceTree = "<group>";
+		};
+		8BE82930189BFD61003EE7A6 /* Categories Section */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */,
+				8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */,
+				8BDB8BCD188EDB860066279A /* MoviesViewController.h */,
+				8BDB8BCE188EDB860066279A /* MoviesViewController.m */,
+				8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */,
+				8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */,
+				8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */,
+				8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */,
+				8BFD4F5A189175D800A88C8C /* TelenovelSeriesDetailViewController.h */,
+				8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */,
+			);
+			name = "Categories Section";
+			sourceTree = "<group>";
+		};
+		8BE82931189BFD79003EE7A6 /* Search Section */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD4F6018918E3200A88C8C /* SearchViewController.h */,
+				8BFD4F6118918E3200A88C8C /* SearchViewController.m */,
+			);
+			name = "Search Section";
+			sourceTree = "<group>";
+		};
+		8BE82932189BFD8F003EE7A6 /* App Structure Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */,
+				8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */,
+				8BD52ADD189320BF00792845 /* MyNavigationController.h */,
+				8BD52ADE189320BF00792845 /* MyNavigationController.m */,
+			);
+			name = "App Structure Controllers";
+			sourceTree = "<group>";
+		};
+		8BE82933189BFDA4003EE7A6 /* MyList Section */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD4F631891906900A88C8C /* MyListsViewController.h */,
+				8BFD4F641891906900A88C8C /* MyListsViewController.m */,
+			);
+			name = "MyList Section";
+			sourceTree = "<group>";
+		};
+		8BE82934189BFDB0003EE7A6 /* Configuration Section */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD4F661891BB0200A88C8C /* ConfigurationViewController.h */,
+				8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */,
+				8BE82938189C0309003EE7A6 /* MyAccountViewController.h */,
+				8BE82939189C0309003EE7A6 /* MyAccountViewController.m */,
+				8BE82935189BFE1E003EE7A6 /* TermsAndConditionsViewController.h */,
+				8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */,
+			);
+			name = "Configuration Section";
+			sourceTree = "<group>";
+		};
 		8BF16A09188EEDF10021AB03 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -568,6 +640,9 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */,
+				8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */,
 				8BE7A365189ADAF900AF8E90 /* TabBar Icons */,
 				8BE7A360189AB64900AF8E90 /* LineaBlanca.png */,
 				A05C44901899CC8100E72135 /* AlertViewBackground.png */,
@@ -698,6 +773,8 @@
 				8BE7A36F189AEEA900AF8E90 /* SearchTabBarIcon@2x.png in Resources */,
 				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
 				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
+				8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */,
+				8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */,
 				8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */,
 				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
@@ -711,6 +788,7 @@
 				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
 				A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */,
 				8BE7A378189AF17500AF8E90 /* ConfigTabBarIcon.png in Resources */,
+				8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */,
 				8BE7A36E189AEEA900AF8E90 /* CategoriesTabBarIcon.png in Resources */,
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
 				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
@@ -761,10 +839,11 @@
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
+				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
 				8BE7FDE0189813FE0087A7E2 /* CategoriesiPadViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
-				8BFD4F681891BB0200A88C8C /* MyAccountViewController.m in Sources */,
+				8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
 				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
 				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
@@ -773,6 +852,7 @@
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
 				8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */,
 				8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */,
+				8BE82937189BFE1E003EE7A6 /* TermsAndConditionsViewController.m in Sources */,
 				A05C448D1899C87E00E72135 /* ILAlertView.m in Sources */,
 				8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
@@ -912,6 +992,7 @@
 		755DB18B188DEE2D00E5C636 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (9JA65WT89C)";
@@ -931,6 +1012,7 @@
 		755DB18C188DEE2D00E5C636 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

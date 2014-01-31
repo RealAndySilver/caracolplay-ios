@@ -8,6 +8,7 @@
 
 #import "LoadingViewController.h"
 #import "LoginViewController.h"
+#import "MyNavigationController.h"
 
 @interface LoadingViewController ()
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -15,13 +16,12 @@
 
 @implementation LoadingViewController
 
+#pragma mark - View Lifecycle
+
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = YES;
     [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:3.0];
-}
-
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
     
     //1. Set the background image of the view
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -35,6 +35,8 @@
     [self.spinner startAnimating];
 }
 
+#pragma mark - Custom Methods
+
 -(void)goToLoginViewController {
     //Stop the spinner
     [self.spinner stopAnimating];
@@ -42,10 +44,13 @@
     self.spinner = nil;
     
     LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:navigationController animated:YES completion:nil];
+    //[self.navigationController pushViewController:loginVC animated:YES];
 }
+
+#pragma mark - Interface Orientation
 
 -(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;

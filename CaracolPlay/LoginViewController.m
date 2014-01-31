@@ -13,7 +13,6 @@
 #import "RedeemCodeViewController.h"
 
 @interface LoginViewController ()
-@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *enterButton;
 @property (strong, nonatomic) UIButton *suscribeButton;
@@ -72,12 +71,12 @@
     [self.alertTestButton addTarget:self action:@selector(showAlert) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.alertTestButton];
     
-    //6. Add a blurview to be displayed when a low connection alert has been displayed.
+    /*//6. Add a blurview to be displayed when a low connection alert has been displayed.
     self.blurView = [[FXBlurView alloc] init];
     self.blurView.blurRadius = 7.0;
     self.blurView.dynamic = NO;
     self.blurView.alpha = 0.0;
-    //[self.view addSubview:self.blurView];
+    //[self.view addSubview:self.blurView];*/
 }
 
 #pragma mark - View Lifecycle
@@ -89,16 +88,8 @@
     [self UISetup];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-    [self.view addSubview:self.blurView];
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"Desaparecí");
-    [super viewWillDisappear:animated];
-    [self.blurView removeFromSuperview];
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 -(void)viewDidLayoutSubviews {
@@ -110,16 +101,12 @@
     self.redeemCodeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height - 80.0, 100.0, 100.0);
     self.skipButton.frame = CGRectMake(250.0, 22.0, 50.0, 30.0);
     self.alertTestButton.frame = CGRectMake(20.0, 20.0, 100.0, 30.0);
-    self.blurView.frame = self.view.bounds;
 }
 
 #pragma mark - Button Actions 
 
 -(void)showAlert {
-    self.blurView.alpha = 1.0;
-    [ILAlertView showWithTitle:nil message:@"Tu Conexión es muy lenta. Conéctate a una red Wi-Fi" closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
-        self.blurView.alpha = 0.0;
-    }];
+    [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta. Conéctate a una red Wi-Fi para poder acceder al contenido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 -(void)goToRedeemCodeViewController {

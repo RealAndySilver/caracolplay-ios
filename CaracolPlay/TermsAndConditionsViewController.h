@@ -1,5 +1,5 @@
 //
-//  MyAccountViewController.h
+//  TermsAndConditionsViewController.h
 //  CaracolPlay
 //
 //  Created by Developer on 31/01/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyAccountViewController : UIViewController
+@interface TermsAndConditionsViewController : UIViewController
 
 @end

@@ -14,8 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
-@property (strong, nonatomic) FXBlurView *blurView;
-@property (strong, nonatomic) FXBlurView *navigationBarBlurView;
 
 @end
 
@@ -23,8 +21,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.navigationBarHidden = NO;
+    //self.navigationController.navigationBarHidden = NO;
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
@@ -32,7 +29,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
     [self.view addGestureRecognizer:tapGesture];
     
-    self.blurView = [[FXBlurView alloc] init];
+    /*self.blurView = [[FXBlurView alloc] init];
     self.blurView.blurRadius = 7.0;
     self.blurView.alpha = 0.0;
     [self.view addSubview:self.blurView];
@@ -41,26 +38,21 @@
     self.navigationBarBlurView.blurRadius = 7.0;
     self.navigationBarBlurView.alpha = 0.0;
     [self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
-    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];
+    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
--(void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    self.blurView.frame = self.view.bounds;
-    self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
 
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.navigationBarBlurView removeFromSuperview];
-}
-
-#pragma mark - UITextfieldDelegate 
+#pragma mark - UITextfieldDelegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
 }
+
+#pragma mark - Custom Methods
 
 -(void)tap {
     [self.nameTextfield resignFirstResponder];
@@ -72,17 +64,14 @@
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarVC animated:YES completion:nil];
     } else {
-        //Blur the background view
-        self.blurView.alpha = 1.0;
-        self.navigationBarBlurView.alpha = 1.0;
-        [ILAlertView showWithTitle:nil message:@"Usuario o contraseña incorrecta. Por favor revisa tus datos."
-                  closeButtonTitle:@"Ok"
-                 secondButtonTitle:nil
-                tappedSecondButton:^(){
-                    self.blurView.alpha = 0.0;
-                    self.navigationBarBlurView.alpha = 0.0;
-                }];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Error en la información. Por favor revisa que hayas completado todos los campos correctamente." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

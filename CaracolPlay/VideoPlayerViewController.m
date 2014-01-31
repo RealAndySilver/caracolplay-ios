@@ -24,47 +24,42 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    NSLog(@"la vista aprecerá");
-    [super viewWillAppear:animated];
-   // [self.ooyalaPlayerViewController setFullscreen:YES];
+    
     //Create the Ooyala ViewController
     self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:PCODE domain:PLAYERDOMAIN controlType:OOOoyalaPlayerControlTypeInline];
     
     //Attach the Oooyala view controller to the view
     //self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width/2, self.view.frame.size.height/2);
     NSLog(@"width: %f", self.view.frame.size.width);
-    self.ooyalaPlayerViewController.view.backgroundColor = [UIColor blueColor];
+    self.ooyalaPlayerViewController.view.backgroundColor = [UIColor blackColor];
     [self addChildViewController:self.ooyalaPlayerViewController];
     [self.view addSubview:self.ooyalaPlayerViewController.view];
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
-    //NSLog(@"Control type: %ld", (long)self.ooyalaPlayerViewController.controlType);
     [self forceLandscapeMode];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    NSLog(@"la vista aprecerá");
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.alpha = 0.0;
 }
 
 -(void)viewDidLayoutSubviews {
     NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
-    self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 44.0, self.view.bounds.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 40.0);
+    self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, self.navigationController.navigationBar.bounds.origin.x + self.navigationController.navigationBar.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height - (self.navigationController.navigationBar.bounds.origin.y + self.navigationController.navigationBar.bounds.size.height));
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.alpha = 1.0;
+    [self.ooyalaPlayerViewController.player pause];
 }
 
 -(void)notificacion:(NSNotification *)notification {
     NSLog(@"Llegó la notificación");
 }
-
-/*-(BOOL)shouldAutorotate {
-//    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
-//        NSLog(@"yes");
-//        return YES;
-//    } else {
-//        NSLog(@"No");
-//        return NO;
-//    }
-    return NO;
-}*/
 
 -(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskLandscape;

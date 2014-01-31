@@ -50,7 +50,7 @@
     [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
     
     //5. Fifth view of the TabBar - My Account
-    MyAccountViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccount"];
+    ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
     MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
     [myAccountNavigationController.tabBarItem initWithTitle:@"Mi Cuenta" image:[UIImage imageNamed:@"ConfigTabBarIcon.png"] tag:5];
     

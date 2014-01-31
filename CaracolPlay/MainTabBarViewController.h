@@ -11,7 +11,7 @@
 #import "CategoriesViewController.h"
 #import "SearchViewController.h"
 #import "MyListsViewController.h"
-#import "MyAccountViewController.h"
+#import "ConfigurationViewController.h"
 #import "MyNavigationController.h"
 #import "CategoriesiPadViewController.h"
 

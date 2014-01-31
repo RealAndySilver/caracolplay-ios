@@ -20,8 +20,7 @@
 @property (strong, nonatomic) CheckmarkView *checkmarkView1;
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) UIButton *nextButton;
-@property (strong, nonatomic) FXBlurView *blurView;
-@property (strong, nonatomic) FXBlurView *navigationBarBlurView;
+
 @end
 
 @implementation SuscriptionFormViewController
@@ -36,8 +35,6 @@
     
     self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.nextButton.frame.origin.y + self.nextButton.frame.size.height + 180.0);
     NSLog(@"conten size: %f", self.scrollView.contentSize.height);
-    
-    self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
 }
 
 -(void)viewDidLoad {
@@ -85,7 +82,7 @@
     [self.scrollView addSubview:self.checkmarkView1];
     [self.scrollView addSubview:self.checkmarkView2];
     
-    self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
+    /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
     self.blurView.blurRadius = 7.0;
     self.blurView.alpha = 0.0;
     [self.view addSubview:self.blurView];
@@ -94,13 +91,7 @@
     self.navigationBarBlurView.blurRadius = 7.0;
     self.navigationBarBlurView.alpha = 0.0;
     [self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
-    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.navigationBarBlurView removeFromSuperview];
-    [self.blurView removeFromSuperview];
+    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
 -(void)goToHomeScreen {
@@ -108,14 +99,8 @@
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarVC animated:YES completion:nil];
     } else {
-        /*[[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];*/
-        self.blurView.alpha = 1.0;
-        self.navigationBarBlurView.alpha = 1.0;
-        [ILAlertView showWithTitle:nil message:@"Error en los datos. Por favor verifícalos." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:^(){
-            self.blurView.alpha = 0.0;
-            self.navigationBarBlurView.alpha = 0.0;
+        [[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             [self showErrorsInTermAndPoliticsConditions];
-        }];
     }
 }
 
