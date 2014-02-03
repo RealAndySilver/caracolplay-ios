@@ -24,6 +24,28 @@
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
+		8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7000B318A03FFE000B5C7B /* RedeemCodePadViewController.m */; };
+		8B70019B18A0547F000B5C7B /* MainTabBarPadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B70019A18A0547F000B5C7B /* MainTabBarPadController.m */; };
+		8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B70019E18A05507000B5C7B /* HomePadViewController.m */; };
+		8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A018A0599F000B5C7B /* HomeScreenBackgroundPad.png */; };
+		8B7001A318A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */; };
+		8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7001A618A05AC3000B5C7B /* iCarousel.m */; };
+		8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25D189FF715003DBBDC /* LoadingiPad.png */; };
+		8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */; };
+		8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B262189FFB0D003DBBDC /* LoadingiPadViewController.m */; };
+		8BA9B266189FFFD1003DBBDC /* InicioiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B264189FFFD1003DBBDC /* InicioiPad.png */; };
+		8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B265189FFFD1003DBBDC /* InicioiPad@2x.png */; };
+		8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B269189FFFF9003DBBDC /* LoginPadViewController.m */; };
+		8BA9B26D18A0078F003DBBDC /* BotonRedimirPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B26B18A0078F003DBBDC /* BotonRedimirPad.png */; };
+		8BA9B26E18A0078F003DBBDC /* BotonRedimirPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B26C18A0078F003DBBDC /* BotonRedimirPad@2x.png */; };
+		8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B27018A00BE2003DBBDC /* IngresarPadViewController.m */; };
+		8BA9B27418A0107E003DBBDC /* BackgroundIngresarPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27218A0107E003DBBDC /* BackgroundIngresarPad.png */; };
+		8BA9B27518A0107E003DBBDC /* BackgroundIngresarPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27318A0107E003DBBDC /* BackgroundIngresarPad@2x.png */; };
+		8BA9B27818A01DD9003DBBDC /* Close.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27618A01DD9003DBBDC /* Close.png */; };
+		8BA9B27918A01DD9003DBBDC /* Close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27718A01DD9003DBBDC /* Close@2x.png */; };
+		8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27A18A034AA003DBBDC /* BackgroundFormularioPad.png */; };
+		8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27B18A034AA003DBBDC /* BackgroundFormularioPad@2x.png */; };
+		8BA9B28018A03569003DBBDC /* SuscribePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */; };
 		8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */; };
 		8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */; };
 		8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */; };
@@ -134,6 +156,36 @@
 		8B67769D1896F822006E2241 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkmark.png; path = Resources/Images/Checkmark.png; sourceTree = "<group>"; };
 		8B6776A01896F878006E2241 /* CheckmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckmarkView.h; sourceTree = "<group>"; };
 		8B6776A11896F878006E2241 /* CheckmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckmarkView.m; sourceTree = "<group>"; };
+		8B7000B218A03FFE000B5C7B /* RedeemCodePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodePadViewController.h; path = iPadVC/RedeemCodePadViewController.h; sourceTree = "<group>"; };
+		8B7000B318A03FFE000B5C7B /* RedeemCodePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedeemCodePadViewController.m; path = iPadVC/RedeemCodePadViewController.m; sourceTree = "<group>"; };
+		8B70019918A0547F000B5C7B /* MainTabBarPadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainTabBarPadController.h; path = iPadVC/MainTabBarPadController.h; sourceTree = "<group>"; };
+		8B70019A18A0547F000B5C7B /* MainTabBarPadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainTabBarPadController.m; path = iPadVC/MainTabBarPadController.m; sourceTree = "<group>"; };
+		8B70019D18A05507000B5C7B /* HomePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomePadViewController.h; path = iPadVC/HomePadViewController.h; sourceTree = "<group>"; };
+		8B70019E18A05507000B5C7B /* HomePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomePadViewController.m; path = iPadVC/HomePadViewController.m; sourceTree = "<group>"; };
+		8B7001A018A0599F000B5C7B /* HomeScreenBackgroundPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenBackgroundPad.png; path = Resources/Images/iPad/HomeScreenBackgroundPad.png; sourceTree = "<group>"; };
+		8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenBackgroundPad@2x.png"; path = "Resources/Images/iPad/HomeScreenBackgroundPad@2x.png"; sourceTree = "<group>"; };
+		8B7001A518A05AC3000B5C7B /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		8B7001A618A05AC3000B5C7B /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		8BA9B25D189FF715003DBBDC /* LoadingiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingiPad.png; path = Resources/Images/iPad/LoadingiPad.png; sourceTree = "<group>"; };
+		8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoadingiPad@2x.png"; path = "Resources/Images/iPad/LoadingiPad@2x.png"; sourceTree = "<group>"; };
+		8BA9B261189FFB0D003DBBDC /* LoadingiPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadingiPadViewController.h; path = iPadVC/LoadingiPadViewController.h; sourceTree = "<group>"; };
+		8BA9B262189FFB0D003DBBDC /* LoadingiPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoadingiPadViewController.m; path = iPadVC/LoadingiPadViewController.m; sourceTree = "<group>"; };
+		8BA9B264189FFFD1003DBBDC /* InicioiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = InicioiPad.png; path = Resources/Images/iPad/InicioiPad.png; sourceTree = "<group>"; };
+		8BA9B265189FFFD1003DBBDC /* InicioiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "InicioiPad@2x.png"; path = "Resources/Images/iPad/InicioiPad@2x.png"; sourceTree = "<group>"; };
+		8BA9B268189FFFF9003DBBDC /* LoginPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginPadViewController.h; path = iPadVC/LoginPadViewController.h; sourceTree = "<group>"; };
+		8BA9B269189FFFF9003DBBDC /* LoginPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginPadViewController.m; path = iPadVC/LoginPadViewController.m; sourceTree = "<group>"; };
+		8BA9B26B18A0078F003DBBDC /* BotonRedimirPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonRedimirPad.png; path = Resources/Images/iPad/BotonRedimirPad.png; sourceTree = "<group>"; };
+		8BA9B26C18A0078F003DBBDC /* BotonRedimirPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonRedimirPad@2x.png"; path = "Resources/Images/iPad/BotonRedimirPad@2x.png"; sourceTree = "<group>"; };
+		8BA9B26F18A00BE2003DBBDC /* IngresarPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IngresarPadViewController.h; path = iPadVC/IngresarPadViewController.h; sourceTree = "<group>"; };
+		8BA9B27018A00BE2003DBBDC /* IngresarPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IngresarPadViewController.m; path = iPadVC/IngresarPadViewController.m; sourceTree = "<group>"; };
+		8BA9B27218A0107E003DBBDC /* BackgroundIngresarPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundIngresarPad.png; path = Resources/Images/iPad/BackgroundIngresarPad.png; sourceTree = "<group>"; };
+		8BA9B27318A0107E003DBBDC /* BackgroundIngresarPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundIngresarPad@2x.png"; path = "Resources/Images/iPad/BackgroundIngresarPad@2x.png"; sourceTree = "<group>"; };
+		8BA9B27618A01DD9003DBBDC /* Close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Close.png; path = Resources/Images/iPad/Close.png; sourceTree = "<group>"; };
+		8BA9B27718A01DD9003DBBDC /* Close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Close@2x.png"; path = "Resources/Images/iPad/Close@2x.png"; sourceTree = "<group>"; };
+		8BA9B27A18A034AA003DBBDC /* BackgroundFormularioPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundFormularioPad.png; path = Resources/Images/iPad/BackgroundFormularioPad.png; sourceTree = "<group>"; };
+		8BA9B27B18A034AA003DBBDC /* BackgroundFormularioPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFormularioPad@2x.png"; path = "Resources/Images/iPad/BackgroundFormularioPad@2x.png"; sourceTree = "<group>"; };
+		8BA9B27E18A03569003DBBDC /* SuscribePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscribePadViewController.h; path = iPadVC/SuscribePadViewController.h; sourceTree = "<group>"; };
+		8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscribePadViewController.m; path = iPadVC/SuscribePadViewController.m; sourceTree = "<group>"; };
 		8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonCerrarSesion.png; path = Resources/Images/BotonCerrarSesion.png; sourceTree = "<group>"; };
 		8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonCerrarSesion@2x.png"; path = "Resources/Images/BotonCerrarSesion@2x.png"; sourceTree = "<group>"; };
 		8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FormErrorImage@2x.png"; path = "Resources/Images/FormErrorImage@2x.png"; sourceTree = "<group>"; };
@@ -361,6 +413,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8B7001A418A05AC3000B5C7B /* iCarousel */,
 				A05C44921899CEA700E72135 /* FXBlurView */,
 				A05C448A1899C87E00E72135 /* ILAlertView */,
 				8B67769F1896F860006E2241 /* Views */,
@@ -412,6 +465,85 @@
 				8B6776A11896F878006E2241 /* CheckmarkView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		8B70019618A053C5000B5C7B /* Loading & Login */ = {
+			isa = PBXGroup;
+			children = (
+				8BA9B261189FFB0D003DBBDC /* LoadingiPadViewController.h */,
+				8BA9B262189FFB0D003DBBDC /* LoadingiPadViewController.m */,
+				8BA9B268189FFFF9003DBBDC /* LoginPadViewController.h */,
+				8BA9B269189FFFF9003DBBDC /* LoginPadViewController.m */,
+				8BA9B26F18A00BE2003DBBDC /* IngresarPadViewController.h */,
+				8BA9B27018A00BE2003DBBDC /* IngresarPadViewController.m */,
+				8BA9B27E18A03569003DBBDC /* SuscribePadViewController.h */,
+				8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */,
+				8B7000B218A03FFE000B5C7B /* RedeemCodePadViewController.h */,
+				8B7000B318A03FFE000B5C7B /* RedeemCodePadViewController.m */,
+			);
+			name = "Loading & Login";
+			sourceTree = "<group>";
+		};
+		8B70019718A05402000B5C7B /* iPhone ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8BE8292E189BFD32003EE7A6 /* Loading & Login  */,
+				8BE82932189BFD8F003EE7A6 /* App Structure Controllers */,
+				8BE8292F189BFD4B003EE7A6 /* Home Section */,
+				8BE82930189BFD61003EE7A6 /* Categories Section */,
+				8BE82931189BFD79003EE7A6 /* Search Section */,
+				8BE82933189BFDA4003EE7A6 /* MyList Section */,
+				8BE82934189BFDB0003EE7A6 /* Configuration Section */,
+			);
+			name = "iPhone ViewControllers";
+			sourceTree = "<group>";
+		};
+		8B70019818A05439000B5C7B /* App Structure VC's */ = {
+			isa = PBXGroup;
+			children = (
+				8B70019918A0547F000B5C7B /* MainTabBarPadController.h */,
+				8B70019A18A0547F000B5C7B /* MainTabBarPadController.m */,
+			);
+			name = "App Structure VC's";
+			sourceTree = "<group>";
+		};
+		8B70019C18A054E2000B5C7B /* Home ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8B70019D18A05507000B5C7B /* HomePadViewController.h */,
+				8B70019E18A05507000B5C7B /* HomePadViewController.m */,
+			);
+			name = "Home ViewControllers";
+			sourceTree = "<group>";
+		};
+		8B7001A418A05AC3000B5C7B /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				8B7001A518A05AC3000B5C7B /* iCarousel.h */,
+				8B7001A618A05AC3000B5C7B /* iCarousel.m */,
+			);
+			path = iCarousel;
+			sourceTree = "<group>";
+		};
+		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				8B7001A018A0599F000B5C7B /* HomeScreenBackgroundPad.png */,
+				8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */,
+				8BA9B27A18A034AA003DBBDC /* BackgroundFormularioPad.png */,
+				8BA9B27B18A034AA003DBBDC /* BackgroundFormularioPad@2x.png */,
+				8BA9B27618A01DD9003DBBDC /* Close.png */,
+				8BA9B27718A01DD9003DBBDC /* Close@2x.png */,
+				8BA9B27218A0107E003DBBDC /* BackgroundIngresarPad.png */,
+				8BA9B27318A0107E003DBBDC /* BackgroundIngresarPad@2x.png */,
+				8BA9B26B18A0078F003DBBDC /* BotonRedimirPad.png */,
+				8BA9B26C18A0078F003DBBDC /* BotonRedimirPad@2x.png */,
+				8BA9B264189FFFD1003DBBDC /* InicioiPad.png */,
+				8BA9B265189FFFD1003DBBDC /* InicioiPad@2x.png */,
+				8BA9B25D189FF715003DBBDC /* LoadingiPad.png */,
+				8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */,
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 		8BD52A9C1892AD6300792845 /* Ooyala Headers */ = {
@@ -476,14 +608,8 @@
 		8BDB8BBD188EB5110066279A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8B70019718A05402000B5C7B /* iPhone ViewControllers */,
 				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
-				8BE8292E189BFD32003EE7A6 /* Loading & Login  */,
-				8BE82932189BFD8F003EE7A6 /* App Structure Controllers */,
-				8BE8292F189BFD4B003EE7A6 /* Home Section */,
-				8BE82930189BFD61003EE7A6 /* Categories Section */,
-				8BE82931189BFD79003EE7A6 /* Search Section */,
-				8BE82933189BFDA4003EE7A6 /* MyList Section */,
-				8BE82934189BFDB0003EE7A6 /* Configuration Section */,
 				8BD52ADA1892AF6500792845 /* VideoPlayerViewController.h */,
 				8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */,
 			);
@@ -529,6 +655,9 @@
 		8BE7FDE1189819740087A7E2 /* iPad ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8B70019C18A054E2000B5C7B /* Home ViewControllers */,
+				8B70019818A05439000B5C7B /* App Structure VC's */,
+				8B70019618A053C5000B5C7B /* Loading & Login */,
 				8BE7FDDE189813FE0087A7E2 /* CategoriesiPadViewController.h */,
 				8BE7FDDF189813FE0087A7E2 /* CategoriesiPadViewController.m */,
 				8BE7FDE2189819A10087A7E2 /* CategoriesPopoverMenuViewController.h */,
@@ -640,6 +769,7 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
 				8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */,
 				8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */,
@@ -772,12 +902,16 @@
 			files = (
 				8BE7A36F189AEEA900AF8E90 /* SearchTabBarIcon@2x.png in Resources */,
 				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
+				8BA9B27518A0107E003DBBDC /* BackgroundIngresarPad@2x.png in Resources */,
+				8BA9B27418A0107E003DBBDC /* BackgroundIngresarPad.png in Resources */,
 				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
 				8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */,
 				8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */,
 				8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */,
 				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
+				8BA9B27918A01DD9003DBBDC /* Close@2x.png in Resources */,
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
+				8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */,
 				755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */,
 				8B67769E1896F822006E2241 /* Checkmark.png in Resources */,
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
@@ -785,6 +919,7 @@
 				8BE7FDEC189823950087A7E2 /* Inicio.png in Resources */,
 				8BE7A36B189AEDBB00AF8E90 /* CategoriesTabBarIcon@2x.png in Resources */,
 				755DB174188DEE2C00E5C636 /* Images.xcassets in Resources */,
+				8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */,
 				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
 				A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */,
 				8BE7A378189AF17500AF8E90 /* ConfigTabBarIcon.png in Resources */,
@@ -793,10 +928,16 @@
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
 				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
+				8BA9B266189FFFD1003DBBDC /* InicioiPad.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
+				8BA9B26E18A0078F003DBBDC /* BotonRedimirPad@2x.png in Resources */,
+				8B7001A318A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png in Resources */,
+				8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
+				8BA9B26D18A0078F003DBBDC /* BotonRedimirPad.png in Resources */,
 				8BE7A379189AF17500AF8E90 /* ConfigTabBarIcon@2x.png in Resources */,
+				8BA9B27818A01DD9003DBBDC /* Close.png in Resources */,
 				8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */,
 				8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */,
 				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
@@ -808,7 +949,10 @@
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
 				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
+				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
+				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
 				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
+				8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +980,7 @@
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */,
+				8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */,
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
@@ -843,19 +988,26 @@
 				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
 				8BE7FDE0189813FE0087A7E2 /* CategoriesiPadViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
+				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,
+				8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */,
+				8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
+				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,
 				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
 				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
+				8B70019B18A0547F000B5C7B /* MainTabBarPadController.m in Sources */,
 				8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */,
 				8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */,
 				8BE82937189BFE1E003EE7A6 /* TermsAndConditionsViewController.m in Sources */,
 				A05C448D1899C87E00E72135 /* ILAlertView.m in Sources */,
+				8BA9B28018A03569003DBBDC /* SuscribePadViewController.m in Sources */,
 				8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
+				8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */,
 				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);

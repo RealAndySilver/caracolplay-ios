@@ -20,12 +20,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBarHidden = YES;
+    //self.navigationController.navigationBarHidden = YES;
     [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:3.0];
     
     //1. Set the background image of the view
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     backgroundImageView.image = [UIImage imageNamed:@"Loading.png"];
+  
     [self.view addSubview:backgroundImageView];
     
     //2. Create a spinner to show the user that some activity is going on.
