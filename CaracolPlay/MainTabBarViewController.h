@@ -13,7 +13,6 @@
 #import "MyListsViewController.h"
 #import "ConfigurationViewController.h"
 #import "MyNavigationController.h"
-#import "CategoriesiPadViewController.h"
 
 @interface MainTabBarViewController : UITabBarController <UITabBarControllerDelegate>
 

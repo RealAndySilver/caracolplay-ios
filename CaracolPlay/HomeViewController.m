@@ -92,7 +92,7 @@
     
     //Create a view to add a pattern image to the main image view
     UIView *opacityPatternView = [[UIView alloc] initWithFrame:pageImageView.frame];
-    UIImage *opacityPatternImage = [UIImage imageNamed:@"HomeScreenPattern.png"];
+    UIImage *opacityPatternImage = [UIImage imageNamed:@"OpacityPattern.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, pageImageView.frame.size.height)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [page addSubview:opacityPatternView];

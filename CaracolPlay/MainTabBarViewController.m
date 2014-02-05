@@ -26,18 +26,17 @@
     [homeNavigationController.tabBarItem initWithTitle:@"Inicio" image:[UIImage imageNamed:@"HomeTabBarIcon.png"] tag:1];
     
     //2. Second view of the TabBar - Categories
-    CategoriesiPadViewController *categoriesiPadViewController;
     CategoriesViewController *categoriesViewController;
     MyNavigationController *categoriesNavigationController;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         categoriesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
         categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesViewController];
         [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
-    } else {
+    } /*else {
         categoriesiPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
         categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesiPadViewController];
         [categoriesNavigationController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
-    }
+    }*/
     
     //3. Third view of the TabBar - Search
     SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];

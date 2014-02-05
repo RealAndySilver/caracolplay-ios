@@ -181,7 +181,7 @@
         <scene sceneID="iEP-83-zCS">
             <objects>
                 <tabBarController storyboardIdentifier="MainTabBar" definesPresentationContext="YES" id="Qlm-xx-Pzn" customClass="MainTabBarPadController" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Juv-ds-b0N">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
@@ -212,6 +212,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2b-M9-gB3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="766" y="-29"/>
+        </scene>
+        <!--Categories Popover View Controller-->
+        <scene sceneID="6EQ-wH-K1Y">
+            <objects>
+                <viewController storyboardIdentifier="CategoriesPopover" id="jYf-9M-ULx" customClass="CategoriesPopoverViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Nch-RK-N9V"/>
+                        <viewControllerLayoutGuide type="bottom" id="hWe-2w-Hrk"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kXm-cn-P2u">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qso-Ov-GOX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="432" y="1099"/>
+        </scene>
+        <!--Categories Pad View Controller-->
+        <scene sceneID="cQO-aZ-aQq">
+            <objects>
+                <viewController storyboardIdentifier="Categories" id="kx0-4W-UGt" customClass="CategoriesPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="peK-3h-qk1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Axj-o2-nXh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yBg-Og-dwV">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qMj-zj-snA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="766" y="845"/>
+        </scene>
+        <!--Movie Details Pad View Controller-->
+        <scene sceneID="78J-iZ-zRN">
+            <objects>
+                <viewController storyboardIdentifier="MovieDetails" id="TY5-hx-4lK" customClass="MovieDetailsPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ijv-8V-OTB"/>
+                        <viewControllerLayoutGuide type="bottom" id="qdB-wX-8aZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="I1o-Nf-bcu">
+                        <rect key="frame" x="0.0" y="0.0" width="700" height="500"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IcH-Gw-6ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1886" y="917"/>
         </scene>
         <!--Suscribe Pad View Controller-->
         <scene sceneID="eGJ-CI-vqv">

@@ -8,6 +8,7 @@
 
 #import "MainTabBarPadController.h"
 #import "HomePadViewController.h"
+#import "CategoriesPadViewController.h"
 
 @interface MainTabBarPadController ()
 
@@ -22,7 +23,12 @@
     HomePadViewController *homePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Home"];
     [homePadViewController.tabBarItem initWithTitle:@"Inicio" image:[UIImage imageNamed:@"HomeTabBarIcon.png"] tag:1];
     
-    self.viewControllers = @[homePadViewController];
+    //2. Categories view
+    CategoriesPadViewController *categoriesPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+    //UINavigationController *categoriesNavigationController = [[UINavigationController alloc] initWithRootViewController:categoriesPadViewController];
+    [categoriesPadViewController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
+    
+    self.viewControllers = @[homePadViewController, categoriesPadViewController];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "HomePadViewController.h"
 #import "iCarousel.h"
+#import "MyUtilities.h"
 
 @interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -62,6 +63,13 @@
         imageView.clipsToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         [view addSubview:imageView];
+        
+        //Add an opacity pattern to the view to be able to read everything
+        UIView *opacityPatternView = [[UIView alloc] initWithFrame:view.bounds];
+        UIImage *opacityPatternImage = [UIImage imageNamed:@"OpacityPattern.png"];
+        opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, view.bounds.size.height)];
+        opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
+        [view addSubview:opacityPatternView];
         
         //Type of production label
         UILabel *productionTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(50.0, 400.0, 100.0, 30.0)];
