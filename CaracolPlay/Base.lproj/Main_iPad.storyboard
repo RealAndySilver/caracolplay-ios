@@ -193,6 +193,26 @@
             </objects>
             <point key="canvasLocation" x="-330" y="-29"/>
         </scene>
+        <!--My Lists Pad View Controller-->
+        <scene sceneID="bWm-5h-VTa">
+            <objects>
+                <viewController storyboardIdentifier="MyListsPad" id="xVp-pp-oFZ" customClass="MyListsPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Ro-d7-LrO"/>
+                        <viewControllerLayoutGuide type="bottom" id="Tca-Nu-MNZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Jiu-0Z-zgw">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BeH-ki-1UR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="766" y="-932"/>
+        </scene>
         <!--Home Pad View Controller-->
         <scene sceneID="YUq-n4-fBl">
             <objects>

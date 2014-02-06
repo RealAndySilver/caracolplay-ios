@@ -58,7 +58,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //Create a view with an opacity pattern to apply an opacity to the image
     UIView *opacityPatternView = [[UIView alloc] initWithFrame:movieEventImageView.frame];
-    UIImage *opacityPatternImage = [UIImage imageNamed:@"OpacityPattern.png"];
+    UIImage *opacityPatternImage = [UIImage imageNamed:@"MoviesOpacityPattern.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, movieEventImageView.frame.size.height+5)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [self.view addSubview:opacityPatternView];

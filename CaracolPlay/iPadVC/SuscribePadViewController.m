@@ -8,6 +8,7 @@
 
 #import "SuscribePadViewController.h"
 #import "CheckmarkView.h"
+#import "MainTabBarPadController.h"
 @import QuartzCore;
 
 @interface SuscribePadViewController ()
@@ -69,6 +70,8 @@
 -(void)goToHomeScreen {
     if ([self areTermsAndConditionsAccepted]) {
         NSLog(@"Si puede pasar");
+        MainTabBarPadController *mainTabBarController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarController animated:YES completion:nil];
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Debes aceptar los terminos y condiciones y las políticas de privacidad para poder continuar." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

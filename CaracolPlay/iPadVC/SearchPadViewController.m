@@ -24,7 +24,10 @@
     
     //2. SearchBar setup
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, 1024 - 10.0, 30.0)];
-    self.searchBar.backgroundImage = [UIImage imageNamed:@"SearchBarPad.png"];
+    self.searchBar.translucent = YES;
+    [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    self.searchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
     [self.view addSubview:self.searchBar];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "RedeemCodePadViewController.h"
+#import "MainTabBarPadController.h"
 
 @interface RedeemCodePadViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
@@ -59,6 +60,9 @@
 -(void)goToHomeScreen {
     if (![self.codeTextfield.text length] > 0) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Código inválido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else {
+        MainTabBarPadController *mainTabBarController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarController animated:YES completion:nil];
     }
 }
 

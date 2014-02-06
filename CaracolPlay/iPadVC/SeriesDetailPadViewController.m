@@ -8,8 +8,9 @@
 
 #import "SeriesDetailPadViewController.h"
 #import "EpisodesPadTableViewCell.h"
+#import <Social/Social.h>
 
-@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opacityPatternView;
@@ -73,6 +74,7 @@
     [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.shareButton];
     
     //7. Production detail text view
@@ -146,6 +148,10 @@
 
 #pragma mark - Actions
 
+-(void)shareProduction {
+    [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Volver" destructiveButtonTitle:nil otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
 -(void)dismissVC {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -186,6 +192,31 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UIActionSheetDelegate 
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        //Facebook
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+            SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+            [facebookViewController setInitialText:@"El patrón del mal, la historia del capo de capos."];
+            [self presentViewController:facebookViewController animated:YES completion:nil];
+        } else {
+            //Tell te user that facebook is not configured on the device
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Facebook no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    } else if (buttonIndex == 1) {
+        //Twitter
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
+            SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            [twitterViewController setInitialText:@"El patrón del mal, la historia del capo de capos."];
+            [self presentViewController:twitterViewController animated:YES completion:nil];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }
 }
 
 @end

@@ -10,6 +10,7 @@
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIPageControl *pageControl;
+@property (nonatomic) int numberOfPages;
 @end
 
 @implementation HomeViewController
@@ -37,18 +38,19 @@
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    int numberOfPages;
-    for (int i = 0; i < 8; i++) {
+    [self createPageAtPosition:0 pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
+    [self createPageAtPosition:9 pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
+    for (int i = 1; i <= 8; i++) {
         [self createPageAtPosition:i pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
-        numberOfPages = i + 1;
+        self.numberOfPages = i;
     }
     
     ////////////
     //[self createPageAtPosition:-1 pageImage:[UIImage imageNamed:@"MentirasPerfectas2.jpg"] pageInfo:nil];
     //[self createPageAtPosition:8 pageImage:[UIImage imageNamed:@"MentirasPerfectas2.jpg"] pageInfo:nil];
     
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*(numberOfPages), self.scrollView.frame.size.height);
-    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*(self.numberOfPages + 2), self.scrollView.frame.size.height);
+    self.scrollView.contentOffset = CGPointMake(320.0, 0.0);
     [self.view addSubview:self.scrollView];
     
     /*-------------------------------------------------------------*/
@@ -59,7 +61,7 @@
     } else {
         self.pageControl.frame = CGRectMake(80.0, self.view.bounds.size.height/1.17, 100.0, 30.0);
     }
-    self.pageControl.numberOfPages = numberOfPages;
+    self.pageControl.numberOfPages = self.numberOfPages;
     [self.view addSubview:self.pageControl];
 }
 
@@ -139,11 +141,18 @@
     float pageWidth = self.scrollView.frame.size.width;
     float fractionalPage = self.scrollView.contentOffset.x / pageWidth;
     NSInteger page = lroundf(fractionalPage);
-    self.pageControl.currentPage = page;
+    self.pageControl.currentPage = page - 1;
 }
 
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSLog(@"Estoy en la página %d", self.pageControl.currentPage);
+    if (self.scrollView.contentOffset.x < 320.0) {
+        //the user scroll from page 1 to the left, so we have to set the content offset
+        //of the scroll view to the last page
+        [self.scrollView setContentOffset:CGPointMake(320.0*self.numberOfPages, 0.0) animated:NO];
+    } else if (self.scrollView.contentOffset.x >= 320 * (self.numberOfPages + 1)) {
+        [self.scrollView setContentOffset:CGPointMake(320.0, 0.0) animated:NO];
+    }
 }
 
 - (NSUInteger) supportedInterfaceOrientations{

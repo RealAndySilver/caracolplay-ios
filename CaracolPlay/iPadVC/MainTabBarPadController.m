@@ -10,6 +10,7 @@
 #import "HomePadViewController.h"
 #import "CategoriesPadViewController.h"
 #import "SearchPadViewController.h"
+#import "MyListsPadViewController.h"
 
 @interface MainTabBarPadController ()
 
@@ -32,7 +33,11 @@
     SearchPadViewController *searchPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchPad"];
     [searchPadViewController.tabBarItem initWithTitle:@"Buscar" image:[UIImage imageNamed:@"SearchTabBarIcon.png"] tag:3];
     
-    self.viewControllers = @[homePadViewController, categoriesPadViewController, searchPadViewController];
+    //4. MyLists View
+    MyListsPadViewController *myListsPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsPad"];
+    [myListsPadViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+    
+    self.viewControllers = @[homePadViewController, categoriesPadViewController, searchPadViewController, myListsPadViewController];
 }
 
 @end
