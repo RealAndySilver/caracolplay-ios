@@ -12,14 +12,19 @@
 
 @interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
+@property (strong, nonatomic) UIPageControl *pageControl;
 @property (strong, nonatomic) iCarousel *carousel;
 @end
 
 @implementation HomePadViewController
 
+#define SCREEN_WIDTH 1024.0
+#define SCREEN_HEIGHT 768.0
+
 -(void)UISetup {
     //1. background image setup
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HomeScreenBackgroundPad.png"]];
+    self.backgroundImageView.frame = CGRectMake(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT - 44.0);
     [self.view addSubview:self.backgroundImageView];
     
     //2. Carousel setup
@@ -29,11 +34,17 @@
     self.carousel.dataSource = self;
     self.carousel.delegate = self;
     [self.view addSubview:self.carousel];
+    
+    //3. page control setup
+    self.pageControl = [[UIPageControl alloc] init];
+    self.pageControl.numberOfPages = 6;
+    [self.view addSubview:self.pageControl];
 }
 
 #pragma  mark - View Lifecycle
 
 -(void)viewDidLoad {
+    NSLog(@"me cargueéeeee");
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
@@ -41,10 +52,9 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    
-    //Set subviews frame
-    self.backgroundImageView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - 44.0);
+    self.pageControl.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, self.view.bounds.size.height - 100.0, 300.0, 30.0);
     self.carousel.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - 44.0);
+    NSLog(@"carousel frame: %@", NSStringFromCGRect(self.carousel.frame));
 }
 
 #pragma mark - iCarouselDataSource
@@ -115,6 +125,13 @@
         default:
             return value;
     }
+}
+
+#pragma mark - UICarouselDelegate
+
+-(void)carouselDidScroll:(iCarousel *)carousel {
+    NSLog(@"scroleeerrr");
+    self.pageControl.currentPage = carousel.currentItemIndex;
 }
 
 @end

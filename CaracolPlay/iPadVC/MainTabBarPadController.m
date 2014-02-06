@@ -9,6 +9,7 @@
 #import "MainTabBarPadController.h"
 #import "HomePadViewController.h"
 #import "CategoriesPadViewController.h"
+#import "SearchPadViewController.h"
 
 @interface MainTabBarPadController ()
 
@@ -25,10 +26,13 @@
     
     //2. Categories view
     CategoriesPadViewController *categoriesPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
-    //UINavigationController *categoriesNavigationController = [[UINavigationController alloc] initWithRootViewController:categoriesPadViewController];
     [categoriesPadViewController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
     
-    self.viewControllers = @[homePadViewController, categoriesPadViewController];
+    //3. Search View
+    SearchPadViewController *searchPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchPad"];
+    [searchPadViewController.tabBarItem initWithTitle:@"Buscar" image:[UIImage imageNamed:@"SearchTabBarIcon.png"] tag:3];
+    
+    self.viewControllers = @[homePadViewController, categoriesPadViewController, searchPadViewController];
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "ProductionsPadCollectionViewCell.h"
 #import "CategoriesPopoverViewController.h"
 #import "MovieDetailsPadViewController.h"
+#import "SeriesDetailPadViewController.h"
 
 NSString *const collectionViewCellIdentifier = @"CellIdentifier";
 
@@ -53,7 +54,6 @@ NSString *const collectionViewCellIdentifier = @"CellIdentifier";
     UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:nil];
     navigationItem.leftBarButtonItem = self.barButtonItem;
     self.navigationBar.items = @[navigationItem];
-    
 }
 
 #pragma mark - View Lifecycle
@@ -97,9 +97,15 @@ NSString *const collectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+    /*MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+    movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
+    [self presentViewController:movieDetailsPadVC animated:YES completion:nil];*/
+    
+    SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+    seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
 }
 
 #pragma mark - UIBarPositinDelegate
