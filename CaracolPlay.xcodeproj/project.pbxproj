@@ -21,6 +21,20 @@
 		755DB17D188DEE2C00E5C636 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB15C188DEE2C00E5C636 /* UIKit.framework */; };
 		755DB185188DEE2D00E5C636 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755DB183188DEE2D00E5C636 /* InfoPlist.strings */; };
 		755DB187188DEE2D00E5C636 /* CaracolPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */; };
+		8B164B6C18A95460001803A9 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B6B18A95460001803A9 /* User.m */; };
+		8B164B6F18A9549A001803A9 /* Episode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B6E18A9549A001803A9 /* Episode.m */; };
+		8B164B7218A95808001803A9 /* List.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B7118A95808001803A9 /* List.m */; };
+		8B164B7518A96DD7001803A9 /* Season.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B7418A96DD7001803A9 /* Season.m */; };
+		8B164B7818A96EEC001803A9 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B7718A96EEC001803A9 /* Product.m */; };
+		8B164B7E18A9710C001803A9 /* Categoria.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B7D18A9710C001803A9 /* Categoria.m */; };
+		8B164B8118A9723A001803A9 /* Redeemed.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B8018A9723A001803A9 /* Redeemed.m */; };
+		8B164B8418A97412001803A9 /* Rented.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B8318A97412001803A9 /* Rented.m */; };
+		8B164B8718A974AD001803A9 /* Featured.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B8618A974AD001803A9 /* Featured.m */; };
+		8B164B8A18A97966001803A9 /* Watched.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B8918A97966001803A9 /* Watched.m */; };
+		8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8B18A97E75001803A9 /* SearchBarBackground.png */; };
+		8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8C18A97E75001803A9 /* SearchBarBackground@2x.png */; };
+		8B164B9018A9941F001803A9 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B164B8F18A9941F001803A9 /* SDWebImage.framework */; };
+		8B164B9218A996F8001803A9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B164B9118A996F8001803A9 /* ImageIO.framework */; };
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
@@ -169,6 +183,30 @@
 		755DB182188DEE2C00E5C636 /* CaracolPlayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaracolPlayTests-Info.plist"; sourceTree = "<group>"; };
 		755DB184188DEE2D00E5C636 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaracolPlayTests.m; sourceTree = "<group>"; };
+		8B164B6A18A95460001803A9 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Model/User.h; sourceTree = "<group>"; };
+		8B164B6B18A95460001803A9 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Model/User.m; sourceTree = "<group>"; };
+		8B164B6D18A9549A001803A9 /* Episode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Episode.h; sourceTree = "<group>"; };
+		8B164B6E18A9549A001803A9 /* Episode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Episode.m; sourceTree = "<group>"; };
+		8B164B7018A95808001803A9 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = List.h; path = Model/List.h; sourceTree = "<group>"; };
+		8B164B7118A95808001803A9 /* List.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = List.m; path = Model/List.m; sourceTree = "<group>"; };
+		8B164B7318A96DD7001803A9 /* Season.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Season.h; path = Model/Season.h; sourceTree = "<group>"; };
+		8B164B7418A96DD7001803A9 /* Season.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Season.m; path = Model/Season.m; sourceTree = "<group>"; };
+		8B164B7618A96EEC001803A9 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Product.h; path = Model/Product.h; sourceTree = "<group>"; };
+		8B164B7718A96EEC001803A9 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Product.m; path = Model/Product.m; sourceTree = "<group>"; };
+		8B164B7C18A9710C001803A9 /* Categoria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Categoria.h; path = Model/Categoria.h; sourceTree = "<group>"; };
+		8B164B7D18A9710C001803A9 /* Categoria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Categoria.m; path = Model/Categoria.m; sourceTree = "<group>"; };
+		8B164B7F18A9723A001803A9 /* Redeemed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Redeemed.h; path = Model/Redeemed.h; sourceTree = "<group>"; };
+		8B164B8018A9723A001803A9 /* Redeemed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Redeemed.m; path = Model/Redeemed.m; sourceTree = "<group>"; };
+		8B164B8218A97412001803A9 /* Rented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rented.h; path = Model/Rented.h; sourceTree = "<group>"; };
+		8B164B8318A97412001803A9 /* Rented.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Rented.m; path = Model/Rented.m; sourceTree = "<group>"; };
+		8B164B8518A974AD001803A9 /* Featured.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Featured.h; path = Model/Featured.h; sourceTree = "<group>"; };
+		8B164B8618A974AD001803A9 /* Featured.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Featured.m; path = Model/Featured.m; sourceTree = "<group>"; };
+		8B164B8818A97966001803A9 /* Watched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Watched.h; path = Model/Watched.h; sourceTree = "<group>"; };
+		8B164B8918A97966001803A9 /* Watched.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Watched.m; path = Model/Watched.m; sourceTree = "<group>"; };
+		8B164B8B18A97E75001803A9 /* SearchBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarBackground.png; path = Resources/Images/SearchBarBackground.png; sourceTree = "<group>"; };
+		8B164B8C18A97E75001803A9 /* SearchBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchBarBackground@2x.png"; path = "Resources/Images/SearchBarBackground@2x.png"; sourceTree = "<group>"; };
+		8B164B8F18A9941F001803A9 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
+		8B164B9118A996F8001803A9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionFormViewController.h; sourceTree = "<group>"; };
 		8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuscriptionFormViewController.m; sourceTree = "<group>"; };
 		8B67769D1896F822006E2241 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkmark.png; path = Resources/Images/Checkmark.png; sourceTree = "<group>"; };
@@ -377,6 +415,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B164B9218A996F8001803A9 /* ImageIO.framework in Frameworks */,
+				8B164B9018A9941F001803A9 /* SDWebImage.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
@@ -432,6 +472,8 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B164B9118A996F8001803A9 /* ImageIO.framework */,
+				8B164B8F18A9941F001803A9 /* SDWebImage.framework */,
 				8BE7A37A189AF72A00AF8E90 /* Social.framework */,
 				A05C44961899CEF000E72135 /* Accelerate.framework */,
 				A05C448E1899CA2700E72135 /* QuartzCore.framework */,
@@ -455,6 +497,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8B164B6918A95437001803A9 /* Model */,
 				8B7001A418A05AC3000B5C7B /* iCarousel */,
 				A05C44921899CEA700E72135 /* FXBlurView */,
 				A05C448A1899C87E00E72135 /* ILAlertView */,
@@ -498,6 +541,33 @@
 				755DB183188DEE2D00E5C636 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B164B6918A95437001803A9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8B164B6A18A95460001803A9 /* User.h */,
+				8B164B6B18A95460001803A9 /* User.m */,
+				8B164B6D18A9549A001803A9 /* Episode.h */,
+				8B164B6E18A9549A001803A9 /* Episode.m */,
+				8B164B7318A96DD7001803A9 /* Season.h */,
+				8B164B7418A96DD7001803A9 /* Season.m */,
+				8B164B7018A95808001803A9 /* List.h */,
+				8B164B7118A95808001803A9 /* List.m */,
+				8B164B7618A96EEC001803A9 /* Product.h */,
+				8B164B7718A96EEC001803A9 /* Product.m */,
+				8B164B7C18A9710C001803A9 /* Categoria.h */,
+				8B164B7D18A9710C001803A9 /* Categoria.m */,
+				8B164B7F18A9723A001803A9 /* Redeemed.h */,
+				8B164B8018A9723A001803A9 /* Redeemed.m */,
+				8B164B8218A97412001803A9 /* Rented.h */,
+				8B164B8318A97412001803A9 /* Rented.m */,
+				8B164B8818A97966001803A9 /* Watched.h */,
+				8B164B8918A97966001803A9 /* Watched.m */,
+				8B164B8518A974AD001803A9 /* Featured.h */,
+				8B164B8618A974AD001803A9 /* Featured.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		8B67769F1896F860006E2241 /* Views */ = {
@@ -865,6 +935,8 @@
 				8BF16A0E188F16A80021AB03 /* Estrella@2x.png */,
 				8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */,
 				8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */,
+				8B164B8B18A97E75001803A9 /* SearchBarBackground.png */,
+				8B164B8C18A97E75001803A9 /* SearchBarBackground@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1047,10 +1119,12 @@
 				A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */,
 				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
+				8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
 				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
+				8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */,
 				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
 				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
@@ -1076,15 +1150,18 @@
 				A0A9B76518A2E86F00D6D222 /* SeriesDetailPadViewController.m in Sources */,
 				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
 				A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */,
+				8B164B7E18A9710C001803A9 /* Categoria.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
 				8BE79D2B18A134AA0049B64B /* CategoriesPadViewController.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
 				8BE79D3518A14A600049B64B /* CategoriesPopoverViewController.m in Sources */,
+				8B164B8118A9723A001803A9 /* Redeemed.m in Sources */,
 				8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */,
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				A0A9B76E18A3005100D6D222 /* EpisodesPadTableViewCell.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
+				8B164B6C18A95460001803A9 /* User.m in Sources */,
 				8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */,
 				8BE79D3218A141CE0049B64B /* ProductionsPadCollectionViewCell.m in Sources */,
 				8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */,
@@ -1098,14 +1175,19 @@
 				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,
 				8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */,
+				8B164B6F18A9549A001803A9 /* Episode.m in Sources */,
 				8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
 				8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */,
 				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,
+				8B164B7818A96EEC001803A9 /* Product.m in Sources */,
+				8B164B8418A97412001803A9 /* Rented.m in Sources */,
 				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
 				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
+				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
+				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
 				8B70019B18A0547F000B5C7B /* MainTabBarPadController.m in Sources */,
 				8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */,
@@ -1116,6 +1198,8 @@
 				8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
 				8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */,
+				8B164B8A18A97966001803A9 /* Watched.m in Sources */,
+				8B164B7218A95808001803A9 /* List.m in Sources */,
 				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);
@@ -1256,6 +1340,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/developer/caracolplay,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";
@@ -1264,6 +1352,7 @@
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1275,6 +1364,10 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/developer/caracolplay,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";
@@ -1283,6 +1376,7 @@
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -569,16 +569,6 @@
                     <view key="view" contentMode="scaleToFill" id="X7y-X4-LOf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UtC-qF-RFZ">
-                                <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="gtD-Gh-yTj" id="xg6-kV-5Mk"/>
-                                </connections>
-                            </searchBar>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
@@ -589,7 +579,6 @@
                 <searchDisplayController id="Gkx-UO-spw">
                     <connections>
                         <outlet property="delegate" destination="gtD-Gh-yTj" id="2QW-oB-CNg"/>
-                        <outlet property="searchBar" destination="UtC-qF-RFZ" id="KyZ-lF-a7s"/>
                         <outlet property="searchContentsController" destination="gtD-Gh-yTj" id="fCO-UE-q7Z"/>
                         <outlet property="searchResultsDataSource" destination="gtD-Gh-yTj" id="pJi-X4-uIQ"/>
                         <outlet property="searchResultsDelegate" destination="gtD-Gh-yTj" id="Qnj-pZ-7Q9"/>

@@ -7,15 +7,41 @@
 //
 
 #import "HomeViewController.h"
+#import "Featured.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIPageControl *pageControl;
+@property (strong, nonatomic) NSArray *unparsedFeaturedProductionsInfo;
+@property (strong, nonatomic) NSMutableArray *parsedFeaturedProductions; //Of Featured
 @property (nonatomic) int numberOfPages;
 @end
 
 @implementation HomeViewController
 
-#pragma mark - UI Setup
+#pragma mark - Lazy Instantiation
+
+-(NSArray *)unparsedFeaturedProductionsInfo {
+    if (!_unparsedFeaturedProductionsInfo) {
+        _unparsedFeaturedProductionsInfo = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text": @"No te pierdas...", @"id": @"210",
+                                        @"rate" : @3, @"category_id" : @"32224", @"image_url" : @"http://st.elespectador.co/files/imagecache/727x484/1933d136b94594f2db6f9145bbf0f72a.jpg", @"is_campaign" : @NO, @"campaign_url" : @""},
+                                      
+                                      @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"feature_text": @"Las modelos...", @"id": @"211",
+                                        @"rate" : @5, @"category_id" : @"3775", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"is_campaign" : @NO, @"campaign_url" : @""}];
+    }
+    return _unparsedFeaturedProductionsInfo;
+}
+
+#pragma mark - UI Setup & Initilization Methods
+
+-(void)parseFeaturedInfo {
+    self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
+        Featured *featuredProduction = [[Featured alloc] initWithDictionary:self.unparsedFeaturedProductionsInfo[i]];
+        [self.parsedFeaturedProductions addObject:featuredProduction];
+    }
+}
 
 -(void)UISetup {
     UIImageView *CaracolPlayLogo = [[UIImageView alloc] initWithFrame:
@@ -38,16 +64,17 @@
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    [self createPageAtPosition:0 pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
-    [self createPageAtPosition:9 pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
-    for (int i = 1; i <= 8; i++) {
-        [self createPageAtPosition:i pageImage:[UIImage imageNamed:@"MentirasPerfectas.jpg"] pageInfo:nil];
+    [self createPageAtPosition:0 pageImage:nil pageInfo:nil];
+    [self createPageAtPosition:[self.parsedFeaturedProductions count]+1 pageImage:nil pageInfo:nil];
+    
+    for (int i = 1; i <= [self.parsedFeaturedProductions count]; i++) {
+        Featured *featuredProduction = self.parsedFeaturedProductions[i - 1];
+        UIImage *featuredProductionImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:featuredProduction.imageURL]]];
+        NSDictionary *pageInfoDic = @{@"type": featuredProduction.type, @"name" : featuredProduction.name, @"detail" : featuredProduction.description};
+        [self createPageAtPosition:i pageImage:featuredProductionImage pageInfo:pageInfoDic];
         self.numberOfPages = i;
     }
     
-    ////////////
-    //[self createPageAtPosition:-1 pageImage:[UIImage imageNamed:@"MentirasPerfectas2.jpg"] pageInfo:nil];
-    //[self createPageAtPosition:8 pageImage:[UIImage imageNamed:@"MentirasPerfectas2.jpg"] pageInfo:nil];
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*(self.numberOfPages + 2), self.scrollView.frame.size.height);
     self.scrollView.contentOffset = CGPointMake(320.0, 0.0);
@@ -72,6 +99,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    [self parseFeaturedInfo];
 }
 
 #pragma mark - Custom Methods
@@ -90,6 +118,7 @@
     pageImageView.clipsToBounds = YES;
     pageImageView.contentMode = UIViewContentModeScaleAspectFill;
     pageImageView.image = image;
+    //[pageImageView setImageWithURL:[NSURL URLWithString:imageName]];
     [page addSubview:pageImageView];
     
     //Create a view to add a pattern image to the main image view

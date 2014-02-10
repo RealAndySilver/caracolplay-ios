@@ -260,7 +260,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else {
             NSLog(@"Facebook no está disponible");
-            [ILAlertView showWithTitle:nil message:@"Facebook no se encuentra configurado en tu dispositivo." closeButtonTitle:@"Ok" secondButtonTitle:nil tappedSecondButton:nil];
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Facebook no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     } else if (buttonIndex == 1) {
         //Twitter
