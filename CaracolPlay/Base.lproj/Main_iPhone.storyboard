@@ -91,10 +91,10 @@
             </objects>
             <point key="canvasLocation" x="301" y="-29"/>
         </scene>
-        <!--Movies View Controller-->
+        <!--Productions List View Controller-->
         <scene sceneID="wkG-En-3oP">
             <objects>
-                <viewController storyboardIdentifier="Movies" id="4x6-3N-XmY" customClass="MoviesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Movies" id="4x6-3N-XmY" customClass="ProductionsListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZeH-Ej-yVh"/>
                         <viewControllerLayoutGuide type="bottom" id="mcZ-7d-JKR"/>

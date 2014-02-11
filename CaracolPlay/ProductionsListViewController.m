@@ -6,15 +6,36 @@
 //  Copyright (c) 2014 iAmStudio. All rights reserved.
 //
 
-#import "MoviesViewController.h"
+#import "ProductionsListViewController.h"
+#import "JMImageCache.h"
 
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface MoviesViewController ()
+@interface ProductionsListViewController ()
 @property (strong, nonatomic) NSArray *moviesArray;
+@property (strong, nonatomic) NSArray *productionsArray;
 @end
 
-@implementation MoviesViewController
+@implementation ProductionsListViewController
+
+#pragma mark - Lazy Instantiation 
+
+-(NSArray *)productionsArray {
+    if (!_productionsArray) {
+        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @4,
+                                @"id" : @"48393", @"category_id" : @"23432", @"image_url" : @"http://www.mundonets.com/images/johanna-cruz-laura-ramos.jpg"},
+                              
+                              @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @5,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg"},
+                              
+                              @{@"name": @"Yo me llamo", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @1,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.cartagenacity.co/sites/default/files/field/image/yo-me-llamo.jpg"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"}];
+    }
+    return _productionsArray;
+}
 
 -(void)UISetup {
     
@@ -56,39 +77,39 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Películas";
+    self.navigationItem.title = self.navigationBarTitle;
     [self UISetup];
-    self.moviesArray = @[@"Mentiras Perfectas", @"Mentiras Perfectas", @"Mentiras Perfectas", @"Mentiras Perfectas", @"Mentiras Perfectas"];
 }
 
 #pragma mark - UITableViewDataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.moviesArray count];
+    return [self.productionsArray count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MoviesTableViewCell *moviesCell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!moviesCell) {
-        moviesCell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    MoviesTableViewCell *productionCell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!productionCell) {
+        productionCell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    moviesCell.movieTitleLabel.text = self.moviesArray[indexPath.row];
-    moviesCell.movieImageView.image = [UIImage imageNamed:@"MentirasPerfectas.jpg"];
-    moviesCell.stars = 2;
-    moviesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
+    NSURL *productionImageURL = [NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]];
+    [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:nil completionBlock:nil failureBlock:nil];
+    productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue];
+    productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    return moviesCell;
+    return productionCell;
 }
 
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (!self.isTelenovelOrSeriesList) {
+    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Peliculas"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
     }
-    else {
+    else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     }

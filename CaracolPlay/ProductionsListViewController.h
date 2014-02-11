@@ -11,6 +11,7 @@
 #import "MoviesEventsDetailsViewController.h"
 #import "TelenovelSeriesDetailViewController.h"
 
-@interface MoviesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic) BOOL isTelenovelOrSeriesList;
+@interface ProductionsListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+//@property (nonatomic) BOOL isTelenovelOrSeriesList;
+@property (strong, nonatomic) NSString *navigationBarTitle;
 @end

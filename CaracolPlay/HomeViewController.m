@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "Featured.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "JMImageCache.h"
 
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -27,8 +28,14 @@
         _unparsedFeaturedProductionsInfo = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text": @"No te pierdas...", @"id": @"210",
                                         @"rate" : @3, @"category_id" : @"32224", @"image_url" : @"http://st.elespectador.co/files/imagecache/727x484/1933d136b94594f2db6f9145bbf0f72a.jpg", @"is_campaign" : @NO, @"campaign_url" : @""},
                                       
-                                      @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"feature_text": @"Las modelos...", @"id": @"211",
-                                        @"rate" : @5, @"category_id" : @"3775", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"is_campaign" : @NO, @"campaign_url" : @""}];
+                                             @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"feature_text": @"Las modelos...", @"id": @"211",
+                                        @"rate" : @5, @"category_id" : @"3775", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"is_campaign" : @NO, @"campaign_url" : @""},
+                                             
+                                             @{@"name": @"Yo me llamo", @"type" : @"Series", @"feature_text": @"Primer episodio", @"id": @"211",
+                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://www.ecbloguer.com/diablog/wp-content/uploads/2012/01/Yo-me-llamo-DiabloG.jpg", @"is_campaign" : @NO, @"campaign_url" : @""},
+                                             
+                                             @{@"name": @"La ronca de oro", @"type" : @"Series", @"feature_text": @"Llega la ronca", @"id": @"211",
+                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://2.bp.blogspot.com/-q96yFMADKm8/Urt_ZYchqWI/AAAAAAAADY0/Oe6F-0PQdRc/s1600/caracol%2B-%2Bla%2Bronca%2Bde%2Boro.png", @"is_campaign" : @NO, @"campaign_url" : @""}];
     }
     return _unparsedFeaturedProductionsInfo;
 }
@@ -44,37 +51,25 @@
 }
 
 -(void)UISetup {
-    UIImageView *CaracolPlayLogo = [[UIImageView alloc] initWithFrame:
-                                    CGRectMake(self.navigationController.navigationBar.frame.size.width/ 2 - 70.0,
-                                               self.navigationController.navigationBar.frame.size.height/2 - 20.0,
-                                               140.0,
-                                               40.0)];
-    CaracolPlayLogo.image = [UIImage imageNamed:@"CaracolPlayLogo.png"];
-    CaracolPlayLogo.clipsToBounds = YES;
-    CaracolPlayLogo.contentMode = UIViewContentModeScaleAspectFit;
-    self.navigationItem.titleView = CaracolPlayLogo;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
+                                                  forBarMetrics:UIBarMetricsDefault];
     
     /*-----------------------------------------------------------*/
     //1. Create a ScrollView to display the main images
     self.scrollView = [[UIScrollView alloc] init];
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0,
-                                                                     self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
-                                                                     self.view.bounds.size.width,
-                                                                     self.view.bounds.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
+    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, self.view.bounds.size.height - 64 - 44);
+    
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    [self createPageAtPosition:0 pageImage:nil pageInfo:nil];
-    [self createPageAtPosition:[self.parsedFeaturedProductions count]+1 pageImage:nil pageInfo:nil];
-    
+    [self createPageAtPosition:0 withFeaturedProduction:[self.parsedFeaturedProductions lastObject]];
+    [self createPageAtPosition:[self.parsedFeaturedProductions count]+1 withFeaturedProduction:[self.parsedFeaturedProductions firstObject]];
+   
     for (int i = 1; i <= [self.parsedFeaturedProductions count]; i++) {
         Featured *featuredProduction = self.parsedFeaturedProductions[i - 1];
-        UIImage *featuredProductionImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:featuredProduction.imageURL]]];
-        NSDictionary *pageInfoDic = @{@"type": featuredProduction.type, @"name" : featuredProduction.name, @"detail" : featuredProduction.description};
-        [self createPageAtPosition:i pageImage:featuredProductionImage pageInfo:pageInfoDic];
+        [self createPageAtPosition:i withFeaturedProduction:featuredProduction];
         self.numberOfPages = i;
     }
-    
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*(self.numberOfPages + 2), self.scrollView.frame.size.height);
     self.scrollView.contentOffset = CGPointMake(320.0, 0.0);
@@ -83,28 +78,20 @@
     /*-------------------------------------------------------------*/
     //2. Create a PageControl to display the current page
     self.pageControl = [[UIPageControl alloc] init];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.pageControl.frame =  CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height/1.17, 100.0, 30.0);
-    } else {
-        self.pageControl.frame = CGRectMake(80.0, self.view.bounds.size.height/1.17, 100.0, 30.0);
-    }
+    self.pageControl.frame =  CGRectMake(self.view.bounds.size.width/2 - 50.0, self.scrollView.frame.size.height/1.1, 100.0, 30.0);
     self.pageControl.numberOfPages = self.numberOfPages;
     [self.view addSubview:self.pageControl];
-}
-
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    [self UISetup];
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self parseFeaturedInfo];
+    [self UISetup];
 }
 
 #pragma mark - Custom Methods
 
--(void)createPageAtPosition:(int)pagePosition pageImage:(UIImage *)image pageInfo:(NSDictionary *)info {
+-(void)createPageAtPosition:(int)pagePosition withFeaturedProduction:(Featured *)featuredProduction {
     UIView *page = [[UIView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width*pagePosition,
                                                             0.0,
                                                             self.scrollView.frame.size.width,
@@ -117,8 +104,9 @@
                                                                                self.scrollView.frame.size.height)];
     pageImageView.clipsToBounds = YES;
     pageImageView.contentMode = UIViewContentModeScaleAspectFill;
-    pageImageView.image = image;
-    //[pageImageView setImageWithURL:[NSURL URLWithString:imageName]];
+    
+    NSURL *pageImageURL = [NSURL URLWithString:featuredProduction.imageURL];
+    [pageImageView setImageWithURL:pageImageURL key:nil placeholder:[UIImage imageNamed:@"HomeScreenPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [page addSubview:pageImageView];
     
     //Create a view to add a pattern image to the main image view
@@ -133,7 +121,7 @@
                                                                         self.scrollView.frame.size.height / 1.28,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
-    videoTypeLabel.text = @"Series";
+    videoTypeLabel.text = featuredProduction.type;
     videoTypeLabel.textAlignment = NSTextAlignmentLeft;
     videoTypeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0];
     videoTypeLabel.textColor = [UIColor whiteColor];
@@ -144,7 +132,7 @@
                                                                         self.scrollView.frame.size.height / 1.22,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
-    videoNameLabel.text = @"Mentiras Perfectas";
+    videoNameLabel.text = featuredProduction.name;
     videoNameLabel.textColor = [UIColor whiteColor];
     videoNameLabel.textAlignment = NSTextAlignmentLeft;
     videoNameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0];
@@ -155,7 +143,7 @@
                                                                         self.scrollView.frame.size.height / 1.16,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
-    videoInfoLabel.text = @"Temporada 3 / Episodio 4";
+    videoInfoLabel.text = featuredProduction.featureText;
     videoInfoLabel.textAlignment = NSTextAlignmentLeft;
     videoInfoLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0];
     videoInfoLabel.textColor = [UIColor whiteColor];

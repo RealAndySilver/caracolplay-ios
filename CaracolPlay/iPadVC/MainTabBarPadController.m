@@ -8,7 +8,8 @@
 
 #import "MainTabBarPadController.h"
 #import "HomePadViewController.h"
-#import "CategoriesPadViewController.h"
+#import "CategoriesMasterPadViewController.h"
+#import "CategoriesDetailPadViewController.h"
 #import "SearchPadViewController.h"
 #import "MyListsPadViewController.h"
 
@@ -26,8 +27,11 @@
     [homePadViewController.tabBarItem initWithTitle:@"Inicio" image:[UIImage imageNamed:@"HomeTabBarIcon.png"] tag:1];
     
     //2. Categories view
-    CategoriesPadViewController *categoriesPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
-    [categoriesPadViewController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:2];
+    UISplitViewController *splitViewController = [[UISplitViewController alloc] init];
+    CategoriesMasterPadViewController *categoriesMasterPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Root"];
+    CategoriesDetailPadViewController *detailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Detail"];
+    splitViewController.viewControllers = @[categoriesMasterPadViewController, detailVC];
+    [splitViewController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:4];
     
     //3. Search View
     SearchPadViewController *searchPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchPad"];
@@ -37,7 +41,7 @@
     MyListsPadViewController *myListsPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsPad"];
     [myListsPadViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
     
-    self.viewControllers = @[homePadViewController, categoriesPadViewController, searchPadViewController, myListsPadViewController];
+    self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsPadViewController];
 }
 
 @end

@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSString *imageURL;
 @property (strong, nonatomic) NSString *trailerURL;
 @property (nonatomic) BOOL hasSeasons;
-@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSString *detailDescription;
 @property (strong, nonatomic) NSArray *episodes; //Of Episode (Only if there are no seasons)
 @property (strong, nonatomic) NSArray *seasonList; //Of Season
 

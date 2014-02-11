@@ -33,8 +33,6 @@
 		8B164B8A18A97966001803A9 /* Watched.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B8918A97966001803A9 /* Watched.m */; };
 		8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8B18A97E75001803A9 /* SearchBarBackground.png */; };
 		8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8C18A97E75001803A9 /* SearchBarBackground@2x.png */; };
-		8B164B9018A9941F001803A9 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B164B8F18A9941F001803A9 /* SDWebImage.framework */; };
-		8B164B9218A996F8001803A9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B164B9118A996F8001803A9 /* ImageIO.framework */; };
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
@@ -60,6 +58,19 @@
 		8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27A18A034AA003DBBDC /* BackgroundFormularioPad.png */; };
 		8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B27B18A034AA003DBBDC /* BackgroundFormularioPad@2x.png */; };
 		8BA9B28018A03569003DBBDC /* SuscribePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */; };
+		8BB5221218AA740F0027CA59 /* JMImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5220F18AA740F0027CA59 /* JMImageCache.m */; };
+		8BB5221318AA740F0027CA59 /* UIImageView+JMImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5221118AA740F0027CA59 /* UIImageView+JMImageCache.m */; };
+		8BB5221618AA874C0027CA59 /* CategoriesMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5221518AA874C0027CA59 /* CategoriesMasterPadViewController.m */; };
+		8BB5221A18AA91A10027CA59 /* CategoriesDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5221918AA91A10027CA59 /* CategoriesDetailPadViewController.m */; };
+		8BB5221D18AA9AC60027CA59 /* SplitNavBarMaster.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5221B18AA9AC60027CA59 /* SplitNavBarMaster.png */; };
+		8BB5221E18AA9AC60027CA59 /* SplitNavBarMaster@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5221C18AA9AC60027CA59 /* SplitNavBarMaster@2x.png */; };
+		8BB5222118AA9BC60027CA59 /* CategoriesOrangeTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5221F18AA9BC60027CA59 /* CategoriesOrangeTitle.png */; };
+		8BB5222218AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222018AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png */; };
+		8BB5222518AAA2E00027CA59 /* SplitNavBarDetail.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222318AAA2E00027CA59 /* SplitNavBarDetail.png */; };
+		8BB5222618AAA2E00027CA59 /* SplitNavBarDetail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222418AAA2E00027CA59 /* SplitNavBarDetail@2x.png */; };
+		8BB5222918AAA62E0027CA59 /* HomeScreenPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */; };
+		8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */; };
+		8BB5222D18AAE3380027CA59 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5222C18AAE3380027CA59 /* RateView.m */; };
 		8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */; };
 		8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */; };
 		8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */; };
@@ -79,12 +90,10 @@
 		8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */; };
 		8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */; };
 		8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */; };
-		8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* MoviesViewController.m */; };
-		8BE79D2B18A134AA0049B64B /* CategoriesPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE79D2A18A134AA0049B64B /* CategoriesPadViewController.m */; };
+		8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* ProductionsListViewController.m */; };
 		8BE79D2E18A137750049B64B /* CategoriesNavBarImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE79D2C18A137750049B64B /* CategoriesNavBarImage.png */; };
 		8BE79D2F18A137750049B64B /* CategoriesNavBarImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE79D2D18A137750049B64B /* CategoriesNavBarImage@2x.png */; };
 		8BE79D3218A141CE0049B64B /* ProductionsPadCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE79D3118A141CE0049B64B /* ProductionsPadCollectionViewCell.m */; };
-		8BE79D3518A14A600049B64B /* CategoriesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE79D3418A14A600049B64B /* CategoriesPopoverViewController.m */; };
 		8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE79D3718A15AB80049B64B /* MovieDetailsPadViewController.m */; };
 		8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7A360189AB64900AF8E90 /* LineaBlanca.png */; };
 		8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */; };
@@ -242,6 +251,24 @@
 		8BA9B27B18A034AA003DBBDC /* BackgroundFormularioPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFormularioPad@2x.png"; path = "Resources/Images/iPad/BackgroundFormularioPad@2x.png"; sourceTree = "<group>"; };
 		8BA9B27E18A03569003DBBDC /* SuscribePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscribePadViewController.h; path = iPadVC/SuscribePadViewController.h; sourceTree = "<group>"; };
 		8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscribePadViewController.m; path = iPadVC/SuscribePadViewController.m; sourceTree = "<group>"; };
+		8BB5220E18AA740F0027CA59 /* JMImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageCache.h; sourceTree = "<group>"; };
+		8BB5220F18AA740F0027CA59 /* JMImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMImageCache.m; sourceTree = "<group>"; };
+		8BB5221018AA740F0027CA59 /* UIImageView+JMImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+JMImageCache.h"; sourceTree = "<group>"; };
+		8BB5221118AA740F0027CA59 /* UIImageView+JMImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+JMImageCache.m"; sourceTree = "<group>"; };
+		8BB5221418AA874C0027CA59 /* CategoriesMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CategoriesMasterPadViewController.h; path = iPadVC/CategoriesMasterPadViewController.h; sourceTree = "<group>"; };
+		8BB5221518AA874C0027CA59 /* CategoriesMasterPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CategoriesMasterPadViewController.m; path = iPadVC/CategoriesMasterPadViewController.m; sourceTree = "<group>"; };
+		8BB5221818AA91A10027CA59 /* CategoriesDetailPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CategoriesDetailPadViewController.h; path = iPadVC/CategoriesDetailPadViewController.h; sourceTree = "<group>"; };
+		8BB5221918AA91A10027CA59 /* CategoriesDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CategoriesDetailPadViewController.m; path = iPadVC/CategoriesDetailPadViewController.m; sourceTree = "<group>"; };
+		8BB5221B18AA9AC60027CA59 /* SplitNavBarMaster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SplitNavBarMaster.png; path = Resources/Images/iPad/SplitNavBarMaster.png; sourceTree = "<group>"; };
+		8BB5221C18AA9AC60027CA59 /* SplitNavBarMaster@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SplitNavBarMaster@2x.png"; path = "Resources/Images/iPad/SplitNavBarMaster@2x.png"; sourceTree = "<group>"; };
+		8BB5221F18AA9BC60027CA59 /* CategoriesOrangeTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CategoriesOrangeTitle.png; path = Resources/Images/iPad/CategoriesOrangeTitle.png; sourceTree = "<group>"; };
+		8BB5222018AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoriesOrangeTitle@2x.png"; path = "Resources/Images/iPad/CategoriesOrangeTitle@2x.png"; sourceTree = "<group>"; };
+		8BB5222318AAA2E00027CA59 /* SplitNavBarDetail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SplitNavBarDetail.png; path = Resources/Images/iPad/SplitNavBarDetail.png; sourceTree = "<group>"; };
+		8BB5222418AAA2E00027CA59 /* SplitNavBarDetail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SplitNavBarDetail@2x.png"; path = "Resources/Images/iPad/SplitNavBarDetail@2x.png"; sourceTree = "<group>"; };
+		8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenPlaceholder.png; path = Resources/Images/HomeScreenPlaceholder.png; sourceTree = "<group>"; };
+		8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenPlaceholder@2x.png"; path = "Resources/Images/HomeScreenPlaceholder@2x.png"; sourceTree = "<group>"; };
+		8BB5222B18AAE3380027CA59 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RateView.h; path = "Custom Views/RateView.h"; sourceTree = "<group>"; };
+		8BB5222C18AAE3380027CA59 /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RateView.m; path = "Custom Views/RateView.m"; sourceTree = "<group>"; };
 		8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonCerrarSesion.png; path = Resources/Images/BotonCerrarSesion.png; sourceTree = "<group>"; };
 		8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonCerrarSesion@2x.png"; path = "Resources/Images/BotonCerrarSesion@2x.png"; sourceTree = "<group>"; };
 		8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FormErrorImage@2x.png"; path = "Resources/Images/FormErrorImage@2x.png"; sourceTree = "<group>"; };
@@ -307,16 +334,12 @@
 		8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayLogo.png; path = Resources/TestImages/CaracolPlayLogo.png; sourceTree = "<group>"; };
 		8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesViewController.h; sourceTree = "<group>"; };
 		8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
-		8BDB8BCD188EDB860066279A /* MoviesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoviesViewController.h; sourceTree = "<group>"; };
-		8BDB8BCE188EDB860066279A /* MoviesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoviesViewController.m; sourceTree = "<group>"; };
-		8BE79D2918A134AA0049B64B /* CategoriesPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CategoriesPadViewController.h; path = iPadVC/CategoriesPadViewController.h; sourceTree = "<group>"; };
-		8BE79D2A18A134AA0049B64B /* CategoriesPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CategoriesPadViewController.m; path = iPadVC/CategoriesPadViewController.m; sourceTree = "<group>"; };
+		8BDB8BCD188EDB860066279A /* ProductionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionsListViewController.h; sourceTree = "<group>"; };
+		8BDB8BCE188EDB860066279A /* ProductionsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionsListViewController.m; sourceTree = "<group>"; };
 		8BE79D2C18A137750049B64B /* CategoriesNavBarImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CategoriesNavBarImage.png; path = Resources/Images/iPad/CategoriesNavBarImage.png; sourceTree = "<group>"; };
 		8BE79D2D18A137750049B64B /* CategoriesNavBarImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoriesNavBarImage@2x.png"; path = "Resources/Images/iPad/CategoriesNavBarImage@2x.png"; sourceTree = "<group>"; };
 		8BE79D3018A141CE0049B64B /* ProductionsPadCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductionsPadCollectionViewCell.h; path = CustomCells/ProductionsPadCollectionViewCell.h; sourceTree = "<group>"; };
 		8BE79D3118A141CE0049B64B /* ProductionsPadCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductionsPadCollectionViewCell.m; path = CustomCells/ProductionsPadCollectionViewCell.m; sourceTree = "<group>"; };
-		8BE79D3318A14A600049B64B /* CategoriesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CategoriesPopoverViewController.h; path = iPadVC/CategoriesPopoverViewController.h; sourceTree = "<group>"; };
-		8BE79D3418A14A600049B64B /* CategoriesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CategoriesPopoverViewController.m; path = iPadVC/CategoriesPopoverViewController.m; sourceTree = "<group>"; };
 		8BE79D3618A15AB70049B64B /* MovieDetailsPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieDetailsPadViewController.h; path = iPadVC/MovieDetailsPadViewController.h; sourceTree = "<group>"; };
 		8BE79D3718A15AB80049B64B /* MovieDetailsPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MovieDetailsPadViewController.m; path = iPadVC/MovieDetailsPadViewController.m; sourceTree = "<group>"; };
 		8BE7A360189AB64900AF8E90 /* LineaBlanca.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LineaBlanca.png; path = Resources/Images/LineaBlanca.png; sourceTree = "<group>"; };
@@ -415,8 +438,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B164B9218A996F8001803A9 /* ImageIO.framework in Frameworks */,
-				8B164B9018A9941F001803A9 /* SDWebImage.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
@@ -497,6 +518,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8BB5220D18AA740F0027CA59 /* JMImageCache */,
 				8B164B6918A95437001803A9 /* Model */,
 				8B7001A418A05AC3000B5C7B /* iCarousel */,
 				A05C44921899CEA700E72135 /* FXBlurView */,
@@ -575,6 +597,8 @@
 			children = (
 				8B6776A01896F878006E2241 /* CheckmarkView.h */,
 				8B6776A11896F878006E2241 /* CheckmarkView.m */,
+				8BB5222B18AAE3380027CA59 /* RateView.h */,
+				8BB5222C18AAE3380027CA59 /* RateView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -640,6 +664,12 @@
 		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				8BB5222318AAA2E00027CA59 /* SplitNavBarDetail.png */,
+				8BB5222418AAA2E00027CA59 /* SplitNavBarDetail@2x.png */,
+				8BB5221F18AA9BC60027CA59 /* CategoriesOrangeTitle.png */,
+				8BB5222018AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png */,
+				8BB5221B18AA9AC60027CA59 /* SplitNavBarMaster.png */,
+				8BB5221C18AA9AC60027CA59 /* SplitNavBarMaster@2x.png */,
 				A0A9B77718A3073900D6D222 /* SearchBarPad.png */,
 				A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */,
 				A0A9B76F18A301A000D6D222 /* PlayIcon.png */,
@@ -664,6 +694,28 @@
 				8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */,
 			);
 			name = iPad;
+			sourceTree = "<group>";
+		};
+		8BB5220D18AA740F0027CA59 /* JMImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				8BB5220E18AA740F0027CA59 /* JMImageCache.h */,
+				8BB5220F18AA740F0027CA59 /* JMImageCache.m */,
+				8BB5221018AA740F0027CA59 /* UIImageView+JMImageCache.h */,
+				8BB5221118AA740F0027CA59 /* UIImageView+JMImageCache.m */,
+			);
+			path = JMImageCache;
+			sourceTree = "<group>";
+		};
+		8BB5221718AA87540027CA59 /* SplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8BB5221418AA874C0027CA59 /* CategoriesMasterPadViewController.h */,
+				8BB5221518AA874C0027CA59 /* CategoriesMasterPadViewController.m */,
+				8BB5221818AA91A10027CA59 /* CategoriesDetailPadViewController.h */,
+				8BB5221918AA91A10027CA59 /* CategoriesDetailPadViewController.m */,
+			);
+			name = SplitViewController;
 			sourceTree = "<group>";
 		};
 		8BD52A9C1892AD6300792845 /* Ooyala Headers */ = {
@@ -759,10 +811,7 @@
 		8BE79D2818A1348D0049B64B /* Categories Section */ = {
 			isa = PBXGroup;
 			children = (
-				8BE79D2918A134AA0049B64B /* CategoriesPadViewController.h */,
-				8BE79D2A18A134AA0049B64B /* CategoriesPadViewController.m */,
-				8BE79D3318A14A600049B64B /* CategoriesPopoverViewController.h */,
-				8BE79D3418A14A600049B64B /* CategoriesPopoverViewController.m */,
+				8BB5221718AA87540027CA59 /* SplitViewController */,
 				8BE79D3618A15AB70049B64B /* MovieDetailsPadViewController.h */,
 				8BE79D3718A15AB80049B64B /* MovieDetailsPadViewController.m */,
 				A0A9B76318A2E86F00D6D222 /* SeriesDetailPadViewController.h */,
@@ -832,8 +881,8 @@
 			children = (
 				8BDB8BCA188ECC9D0066279A /* CategoriesViewController.h */,
 				8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */,
-				8BDB8BCD188EDB860066279A /* MoviesViewController.h */,
-				8BDB8BCE188EDB860066279A /* MoviesViewController.m */,
+				8BDB8BCD188EDB860066279A /* ProductionsListViewController.h */,
+				8BDB8BCE188EDB860066279A /* ProductionsListViewController.m */,
 				8BF16A10188F1F5E0021AB03 /* MoviesEventsDetailsViewController.h */,
 				8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */,
 				8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */,
@@ -910,6 +959,8 @@
 			children = (
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */,
+				8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */,
 				A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */,
 				A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */,
 				A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */,
@@ -1070,6 +1121,7 @@
 				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
 				8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */,
 				A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */,
+				8BB5222118AA9BC60027CA59 /* CategoriesOrangeTitle.png in Resources */,
 				8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */,
 				8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */,
 				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
@@ -1096,18 +1148,23 @@
 				8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */,
 				8BE7A36E189AEEA900AF8E90 /* CategoriesTabBarIcon.png in Resources */,
 				8BF16A16188F27C50021AB03 /* Estrella.png in Resources */,
+				8BB5221E18AA9AC60027CA59 /* SplitNavBarMaster@2x.png in Resources */,
+				8BB5222918AAA62E0027CA59 /* HomeScreenPlaceholder.png in Resources */,
 				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				8BA9B266189FFFD1003DBBDC /* InicioiPad.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
+				8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */,
 				A0A9B77118A301A000D6D222 /* PlayIcon.png in Resources */,
 				8BA9B26E18A0078F003DBBDC /* BotonRedimirPad@2x.png in Resources */,
 				A0A9B76718A2EB6A00D6D222 /* Escobar.jpg in Resources */,
 				8B7001A318A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png in Resources */,
+				8BB5222218AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png in Resources */,
 				8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */,
 				755DB16C188DEE2C00E5C636 /* Main_iPhone.storyboard in Resources */,
 				8BA9B26D18A0078F003DBBDC /* BotonRedimirPad.png in Resources */,
+				8BB5222618AAA2E00027CA59 /* SplitNavBarDetail@2x.png in Resources */,
 				8BE7A379189AF17500AF8E90 /* ConfigTabBarIcon@2x.png in Resources */,
 				8BA9B27818A01DD9003DBBDC /* Close.png in Resources */,
 				8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */,
@@ -1116,6 +1173,7 @@
 				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
 				8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */,
 				8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */,
+				8BB5222518AAA2E00027CA59 /* SplitNavBarDetail.png in Resources */,
 				A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */,
 				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
@@ -1124,6 +1182,7 @@
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
 				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
+				8BB5221D18AA9AC60027CA59 /* SplitNavBarMaster.png in Resources */,
 				8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */,
 				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
@@ -1152,17 +1211,18 @@
 				A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */,
 				8B164B7E18A9710C001803A9 /* Categoria.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
-				8BE79D2B18A134AA0049B64B /* CategoriesPadViewController.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
-				8BE79D3518A14A600049B64B /* CategoriesPopoverViewController.m in Sources */,
 				8B164B8118A9723A001803A9 /* Redeemed.m in Sources */,
 				8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */,
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				A0A9B76E18A3005100D6D222 /* EpisodesPadTableViewCell.m in Sources */,
+				8BB5221618AA874C0027CA59 /* CategoriesMasterPadViewController.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B164B6C18A95460001803A9 /* User.m in Sources */,
+				8BB5221218AA740F0027CA59 /* JMImageCache.m in Sources */,
 				8BE7FDE71898234D0087A7E2 /* LoadingViewController.m in Sources */,
+				8BB5221318AA740F0027CA59 /* UIImageView+JMImageCache.m in Sources */,
 				8BE79D3218A141CE0049B64B /* ProductionsPadCollectionViewCell.m in Sources */,
 				8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */,
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
@@ -1170,7 +1230,7 @@
 				A06C2D6618A3FA3F00044F81 /* MyListsPadViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
-				8BDB8BCF188EDB860066279A /* MoviesViewController.m in Sources */,
+				8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,
 				8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */,
@@ -1189,6 +1249,8 @@
 				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
 				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
+				8BB5221A18AA91A10027CA59 /* CategoriesDetailPadViewController.m in Sources */,
+				8BB5222D18AAE3380027CA59 /* RateView.m in Sources */,
 				8B70019B18A0547F000B5C7B /* MainTabBarPadController.m in Sources */,
 				8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */,
 				8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */,

@@ -1,0 +1,96 @@
+//
+//  CategoriesDetailPadViewController.m
+//  CaracolPlay
+//
+//  Created by Developer on 11/02/14.
+//  Copyright (c) 2014 iAmStudio. All rights reserved.
+//
+
+NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
+
+#import "CategoriesDetailPadViewController.h"
+#import "ProductionsPadCollectionViewCell.h"
+#import "SeriesDetailPadViewController.h"
+#import "MovieDetailsPadViewController.h"
+
+@interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate>
+@property (strong, nonatomic) UINavigationBar *navigationBar;
+@property (strong, nonatomic) UISegmentedControl *segmentedControl;
+@property (strong, nonatomic) UICollectionView *collectionView;
+@end
+
+@implementation CategoriesDetailPadViewController
+
+-(void)UISetup {
+    
+    //1. NavigationBar
+    self.navigationBar = [[UINavigationBar alloc] init];
+    self.navigationBar.delegate = self;
+    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"SplitNavBarDetail.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.view addSubview:self.navigationBar];
+    
+    //2. Segmented Control
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Todo"]];
+    [self.view addSubview:self.segmentedControl];
+    
+    //3. CollectionView
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    [self.collectionView registerClass:[ProductionsPadCollectionViewCell class] forCellWithReuseIdentifier:splitCollectionViewCellIdentifier];
+    self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.dataSource = self;
+    [self.view addSubview:self.collectionView];
+}
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    [self UISetup];
+}
+
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
+    self.segmentedControl.frame = CGRectMake(self.view.bounds.size.width/2 - 200.0, 80.0, 400.0, 29.0);
+    self.collectionView.frame = CGRectMake(20.0, 120.0, self.view.bounds.size.width - 40.0, self.view.bounds.size.height - 120.0);
+}
+
+#pragma mark - UICollectionViewDataSource
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 15;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ProductionsPadCollectionViewCell *cell = (ProductionsPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:splitCollectionViewCellIdentifier forIndexPath:indexPath];
+    cell.productionImageView.image = [UIImage imageNamed:@"MentirasPerfectas2.jpg"];
+    cell.goldStars = 3;
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(150.0, 250.0);
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    /*MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+     movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+     movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+     [self presentViewController:movieDetailsPadVC animated:YES completion:nil];*/
+    
+    SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+    seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
+}
+
+#pragma mark - UIBarPositioningDelegate
+
+-(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
+@end

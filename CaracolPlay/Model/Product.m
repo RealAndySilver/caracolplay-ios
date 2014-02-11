@@ -21,7 +21,7 @@
         _imageURL = dictionary[@"image_url"];
         _trailerURL = dictionary[@"trailer_url"];
         _hasSeasons = [dictionary[@"has_seasons"] boolValue];
-        _description = dictionary[@"description"];
+        _detailDescription = dictionary[@"description"];
         _episodes = dictionary[@"episodes"];
         _seasonList = dictionary[@"season_list"];
     }

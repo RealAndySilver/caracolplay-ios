@@ -7,6 +7,9 @@
 //
 
 #import "MoviesEventsDetailsViewController.h"
+#import "Product.h"
+#import "JMImageCache.h"
+#import "RateView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -18,31 +21,68 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIImageView *starImageView3;
 @property (strong, nonatomic) UIImageView *starImageView4;
 @property (strong, nonatomic) UIImageView *starImageView5;
-@property (strong, nonatomic) FXBlurView *blurView;
+@property (strong, nonatomic) Product *production;
+@property (strong, nonatomic) NSDictionary *productionInfo;
+@property (strong, nonatomic) NSArray *recommendedProductions;
+/*@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) FXBlurView *tabBarBlurView;
-@property (strong, nonatomic) FXBlurView *navigationBarBlurView;
+@property (strong, nonatomic) FXBlurView *navigationBarBlurView;*/
 @end
 
 @implementation MoviesEventsDetailsViewController
 
+#pragma mark - Lazy Instantiation
+
+-(NSDictionary *)productionInfo {
+    if (!_productionInfo) {
+        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
+                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Esta es la descripción de la producción", @"episodes" : @[], @"season_list" : @[]};
+    }
+    return _productionInfo;
+}
+
+-(NSArray *)recommendedProductions {
+    if (!_recommendedProductions) {
+        _recommendedProductions = @[@{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                      @"image_url": @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
+                                    
+                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                      @"image_url": @"http://www.eltiempo.com/entretenimiento/tv/IMAGEN/IMAGEN-8759821-2.png"},
+                                    
+                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                      @"image_url": @"http://www.bluradio.com/sites/default/files/la_voz_colombia.jpg"},
+                                    
+                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                      @"image_url": @"http://hispanic-tv.jumptv.com/images/2008/09/18/diaadiatucasa_2.png"}];
+    }
+    return _recommendedProductions;
+}
+
+-(void)parseProductionInfo {
+    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
+}
+
+#pragma mark - View Lifecycle
+
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.goldStars = 4;
+    [self parseProductionInfo];
+    self.goldStars = [self.production.rate intValue];
     self.view.backgroundColor = [UIColor blackColor];
-    self.navigationItem.title = @"Mentiras Perfectas";
+    self.navigationItem.title = self.production.name;
     [self UISetup];
 }
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
+    //self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.blurView removeFromSuperview];
+    /*[self.blurView removeFromSuperview];
     [self.navigationBarBlurView removeFromSuperview];
-    [self.tabBarBlurView removeFromSuperview];
+    [self.tabBarBlurView removeFromSuperview];*/
 }
 
 -(void)UISetup {
@@ -53,7 +93,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                      self.view.frame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
     movieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    movieEventImageView.image = [UIImage imageNamed:@"MentirasPerfectas2.jpg"];
+    [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     [self.view addSubview:movieEventImageView];
     
     //Create a view with an opacity pattern to apply an opacity to the image
@@ -70,7 +110,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                               140.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    secondaryMovieEventImageView.image = [UIImage imageNamed:@"MentirasPerfectas.jpg"];
+    [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
     
     //3. Create the label to display the movie/event name
@@ -79,14 +119,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                              self.view.frame.size.width - 50.0,
                                                                              30.0)];
     movieEventNameLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    movieEventNameLabel.text = @"Mentiras Perfectas";
+    movieEventNameLabel.text = self.production.name;
     movieEventNameLabel.textColor = [UIColor whiteColor];
     movieEventNameLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    //[self createStarsImageViewsWithGoldStarsNumber:4];
     [self createStarsImageViews];
+    
+    //'calificar' button setup
+    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(260.0, 112.0, 50.0, 30.0)];
+    [rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
+    [rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
+    rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
+    [self.view addSubview:rateButton];
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
@@ -111,9 +158,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //7. Create a text view to display the detail of the event/movie
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
     
-    detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";
+    /*detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";*/
+    detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
     detailTextView.textColor = [UIColor whiteColor];
+    detailTextView.editable = NO;
+    detailTextView.selectable = NO;
     detailTextView.textAlignment = NSTextAlignmentJustified;
     detailTextView.font = [UIFont systemFontOfSize:13.0];
     [self.view addSubview:detailTextView];
@@ -165,13 +215,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UICollectionViewDataSource
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 5;
+    return [self.recommendedProductions count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecommendedProdCollectionViewCell *cell = (RecommendedProdCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    cell.cellImageView.image = [UIImage imageNamed:@"MentirasPerfectas.jpg"];
+    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"image_url"]] placeholder:nil completionBlock:nil failureBlock:nil];
     return cell;
 }
 
@@ -181,7 +231,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     return CGSizeMake(100.0, 130.0);
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+    [self.navigationController pushViewController:moviesEventDetail animated:YES];
+}
+
 #pragma mark - Custom Methods
+
+-(void)showRateView {
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0)];
+    [self.view addSubview:rateView];
+}
 
 -(void)shareProduction {
     [[[UIActionSheet alloc] initWithTitle:nil
@@ -255,7 +315,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
             NSLog(@"Facebook está disponible");
             SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            [facebookViewController setInitialText:@"Mentiras perfectas, la serie que bla bla bla. Compartido a través de la app 'CaracolPlay'"];
+            [facebookViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
             [self presentViewController:facebookViewController animated:YES completion:nil];
             
         } else {
@@ -267,7 +327,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
             NSLog(@"Twitter está disponible");
             SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            [twitterViewController setInitialText:@"Mentiras Perfectas, la serie que bla bla. Compartido a través de la app 'Caracol Play'"];
+            [twitterViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
             [self presentViewController:twitterViewController animated:YES completion:nil];
         } else {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

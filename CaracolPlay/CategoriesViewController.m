@@ -7,15 +7,41 @@
 //
 
 #import "CategoriesViewController.h"
-#import <objc/message.h>
+#import "Categoria.h"
 
 static NSString *CellIdentifier = @"CellIdentifier";
 
 @interface CategoriesViewController ()
-@property (strong, nonatomic) NSArray *categoriesList;
+@property (strong, nonatomic) NSArray *unparsedCategoriesList;
+@property (strong, nonatomic) NSMutableArray *parsedCategoriesList;
 @end
 
 @implementation CategoriesViewController
+
+#pragma mark - Lazy Instantiation 
+
+-(NSArray *)unparsedCategoriesList {
+    if (!_unparsedCategoriesList) {
+        _unparsedCategoriesList = @[@{@"name": @"Vistos Recientemente", @"id" : @"23556"},
+                                    @{@"name": @"Telenovelas", @"id" : @"23532"},
+                                    @{@"name": @"Series", @"id" : @"22133"},
+                                    @{@"name": @"Películas", @"id" : @"64556"},
+                                    @{@"name": @"Noticias", @"id" : @"23456"},
+                                    @{@"name": @"Eventos en vivo", @"id" : @"63656"}];
+    }
+    return _unparsedCategoriesList;
+}
+
+#pragma mark - UISetup & Initialization stuff
+
+-(void)parseCategoriesList {
+    self.parsedCategoriesList = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.unparsedCategoriesList count]; i++) {
+        Categoria *category = [[Categoria alloc] initWithDictionary:self.unparsedCategoriesList[i]];
+        [self.parsedCategoriesList addObject:category];
+    }
+    NSLog(@"parse count: %d", [self.parsedCategoriesList count]);
+}
 
 -(void)UISetup {
     
@@ -40,14 +66,14 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.categoriesList = @[@"Vistos Recientemente", @"Telenovelas", @"Series", @"Películas", @"Noticias", @"Eventos en Vivo"];
+    [self parseCategoriesList];
     [self UISetup];
 }
 
 #pragma mark - UITableViewDataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.categoriesList count];
+    return [self.parsedCategoriesList count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -55,7 +81,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.textLabel.text = self.categoriesList[indexPath.row];
+    
+    Categoria *category = self.parsedCategoriesList[indexPath.row];
+    cell.textLabel.text = category.name;
     cell.backgroundColor = [UIColor blackColor];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -65,6 +93,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    Categoria *category = self.parsedCategoriesList[indexPath.row];
+    
     if (indexPath.row == 0) {
         //Watched Recently
         WatchedRecentlyViewController *watchedRecentlyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"WatchedRecently"];
@@ -72,13 +102,16 @@ static NSString *CellIdentifier = @"CellIdentifier";
     }
     else if (indexPath.row == 1 || indexPath.row == 2) {
         //Telenovel/Series
-        MoviesViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
-        moviesVC.isTelenovelOrSeriesList = YES;
+        ProductionsListViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
+        //moviesVC.isTelenovelOrSeriesList = YES;
+        moviesVC.navigationBarTitle = category.name;
         [self.navigationController pushViewController:moviesVC animated:YES];
     }
     else if (indexPath.row == 3 || indexPath.row == 5) {
         //Movies
-        MoviesViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
+        ProductionsListViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
+        //moviesVC.isTelenovelOrSeriesList = NO;
+        moviesVC.navigationBarTitle = category.name;
         [self.navigationController pushViewController:moviesVC animated:YES];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
