@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "TelenovelSeriesTableViewCell.h"
 
-@interface TelenovelSeriesDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface TelenovelSeriesDetailViewController : UIViewController
 
 @end

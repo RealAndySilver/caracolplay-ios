@@ -15,5 +15,5 @@
 #import "MyNavigationController.h"
 
 @interface MainTabBarViewController : UITabBarController <UITabBarControllerDelegate>
-
+@property (nonatomic) BOOL userDidSkipRegisterProcess;
 @end

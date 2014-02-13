@@ -10,13 +10,15 @@
 #import "Product.h"
 #import "JMImageCache.h"
 #import "RateView.h"
+#import "LargeProductionImageView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate>
+@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate>
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
+@property (strong, nonatomic) UIView *opacityView;
 /*@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) FXBlurView *tabBarBlurView;
 @property (strong, nonatomic) FXBlurView *navigationBarBlurView;*/
@@ -101,9 +103,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                               90.0,
                                                                                               140.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
+    secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
+    
+    //Create a tap gesture and add it to our secondary image view
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    [secondaryMovieEventImageView addGestureRecognizer:tapGestureRecognizer];
     
     //3. Create the label to display the movie/event name
     UILabel *movieEventNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
@@ -150,8 +157,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //7. Create a text view to display the detail of the event/movie
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
     
-    /*detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";*/
-    detailTextView.text = self.production.detailDescription;
+    detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";
+    //detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
     detailTextView.textColor = [UIColor whiteColor];
     detailTextView.editable = NO;
@@ -230,6 +237,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Custom Methods
 
+-(void)imageTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
+    LargeProductionImageView *largeProdView = [[LargeProductionImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [largeProdView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+                                      placeholder:nil
+                                  completionBlock:nil
+                                     failureBlock:nil];
+    [self.tabBarController.view addSubview:largeProdView];
+}
+
 -(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
     for (int i = 0; i < 5; i++) {
         UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120 + (i*20),
@@ -250,8 +266,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)showRateView {
+    self.opacityView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.6;
+    [self.tabBarController.view addSubview:self.opacityView];
     RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0)];
-    [self.view addSubview:rateView];
+    rateView.delegate = self;
+    [self.tabBarController.view addSubview:rateView];
 }
 
 -(void)shareProduction {
@@ -288,6 +309,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     }
+}
+
+#pragma mark - RateViewDelegate
+
+-(void)rateButtonWasTappedInRateView:(RateView *)rateView withRate:(int)rate {
+    self.opacityView.alpha = 0.0;
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+}
+
+-(void)cancelButtonWasTappedInRateView:(RateView *)rateView {
+    self.opacityView.alpha = 0.0;
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
 }
 
 #pragma mark - Interface Orientation 

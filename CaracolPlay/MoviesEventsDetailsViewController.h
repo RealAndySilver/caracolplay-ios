@@ -12,6 +12,6 @@
 #import <Social/Social.h>
 #import "FXBlurView.h"
 
-@interface MoviesEventsDetailsViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface MoviesEventsDetailsViewController : UIViewController
 
 @end

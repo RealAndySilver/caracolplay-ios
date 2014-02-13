@@ -11,6 +11,8 @@
 #import "FXBlurView.h"
 #import "IngresarViewController.h"
 #import "RedeemCodeViewController.h"
+#import "Reachability.h"
+#import "MainTabBarViewController.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -62,6 +64,7 @@
     [self.skipButton setTitle:@"Saltar" forState:UIControlStateNormal];
     [self.skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     self.skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [self.skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.skipButton];
     
     //5. boton para probar el alertview
@@ -90,6 +93,16 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [self showAlert];
+    } else if (status == ReachableViaWiFi) {
+        NSLog(@"Hay Wifi");
+    } else if (status == ReachableViaWWAN) {
+        [self showAlert];
+    }
 }
 
 -(void)viewDidLayoutSubviews {
@@ -99,7 +112,7 @@
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.view.bounds.size.height/1.7, 240.0, 45.0);
     self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.view.bounds.size.height/1.4, 240.0, 45.0);
     self.redeemCodeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height - 80.0, 100.0, 100.0);
-    self.skipButton.frame = CGRectMake(250.0, 22.0, 50.0, 30.0);
+    self.skipButton.frame = CGRectMake(250.0, 10.0, 50.0, 44.0);
     self.alertTestButton.frame = CGRectMake(20.0, 20.0, 100.0, 30.0);
 }
 
@@ -122,6 +135,12 @@
 -(void)goToSuscribeViewController {
     SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
     [self.navigationController pushViewController:suscriptionViewController animated:YES];
+}
+
+-(void)skipAndGoToHomeScreen {
+    MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    mainTabBarVC.userDidSkipRegisterProcess = YES;
+    [self presentViewController:mainTabBarVC animated:YES completion:nil];
 }
 
 #pragma mark - Interface Orientation

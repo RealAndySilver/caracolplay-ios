@@ -91,6 +91,8 @@
 		8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC8188EC6D30066279A /* CaracolPlayLogo.png */; };
 		8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */; };
 		8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BCE188EDB860066279A /* ProductionsListViewController.m */; };
+		8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC828718AD2EDC00E72B0E /* Reachability.m */; };
+		8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC828D18AD611600E72B0E /* LargeProductionImageView.m */; };
 		8BE79D2E18A137750049B64B /* CategoriesNavBarImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE79D2C18A137750049B64B /* CategoriesNavBarImage.png */; };
 		8BE79D2F18A137750049B64B /* CategoriesNavBarImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE79D2D18A137750049B64B /* CategoriesNavBarImage@2x.png */; };
 		8BE79D3218A141CE0049B64B /* ProductionsPadCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE79D3118A141CE0049B64B /* ProductionsPadCollectionViewCell.m */; };
@@ -338,6 +340,10 @@
 		8BDB8BCB188ECC9D0066279A /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
 		8BDB8BCD188EDB860066279A /* ProductionsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionsListViewController.h; sourceTree = "<group>"; };
 		8BDB8BCE188EDB860066279A /* ProductionsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionsListViewController.m; sourceTree = "<group>"; };
+		8BDC828618AD2EDC00E72B0E /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		8BDC828718AD2EDC00E72B0E /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		8BDC828C18AD611600E72B0E /* LargeProductionImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LargeProductionImageView.h; path = "Custom Views/LargeProductionImageView.h"; sourceTree = "<group>"; };
+		8BDC828D18AD611600E72B0E /* LargeProductionImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LargeProductionImageView.m; path = "Custom Views/LargeProductionImageView.m"; sourceTree = "<group>"; };
 		8BE79D2C18A137750049B64B /* CategoriesNavBarImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CategoriesNavBarImage.png; path = Resources/Images/iPad/CategoriesNavBarImage.png; sourceTree = "<group>"; };
 		8BE79D2D18A137750049B64B /* CategoriesNavBarImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoriesNavBarImage@2x.png"; path = "Resources/Images/iPad/CategoriesNavBarImage@2x.png"; sourceTree = "<group>"; };
 		8BE79D3018A141CE0049B64B /* ProductionsPadCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductionsPadCollectionViewCell.h; path = CustomCells/ProductionsPadCollectionViewCell.h; sourceTree = "<group>"; };
@@ -522,6 +528,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8BDC828518AD2EDC00E72B0E /* Reachability */,
 				8BB5220D18AA740F0027CA59 /* JMImageCache */,
 				8B164B6918A95437001803A9 /* Model */,
 				8B7001A418A05AC3000B5C7B /* iCarousel */,
@@ -603,6 +610,8 @@
 				8B6776A11896F878006E2241 /* CheckmarkView.m */,
 				8BB5222B18AAE3380027CA59 /* RateView.h */,
 				8BB5222C18AAE3380027CA59 /* RateView.m */,
+				8BDC828C18AD611600E72B0E /* LargeProductionImageView.h */,
+				8BDC828D18AD611600E72B0E /* LargeProductionImageView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -810,6 +819,15 @@
 				8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */,
 			);
 			name = "Test Images";
+			sourceTree = "<group>";
+		};
+		8BDC828518AD2EDC00E72B0E /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				8BDC828618AD2EDC00E72B0E /* Reachability.h */,
+				8BDC828718AD2EDC00E72B0E /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		8BE79D2818A1348D0049B64B /* Categories Section */ = {
@@ -1234,6 +1252,7 @@
 				8BE79D3218A141CE0049B64B /* ProductionsPadCollectionViewCell.m in Sources */,
 				8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */,
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
+				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				A06C2D6618A3FA3F00044F81 /* MyListsPadViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
@@ -1270,6 +1289,7 @@
 				8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */,
 				8B164B8A18A97966001803A9 /* Watched.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,
+				8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */,
 				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);

@@ -26,9 +26,28 @@
 
 -(id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        
+        //////////////////////////////////////////////////////
+        //Parallax effect
+        UIInterpolatingMotionEffect* xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
+                                                                                              type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        xAxis.minimumRelativeValue = @-15.0;
+        xAxis.maximumRelativeValue = @15.0;
+        
+        UIInterpolatingMotionEffect* yAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y"
+                                                                                              type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        yAxis.minimumRelativeValue = @-15.0;
+        yAxis.maximumRelativeValue = @15.0;
+        
+        UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
+        group.motionEffects = @[xAxis, yAxis];
+        [self addMotionEffect:group];
+        ////////////////////////////////////////////////////////////
+        
         self.backgroundColor = [UIColor whiteColor];
         self.layer.cornerRadius = 5.0;
         self.alpha = 0.0;
+        self.transform = CGAffineTransformMakeScale(0.5, 0.5);
         
         self.label = [[UILabel alloc] init];
         self.label.text = @"Califica esta producción";
@@ -64,12 +83,16 @@
 }
 
 -(void)animateTransition {
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                           delay:0.0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(){
                          self.alpha = 1.0;
+                         self.transform = CGAffineTransformIdentity;
                      } completion:^(BOOL success){}];
+    
 }
 
 -(void)createStarsImageViews {
@@ -133,24 +156,26 @@
     [self.delegate cancelButtonWasTappedInRateView:self];
     [UIView animateWithDuration:0.3
                           delay:0.0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(){
                          self.alpha = 0.0;
-                     } completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
+                         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+                     } completion:^(BOOL success){}];
 }
 
 -(void)rateButtonTapped {
     [self.delegate rateButtonWasTappedInRateView:self withRate:self.goldStars];
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                           delay:0.0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(){
                          self.alpha = 0.0;
-                     } completion:^(BOOL finished){
-                         [self removeFromSuperview];
-                     }];
+                         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+                     } completion:^(BOOL success){}];
 }
 
 @end

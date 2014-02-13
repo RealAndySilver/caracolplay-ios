@@ -15,13 +15,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "Product.h"
 #import "RateView.h"
 #import "Episode.h"
+#import "LargeProductionImageView.h"
 
-@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate>
+@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
 @property (strong, nonatomic) NSMutableArray *parsedEpisodesArray; //
+@property (strong, nonatomic) UIButton *seasonsButton;
 @property (strong, nonatomic) Product *production;
+@property (strong, nonatomic) UIView *opacityView;
 @end
 
 @implementation TelenovelSeriesDetailViewController
@@ -67,7 +70,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
         _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Esta es la descripción de la producción", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
+                            @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Esta es la descripción de la producción", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
     }
     return _productionInfo;
 }
@@ -111,9 +114,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                               90.0,
                                                                                               140.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
+    secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
+    
+    //Create a tap gesture and add it to the secondary image view to allow the user
+    //to open the image in bigger size
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(imageTapped:)];
+    [secondaryMovieEventImageView addGestureRecognizer:tapGestureRecognizer];
     
     //3. Create the label to display the movie/event name
     UILabel *movieEventNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
@@ -130,11 +140,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self createStarsImageViewsWithGoldStarsNumber:4];
     
     //'calificar' button setup
-    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(260.0, 108.0, 50.0, 30.0)];
+    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(250.0, 108.0, 60.0, 30.0)];
     [rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
     [rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
-    rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
+    rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:rateButton];
     
     //5. Create a button to see the movie/event trailer
@@ -160,8 +170,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //7. Create a text view to display the detail of the event/movie
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
     
-    /*detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";*/
-    detailTextView.text = self.production.detailDescription;
+    detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";
+    //detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
     detailTextView.textColor = [UIColor whiteColor];
     detailTextView.editable = NO;
@@ -170,8 +180,24 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     detailTextView.font = [UIFont systemFontOfSize:13.0];
     [self.view addSubview:detailTextView];
     
+    if (self.production.hasSeasons) {
+        //'Temporadas' button setup
+        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 330.0, self.view.frame.size.width - 20.0, 44.0)];
+        [self.seasonsButton setTitle:@"Temporada 1" forState:UIControlStateNormal];
+        self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [self.seasonsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.view addSubview:self.seasonsButton];
+    }
+    
+    CGFloat tableViewOriginY;
+    if (self.production.hasSeasons) {
+        tableViewOriginY = 370.0;
+    } else {
+        tableViewOriginY = 330.0;
+    }
     //8. Create a TableView to diaply the list of chapters
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 230.0, self.view.frame.size.width, self.view.frame.size.height - 220.0 - 44.0) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - 220.0 - 44.0) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -237,9 +263,23 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Actions 
 
+-(void)imageTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
+    LargeProductionImageView *largeImageView = [[LargeProductionImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [largeImageView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+                                       placeholder:nil
+                                   completionBlock:nil
+                                      failureBlock:nil];
+    [self.tabBarController.view addSubview:largeImageView];
+}
+
 -(void)showRateView {
+    self.opacityView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.6;
+    [self.tabBarController.view addSubview:self.opacityView];
     RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0)];
-    [self.view addSubview:rateView];
+    rateView.delegate = self;
+    [self.tabBarController.view addSubview:rateView];
 }
 
 -(void)shareProduction {
@@ -248,6 +288,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                         cancelButtonTitle:@"Volver"
                    destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
+#pragma mark - RateViewDelegate
+
+-(void)rateButtonWasTappedInRateView:(RateView *)rateView withRate:(int)rate {
+    self.opacityView.alpha = 0.0;
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+}
+
+-(void)cancelButtonWasTappedInRateView:(RateView *)rateView {
+    self.opacityView.alpha = 0.0;
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -277,7 +331,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         }
     }
 }
-
 
 #pragma mark - Interface Orientation
 
