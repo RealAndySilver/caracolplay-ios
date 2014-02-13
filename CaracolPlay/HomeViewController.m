@@ -8,7 +8,6 @@
 
 #import "HomeViewController.h"
 #import "Featured.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "JMImageCache.h"
 
 @interface HomeViewController ()

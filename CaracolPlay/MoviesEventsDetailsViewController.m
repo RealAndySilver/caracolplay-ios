@@ -14,13 +14,6 @@
 static NSString *const cellIdentifier = @"CellIdentifier";
 
 @interface MoviesEventsDetailsViewController () <UIActionSheetDelegate>
-@property (strong, nonatomic) NSMutableArray *starsImageViewsArray;
-@property (nonatomic) int goldStars;
-@property (strong, nonatomic) UIImageView *starImageView1;
-@property (strong, nonatomic) UIImageView *starImageView2;
-@property (strong, nonatomic) UIImageView *starImageView3;
-@property (strong, nonatomic) UIImageView *starImageView4;
-@property (strong, nonatomic) UIImageView *starImageView5;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
@@ -67,7 +60,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self parseProductionInfo];
-    self.goldStars = [self.production.rate intValue];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.name;
     [self UISetup];
@@ -125,7 +117,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    [self createStarsImageViews];
+    [self createStarsImageViewsWithGoldStarsNumber:[self.production.rate intValue]];
     
     //'calificar' button setup
     UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(260.0, 112.0, 50.0, 30.0)];
@@ -221,7 +213,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecommendedProdCollectionViewCell *cell = (RecommendedProdCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"image_url"]] placeholder:nil completionBlock:nil failureBlock:nil];
+    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     return cell;
 }
 
@@ -238,6 +230,25 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Custom Methods
 
+-(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
+    for (int i = 0; i < 5; i++) {
+        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120 + (i*20),
+                                                                                   110.0,
+                                                                                   20.0,
+                                                                                   20.0)];
+        starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if (goldStars > i) {
+            starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+        } else {
+            starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
+        }
+        starImageView.clipsToBounds = YES;
+        starImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.view addSubview:starImageView];
+        [self.view bringSubviewToFront:starImageView];
+    }
+}
+
 -(void)showRateView {
     RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0)];
     [self.view addSubview:rateView];
@@ -249,62 +260,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                        cancelButtonTitle:@"Volver"
                   destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
-}
-
--(void)createStarsImageViews {
-    
-    self.starImageView1 = [self createStarImageViewAtPosition:0];
-    self.starImageView2 = [self createStarImageViewAtPosition:1];
-    self.starImageView3 = [self createStarImageViewAtPosition:2];
-    self.starImageView4 = [self createStarImageViewAtPosition:3];
-    self.starImageView5 = [self createStarImageViewAtPosition:4];
-    
-    //We have to add the views to an array to access them using an index, in the method
-    //-modifyGoldStarNumber, which is called when the user tap a star.
-    self.starsImageViewsArray = [NSMutableArray arrayWithObjects:self.starImageView1, self.starImageView2, self.starImageView3, self.starImageView4, self.starImageView5, nil];
-    
-    [self.view addSubview:self.starImageView1];
-    [self.view addSubview:self.starImageView2];
-    [self.view addSubview:self.starImageView3];
-    [self.view addSubview:self.starImageView4];
-    [self.view addSubview:self.starImageView5];
-}
-
--(UIImageView *)createStarImageViewAtPosition:(NSUInteger)position {
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(starImageViewTap:)];
-    tapGesture.numberOfTapsRequired = 1;
-    
-    UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(115.0 + (position*30),
-                                                                  self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0,
-                                                                  20.0,
-                                                                  20.0)];
-    starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    if (self.goldStars > position) {
-        starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
-    }
-    starImageView.clipsToBounds = YES;
-    starImageView.tag = position;
-    starImageView.userInteractionEnabled = YES;
-    [starImageView addGestureRecognizer:tapGesture];
-    starImageView.contentMode = UIViewContentModeScaleAspectFill;
-    return starImageView;
-}
-
--(void)starImageViewTap:(UITapGestureRecognizer *)tapGesture {
-    self.goldStars = tapGesture.view.tag;
-    [self modifyGoldStarsNumber:self.goldStars];
-}
-
--(void)modifyGoldStarsNumber:(NSInteger)goldStarsNumber {
-    for (int i = 0; i < 5; i++) {
-        UIImageView *starImageView = self.starsImageViewsArray[i];
-        if (goldStarsNumber >= i) {
-            starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
-        } else {
-            starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
-        }
-    }
 }
 
 #pragma mark - UIActionSheetDelegate 

@@ -18,30 +18,58 @@
 @property (strong, nonatomic) NSArray *starsImageViewsArray;
 @property (strong, nonatomic) UILabel *label;
 @property (nonatomic) int goldStars;
+@property (strong, nonatomic) UIButton *rateButton;
+@property (strong, nonatomic) UIButton *cancelButton;
 @end
 
 @implementation RateView
 
 -(id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor grayColor];
+        self.backgroundColor = [UIColor whiteColor];
         self.layer.cornerRadius = 5.0;
-        self.alpha = 1.0;
+        self.alpha = 0.0;
         
         self.label = [[UILabel alloc] init];
         self.label.text = @"Califica esta producción";
-        self.label.textColor = [UIColor whiteColor];
+        self.label.textColor = [UIColor darkGrayColor];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font = [UIFont boldSystemFontOfSize:12.0];
         [self addSubview:self.label];
+        
+        self.rateButton = [[UIButton alloc] init];
+        [self.rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
+        [self.rateButton addTarget:self action:@selector(rateButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        self.rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
+        [self.rateButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+        [self addSubview:self.rateButton];
+        
+        self.cancelButton = [[UIButton alloc] init];
+        [self.cancelButton setTitle:@"Cancelar" forState:UIControlStateNormal];
+        [self.cancelButton addTarget:self action:@selector(cancelButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        [self.cancelButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+        self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
+        [self addSubview:self.cancelButton];
     }
     return self;
 }
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    self.label.frame = CGRectMake(self.bounds.size.width/2 - 80.0, 10.0, 160.0, 30.0);
+    self.label.frame = CGRectMake(self.bounds.size.width/2 - 80.0, 4.0, 160.0, 30.0);
+    self.rateButton.frame = CGRectMake(0.0, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
+    self.cancelButton.frame = CGRectMake(self.bounds.size.width/2, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
     [self createStarsImageViews];
+    [self animateTransition];
+}
+
+-(void)animateTransition {
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(){
+                         self.alpha = 1.0;
+                     } completion:^(BOOL success){}];
 }
 
 -(void)createStarsImageViews {
@@ -74,6 +102,7 @@
                                                                                20.0)];
     starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     starImageView.clipsToBounds = YES;
+    starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
     starImageView.tag = position;
     starImageView.userInteractionEnabled = YES;
     [starImageView addGestureRecognizer:tapGesture];
@@ -96,6 +125,32 @@
             starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
         }
     }
+}
+
+#pragma mark - Button Actions 
+
+-(void)cancelButtonTapped {
+    [self.delegate cancelButtonWasTappedInRateView:self];
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(){
+                         self.alpha = 0.0;
+                     } completion:^(BOOL finished){
+                         [self removeFromSuperview];
+                     }];
+}
+
+-(void)rateButtonTapped {
+    [self.delegate rateButtonWasTappedInRateView:self withRate:self.goldStars];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(){
+                         self.alpha = 0.0;
+                     } completion:^(BOOL finished){
+                         [self removeFromSuperview];
+                     }];
 }
 
 @end

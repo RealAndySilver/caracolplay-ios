@@ -161,6 +161,8 @@
 		A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A9B77518A3047400D6D222 /* SearchPadViewController.m */; };
 		A0A9B77918A3073900D6D222 /* SearchBarPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77718A3073900D6D222 /* SearchBarPad.png */; };
 		A0A9B77A18A3073900D6D222 /* SearchBarPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */; };
+		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
+		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -431,6 +433,8 @@
 		A0A9B77518A3047400D6D222 /* SearchPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchPadViewController.m; path = iPadVC/SearchPadViewController.m; sourceTree = "<group>"; };
 		A0A9B77718A3073900D6D222 /* SearchBarPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarPad.png; path = Resources/Images/iPad/SearchBarPad.png; sourceTree = "<group>"; };
 		A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchBarPad@2x.png"; path = "Resources/Images/iPad/SearchBarPad@2x.png"; sourceTree = "<group>"; };
+		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
+		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -959,6 +963,8 @@
 			children = (
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				A0CC06C718AC305B0051097F /* SmallPlaceholder.png */,
+				A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */,
 				8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */,
 				8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */,
 				A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */,
@@ -1118,6 +1124,7 @@
 				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
 				8BA9B27518A0107E003DBBDC /* BackgroundIngresarPad@2x.png in Resources */,
 				8BA9B27418A0107E003DBBDC /* BackgroundIngresarPad.png in Resources */,
+				A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */,
 				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
 				8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */,
 				A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */,
@@ -1188,6 +1195,7 @@
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
 				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
 				8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */,
+				A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

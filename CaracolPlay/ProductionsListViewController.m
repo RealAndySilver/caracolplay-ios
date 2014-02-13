@@ -22,7 +22,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(NSArray *)productionsArray {
     if (!_productionsArray) {
-        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @4,
+        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text" : @"No te pierda...", @"rate" : @4,
                                 @"id" : @"48393", @"category_id" : @"23432", @"image_url" : @"http://www.mundonets.com/images/johanna-cruz-laura-ramos.jpg"},
                               
                               @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @5,
@@ -94,7 +94,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     }
     productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
     NSURL *productionImageURL = [NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]];
-    [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:nil completionBlock:nil failureBlock:nil];
+    [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue];
     productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
