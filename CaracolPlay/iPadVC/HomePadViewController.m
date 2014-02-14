@@ -19,6 +19,7 @@
 @property (strong, nonatomic) UIPageControl *pageControl;
 @property (strong, nonatomic) NSArray *unparsedFeaturedProductionsInfo;
 @property (strong, nonatomic) NSMutableArray *parsedFeaturedProductions;
+@property (strong, nonatomic) NSTimer *carouselScrollingTimer;
 @property (strong, nonatomic) iCarousel *carousel;
 @end
 
@@ -41,12 +42,19 @@
                                                @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://www.ecbloguer.com/diablog/wp-content/uploads/2012/01/Yo-me-llamo-DiabloG.jpg", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
                                              
                                              @{@"name": @"La ronca de oro", @"type" : @"Peliculas", @"feature_text": @"Llega la ronca", @"id": @"211",
-                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://2.bp.blogspot.com/-q96yFMADKm8/Urt_ZYchqWI/AAAAAAAADY0/Oe6F-0PQdRc/s1600/caracol%2B-%2Bla%2Bronca%2Bde%2Boro.png", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"}];
+                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://2.bp.blogspot.com/-q96yFMADKm8/Urt_ZYchqWI/AAAAAAAADY0/Oe6F-0PQdRc/s1600/caracol%2B-%2Bla%2Bronca%2Bde%2Boro.png", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
+                                             
+                                             @{@"name": @"Tu Voz Estéreo", @"type" : @"Series", @"feature_text": @"Los últimos casos...", @"id": @"211",
+                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://static.canalcaracol.com/sites/caracoltv.com/files/imgs_12801024/fdb9f15a1610815e39b2dcbb298e223f.jpg", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"}];
     }
     return _unparsedFeaturedProductionsInfo;
 }
 
 #pragma mark - UI Setup & Initilization Methods
+
+-(void)setupAutomaticCarouselScrolling {
+    self.carouselScrollingTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(scrollCarousel) userInfo:nil repeats:YES];
+}
 
 -(void)parseFeaturedInfo {
     self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
@@ -86,11 +94,28 @@
     [self UISetup];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self setupAutomaticCarouselScrolling];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.carouselScrollingTimer invalidate];
+    self.carouselScrollingTimer = nil;
+}
+
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     self.pageControl.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, self.view.bounds.size.height - 100.0, 300.0, 30.0);
     self.carousel.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - 44.0);
     NSLog(@"carousel frame: %@", NSStringFromCGRect(self.carousel.frame));
+}
+
+#pragma mark - Actions 
+
+-(void)scrollCarousel {
+    [self.carousel scrollByNumberOfItems:1 duration:1.0];
 }
 
 #pragma mark - iCarouselDataSource
@@ -159,7 +184,7 @@
              return 0.2;*/
             
         case iCarouselOptionSpacing:
-            return 1.0;
+            return 0.5;
             
         default:
             return value;
@@ -168,11 +193,27 @@
 
 #pragma mark - UICarouselDelegate
 
+-(void)carouselWillBeginDragging:(iCarousel *)carousel {
+    NSLog(@"me empezaron a draggear");
+    [self.carouselScrollingTimer invalidate];
+    self.carouselScrollingTimer = nil;
+}
+
+-(void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
+    NSLog(@"me terminaron de draggear");
+    [self setupAutomaticCarouselScrolling];
+}
+
 -(void)carouselDidScroll:(iCarousel *)carousel {
     self.pageControl.currentPage = carousel.currentItemIndex;
 }
 
 -(void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
+    
+    //Stop the automatic scrolling of the carousel
+    [self.carouselScrollingTimer invalidate];
+    self.carouselScrollingTimer = nil;
+    
     if (((Featured *)self.parsedFeaturedProductions[index]).isCampaign) {
         if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:((Featured *)self.parsedFeaturedProductions[index]).campaignURL]]) {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Error abriendo la URL. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

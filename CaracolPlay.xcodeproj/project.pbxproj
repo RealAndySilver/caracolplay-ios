@@ -151,7 +151,6 @@
 		A05C44951899CEA700E72135 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C44941899CEA700E72135 /* FXBlurView.m */; };
 		A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C44961899CEF000E72135 /* Accelerate.framework */; };
 		A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */; };
-		A06C2D6618A3FA3F00044F81 /* MyListsPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A06C2D6518A3FA3F00044F81 /* MyListsPadViewController.m */; };
 		A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */; };
 		A06C2D6A18A41DD700044F81 /* MoviesOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */; };
 		A0A9B76518A2E86F00D6D222 /* SeriesDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A9B76418A2E86F00D6D222 /* SeriesDetailPadViewController.m */; };
@@ -164,8 +163,13 @@
 		A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A9B77518A3047400D6D222 /* SearchPadViewController.m */; };
 		A0A9B77918A3073900D6D222 /* SearchBarPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77718A3073900D6D222 /* SearchBarPad.png */; };
 		A0A9B77A18A3073900D6D222 /* SearchBarPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */; };
+		A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AB21DB18AEB68A00424B42 /* VideoPlayerPadViewController.m */; };
 		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
 		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
+		A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */; };
+		A0D1DBC918AEDBD8007A434F /* MyListsDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */; };
+		A0D1DBCC18AEE001007A434F /* MyListsOrangeTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */; };
+		A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -425,8 +429,6 @@
 		A05C44941899CEA700E72135 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		A05C44961899CEF000E72135 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FondoBarraBusqueda.png; path = Resources/Images/FondoBarraBusqueda.png; sourceTree = "<group>"; };
-		A06C2D6418A3FA3F00044F81 /* MyListsPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsPadViewController.h; path = iPadVC/MyListsPadViewController.h; sourceTree = "<group>"; };
-		A06C2D6518A3FA3F00044F81 /* MyListsPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsPadViewController.m; path = iPadVC/MyListsPadViewController.m; sourceTree = "<group>"; };
 		A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoviesOpacityPattern.png; path = Resources/Images/MoviesOpacityPattern.png; sourceTree = "<group>"; };
 		A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoviesOpacityPattern@2x.png"; path = "Resources/Images/MoviesOpacityPattern@2x.png"; sourceTree = "<group>"; };
 		A0A9B76318A2E86F00D6D222 /* SeriesDetailPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SeriesDetailPadViewController.h; path = iPadVC/SeriesDetailPadViewController.h; sourceTree = "<group>"; };
@@ -442,8 +444,16 @@
 		A0A9B77518A3047400D6D222 /* SearchPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchPadViewController.m; path = iPadVC/SearchPadViewController.m; sourceTree = "<group>"; };
 		A0A9B77718A3073900D6D222 /* SearchBarPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarPad.png; path = Resources/Images/iPad/SearchBarPad.png; sourceTree = "<group>"; };
 		A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchBarPad@2x.png"; path = "Resources/Images/iPad/SearchBarPad@2x.png"; sourceTree = "<group>"; };
+		A0AB21DA18AEB68A00424B42 /* VideoPlayerPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoPlayerPadViewController.h; path = iPadVC/VideoPlayerPadViewController.h; sourceTree = "<group>"; };
+		A0AB21DB18AEB68A00424B42 /* VideoPlayerPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoPlayerPadViewController.m; path = iPadVC/VideoPlayerPadViewController.m; sourceTree = "<group>"; };
 		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
 		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
+		A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsMasterPadViewController.h; path = iPadVC/MyListsMasterPadViewController.h; sourceTree = "<group>"; };
+		A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsMasterPadViewController.m; path = iPadVC/MyListsMasterPadViewController.m; sourceTree = "<group>"; };
+		A0D1DBC718AEDBD8007A434F /* MyListsDetailPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsDetailPadViewController.h; path = iPadVC/MyListsDetailPadViewController.h; sourceTree = "<group>"; };
+		A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsDetailPadViewController.m; path = iPadVC/MyListsDetailPadViewController.m; sourceTree = "<group>"; };
+		A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyListsOrangeTitle.png; path = Resources/Images/iPad/MyListsOrangeTitle.png; sourceTree = "<group>"; };
+		A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyListsOrangeTitle@2x.png"; path = "Resources/Images/iPad/MyListsOrangeTitle@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -641,6 +651,8 @@
 		8B70019718A05402000B5C7B /* iPhone ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8BD52ADA1892AF6500792845 /* VideoPlayerViewController.h */,
+				8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */,
 				8BE8292E189BFD32003EE7A6 /* Loading & Login  */,
 				8BE82932189BFD8F003EE7A6 /* App Structure Controllers */,
 				8BE8292F189BFD4B003EE7A6 /* Home Section */,
@@ -682,6 +694,8 @@
 		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */,
+				A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */,
 				8BB5222318AAA2E00027CA59 /* SplitNavBarDetail.png */,
 				8BB5222418AAA2E00027CA59 /* SplitNavBarDetail@2x.png */,
 				8BB5221F18AA9BC60027CA59 /* CategoriesOrangeTitle.png */,
@@ -800,8 +814,6 @@
 			children = (
 				8B70019718A05402000B5C7B /* iPhone ViewControllers */,
 				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
-				8BD52ADA1892AF6500792845 /* VideoPlayerViewController.h */,
-				8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -867,6 +879,7 @@
 		8BE7FDE1189819740087A7E2 /* iPad ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A0AB21D918AEB62800424B42 /* Video Player */,
 				A06C2D6318A3FA2000044F81 /* MyLists Section */,
 				A0A9B77318A3045800D6D222 /* Search Section */,
 				8BE79D2818A1348D0049B64B /* Categories Section */,
@@ -1051,8 +1064,10 @@
 		A06C2D6318A3FA2000044F81 /* MyLists Section */ = {
 			isa = PBXGroup;
 			children = (
-				A06C2D6418A3FA3F00044F81 /* MyListsPadViewController.h */,
-				A06C2D6518A3FA3F00044F81 /* MyListsPadViewController.m */,
+				A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */,
+				A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */,
+				A0D1DBC718AEDBD8007A434F /* MyListsDetailPadViewController.h */,
+				A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */,
 			);
 			name = "MyLists Section";
 			sourceTree = "<group>";
@@ -1064,6 +1079,15 @@
 				A0A9B77518A3047400D6D222 /* SearchPadViewController.m */,
 			);
 			name = "Search Section";
+			sourceTree = "<group>";
+		};
+		A0AB21D918AEB62800424B42 /* Video Player */ = {
+			isa = PBXGroup;
+			children = (
+				A0AB21DA18AEB68A00424B42 /* VideoPlayerPadViewController.h */,
+				A0AB21DB18AEB68A00424B42 /* VideoPlayerPadViewController.m */,
+			);
+			name = "Video Player";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1183,6 +1207,7 @@
 				A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */,
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				8BA9B266189FFFD1003DBBDC /* InicioiPad.png in Resources */,
+				A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
 				8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */,
@@ -1216,6 +1241,7 @@
 				8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */,
 				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
+				A0D1DBCC18AEE001007A434F /* MyListsOrangeTitle.png in Resources */,
 				8BE7FDF5189829230087A7E2 /* BotonInicio.png in Resources */,
 				8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */,
 				A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */,
@@ -1259,12 +1285,13 @@
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
-				A06C2D6618A3FA3F00044F81 /* MyListsPadViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
+				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,
+				A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */,
 				8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */,
 				8B164B6F18A9549A001803A9 /* Episode.m in Sources */,
@@ -1281,6 +1308,7 @@
 				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
 				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
+				A0D1DBC918AEDBD8007A434F /* MyListsDetailPadViewController.m in Sources */,
 				8BB5221A18AA91A10027CA59 /* CategoriesDetailPadViewController.m in Sources */,
 				8BB5222D18AAE3380027CA59 /* RateView.m in Sources */,
 				8B70019B18A0547F000B5C7B /* MainTabBarPadController.m in Sources */,
@@ -1435,7 +1463,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (9JA65WT89C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -1450,7 +1478,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9B8B7950-F1F9-453D-B9C0-D16EA4D00DC7";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1476,7 +1504,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9B8B7950-F1F9-453D-B9C0-D16EA4D00DC7";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

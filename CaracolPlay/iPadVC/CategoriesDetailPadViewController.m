@@ -37,7 +37,19 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
                                 @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.cartagenacity.co/sites/default/files/field/image/yo-me-llamo.jpg"},
                               
                               @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"}];
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.canalcaracol.com/sites/caracoltv.com/files/imgs_12801024/fdb9f15a1610815e39b2dcbb298e223f.jpg"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.eldiario.com.co/uploads/userfiles/20100704/image/monica_alta%5B1%5D-copia.jpg"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://1.bp.blogspot.com/-5SeBwwOE0ak/T_4HH5Wj1YI/AAAAAAAAHw8/1aYXf8zxUNo/s1600/Stephanie%2BCayo%2BBLOG.png"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://p1.trrsf.com/image/fget/cf/619/464/images.terra.com/2013/06/12/seleccion-5.jpg"},];
     }
     return _productionsArray;
 }
@@ -99,15 +111,18 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
-     movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-     movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-     [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
-    
-    /*SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
-    seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:seriesDetailPadVC animated:YES completion:nil];*/
+    if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+        SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+        seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
+        
+    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
+        MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+        movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UIBarPositioningDelegate

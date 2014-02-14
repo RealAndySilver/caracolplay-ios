@@ -8,6 +8,7 @@
 
 #import "MovieDetailsPadViewController.h"
 #import "SeriesDetailPadViewController.h"
+#import "VideoPlayerPadViewController.h"
 #import <Social/Social.h>
 #import "Product.h"
 #import "JMImageCache.h"
@@ -110,7 +111,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.smallProductionImageView];
     
     //Stars view
-    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(170.0, 65.0, 100.0, 50.0) rate:[self.production.rate intValue]];
+    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.rate intValue]];
     [self.view addSubview:starsView];
     
     //Create a tap gesture and add it to the small image view, so when the user touches the image,
@@ -140,6 +141,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.watchTrailerButton];
     
     //6. Share button
@@ -156,6 +158,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionDetailTextView.text = self.production.detailDescription;
     /*self.productionDetailTextView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat.";*/
     self.productionDetailTextView.textColor = [UIColor whiteColor];
+    self.productionDetailTextView.userInteractionEnabled = NO;
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
     self.productionDetailTextView.font = [UIFont systemFontOfSize:17.0];
     [self.view addSubview:self.productionDetailTextView];
@@ -189,23 +192,28 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 650.0, 450.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 600.0);
     
     //Set subviews frame
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 25.0, 0.0, 25.0, 25.0);
     self.backgroundImageView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height/2 + 50.0);
     self.opaqueView.frame = self.backgroundImageView.frame;
-    self.smallProductionImageView.frame = CGRectMake(30.0, 30.0, 120.0, 185.0);
-    self.productionNameLabel.frame = CGRectMake(170.0, 25.0, self.view.bounds.size.width - 180.0, 30.0);
-    self.rateButton.frame = CGRectMake(330.0, 60.0, 140.0, 35.0);
-    self.watchTrailerButton.frame = CGRectMake(170.0, 100.0, 140.0, 35.0);
-    self.shareButton.frame = CGRectMake(330.0, 100.0, 140.0, 35.0);
-    self.productionDetailTextView.frame = CGRectMake(170.0, 150.0, 450.0, 100.0);
-    self.recommendedProductionsLabel.frame = CGRectMake(30.0, 280.0, 250.0, 30.0);
-    self.collectionView.frame = CGRectMake(0.0, 310.0, self.view.bounds.size.width, self.view.bounds.size.height - 310.0);
+    self.smallProductionImageView.frame = CGRectMake(30.0, 30.0, 160.0, 260.0);
+    self.productionNameLabel.frame = CGRectMake(210.0, 25.0, self.view.bounds.size.width - 180.0, 30.0);
+    self.rateButton.frame = CGRectMake(370.0, 60.0, 140.0, 35.0);
+    self.watchTrailerButton.frame = CGRectMake(210.0, 100.0, 140.0, 35.0);
+    self.shareButton.frame = CGRectMake(370.0, 100.0, 140.0, 35.0);
+    self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, 450.0, 100.0);
+    self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
+    self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
 }
 
 #pragma mark - Actions 
+
+-(void)watchTrailer {
+    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+}
 
 -(void)showRateView {
     self.opacityView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -250,7 +258,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 #pragma  mark - UICollectionViewDelegate 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(100.0, 120.0);
+    return CGSizeMake(120.0, 180.0);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

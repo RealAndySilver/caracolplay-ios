@@ -8,6 +8,7 @@
 
 #import "SeriesDetailPadViewController.h"
 #import "EpisodesPadTableViewCell.h"
+#import "VideoPlayerPadViewController.h"
 #import <Social/Social.h>
 #import "Product.h"
 #import "Episode.h"
@@ -164,6 +165,7 @@
     [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.watchTrailerButton];
     
     //6. Share button setup
@@ -233,6 +235,11 @@
 
 #pragma mark - Actions
 
+-(void)watchTrailer {
+    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+}
+
 -(void)showRateView {
     self.opacityView = [[UIView alloc] initWithFrame:self.view.frame];
     self.opacityView.backgroundColor = [UIColor blackColor];
@@ -295,6 +302,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (tableView.tag == 2) {
+        [self watchTrailer];
+    }
 }
 
 #pragma mark - RateViewDelegate

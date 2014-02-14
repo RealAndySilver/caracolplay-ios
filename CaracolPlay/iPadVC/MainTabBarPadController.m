@@ -11,7 +11,8 @@
 #import "CategoriesMasterPadViewController.h"
 #import "CategoriesDetailPadViewController.h"
 #import "SearchPadViewController.h"
-#import "MyListsPadViewController.h"
+#import "MyListsDetailPadViewController.h"
+#import "MyListsMasterPadViewController.h"
 
 @interface MainTabBarPadController ()
 
@@ -39,10 +40,13 @@
     
     if (!self.userDidSkipRegisterProcess) {
         //4. MyLists View
-        MyListsPadViewController *myListsPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsPad"];
-        [myListsPadViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+        UISplitViewController *myListsSplitViewController = [[UISplitViewController alloc] init];
+        MyListsMasterPadViewController *myListsMasterVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsMaster"];
+        MyListsDetailPadViewController *myListsDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
+        myListsSplitViewController.viewControllers = @[myListsMasterVC, myListsDetailVC];
+        [myListsSplitViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
         
-        self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsPadViewController];
+        self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsSplitViewController];
         return;
     }
     self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController];
