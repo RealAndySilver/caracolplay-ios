@@ -42,6 +42,7 @@
 		8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A018A0599F000B5C7B /* HomeScreenBackgroundPad.png */; };
 		8B7001A318A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */; };
 		8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7001A618A05AC3000B5C7B /* iCarousel.m */; };
+		8B98669B18AE911900AEA77A /* StarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B98669A18AE911900AEA77A /* StarsView.m */; };
 		8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25D189FF715003DBBDC /* LoadingiPad.png */; };
 		8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */; };
 		8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B262189FFB0D003DBBDC /* LoadingiPadViewController.m */; };
@@ -235,6 +236,8 @@
 		8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenBackgroundPad@2x.png"; path = "Resources/Images/iPad/HomeScreenBackgroundPad@2x.png"; sourceTree = "<group>"; };
 		8B7001A518A05AC3000B5C7B /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		8B7001A618A05AC3000B5C7B /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		8B98669918AE911900AEA77A /* StarsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StarsView.h; path = "Custom Views/StarsView.h"; sourceTree = "<group>"; };
+		8B98669A18AE911900AEA77A /* StarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StarsView.m; path = "Custom Views/StarsView.m"; sourceTree = "<group>"; };
 		8BA9B25D189FF715003DBBDC /* LoadingiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingiPad.png; path = Resources/Images/iPad/LoadingiPad.png; sourceTree = "<group>"; };
 		8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoadingiPad@2x.png"; path = "Resources/Images/iPad/LoadingiPad@2x.png"; sourceTree = "<group>"; };
 		8BA9B261189FFB0D003DBBDC /* LoadingiPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadingiPadViewController.h; path = iPadVC/LoadingiPadViewController.h; sourceTree = "<group>"; };
@@ -612,6 +615,8 @@
 				8BB5222C18AAE3380027CA59 /* RateView.m */,
 				8BDC828C18AD611600E72B0E /* LargeProductionImageView.h */,
 				8BDC828D18AD611600E72B0E /* LargeProductionImageView.m */,
+				8B98669918AE911900AEA77A /* StarsView.h */,
+				8B98669A18AE911900AEA77A /* StarsView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1289,6 +1294,7 @@
 				8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */,
 				8B164B8A18A97966001803A9 /* Watched.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,
+				8B98669B18AE911900AEA77A /* StarsView.m in Sources */,
 				8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */,
 				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
@@ -1429,7 +1435,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (9JA65WT89C)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -1444,6 +1450,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9B8B7950-F1F9-453D-B9C0-D16EA4D00DC7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1454,6 +1461,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -1468,6 +1476,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9B8B7950-F1F9-453D-B9C0-D16EA4D00DC7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

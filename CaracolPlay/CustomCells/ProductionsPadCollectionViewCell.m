@@ -38,7 +38,7 @@
     for (int i = 1; i < 6; i++) {
         UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0*i, 200.0, 20.0, 20.0)];
         starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        if (goldStars > i) {
+        if (goldStars >= i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
         }
         starImageView.clipsToBounds = YES;

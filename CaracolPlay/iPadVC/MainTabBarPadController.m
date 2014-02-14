@@ -37,11 +37,15 @@
     SearchPadViewController *searchPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchPad"];
     [searchPadViewController.tabBarItem initWithTitle:@"Buscar" image:[UIImage imageNamed:@"SearchTabBarIcon.png"] tag:3];
     
-    //4. MyLists View
-    MyListsPadViewController *myListsPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsPad"];
-    [myListsPadViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
-    
-    self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsPadViewController];
+    if (!self.userDidSkipRegisterProcess) {
+        //4. MyLists View
+        MyListsPadViewController *myListsPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsPad"];
+        [myListsPadViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+        
+        self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsPadViewController];
+        return;
+    }
+    self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController];
 }
 
 @end

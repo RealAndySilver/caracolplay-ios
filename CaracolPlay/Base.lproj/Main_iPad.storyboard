@@ -360,7 +360,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cop-ix-OKi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9g9-vG-4zb">
-                        <rect key="frame" x="0.0" y="0.0" width="646" height="616"/>
+                        <rect key="frame" x="0.0" y="0.0" width="670" height="626"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>

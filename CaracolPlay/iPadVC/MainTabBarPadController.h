@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MainTabBarPadController : UITabBarController
-
+@property (nonatomic) BOOL userDidSkipRegisterProcess;
 @end

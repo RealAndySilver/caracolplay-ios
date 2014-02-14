@@ -12,14 +12,36 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #import "ProductionsPadCollectionViewCell.h"
 #import "SeriesDetailPadViewController.h"
 #import "MovieDetailsPadViewController.h"
+#import "JMImageCache.h"
 
 @interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UICollectionView *collectionView;
+@property (strong, nonatomic) NSArray *productionsArray;
 @end
 
 @implementation CategoriesDetailPadViewController
+
+#pragma mark - Lazy Instantiation
+
+-(NSArray *)productionsArray {
+    if (!_productionsArray) {
+        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text" : @"No te pierda...", @"rate" : @4,
+                                @"id" : @"48393", @"category_id" : @"23432", @"image_url" : @"http://www.mundonets.com/images/johanna-cruz-laura-ramos.jpg"},
+                              
+                              @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @5,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg"},
+                              
+                              @{@"name": @"Yo me llamo", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @1,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.cartagenacity.co/sites/default/files/field/image/yo-me-llamo.jpg"},
+                              
+                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
+                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"}];
+    }
+    return _productionsArray;
+}
+
 
 -(void)UISetup {
     
@@ -59,13 +81,14 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #pragma mark - UICollectionViewDataSource
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 15;
+    return [self.productionsArray count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductionsPadCollectionViewCell *cell = (ProductionsPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:splitCollectionViewCellIdentifier forIndexPath:indexPath];
-    cell.productionImageView.image = [UIImage imageNamed:@"MentirasPerfectas2.jpg"];
-    cell.goldStars = 3;
+    [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.item][@"image_url"]]
+                                  placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    cell.goldStars = [self.productionsArray[indexPath.item][@"rate"] intValue];
     return cell;
 }
 
@@ -76,15 +99,15 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    /*MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+    MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
      movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
      movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-     [self presentViewController:movieDetailsPadVC animated:YES completion:nil];*/
+     [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
     
-    SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+    /*SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
     seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
     seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
+    [self presentViewController:seriesDetailPadVC animated:YES completion:nil];*/
 }
 
 #pragma mark - UIBarPositioningDelegate

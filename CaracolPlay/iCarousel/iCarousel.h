@@ -76,7 +76,6 @@ typedef enum
 }
 iCarouselType;
 
-
 typedef enum
 {
     iCarouselOptionWrap = 0,

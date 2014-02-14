@@ -10,6 +10,7 @@
 #import "IngresarPadViewController.h"
 #import "SuscribePadViewController.h"
 #import "RedeemCodePadViewController.h"
+#import "MainTabBarPadController.h"
 
 @interface LoginPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -60,6 +61,7 @@
     [self.skipButton setTitle:@"Saltar" forState:UIControlStateNormal];
     [self.skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     self.skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.skipButton];
 }
 
@@ -82,6 +84,12 @@
 }
 
 #pragma mark - Custom Methods
+
+-(void)skipAndGoToHomeScreen {
+    MainTabBarPadController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    mainTabBarVC.userDidSkipRegisterProcess = YES;
+    [self presentViewController:mainTabBarVC animated:YES completion:nil];
+}
 
 -(void)showRedeemVC {
     RedeemCodePadViewController *redeemCodePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCode"];
