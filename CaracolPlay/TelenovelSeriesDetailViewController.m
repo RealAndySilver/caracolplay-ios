@@ -16,6 +16,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "RateView.h"
 #import "Episode.h"
 #import "LargeProductionImageView.h"
+#import "StarsView.h"
+#import "Reachability.h"
+#import "VideoPlayerViewController.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -46,7 +49,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                     @"category_id": @"7816234",
                                     @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
                                     @"watched_on": @"2014-02-05",
-                                    @"is_3g": @NO,},
+                                    @"is_3g": @YES,},
                                   
                                   @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"El rescate de pedro final",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
@@ -69,7 +72,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
+        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @4, @"my_rate" : @3, @"category_id" : @"59393",
                             @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Esta es la descripción de la producción", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
     }
     return _productionInfo;
@@ -137,12 +140,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    [self createStarsImageViewsWithGoldStarsNumber:4];
+    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 110.0, 80.0, 16.0) rate:[self.production.rate intValue]];
+    [self.view addSubview:starsView];
     
     //'calificar' button setup
-    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(250.0, 108.0, 60.0, 30.0)];
+    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 115.0, 90.0, 30.0)];
     [rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
-    [rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
     rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:rateButton];
@@ -238,26 +243,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - Custom Methods
-
--(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
-    for (int i = 0; i < 5; i++) {
-        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120 + (i*20),
-                                                                                   110.0,
-                                                                                   20.0,
-                                                                                   20.0)];
-        starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        if (goldStars > i) {
-            starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"No estás conectado a internet. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else if (status == ReachableViaWWAN) {
+        if ([self.production.episodes[indexPath.row][@"is_3g"] boolValue]) {
+            VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            [self.navigationController pushViewController:videoPlayerVC animated:YES];
         } else {
-            starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
-        starImageView.clipsToBounds = YES;
-        starImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.view addSubview:starImageView];
-        [self.view bringSubviewToFront:starImageView];
+    } else if (status == ReachableViaWiFi) {
+        VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self.navigationController pushViewController:videoPlayerVC animated:YES];
     }
 }
 

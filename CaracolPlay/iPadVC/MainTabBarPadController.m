@@ -13,6 +13,7 @@
 #import "SearchPadViewController.h"
 #import "MyListsDetailPadViewController.h"
 #import "MyListsMasterPadViewController.h"
+#import "MorePadViewController.h"
 
 @interface MainTabBarPadController ()
 
@@ -46,7 +47,11 @@
         myListsSplitViewController.viewControllers = @[myListsMasterVC, myListsDetailVC];
         [myListsSplitViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
         
-        self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsSplitViewController];
+        //5 'Mas' viewcontroller
+        MorePadViewController *morePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MorePad"];
+        [morePadViewController.tabBarItem initWithTitle:@"Más" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+        
+        self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsSplitViewController, morePadViewController];
         return;
     }
     self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController];

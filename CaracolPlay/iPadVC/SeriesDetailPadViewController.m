@@ -17,6 +17,7 @@
 #import "RateView.h"
 #import "StarsView.h"
 #import "MyUtilities.h"
+#import "Reachability.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -74,7 +75,7 @@
                                     @"category_id": @"7816234",
                                     @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
                                     @"watched_on": @"2014-02-05",
-                                    @"is_3g": @NO,},
+                                    @"is_3g": @YES,},
                                   ];
     }
     return _unparsedEpisodesInfo;
@@ -303,7 +304,25 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView.tag == 2) {
-        [self watchTrailer];
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        
+        if (status == NotReachable) {
+            NSLog(@"no hay internet");
+            [[[UIAlertView alloc] initWithTitle:nil message:@"No es posible ver el video. Por favor revisa que tu dispositivo esté conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            NSLog(@"si hay internet pero 3g");
+            if (((Episode *)self.production.episodes[indexPath.row]).is3G) {
+                [self watchTrailer];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta para ver esta producción. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else if (status == ReachableViaWiFi) {
+            NSLog(@"hay wifi");
+            [self watchTrailer];
+        }
     }
 }
 

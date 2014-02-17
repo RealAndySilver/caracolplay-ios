@@ -52,7 +52,7 @@
         //5. Fifth view of the TabBar - My Account
         ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
         MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
-        [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"ConfigTabBarIcon.png"] tag:5];
+        [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
         
         self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myListsNavigationController, myAccountNavigationController];
         return;

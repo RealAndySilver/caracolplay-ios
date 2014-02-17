@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MyListsDetailPadViewController : UIViewController
-
+@property (strong, nonatomic) NSMutableArray *episodes;
 @end

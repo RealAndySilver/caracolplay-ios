@@ -7,10 +7,12 @@
 //
 
 #import "MoviesEventsDetailsViewController.h"
+#import "TelenovelSeriesDetailViewController.h"
 #import "Product.h"
 #import "JMImageCache.h"
 #import "RateView.h"
 #import "LargeProductionImageView.h"
+#import "StarsView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -30,7 +32,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
+        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @4, @"my_rate" : @3, @"category_id" : @"59393",
                             @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Esta es la descripción de la producción", @"episodes" : @[], @"season_list" : @[]};
     }
     return _productionInfo;
@@ -41,27 +43,34 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         _recommendedProductions = @[@{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
                                       @"image_url": @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
                                     
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
                                       @"image_url": @"http://www.eltiempo.com/entretenimiento/tv/IMAGEN/IMAGEN-8759821-2.png"},
                                     
                                     @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
                                       @"image_url": @"http://www.bluradio.com/sites/default/files/la_voz_colombia.jpg"},
                                     
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
+                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
                                       @"image_url": @"http://hispanic-tv.jumptv.com/images/2008/09/18/diaadiatucasa_2.png"}];
     }
     return _recommendedProductions;
 }
 
--(void)parseProductionInfo {
-    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
+-(Product *)production {
+    if (!_production) {
+        _production = [[Product alloc] initWithDictionary:self.productionInfo];
+    }
+    return _production;
 }
+
+/*-(void)parseProductionInfo {
+    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
+}*/
 
 #pragma mark - View Lifecycle
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self parseProductionInfo];
+    //[self parseProductionInfo];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.name;
     [self UISetup];
@@ -124,12 +133,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    [self createStarsImageViewsWithGoldStarsNumber:[self.production.rate intValue]];
+    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 110.0, 80.0, 16.0) rate:[self.production.rate intValue]];
+    [self.view addSubview:starsView];
+    [self.view bringSubviewToFront:starsView];
     
     //'calificar' button setup
-    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(260.0, 112.0, 50.0, 30.0)];
+    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 112.0, 90.0, 30.0)];
     [rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
-    [rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
     rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
     [self.view addSubview:rateButton];
@@ -185,7 +197,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     collectionViewFlowLayout.minimumInteritemSpacing = 0;
     collectionViewFlowLayout.minimumLineSpacing = 0;
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 30.0, grayView.frame.size.width, grayView.frame.size.height - 44.0 - 30.0) collectionViewLayout:collectionViewFlowLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 30.0, grayView.frame.size.width, 130.0) collectionViewLayout:collectionViewFlowLayout];
     collectionView.showsHorizontalScrollIndicator = NO;
     collectionView.dataSource = self;
     [collectionView registerClass:[RecommendedProdCollectionViewCell class] forCellWithReuseIdentifier:cellIdentifier];
@@ -231,8 +243,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
-    [self.navigationController pushViewController:moviesEventDetail animated:YES];
+    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+        MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        [self.navigationController pushViewController:moviesEventDetail animated:YES];
+        
+    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
+        TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+        [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
+    }
 }
 
 #pragma mark - Custom Methods
@@ -244,25 +262,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                   completionBlock:nil
                                      failureBlock:nil];
     [self.tabBarController.view addSubview:largeProdView];
-}
-
--(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
-    for (int i = 0; i < 5; i++) {
-        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120 + (i*20),
-                                                                                   110.0,
-                                                                                   20.0,
-                                                                                   20.0)];
-        starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        if (goldStars > i) {
-            starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
-        } else {
-            starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];
-        }
-        starImageView.clipsToBounds = YES;
-        starImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.view addSubview:starImageView];
-        [self.view bringSubviewToFront:starImageView];
-    }
 }
 
 -(void)showRateView {

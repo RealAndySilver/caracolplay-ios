@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSArray *unparsedFeaturedProductionsInfo;
 @property (strong, nonatomic) NSMutableArray *parsedFeaturedProductions; //Of Featured
 @property (nonatomic) int numberOfPages;
+@property (strong, nonatomic) NSTimer *automaticScrollTimer;
+@property (nonatomic) NSInteger automaticCounter;
 @end
 
 @implementation HomeViewController
@@ -91,21 +93,39 @@
     [super viewDidLoad];
     [self parseFeaturedInfo];
     [self UISetup];
+    self.automaticCounter = 2;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [self.automaticScrollTimer invalidate];
+    self.automaticScrollTimer = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    [self startScrollingTimer];
 }
 
 #pragma mark - Custom Methods
 
+-(void)startScrollingTimer {
+    self.automaticScrollTimer = [NSTimer scheduledTimerWithTimeInterval:4.0
+                                                                 target:self
+                                                               selector:@selector(scrollFeaturedProductions)
+                                                               userInfo:nil
+                                                                repeats:YES];
+}
+
 -(void)tappedFeaturedProduction:(UITapGestureRecognizer *)tapGesture {
+    
+    // Invalidate the automatic scrolling timer
+    [self.automaticScrollTimer invalidate];
+    self.automaticScrollTimer = nil;
+    
     Featured *featuredProduction = self.parsedFeaturedProductions[self.pageControl.currentPage];
     
     if (featuredProduction.isCampaign) {
@@ -189,6 +209,12 @@
     [self.scrollView addSubview:page];
 }
 
+-(void)scrollFeaturedProductions {
+    [self.scrollView setContentOffset:CGPointMake(self.scrollView.bounds.size.width*self.automaticCounter, 0.0) animated:YES];
+    self.automaticCounter ++;
+    NSLog(@"el contador está en %d", self.automaticCounter);
+}
+
 #pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -196,6 +222,27 @@
     float fractionalPage = self.scrollView.contentOffset.x / pageWidth;
     NSInteger page = lroundf(fractionalPage);
     self.pageControl.currentPage = page - 1;
+}
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    NSLog(@"terminé de animarme");
+    if (self.scrollView.contentOffset.x < 320.0) {
+        //the user scroll from page 1 to the left, so we have to set the content offset
+        //of the scroll view to the last page
+        [self.scrollView setContentOffset:CGPointMake(320.0*self.numberOfPages, 0.0) animated:NO];
+        self.pageControl.currentPage = [self.parsedFeaturedProductions count] - 1;
+    } else if (self.scrollView.contentOffset.x >= 320 * (self.numberOfPages + 1)) {
+        NSLog(@"llegué al final");
+        [self.scrollView setContentOffset:CGPointMake(320.0, 0.0) animated:NO];
+        self.pageControl.currentPage = 0;
+        self.automaticCounter = 2;
+    }
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    NSLog(@"empezé a draggearme");
+    [self.automaticScrollTimer invalidate];
+    self.automaticScrollTimer = nil;
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -209,16 +256,13 @@
         self.pageControl.currentPage = 0;
     }
     NSLog(@"Estoy en la página %d", self.pageControl.currentPage);
+    self.automaticCounter = self.pageControl.currentPage + 2;
+    NSLog(@"el contador está en %d", self.automaticCounter);
+    [self startScrollingTimer];
 }
 
 - (NSUInteger) supportedInterfaceOrientations{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        NSLog(@"Iphone");
-        return UIInterfaceOrientationMaskPortrait;
-    } else {
-        NSLog(@"iPad");
-        return UIInterfaceOrientationMaskLandscape;
-    }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

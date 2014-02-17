@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="7Eb-cz-isR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="7Eb-cz-isR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -213,47 +213,6 @@
             </objects>
             <point key="canvasLocation" x="766" y="-29"/>
         </scene>
-        <!--Categories Popover View Controller-->
-        <scene sceneID="6EQ-wH-K1Y">
-            <objects>
-                <viewController storyboardIdentifier="CategoriesPopover" id="jYf-9M-ULx" customClass="CategoriesPopoverViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Nch-RK-N9V"/>
-                        <viewControllerLayoutGuide type="bottom" id="hWe-2w-Hrk"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kXm-cn-P2u">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qso-Ov-GOX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="432" y="1099"/>
-        </scene>
-        <!--Categories Pad View Controller-->
-        <scene sceneID="cQO-aZ-aQq">
-            <objects>
-                <viewController storyboardIdentifier="Categories" id="kx0-4W-UGt" customClass="CategoriesPadViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="peK-3h-qk1"/>
-                        <viewControllerLayoutGuide type="bottom" id="Axj-o2-nXh"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yBg-Og-dwV">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qMj-zj-snA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="766" y="845"/>
-        </scene>
         <!--Search Pad View Controller-->
         <scene sceneID="Zr6-US-hhm">
             <objects>
@@ -272,7 +231,27 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CTo-sl-lLx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="766" y="1743"/>
+            <point key="canvasLocation" x="766" y="843"/>
+        </scene>
+        <!--More Pad View Controller-->
+        <scene sceneID="3JO-nS-K6b">
+            <objects>
+                <viewController storyboardIdentifier="MorePad" id="lBE-Be-2Aa" customClass="MorePadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Pgk-HM-CcR"/>
+                        <viewControllerLayoutGuide type="bottom" id="gJw-56-5cP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sqf-Xu-e5x">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KNH-13-tV5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="772" y="1732"/>
         </scene>
         <!--My Lists Master Pad View Controller-->
         <scene sceneID="8U7-9A-9N4">
@@ -290,7 +269,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fQk-qO-gLK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2380" y="-2081"/>
+            <point key="canvasLocation" x="772" y="-2293"/>
         </scene>
         <!--My Lists Detail Pad View Controller-->
         <scene sceneID="YwB-lw-2LM">
@@ -308,7 +287,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BsM-N2-wE0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3188" y="-2065"/>
+            <point key="canvasLocation" x="1580" y="-2277"/>
         </scene>
         <!--Categories Master Pad View Controller-->
         <scene sceneID="vDL-xm-ACu">
@@ -326,7 +305,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qji-HV-IYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2360" y="-839"/>
+            <point key="canvasLocation" x="772" y="-1175"/>
         </scene>
         <!--Categories Detail Pad View Controller-->
         <scene sceneID="LTW-70-ChY">
@@ -344,7 +323,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j2l-vO-K7W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3152" y="-839"/>
+            <point key="canvasLocation" x="1564" y="-1175"/>
         </scene>
         <!--Movie Details Pad View Controller-->
         <scene sceneID="78J-iZ-zRN">
@@ -365,7 +344,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IcH-Gw-6ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1886" y="917"/>
+            <point key="canvasLocation" x="1886" y="793"/>
         </scene>
         <!--Series Detail Pad View Controller-->
         <scene sceneID="vp7-Bu-w8v">
@@ -384,7 +363,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJe-zY-H5y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1886" y="1487"/>
+            <point key="canvasLocation" x="2614" y="767"/>
         </scene>
         <!--Video Player Pad View Controller-->
         <scene sceneID="ibK-HC-k17">
@@ -404,7 +383,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rbq-aw-eql" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2686" y="1345"/>
+            <point key="canvasLocation" x="3332" y="633"/>
         </scene>
         <!--Suscribe Pad View Controller-->
         <scene sceneID="eGJ-CI-vqv">
