@@ -25,7 +25,7 @@
 
 -(NSArray *)unparsedUserListsArray {
     if (!_unparsedUserListsArray) {
-        _unparsedUserListsArray = @[@{@"list_name": @"Peliculas de miedo", @"list_id" : @"1223",
+        _unparsedUserListsArray = @[@{@"list_name": @"Series clásicas", @"list_id" : @"1223",
                                       @"episodes" : @[@{@"product_name": @"Pedro el Escamoso",
                                                         @"episode_name": @"Pedro regresa",
                                                         @"description": @"Pedro regresa después de un terrible incidente de...",
@@ -59,7 +59,7 @@
                                                         @"is_3g": @NO}
                                                       ]},
                                     
-                                    @{@"list_name": @"Telenovelas de los 90's", @"list_id" : @"1223",
+                                    @{@"list_name": @"Lo mejor de lo mejor", @"list_id" : @"1223",
                                       @"episodes" : @[@{@"product_name": @"Escobar el patrón del mal",
                                                         @"episode_name": @"Pedro regresa",
                                                         @"description": @"Escobar es el gran capo",

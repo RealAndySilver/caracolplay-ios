@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface StarsView : UIView
+@property (nonatomic) NSUInteger rate;
 -(instancetype)initWithFrame:(CGRect)frame rate:(int)rate;
 @end

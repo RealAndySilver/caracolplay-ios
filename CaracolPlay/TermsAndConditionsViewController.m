@@ -16,7 +16,7 @@
 
 -(void)viewDidLoad {
     self.view.backgroundColor = [UIColor blackColor];
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0, self.view.frame.size.width - 20.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0) - 44.0)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 20.0, self.view.frame.size.width - 20.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0) - 44.0)];
     self.textView.backgroundColor = [UIColor blackColor];
     self.textView.font = [UIFont systemFontOfSize:15.0];
     self.textView.textColor = [UIColor whiteColor];

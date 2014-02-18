@@ -16,7 +16,7 @@
 
 -(void)UISetup {
     //1. Search bar
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, 30.0)];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 10.0, self.view.frame.size.width, 30.0)];
     self.searchBar.translucent = YES;
     self.searchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
@@ -29,6 +29,10 @@
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Buscar";
     [self UISetup];
+}
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(NSUInteger)supportedInterfaceOrientations {

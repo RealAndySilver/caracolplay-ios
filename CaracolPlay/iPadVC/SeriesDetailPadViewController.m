@@ -47,7 +47,7 @@
 
 -(NSArray *)unparsedEpisodesInfo {
     if (!_unparsedEpisodesInfo) {
-        _unparsedEpisodesInfo = @[@{@"product_name": @"Pedro el Escamoso", @"episode_name": @"El rescate de pedro",
+        _unparsedEpisodesInfo = @[@{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Empieza Colombia's Next Top Model",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
                                     @"image_url": @"http://www.eldominio.com/laimagenparaestecapitulo.jpg",
                                     @"episode_number": @1,
@@ -62,7 +62,7 @@
                                     @"watched_on": @"2014-02-05",
                                     @"is_3g": @NO,},
                                   
-                                  @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"El rescate de pedro final",
+                                  @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Primera prueba para las modelos.",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
                                     @"image_url": @"http://www.eldominio.com/laimagenparaestecapitulo.jpg",
                                     @"episode_number": @2,
@@ -84,7 +84,7 @@
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
         _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Esta es la descripción de la producción", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
+                            @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
     }
     return _productionInfo;
 }
@@ -182,6 +182,7 @@
     self.productionDetailTextView = [[UITextView alloc] init];
     self.productionDetailTextView.text = self.production.detailDescription;
     /*self.productionDetailTextView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat.";*/
+    self.productionDetailTextView.userInteractionEnabled = NO;
     self.productionDetailTextView.textColor = [UIColor whiteColor];
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
@@ -229,7 +230,7 @@
     self.rateButton.frame = CGRectMake(340.0, 60.0, 140.0, 35.0);
     self.watchTrailerButton.frame = CGRectMake(180.0, 100.0, 140.0, 35.0);
     self.shareButton.frame = CGRectMake(340.0, 100.0, 140.0, 35.0);
-    self.productionDetailTextView.frame = CGRectMake(180.0, 150.0, self.view.bounds.size.width - 150.0, 100.0);
+    self.productionDetailTextView.frame = CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0);
     self.seasonsTableView.frame = CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 250.0);
     self.chaptersTableView.frame = CGRectMake(180.0, 280.0, self.view.bounds.size.width - 180.0 - 30.0, self.view.bounds.size.height - 280.0 - 30.0);
 }
@@ -237,8 +238,15 @@
 #pragma mark - Actions
 
 -(void)watchTrailer {
-    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para ver el trailer de esta producción debes estar conectado a internet." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else {
+        VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+    }
 }
 
 -(void)showRateView {

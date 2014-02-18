@@ -49,9 +49,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     //1. Create a TableView to display the categories
     UITableView *categoriesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0,
-                                                                                     self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
+                                                                                     0.0,
                                                                                      self.view.bounds.size.width,
-                                                                                     self.view.bounds.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)
+                                                                                     self.view.bounds.size.height -  44.0)
                                                                     style:UITableViewStylePlain];
     categoriesTableView.delegate = self;
     categoriesTableView.dataSource = self;
@@ -68,6 +68,11 @@ static NSString *CellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
     [self parseCategoriesList];
     [self UISetup];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource

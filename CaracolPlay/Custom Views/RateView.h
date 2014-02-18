@@ -17,4 +17,5 @@
 
 @interface RateView : UIView
 @property (strong, nonatomic) id <RateViewDelegate> delegate;
+-(instancetype)initWithFrame:(CGRect)frame goldStars:(NSUInteger)goldStars;
 @end

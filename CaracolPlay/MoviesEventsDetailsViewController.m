@@ -13,6 +13,8 @@
 #import "RateView.h"
 #import "LargeProductionImageView.h"
 #import "StarsView.h"
+#import "Reachability.h"
+#import "VideoPlayerViewController.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -21,6 +23,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
 @property (strong, nonatomic) UIView *opacityView;
+@property (strong, nonatomic) StarsView *starsView;
 /*@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) FXBlurView *tabBarBlurView;
 @property (strong, nonatomic) FXBlurView *navigationBarBlurView;*/
@@ -32,8 +35,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @4, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Esta es la descripción de la producción", @"episodes" : @[], @"season_list" : @[]};
+        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"rate" : @4, @"my_rate" : @3, @"category_id" : @"59393",
+                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : @[], @"season_list" : @[]};
     }
     return _productionInfo;
 }
@@ -70,10 +73,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    //[self parseProductionInfo];
     self.view.backgroundColor = [UIColor blackColor];
-    self.navigationItem.title = self.production.name;
+    self.navigationItem.title = self.production.type;
     [self UISetup];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -91,7 +98,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)UISetup {
     //1. Create the main image view of the movie/event
     UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
-                                                                                     self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
+                                                                                     0.0,
                                                                                      self.view.frame.size.width,
                                                                                      self.view.frame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
@@ -108,7 +115,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //2. Create the secondary image of the movie/event
     UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0,
-                                                                                              self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0,
+                                                                                              20.0,
                                                                                               90.0,
                                                                                               140.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
@@ -117,13 +124,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
     
+    //Add the play icon into the secondaty image view
+    UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
+    playIcon.clipsToBounds = YES;
+    playIcon.contentMode = UIViewContentModeScaleAspectFit;
+    playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
+    [secondaryMovieEventImageView addSubview:playIcon];
+    
     //Create a tap gesture and add it to our secondary image view
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [secondaryMovieEventImageView addGestureRecognizer:tapGestureRecognizer];
     
     //3. Create the label to display the movie/event name
     UILabel *movieEventNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                             self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0,
+                                                                            20.0,
                                                                              self.view.frame.size.width - 50.0,
                                                                              30.0)];
     movieEventNameLabel.font = [UIFont boldSystemFontOfSize:18.0];
@@ -133,32 +147,28 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 110.0, 80.0, 16.0) rate:[self.production.rate intValue]];
-    [self.view addSubview:starsView];
-    [self.view bringSubviewToFront:starsView];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50.0, 100.0, 20.0) rate:[self.production.myRate intValue]];
+    [self.view addSubview:self.starsView];
+    [self.view bringSubviewToFront:self.starsView];
     
-    //'calificar' button setup
-    UIButton *rateButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 112.0, 90.0, 30.0)];
-    [rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
-    [rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
-    rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
-    [self.view addSubview:rateButton];
+    //Add a tap gesture to the starView to open the rate view when the user touches the stars
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
+    [self.starsView addGestureRecognizer:tapGesture];
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                              self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 90.0,
+                                                                              90.0,
                                                                               90.0,
                                                                               30.0)];
     [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
     [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
     [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 90.0, 90.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 90.0, 90.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
@@ -166,11 +176,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.view addSubview:shareButton];
     
+    //Create the button to watch the production
+    UIButton *watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 100.0, 30.0)];
+    [watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
+    [watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    [watchProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:watchProductionButton];
+    
     //7. Create a text view to display the detail of the event/movie
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
     
-    detailTextView.text = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.";
-    //detailTextView.text = self.production.detailDescription;
+    detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
     detailTextView.textColor = [UIColor whiteColor];
     detailTextView.editable = NO;
@@ -255,8 +273,32 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Custom Methods
 
+-(void)watchProduction {
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [[[UIAlertView alloc] initWithTitle:nil  message:@"Para poder ver la producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else {
+        VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self.navigationController pushViewController:videoPlayerVC animated:YES];
+    }
+}
+
+-(void)watchTrailer {
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else {
+        VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self.navigationController pushViewController:videoPlayerVC animated:YES];
+    }
+}
+
 -(void)imageTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
-    LargeProductionImageView *largeProdView = [[LargeProductionImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    LargeProductionImageView *largeProdView = [[LargeProductionImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [largeProdView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
                                       placeholder:nil
                                   completionBlock:nil
@@ -269,7 +311,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0)];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0) goldStars:[self.production.myRate intValue]];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }
@@ -316,6 +358,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.alpha = 0.0;
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
+    self.starsView.rate = rate;
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

@@ -24,9 +24,9 @@
 
 @implementation RateView
 
--(id)initWithFrame:(CGRect)frame {
+-(id)initWithFrame:(CGRect)frame goldStars:(NSUInteger)goldStars {
     if (self = [super initWithFrame:frame]) {
-        
+        self.goldStars = goldStars;
         //////////////////////////////////////////////////////
         //Parallax effect
         UIInterpolatingMotionEffect* xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
@@ -79,6 +79,7 @@
     self.rateButton.frame = CGRectMake(0.0, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
     self.cancelButton.frame = CGRectMake(self.bounds.size.width/2, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
     [self createStarsImageViews];
+    [self modifyGoldStarsNumber:self.goldStars];
     [self animateTransition];
 }
 
@@ -135,14 +136,14 @@
 
 -(void)starImageViewTap:(UITapGestureRecognizer *)tapGesture {
     NSLog(@"me tapearon");
-    self.goldStars = tapGesture.view.tag;
+    self.goldStars = tapGesture.view.tag + 1;
     [self modifyGoldStarsNumber:self.goldStars];
 }
 
 -(void)modifyGoldStarsNumber:(NSInteger)goldStarsNumber {
     for (int i = 0; i < 5; i++) {
         UIImageView *starImageView = self.starsImageViewsArray[i];
-        if (goldStarsNumber >= i) {
+        if (goldStarsNumber > i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
         } else {
             starImageView.tintColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0 blue:140.0/255.0 alpha:1.0];

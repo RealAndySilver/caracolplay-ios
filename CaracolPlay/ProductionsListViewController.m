@@ -42,7 +42,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     /*-----------------------------------------------------------*/
     //1. Create Button to filter the movies
     UIButton *filterButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0,
-                                                                        self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height,
+                                                                        0.0,
                                                                         self.view.frame.size.width,
                                                                         60.0)];
     filterButton.backgroundColor = [UIColor blackColor];

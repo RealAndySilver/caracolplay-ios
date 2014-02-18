@@ -15,6 +15,7 @@
 #import "LargeProductionImageView.h"
 #import "RateView.h"
 #import "StarsView.h"
+#import "Reachability.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -45,7 +46,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 -(NSDictionary *)productionInfo {
     if (!_productionInfo) {
         _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Esta es la descripción de la producción", @"episodes" : @[], @"season_list" : @[]};
+                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : @[], @"season_list" : @[]};
     }
     return _productionInfo;
 }
@@ -160,7 +161,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionDetailTextView.textColor = [UIColor whiteColor];
     self.productionDetailTextView.userInteractionEnabled = NO;
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
-    self.productionDetailTextView.font = [UIFont systemFontOfSize:17.0];
+    self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
     [self.view addSubview:self.productionDetailTextView];
     
     //9. Recommended productions label setup
@@ -203,7 +204,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.rateButton.frame = CGRectMake(370.0, 60.0, 140.0, 35.0);
     self.watchTrailerButton.frame = CGRectMake(210.0, 100.0, 140.0, 35.0);
     self.shareButton.frame = CGRectMake(370.0, 100.0, 140.0, 35.0);
-    self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, 450.0, 100.0);
+    self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 100.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
 }
@@ -211,8 +212,15 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 #pragma mark - Actions 
 
 -(void)watchTrailer {
-    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == NotReachable) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    } else {
+        VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+    }
 }
 
 -(void)showRateView {

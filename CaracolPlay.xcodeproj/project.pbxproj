@@ -21,6 +21,11 @@
 		755DB17D188DEE2C00E5C636 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB15C188DEE2C00E5C636 /* UIKit.framework */; };
 		755DB185188DEE2D00E5C636 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755DB183188DEE2D00E5C636 /* InfoPlist.strings */; };
 		755DB187188DEE2D00E5C636 /* CaracolPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */; };
+		8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */; };
+		8B0194DC18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */; };
+		8B0194DF18B3F4CB00380EC7 /* CaracolPlayHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */; };
+		8B0194E018B3F4CB00380EC7 /* CaracolPlayHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DE18B3F4CB00380EC7 /* CaracolPlayHeader@2x.png */; };
+		8B0194E418B4262300380EC7 /* FileSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0194E318B4262300380EC7 /* FileSaver.m */; };
 		8B164B6C18A95460001803A9 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B6B18A95460001803A9 /* User.m */; };
 		8B164B6F18A9549A001803A9 /* Episode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B6E18A9549A001803A9 /* Episode.m */; };
 		8B164B7218A95808001803A9 /* List.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B164B7118A95808001803A9 /* List.m */; };
@@ -205,6 +210,12 @@
 		755DB182188DEE2C00E5C636 /* CaracolPlayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaracolPlayTests-Info.plist"; sourceTree = "<group>"; };
 		755DB184188DEE2D00E5C636 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaracolPlayTests.m; sourceTree = "<group>"; };
+		8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlayIconHomeScreen.png; path = Resources/Images/TabBar/PlayIconHomeScreen.png; sourceTree = "<group>"; };
+		8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlayIconHomeScreen@2x.png"; path = "Resources/Images/TabBar/PlayIconHomeScreen@2x.png"; sourceTree = "<group>"; };
+		8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayHeader.png; path = Resources/Images/CaracolPlayHeader.png; sourceTree = "<group>"; };
+		8B0194DE18B3F4CB00380EC7 /* CaracolPlayHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CaracolPlayHeader@2x.png"; path = "Resources/Images/CaracolPlayHeader@2x.png"; sourceTree = "<group>"; };
+		8B0194E218B4262300380EC7 /* FileSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSaver.h; sourceTree = "<group>"; };
+		8B0194E318B4262300380EC7 /* FileSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSaver.m; sourceTree = "<group>"; };
 		8B164B6A18A95460001803A9 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Model/User.h; sourceTree = "<group>"; };
 		8B164B6B18A95460001803A9 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Model/User.m; sourceTree = "<group>"; };
 		8B164B6D18A9549A001803A9 /* Episode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Episode.h; sourceTree = "<group>"; };
@@ -551,6 +562,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8B0194E118B4262300380EC7 /* Filesaver */,
 				8BDC828518AD2EDC00E72B0E /* Reachability */,
 				8BB5220D18AA740F0027CA59 /* JMImageCache */,
 				8B164B6918A95437001803A9 /* Model */,
@@ -597,6 +609,15 @@
 				755DB183188DEE2D00E5C636 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B0194E118B4262300380EC7 /* Filesaver */ = {
+			isa = PBXGroup;
+			children = (
+				8B0194E218B4262300380EC7 /* FileSaver.h */,
+				8B0194E318B4262300380EC7 /* FileSaver.m */,
+			);
+			path = Filesaver;
 			sourceTree = "<group>";
 		};
 		8B164B6918A95437001803A9 /* Model */ = {
@@ -1023,6 +1044,10 @@
 			children = (
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */,
+				8B0194DE18B3F4CB00380EC7 /* CaracolPlayHeader@2x.png */,
+				8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */,
+				8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */,
 				A0CC06C718AC305B0051097F /* SmallPlaceholder.png */,
 				A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */,
 				8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */,
@@ -1206,9 +1231,12 @@
 				8BA9B27918A01DD9003DBBDC /* Close@2x.png in Resources */,
 				A0A9B77218A301A000D6D222 /* PlayIcon@2x.png in Resources */,
 				A0A9B77A18A3073900D6D222 /* SearchBarPad@2x.png in Resources */,
+				8B0194DC18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png in Resources */,
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
 				8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */,
 				8B892B2C18B2AF4C0066926C /* MoreTabBarIcon@2x.png in Resources */,
+				8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */,
+				8B0194E018B3F4CB00380EC7 /* CaracolPlayHeader@2x.png in Resources */,
 				755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */,
 				8B67769E1896F822006E2241 /* Checkmark.png in Resources */,
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
@@ -1260,6 +1288,7 @@
 				8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
+				8B0194DF18B3F4CB00380EC7 /* CaracolPlayHeader.png in Resources */,
 				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
 				8BB5221D18AA9AC60027CA59 /* SplitNavBarMaster.png in Resources */,
@@ -1334,6 +1363,7 @@
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
 				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
 				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
+				8B0194E418B4262300380EC7 /* FileSaver.m in Sources */,
 				8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */,
 				A0D1DBC918AEDBD8007A434F /* MyListsDetailPadViewController.m in Sources */,
 				8BB5221A18AA91A10027CA59 /* CategoriesDetailPadViewController.m in Sources */,

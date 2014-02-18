@@ -20,7 +20,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
 @implementation ConfigurationViewController
 
 -(void)UISetup {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, 320.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     self.tableView.separatorColor = [UIColor blackColor];
@@ -36,6 +36,11 @@ NSString *const cellIdentifier = @"CellIdentifier";
     self.navigationItem.title = @"Más";
     self.menuItemsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Políticas de privacidad", @"Términos y condiciones"];
     [self UISetup];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource

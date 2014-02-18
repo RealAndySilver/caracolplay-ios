@@ -18,9 +18,13 @@
 
 @implementation VideoPlayerViewController
 
-NSString * const EMBED_CODE = @"xxbjk1YjpHm4-VkWfWfEKBbyEkh358su";
-NSString * const PCODE = @"Z5Mm06XeZlcDlfU_1R9v_L2KwYG6";
+//NSString * const EMBED_CODE = @"xxbjk1YjpHm4-VkWfWfEKBbyEkh358su";
+//NSString * const PCODE = @"Z5Mm06XeZlcDlfU_1R9v_L2KwYG6";
+//NSString * const PLAYERDOMAIN = @"www.ooyala.com";
+NSString * const EMBED_CODE = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
+NSString * const PCODE = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
 NSString * const PLAYERDOMAIN = @"www.ooyala.com";
+
 
 -(void)viewDidLoad {
     [super viewDidLoad];
@@ -37,7 +41,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
-    [self forceLandscapeMode];
+    //[self forceLandscapeMode];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -48,7 +52,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewDidLayoutSubviews {
     NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
-    self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, self.navigationController.navigationBar.bounds.origin.x + self.navigationController.navigationBar.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height - (self.navigationController.navigationBar.bounds.origin.y + self.navigationController.navigationBar.bounds.size.height));
+    self.ooyalaPlayerViewController.view.frame = self.view.bounds;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -62,7 +66,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 }
 
 -(NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskLandscape;
+    return UIInterfaceOrientationMaskAll;
 }
 
 -(void)forceLandscapeMode{

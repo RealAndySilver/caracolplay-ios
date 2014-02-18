@@ -49,7 +49,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:segmentedControl];*/
     
     //2. Create a table view to diaply the user's lists
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0)) style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0)) style:UITableViewStylePlain];
     tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -65,6 +65,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self UISetup];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Mis Listas";
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource 

@@ -20,7 +20,7 @@
     if (self) {
         // Initialization code
         //self.backgroundColor = [UIColor colorWithRed:40.0/255.0 green:40.0/255.0 blue:40.0/255.0 alpha:1.0];
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor clearColor];
         
         self.capLabel = [[UILabel alloc] init];
         self.capLabel.text = @"Cap";
