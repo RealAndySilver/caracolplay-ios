@@ -55,13 +55,14 @@
     detailTextView.text = @"En este momento te encuentras fuera del sistema. Escoge una de las siguientes opciones para reproducir el video.";
     detailTextView.textColor = [UIColor whiteColor];
     detailTextView.font = [UIFont systemFontOfSize:15.0];
+    detailTextView.userInteractionEnabled = NO;
     detailTextView.textAlignment = NSTextAlignmentCenter;
     detailTextView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:detailTextView];
     
     //'Ingresar' button setup
     UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 100.0, screenFrame.size.height/2 + 60.0, 200.0, 40.0)];
-    [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+    [enterButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -78,7 +79,7 @@
     [self.view addSubview:suscribeButton];
     
     // 'Redimir código' button setup
-    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 40.0, 450.0, 80.0, 70.0)];
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, 450.0, 100.0, 70.0)];
     [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
@@ -104,6 +105,12 @@
 -(void)goToSuscribeViewController {
     SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
     [self.navigationController pushViewController:suscriptionViewController animated:YES];
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

@@ -50,9 +50,11 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     self.tabBarController.tabBar.alpha = 0.0;
 }
 
--(void)viewDidLayoutSubviews {
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
     self.ooyalaPlayerViewController.view.frame = self.view.bounds;
+    [self.ooyalaPlayerViewController.player playWithInitialTime:1000];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

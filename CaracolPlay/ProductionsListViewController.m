@@ -63,7 +63,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0,
                                                                            filterButton.frame.origin.y + filterButton.frame.size.height,
                                                                            self.view.frame.size.width,
-                                                                           self.view.frame.size.height - (filterButton.frame.origin.y + filterButton.frame.size.height) - 44.0)
+                                                                           self.view.frame.size.height - (filterButton.frame.origin.y + filterButton.frame.size.height) - 44.0 - 64.0)
                                                           style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.separatorColor = [UIColor blackColor];

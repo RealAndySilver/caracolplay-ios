@@ -23,7 +23,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opaqueView;
-@property (strong, nonatomic) UIImageView *smallProductionImageView;
 @property (strong, nonatomic) UILabel *productionNameLabel;
 @property (strong, nonatomic) UIButton *watchTrailerButton;
 @property (strong, nonatomic) UIButton *shareButton;
@@ -37,6 +36,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSArray *recommendedProductions;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) UIView *opacityView;
+@property (strong, nonatomic) StarsView *starsView;
 @end
 
 @implementation MovieDetailsPadViewController
@@ -103,22 +103,31 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.backgroundImageView addSubview:self.opaqueView];
     
     //3. small production image view
-    self.smallProductionImageView = [[UIImageView alloc] init];
-    [self.smallProductionImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+    UIImageView *smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 30.0, 160.0, 260.0)];
+    [smallProductionImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
                                        placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    self.smallProductionImageView.clipsToBounds = YES;
-    self.smallProductionImageView.userInteractionEnabled = YES;
-    self.smallProductionImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:self.smallProductionImageView];
+    smallProductionImageView.clipsToBounds = YES;
+    smallProductionImageView.userInteractionEnabled = YES;
+    smallProductionImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:smallProductionImageView];
+    
+    //Add the play icon into the secondaty image view
+    UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(smallProductionImageView.frame.size.width/2 - 25.0, smallProductionImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
+    playIcon.clipsToBounds = YES;
+    playIcon.contentMode = UIViewContentModeScaleAspectFit;
+    playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
+    [smallProductionImageView addSubview:playIcon];
     
     //Stars view
-    StarsView *starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.rate intValue]];
-    [self.view addSubview:starsView];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.myRate intValue]];
+    [self.view addSubview:self.starsView];
+    UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
+    [self.starsView addGestureRecognizer:starsTapGesture];
     
     //Create a tap gesture and add it to the small image view, so when the user touches the image,
     //a larger image will be displayed
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    [self.smallProductionImageView addGestureRecognizer:tapGesture];
+    [smallProductionImageView addGestureRecognizer:tapGesture];
     
     //4. Production name label setup
     self.productionNameLabel = [[UILabel alloc] init];
@@ -126,15 +135,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionNameLabel.textColor = [UIColor whiteColor];
     self.productionNameLabel.font = [UIFont boldSystemFontOfSize:25.0];
     [self.view addSubview:self.productionNameLabel];
-    
-    //Rate button
-    self.rateButton = [[UIButton alloc] init];
-    [self.rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
-    [self.rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    self.rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.rateButton addTarget:self action:@selector(showRateView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.rateButton];
     
     //5. Watch Trailer button setup
     self.watchTrailerButton = [[UIButton alloc] init];
@@ -199,7 +199,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 25.0, 0.0, 25.0, 25.0);
     self.backgroundImageView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height/2 + 50.0);
     self.opaqueView.frame = self.backgroundImageView.frame;
-    self.smallProductionImageView.frame = CGRectMake(30.0, 30.0, 160.0, 260.0);
     self.productionNameLabel.frame = CGRectMake(210.0, 25.0, self.view.bounds.size.width - 180.0, 30.0);
     self.rateButton.frame = CGRectMake(370.0, 60.0, 140.0, 35.0);
     self.watchTrailerButton.frame = CGRectMake(210.0, 100.0, 140.0, 35.0);
@@ -228,7 +227,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 100.0)];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 100.0) goldStars:[self.production.myRate intValue]];
     rateView.delegate = self;
     [self.view addSubview:rateView];
 }
@@ -291,6 +290,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.opacityView.alpha = 0.0;
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
+    self.starsView.rate = rate;
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

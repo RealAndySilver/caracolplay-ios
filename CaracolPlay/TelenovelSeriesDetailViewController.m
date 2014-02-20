@@ -19,6 +19,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "StarsView.h"
 #import "Reachability.h"
 #import "VideoPlayerViewController.h"
+#import "FileSaver.h"
+#import "SuscriptionAlertViewController.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -252,6 +254,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserDidSkipDic"][@"UserDidSkipKey"] boolValue]) {
+        SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
+        [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
+        NSLog(@"no puedo ver la producción porque no he ingresado");
+        return;
+    }
+    
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
     NetworkStatus status = [reachability currentReachabilityStatus];

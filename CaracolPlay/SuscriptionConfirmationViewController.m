@@ -38,6 +38,7 @@
     textView.text = @"Tu pago ha sido realizado de forma satisfactoria. Ahora puedes disfrutar ilimitadamente de nuestro contenido durante una año";
     textView.textAlignment = NSTextAlignmentCenter;
     textView.font = [UIFont systemFontOfSize:15.0];
+    textView.userInteractionEnabled = NO;
     textView.textColor = [UIColor whiteColor];
     [self.view addSubview:textView];
     
@@ -56,6 +57,12 @@
 -(void)goToHomeViewController {
     MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
     [self presentViewController:mainTabBar animated:YES completion:nil];
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

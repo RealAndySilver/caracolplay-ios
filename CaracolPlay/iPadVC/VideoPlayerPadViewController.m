@@ -24,8 +24,8 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.embedCode = @"xxbjk1YjpHm4-VkWfWfEKBbyEkh358su";
-    self.pcode = @"Z5Mm06XeZlcDlfU_1R9v_L2KwYG6";
+    self.embedCode = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
+    self.pcode = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
     self.playerDomain = @"www.ooyala.com";
     
     //Navigation bar setup
@@ -56,7 +56,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     NSLog(@"la vista aprecerá");
     [super viewWillAppear:animated];
-    //self.tabBarController.tabBar.alpha = 0.0;
+    [self.ooyalaPlayerViewController.player playWithInitialTime:1000.0];
 }
 
 -(void)viewWillLayoutSubviews {

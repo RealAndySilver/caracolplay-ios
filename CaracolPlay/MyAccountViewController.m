@@ -8,6 +8,9 @@
 
 #import "MyAccountViewController.h"
 #import "FileSaver.h"
+#import "MBHUDView.h"
+#import "LoginViewController.h"
+#import "MyNavigationController.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -214,6 +217,16 @@
     NSLog(@"Cerré Sesión");
     FileSaver *fileSaver = [[FileSaver alloc] init];
     [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
+    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    MyNavigationController *myNavigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
+    [self presentViewController:myNavigationController animated:YES completion:nil];
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

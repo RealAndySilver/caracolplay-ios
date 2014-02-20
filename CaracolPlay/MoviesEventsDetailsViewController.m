@@ -105,7 +105,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                      self.view.frame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
     movieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
+    [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [self.view addSubview:movieEventImageView];
     
     //Create a view with an opacity pattern to apply an opacity to the image
@@ -123,7 +123,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     secondaryMovieEventImageView.clipsToBounds = YES;
     secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
+    [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
     
     //Add the play icon into the secondaty image view

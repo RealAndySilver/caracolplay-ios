@@ -145,25 +145,32 @@
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [view addSubview:opacityPatternView];
     
+    //Add the play icon
+    UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(20.0, view.frame.size.height - 120.0, 100.0, 100.0)];
+    playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreenPad.png"];
+    playIcon.clipsToBounds = YES;
+    playIcon.contentMode = UIViewContentModeScaleAspectFit;
+    [view addSubview:playIcon];
+    
     //Type of production label
-    UILabel *productionTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(50.0, 400.0, 100.0, 30.0)];
+    UILabel *productionTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(130.0, 380.0, 100.0, 30.0)];
     productionTypeLabel.text = featuredProduction.type;
     productionTypeLabel.textColor = [UIColor whiteColor];
-    productionTypeLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    productionTypeLabel.font = [UIFont boldSystemFontOfSize:18.0];
     [view addSubview:productionTypeLabel];
     
     //Production name label
-    UILabel *productionNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(50.0, 430.0, 200.0, 30.0)];
+    UILabel *productionNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(130.0, 410.0, 300.0, 30.0)];
     productionNameLabel.text = featuredProduction.name;
     productionNameLabel.textColor = [UIColor whiteColor];
-    productionNameLabel.font = [UIFont boldSystemFontOfSize:20.0];
+    productionNameLabel.font = [UIFont boldSystemFontOfSize:22.0];
     [view addSubview:productionNameLabel];
     
     //production season/episode
-    UILabel *seasonEpisodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(50.0, 460.0, 200.0, 30.0)];
+    UILabel *seasonEpisodeLabel = [[UILabel alloc] initWithFrame:CGRectMake(130.0, 440.0, 300.0, 30.0)];
     seasonEpisodeLabel.text = featuredProduction.featureText;
     seasonEpisodeLabel.textColor = [UIColor whiteColor];
-    seasonEpisodeLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    seasonEpisodeLabel.font = [UIFont boldSystemFontOfSize:18.0];
     [view addSubview:seasonEpisodeLabel];
 
     return view;

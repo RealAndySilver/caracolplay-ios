@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MorePadViewController : UIViewController
+@interface MorePadMasterViewController : UIViewController
 
 @end

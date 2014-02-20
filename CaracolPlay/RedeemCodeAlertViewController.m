@@ -28,8 +28,8 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -44,6 +44,7 @@
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(30.0, screenFrame.size.height/2 - 30.0, screenFrame.size.width - 60.0, 150.0)];
     textView.backgroundColor = [UIColor clearColor];
     textView.text = @"Tu código ha sido aceptado. Ahora puedes disfrutar del siguiente contenido: \n\nEvento en Vivo: Colombia vs Grecia\nJunio 14, 9:00 AM";
+    textView.userInteractionEnabled = NO;
     textView.textAlignment = NSTextAlignmentCenter;
     textView.font = [UIFont systemFontOfSize:15.0];
     textView.textColor = [UIColor whiteColor];
@@ -67,7 +68,7 @@
     [self.view addSubview:suscribeButton];
     
     //4. Set the 'Skip' button
-    UIButton *skipButton = [[UIButton alloc] init];
+    UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width - 100.0, 22.0, 100.0, 30.0)];
     [skipButton setTitle:@"Saltar" forState:UIControlStateNormal];
     [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
@@ -101,6 +102,12 @@
 -(void)goToSuscribeViewController {
     SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
     [self.navigationController pushViewController:suscriptionViewController animated:YES];
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

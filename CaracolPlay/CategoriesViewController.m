@@ -23,8 +23,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
 -(NSArray *)unparsedCategoriesList {
     if (!_unparsedCategoriesList) {
         _unparsedCategoriesList = @[@{@"name": @"Vistos Recientemente", @"id" : @"23556"},
-                                    @{@"name": @"Telenovelas", @"id" : @"23532"},
-                                    @{@"name": @"Series", @"id" : @"22133"},
+                                    @{@"name": @"Mis Redimidos", @"id" : @"23532"},
+                                    @{@"name": @"Mis Alquilados", @"id" : @"22133"},
+                                    @{@"name": @"Telenovelas", @"id" : @"64556"},
                                     @{@"name": @"Películas", @"id" : @"64556"},
                                     @{@"name": @"Noticias", @"id" : @"23456"},
                                     @{@"name": @"Eventos en vivo", @"id" : @"63656"}];

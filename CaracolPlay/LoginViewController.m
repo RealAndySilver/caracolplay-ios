@@ -68,11 +68,11 @@
     [self.view addSubview:self.skipButton];
     
     //5. boton para probar el alertview
-    self.alertTestButton = [[UIButton alloc] init];
+    /*self.alertTestButton = [[UIButton alloc] init];
     [self.alertTestButton setTitle:@"Alerta" forState:UIControlStateNormal];
     [self.alertTestButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [self.alertTestButton addTarget:self action:@selector(showAlert) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.alertTestButton];
+    [self.view addSubview:self.alertTestButton];*/
     
     /*//6. Add a blurview to be displayed when a low connection alert has been displayed.
     self.blurView = [[FXBlurView alloc] init];
