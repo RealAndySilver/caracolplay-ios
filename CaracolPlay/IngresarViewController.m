@@ -9,6 +9,7 @@
 #import "IngresarViewController.h"
 #import "MainTabBarViewController.h"
 #import "FXBlurView.h"
+#import "FileSaver.h"
 
 @interface IngresarViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
@@ -43,6 +44,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITextfieldDelegate
@@ -61,6 +63,10 @@
 
 -(void)goToHomeScreen {
     if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        [fileSaver setDictionary:@{@"UserDidSkipKey": @NO} withKey:@"UserDidSkipDic"];
+        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarVC animated:YES completion:nil];
     } else {

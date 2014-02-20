@@ -10,7 +10,6 @@
 #import "VideoPlayerPadViewController.h"
 #import "MyListsPadTableViewCell.h"
 #import "JMImageCache.h"
-#import "Reachability.h"
 
 @interface MyListsDetailPadViewController () < UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;

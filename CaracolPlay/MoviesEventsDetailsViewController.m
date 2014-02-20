@@ -15,6 +15,8 @@
 #import "StarsView.h"
 #import "Reachability.h"
 #import "VideoPlayerViewController.h"
+#import "FileSaver.h"
+#import "SuscriptionAlertViewController.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -274,6 +276,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Custom Methods
 
 -(void)watchProduction {
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserDidSkipDic"][@"UserDidSkipKey"] boolValue]) {
+        SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
+        [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
+        NSLog(@"no puedo ver la producción porque no he ingresado");
+        return;
+    }
+    
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
     NetworkStatus status = [reachability currentReachabilityStatus];

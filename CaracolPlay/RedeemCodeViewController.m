@@ -8,6 +8,7 @@
 
 #import "RedeemCodeViewController.h"
 #import "MainTabBarViewController.h"
+#import "RedeemCodeAlertViewController.h"
 
 @interface RedeemCodeViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
@@ -44,10 +45,17 @@
     [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+}
+
 -(void)goToHomeScreen {
     if ([self.codeTextfield.text length] > 0) {
-        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarVC animated:YES completion:nil];
+        RedeemCodeAlertViewController *redeemCodeAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeAlert"];
+        [self.navigationController pushViewController:redeemCodeAlertVC animated:YES];
+        /*MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];*/
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Código incorrecto." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

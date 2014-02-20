@@ -39,11 +39,13 @@
         [self.contentView addSubview:self.productionDetailLabel];
         
         // 4. Play icon image view setup
-        self.playIconImageView = [[UIImageView alloc] init];
-        self.playIconImageView.clipsToBounds = YES;
-        self.playIconImageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.playIconImageView.image = [UIImage imageNamed:@"PlayIcon.png"];
-        [self.contentView addSubview:self.playIconImageView];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.playIconImageView = [[UIImageView alloc] init];
+            self.playIconImageView.clipsToBounds = YES;
+            self.playIconImageView.contentMode = UIViewContentModeScaleAspectFit;
+            self.playIconImageView.image = [UIImage imageNamed:@"PlayIcon.png"];
+            [self.contentView addSubview:self.playIconImageView];
+        }
     }
     return self;
 }
@@ -53,10 +55,17 @@
     CGRect bounds = self.contentView.bounds;
     
     //Set subviews frames
-    self.productionImageView.frame = CGRectMake(50.0, 10.0, 60.0, bounds.size.height - 20.0);
-    self.productionNameLabel.frame = CGRectMake(130.0, bounds.size.height/2 - 30.0, 500.0, 30.0);
-    self.productionDetailLabel.frame = CGRectMake(130.0, bounds.size.height/2, 500.0, 30.0);
-    self.playIconImageView.frame = CGRectMake(bounds.size.width - 50.0, bounds.size.height/2 - 12.0, 24.0, 24.0);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.productionImageView.frame = CGRectMake(50.0, 10.0, 60.0, bounds.size.height - 20.0);
+        self.productionNameLabel.frame = CGRectMake(130.0, bounds.size.height/2 - 30.0, 500.0, 30.0);
+        self.productionDetailLabel.frame = CGRectMake(130.0, bounds.size.height/2, 500.0, 30.0);
+        self.playIconImageView.frame = CGRectMake(bounds.size.width - 50.0, bounds.size.height/2 - 12.0, 24.0, 24.0);
+    } else {
+        self.productionImageView.frame = CGRectMake(10.0, 10.0, 80.0, bounds.size.height - 20.0);
+        self.productionNameLabel.frame = CGRectMake(110.0, bounds.size.height/2 - 30.0, bounds.size.width - 130.0, 30.0);
+        self.productionDetailLabel.frame = CGRectMake(110.0, bounds.size.height/2, bounds.size.width - 130.0, 50.0);
+        self.productionDetailLabel.numberOfLines = 2;
+    }
 }
 
 @end

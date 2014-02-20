@@ -11,8 +11,8 @@
 #import "FXBlurView.h"
 #import "IngresarViewController.h"
 #import "RedeemCodeViewController.h"
-#import "Reachability.h"
 #import "MainTabBarViewController.h"
+#import "FileSaver.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -91,20 +91,6 @@
     [self UISetup];
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    Reachability *reachability = [Reachability reachabilityForInternetConnection];
-    [reachability startNotifier];
-    NetworkStatus status = [reachability currentReachabilityStatus];
-    if (status == NotReachable) {
-        [self showAlert];
-    } else if (status == ReachableViaWiFi) {
-        NSLog(@"Hay Wifi");
-    } else if (status == ReachableViaWWAN) {
-        [self showAlert];
-    }
-}
-
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     NSLog(@"me llame");
@@ -138,6 +124,16 @@
 }
 
 -(void)skipAndGoToHomeScreen {
+    //Save a file that indicates that the user skip the login process.
+    //we need to know this to present the suscription alert view controller
+    //when the user tries to watch a production.
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    [fileSaver setDictionary:@{@"UserDidSkipKey": @YES} withKey:@"UserDidSkipDic"];
+    
+    if ([fileSaver getDictionary:@"UserDidSkipDic"]) {
+        NSLog(@"si se guardó el diccionario");
+    }
+    
     MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
     mainTabBarVC.userDidSkipRegisterProcess = YES;
     [self presentViewController:mainTabBarVC animated:YES completion:nil];

@@ -8,6 +8,8 @@
 
 #import "SuscriptionFormViewController.h"
 #import "FXBlurView.h"
+#import "FileSaver.h"
+#import "SuscriptionConfirmationViewController.h"
 
 @interface SuscriptionFormViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -94,10 +96,20 @@
     [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+}
+
 -(void)goToHomeScreen {
     if ([self areTermsAndPoliticsConditionsAccepted]) {
-        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarVC animated:YES completion:nil];
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        [fileSaver setDictionary:@{@"UserDidSkipKey": @NO} withKey:@"UserDidSkipDic"];
+        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+        [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+        /*MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];*/
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             [self showErrorsInTermAndPoliticsConditions];

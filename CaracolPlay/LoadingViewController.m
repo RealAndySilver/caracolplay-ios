@@ -9,6 +9,8 @@
 #import "LoadingViewController.h"
 #import "LoginViewController.h"
 #import "MyNavigationController.h"
+#import "MainTabBarViewController.h"
+#import "FileSaver.h"
 
 @interface LoadingViewController ()
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -44,10 +46,21 @@
     [self.spinner removeFromSuperview];
     self.spinner = nil;
     
-    LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];
+    } else {
+        LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+        MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
+    
+    /*LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
     MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:navigationController animated:YES completion:nil];*/
     //[self.navigationController pushViewController:loginVC animated:YES];
 }
 

@@ -8,36 +8,111 @@
 
 #import "MyListsViewController.h"
 #import "List.h"
+#import "MyListsDetailsViewController.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
 @interface MyListsViewController ()
-@property (strong, nonatomic) NSArray *unparsedLists;
-@property (strong, nonatomic) NSMutableArray *parsedLists;
+@property (strong, nonatomic) NSArray *unparsedUserListsArray;
+@property (strong, nonatomic) NSMutableArray *parsedUserListsArray;
 @end
 
 @implementation MyListsViewController
 
 #pragma mark - Lazy Instantiation 
 
--(NSArray *)unparsedLists {
-    if (!_unparsedLists) {
-        _unparsedLists = @[@{@"list_name": @"Películas Chistosas", @"list_id" : @"23424", @"episodes" : @[]},
-                           @{@"list_name": @"Series Drámaticas", @"list_id" : @"23424", @"episodes" : @[]},
-                           @{@"list_name": @"Partidos Clásicos", @"list_id" : @"23424", @"episodes" : @[]},
-                           @{@"list_name": @"Películas de Terror", @"list_id" : @"23424", @"episodes" : @[]},
-                           @{@"list_name": @"Telenovelas de los 90's", @"list_id" : @"23424", @"episodes" : @[]}];
+-(NSArray *)unparsedUserListsArray {
+    if (!_unparsedUserListsArray) {
+        _unparsedUserListsArray = @[@{@"list_name": @"Series clásicas", @"list_id" : @"1223",
+                                      @"episodes" : @[@{@"product_name": @"Pedro el Escamoso",
+                                                        @"episode_name": @"Pedro regresa",
+                                                        @"description": @"Pedro regresa después de un terrible incidente de...",
+                                                        @"image_url": @"http://4.bp.blogspot.com/__dyzpfPCZVk/SGva2EeqlKI/AAAAAAAAALM/1ctbJwwRrw8/s400/telenovelas10d.jpg",
+                                                        @"episode_number": @6,
+                                                        @"id": @"1235435",
+                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
+                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
+                                                        @"rate": @3,
+                                                        @"views": @4231,//Número de veces visto
+                                                        @"duration": @2750,//En segundos
+                                                        @"category_id": @"7816234",
+                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
+                                                        @"watched_on": @"2014-02-05",
+                                                        @"is_3g": @NO},
+                                                      
+                                                      @{@"product_name": @"Mujeres al límite",
+                                                        @"episode_name": @"Pedro regresa",
+                                                        @"description": @"Las mujeres están al limite",
+                                                        @"image_url": @"http://www.eldiario.com.co/uploads/userfiles/20100704/image/monica_alta%5B1%5D-copia.jpg",
+                                                        @"episode_number": @8,
+                                                        @"id": @"1235435",
+                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
+                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
+                                                        @"rate": @3,
+                                                        @"views": @4231,//Número de veces visto
+                                                        @"duration": @2750,//En segundos
+                                                        @"category_id": @"7816234",
+                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
+                                                        @"watched_on": @"2014-02-05",
+                                                        @"is_3g": @NO}
+                                                      ]},
+                                    
+                                    @{@"list_name": @"Lo mejor de lo mejor", @"list_id" : @"1223",
+                                      @"episodes" : @[@{@"product_name": @"Escobar el patrón del mal",
+                                                        @"episode_name": @"Pedro regresa",
+                                                        @"description": @"Escobar es el gran capo",
+                                                        @"image_url": @"http://www.vanguardia.com/sites/default/files/imagecache/Noticia_600x400/foto_grandes_400x300_noticia/2012/06/26/27salud01a013_big_tp.jpg",
+                                                        @"episode_number": @3,
+                                                        @"id": @"1235435",
+                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
+                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
+                                                        @"rate": @3,
+                                                        @"views": @4231,//Número de veces visto
+                                                        @"duration": @2750,//En segundos
+                                                        @"category_id": @"7816234",
+                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
+                                                        @"watched_on": @"2014-02-05",
+                                                        @"is_3g": @NO},
+                                                      
+                                                      @{@"product_name": @"Mentiras perfectas",
+                                                        @"episode_name": @"Pedro regresa",
+                                                        @"description": @"Las mentiras de Carolina afectan a Carlos",
+                                                        @"image_url": @"http://www.publimetro.co/_internal/gxml!0/r0dc21o2f3vste5s7ezej9x3a10rp3w$b3cmqcdhj94frubk4j04omkoakkg83r/mentiras-perfectas.jpeg",
+                                                        @"episode_number": @5,
+                                                        @"id": @"1235435",
+                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
+                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
+                                                        @"rate": @3,
+                                                        @"views": @4231,//Número de veces visto
+                                                        @"duration": @2750,//En segundos
+                                                        @"category_id": @"7816234",
+                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
+                                                        @"watched_on": @"2014-02-05",
+                                                        @"is_3g": @NO}
+                                                      ]}];
     }
-    return _unparsedLists;
+    return _unparsedUserListsArray;
 }
 
--(void)parseLists {
-    self.parsedLists = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.unparsedLists count]; i++) {
-        List *list = [[List alloc] initWithDictionary:self.unparsedLists[i]];
-        [self.parsedLists addObject:list];
+-(NSMutableArray *)parsedUserListsArray {
+    if (!_parsedUserListsArray) {
+        _parsedUserListsArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [self.unparsedUserListsArray count]; i++) {
+            List *list = [[List alloc] initWithDictionary:self.unparsedUserListsArray[i]];
+            [_parsedUserListsArray addObject:list];
+        }
     }
+    return _parsedUserListsArray;
 }
+
+/*-(void)parseUserLists {
+    self.parsedUserListsArray = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.unparsedUserListsArray count]; i++) {
+        List *list = [[List alloc] initWithDictionary:self.unparsedUserListsArray[i]];
+        [self.parsedUserListsArray addObject:list];
+    }
+}*/
+
 
 #pragma mark - UISetup & Initialization Stuff
 
@@ -61,7 +136,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self parseLists];
+    //[self parseLists];
     [self UISetup];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Mis Listas";
@@ -75,7 +150,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDataSource 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.parsedLists count];
+    return [self.parsedUserListsArray count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,7 +158,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    cell.textLabel.text = ((List *)self.parsedLists[indexPath.row]).listName;
+    cell.textLabel.text = ((List *)self.parsedUserListsArray[indexPath.row]).listName;
     cell.backgroundColor = [UIColor clearColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -95,6 +170,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    MyListsDetailsViewController *myListsDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
+    List *list = self.parsedUserListsArray[indexPath.row];
+    myListsDetailsVC.episodes = [NSMutableArray arrayWithArray:list.episodes];
+    [self.navigationController pushViewController:myListsDetailsVC animated:YES];
 }
 
 #pragma mark - Interface Orientation

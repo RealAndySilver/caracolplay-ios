@@ -11,6 +11,7 @@
 #import "JMImageCache.h"
 #import "MoviesEventsDetailsViewController.h"
 #import "TelenovelSeriesDetailViewController.h"
+#import "MyUtilities.h"
 
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -43,15 +44,18 @@
     return _unparsedFeaturedProductionsInfo;
 }
 
-#pragma mark - UI Setup & Initilization Methods
-
--(void)parseFeaturedInfo {
-    self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
-        Featured *featuredProduction = [[Featured alloc] initWithDictionary:self.unparsedFeaturedProductionsInfo[i]];
-        [self.parsedFeaturedProductions addObject:featuredProduction];
+-(NSMutableArray *)parsedFeaturedProductions {
+    if (!_parsedFeaturedProductions) {
+        _parsedFeaturedProductions = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
+            Featured *featuredProduction = [[Featured alloc] initWithDictionary:self.unparsedFeaturedProductionsInfo[i]];
+            [_parsedFeaturedProductions addObject:featuredProduction];
+        }
     }
+    return _parsedFeaturedProductions;
 }
+
+#pragma mark - UI Setup & Initilization Methods
 
 -(void)UISetup {
     
@@ -87,11 +91,14 @@
     self.pageControl.frame =  CGRectMake(self.view.bounds.size.width/2 - 50.0, self.scrollView.frame.size.height/1.1, 100.0, 30.0);
     self.pageControl.numberOfPages = self.numberOfPages;
     [self.view addSubview:self.pageControl];
+    
+    /*--------------------------------------------------------------*/
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Inicio" style:UIBarButtonItemStylePlain target:self action:@selector(backToLogin)];
+    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self parseFeaturedInfo];
     [self UISetup];
     self.automaticCounter = 2;
 }
@@ -111,6 +118,11 @@
 }
 
 #pragma mark - Custom Methods
+
+-(void)backToLogin {
+    NSLog(@"volviiiii");
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 -(void)startScrollingTimer {
     self.automaticScrollTimer = [NSTimer scheduledTimerWithTimeInterval:4.0

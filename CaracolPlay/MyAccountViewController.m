@@ -7,6 +7,7 @@
 //
 
 #import "MyAccountViewController.h"
+#import "FileSaver.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -125,6 +126,7 @@
     closeSessionButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [closeSessionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [closeSessionButton setBackgroundImage:[UIImage imageNamed:@"BotonCerrarSesion"] forState:UIControlStateNormal];
+    [closeSessionButton addTarget:self action:@selector(closeSession) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:closeSessionButton];
     
     //8. 'Terminos y condiciones' button
@@ -204,6 +206,14 @@
         
         return cell;
     }
+}
+
+#pragma mark - Actions
+
+-(void)closeSession {
+    NSLog(@"Cerré Sesión");
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
 }
 
 @end
