@@ -21,4 +21,20 @@
     return newImage;
 }
 
++(void)addParallaxEffectWithMovementRange:(float)range inView:(UIView *)view {
+    UIInterpolatingMotionEffect* xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
+                                                                                         type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    xAxis.minimumRelativeValue = @(-range);
+    xAxis.maximumRelativeValue = @(range);
+    
+    UIInterpolatingMotionEffect* yAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y"
+                                                                                         type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    yAxis.minimumRelativeValue = @(-range);
+    yAxis.maximumRelativeValue = @(range);
+    
+    UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
+    group.motionEffects = @[xAxis, yAxis];
+    [view addMotionEffect:group];
+}
+
 @end

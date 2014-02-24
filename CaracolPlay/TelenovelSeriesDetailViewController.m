@@ -21,8 +21,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "VideoPlayerViewController.h"
 #import "FileSaver.h"
 #import "SuscriptionAlertViewController.h"
+#import "SeasonsListView.h"
+#import "AddToListView.h"
 
-@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate>
+@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
@@ -52,7 +54,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                     @"category_id": @"7816234",
                                     @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
                                     @"watched_on": @"2014-02-05",
-                                    @"is_3g": @YES,},
+                                    @"is_3g": @YES},
                                   
                                   @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"La primera prueba para las modelos",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
@@ -196,6 +198,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [self.seasonsButton setTitle:@"Temporada 1" forState:UIControlStateNormal];
         self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [self.seasonsButton addTarget:self action:@selector(showSeasonsList) forControlEvents:UIControlEventTouchUpInside];
         [self.seasonsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.view addSubview:self.seasonsButton];
     }
@@ -244,6 +247,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[TelenovelSeriesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+    cell.delegate = self;
     cell.chapterNumberLabel.text = [((Episode *)self.production.episodes[indexPath.row]).episodeNumber description];
     cell.chapterNameLabel.text = ((Episode *)self.production.episodes[indexPath.row]).episodeName;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -283,6 +287,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Actions 
 
+-(void)showSeasonsList {
+    NSLog(@"Me oprimieron");
+    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+    SeasonsListView *seasonListView = [[SeasonsListView alloc] initWithFrame:CGRectMake(20.0, self.view.frame.size.height/2 - 100.0, 280.0, 280.0)];
+    seasonListView.delegate = self;
+    [self.tabBarController.view addSubview:seasonListView];
+}
+
 -(void)watchTrailer {
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
@@ -320,6 +335,43 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                         cancelButtonTitle:@"Volver"
                    destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
+#pragma mark - TelenovelSeriesTableViewCellDelegate
+
+-(void)addButtonWasSelectedInCell:(TelenovelSeriesTableViewCell *)cell {
+    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+    
+    AddToListView *addToListView = [[AddToListView alloc] initWithFrame:CGRectMake(30.0, 150.0, self.view.frame.size.width - 60.0, 300.0)];
+    addToListView.delegate = self;
+    [self.tabBarController.view addSubview:addToListView];
+}
+
+#pragma mark - AddToListViewDelegate
+
+-(void)listWasSelectedAtIndex:(NSUInteger)index inAddToListView:(AddToListView *)addToListView {
+    NSLog(@"index selected: %d", index);
+}
+
+-(void)addToListViewWillDisappear:(AddToListView *)addToListView {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+}
+
+-(void)addToListViewDidDisappear:(AddToListView *)addToListView {
+    [addToListView removeFromSuperview];
+    addToListView = nil;
+}
+
+#pragma mark - SeasonListDelegate 
+
+-(void)seasonsListView:(SeasonsListView *)seasonListView didSelectSeasonAtIndex:(NSUInteger)index {
+    NSLog(@"Selected index: %d", index);
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
 }
 
 #pragma mark - RateViewDelegate

@@ -58,6 +58,11 @@
 		8B33682518B68353000DD1B5 /* PlayIconHomeScreenPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B33682318B68353000DD1B5 /* PlayIconHomeScreenPad@2x.png */; };
 		8B33682818B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682718B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m */; };
 		8B33682B18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */; };
+		8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */; };
+		8B64F7F918BBE660007E3C06 /* CreateListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F818BBE660007E3C06 /* CreateListView.m */; };
+		8B64F7FC18BBFEDE007E3C06 /* AddToListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */; };
+		8B64F7FD18BBFEDE007E3C06 /* AddToListIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64F7FB18BBFEDE007E3C06 /* AddToListIcon@2x.png */; };
+		8B64F80018BC0086007E3C06 /* AddToListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7FF18BC0086007E3C06 /* AddToListView.m */; };
 		8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */; };
 		8B67769E1896F822006E2241 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B67769D1896F822006E2241 /* Checkmark.png */; };
 		8B6776A21896F878006E2241 /* CheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6776A11896F878006E2241 /* CheckmarkView.m */; };
@@ -309,6 +314,14 @@
 		8B33682718B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyAccountDetailPadViewController.m; path = iPadVC/MyAccountDetailPadViewController.m; sourceTree = "<group>"; };
 		8B33682918B6ACED000DD1B5 /* TermsAndConditionsPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TermsAndConditionsPadViewController.h; path = iPadVC/TermsAndConditionsPadViewController.h; sourceTree = "<group>"; };
 		8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TermsAndConditionsPadViewController.m; path = iPadVC/TermsAndConditionsPadViewController.m; sourceTree = "<group>"; };
+		8B64F7F418BBC3AC007E3C06 /* SeasonsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeasonsListView.h; sourceTree = "<group>"; };
+		8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeasonsListView.m; sourceTree = "<group>"; };
+		8B64F7F718BBE660007E3C06 /* CreateListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateListView.h; path = "Custom Views/CreateListView.h"; sourceTree = "<group>"; };
+		8B64F7F818BBE660007E3C06 /* CreateListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateListView.m; path = "Custom Views/CreateListView.m"; sourceTree = "<group>"; };
+		8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddToListIcon.png; path = Resources/Images/AddToListIcon.png; sourceTree = "<group>"; };
+		8B64F7FB18BBFEDE007E3C06 /* AddToListIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AddToListIcon@2x.png"; path = "Resources/Images/AddToListIcon@2x.png"; sourceTree = "<group>"; };
+		8B64F7FE18BC0086007E3C06 /* AddToListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddToListView.h; path = "Custom Views/AddToListView.h"; sourceTree = "<group>"; };
+		8B64F7FF18BC0086007E3C06 /* AddToListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddToListView.m; path = "Custom Views/AddToListView.m"; sourceTree = "<group>"; };
 		8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionFormViewController.h; sourceTree = "<group>"; };
 		8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuscriptionFormViewController.m; sourceTree = "<group>"; };
 		8B67769D1896F822006E2241 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checkmark.png; path = Resources/Images/Checkmark.png; sourceTree = "<group>"; };
@@ -838,6 +851,12 @@
 				8BDC828D18AD611600E72B0E /* LargeProductionImageView.m */,
 				8B98669918AE911900AEA77A /* StarsView.h */,
 				8B98669A18AE911900AEA77A /* StarsView.m */,
+				8B64F7F418BBC3AC007E3C06 /* SeasonsListView.h */,
+				8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */,
+				8B64F7F718BBE660007E3C06 /* CreateListView.h */,
+				8B64F7F818BBE660007E3C06 /* CreateListView.m */,
+				8B64F7FE18BC0086007E3C06 /* AddToListView.h */,
+				8B64F7FF18BC0086007E3C06 /* AddToListView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1233,6 +1252,8 @@
 			children = (
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */,
+				8B64F7FB18BBFEDE007E3C06 /* AddToListIcon@2x.png */,
 				A095A05318B56582004F05BB /* SuscriptionConfirmationBackground.png */,
 				A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */,
 				A095A04C18B558F6004F05BB /* RedeemCodeAlertBackground.png */,
@@ -1443,6 +1464,7 @@
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
 				A095A04F18B558F6004F05BB /* RedeemCodeAlertBackground@2x.png in Resources */,
 				8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */,
+				8B64F7FD18BBFEDE007E3C06 /* AddToListIcon@2x.png in Resources */,
 				8B892B2C18B2AF4C0066926C /* MoreTabBarIcon@2x.png in Resources */,
 				8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */,
 				8B0194E018B3F4CB00380EC7 /* CaracolPlayHeader@2x.png in Resources */,
@@ -1450,6 +1472,7 @@
 				8B67769E1896F822006E2241 /* Checkmark.png in Resources */,
 				8B33682418B68353000DD1B5 /* PlayIconHomeScreenPad.png in Resources */,
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
+				8B64F7FC18BBFEDE007E3C06 /* AddToListIcon.png in Resources */,
 				A0A9B76B18A2EE8500D6D222 /* SeriesOpacityPatternPad@2x.png in Resources */,
 				8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */,
 				A0A9B76A18A2EE8500D6D222 /* SeriesOpacityPatternPad.png in Resources */,
@@ -1539,6 +1562,7 @@
 				8B33681B18B66AE7000DD1B5 /* MBFlatAlertAbstract.m in Sources */,
 				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
 				A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */,
+				8B64F80018BC0086007E3C06 /* AddToListView.m in Sources */,
 				8B164B7E18A9710C001803A9 /* Categoria.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
@@ -1572,6 +1596,7 @@
 				8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,
+				8B64F7F918BBE660007E3C06 /* CreateListView.m in Sources */,
 				A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */,
 				8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */,
 				8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */,
@@ -1620,6 +1645,7 @@
 				8B164B7218A95808001803A9 /* List.m in Sources */,
 				8B98669B18AE911900AEA77A /* StarsView.m in Sources */,
 				8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */,
+				8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */,
 				A05C44951899CEA700E72135 /* FXBlurView.m in Sources */,
 				8BFD4F5F189181A000A88C8C /* TelenovelSeriesTableViewCell.m in Sources */,
 			);

@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TelenovelSeriesTableViewCell;
+
+@protocol TelenovelSeriesTableViewCellDelegate <NSObject>
+@optional
+-(void)addButtonWasSelectedInCell:(TelenovelSeriesTableViewCell *)cell;
+@end
 
 @interface TelenovelSeriesTableViewCell : UITableViewCell
 @property (strong, nonatomic) UILabel *chapterNumberLabel;
 @property (strong, nonatomic) UILabel *chapterNameLabel;
+@property (strong, nonatomic) id <TelenovelSeriesTableViewCellDelegate> delegate;
 @end

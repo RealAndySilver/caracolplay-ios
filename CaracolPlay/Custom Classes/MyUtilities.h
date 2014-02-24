@@ -10,4 +10,5 @@
 
 @interface MyUtilities : NSObject
 +(UIImage *)imageWithName:(UIImage *)image ScaleToSize:(CGSize)newSize;
++(void)addParallaxEffectWithMovementRange:(float)range inView:(UIView *)view;
 @end

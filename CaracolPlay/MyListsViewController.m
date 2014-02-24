@@ -9,12 +9,15 @@
 #import "MyListsViewController.h"
 #import "List.h"
 #import "MyListsDetailsViewController.h"
+#import "CreateListView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MyListsViewController ()
+@interface MyListsViewController () <UITableViewDataSource, UITableViewDelegate, CreateListViewDelegate>
+@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *unparsedUserListsArray;
 @property (strong, nonatomic) NSMutableArray *parsedUserListsArray;
+@property (strong, nonatomic) UIView *opacityView;
 @end
 
 @implementation MyListsViewController
@@ -123,15 +126,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     segmentedControl.tintColor = [UIColor whiteColor];
     [self.view addSubview:segmentedControl];*/
     
-    //2. Create a table view to diaply the user's lists
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0)) style:UITableViewStylePlain];
-    tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.rowHeight = 50.0;
-    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    tableView.separatorColor = [UIColor blackColor];
-    [self.view addSubview:tableView];
+    //1. Create a bar button item to create lists
+    UIBarButtonItem *createListBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                             target:self
+                                                                                             action:@selector(createList)];
+    self.navigationItem.rightBarButtonItem = createListBarButtonItem;
+    
+    //2. Create a table view to display the user's lists
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0)) style:UITableViewStylePlain];
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 50.0;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.separatorColor = [UIColor blackColor];
+    [self.view addSubview:self.tableView];
 }
 
 -(void)viewDidLoad {
@@ -174,6 +183,46 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     List *list = self.parsedUserListsArray[indexPath.row];
     myListsDetailsVC.episodes = [NSMutableArray arrayWithArray:list.episodes];
     [self.navigationController pushViewController:myListsDetailsVC animated:YES];
+}
+
+#pragma mark - Actions 
+
+-(void)createList {
+    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+    
+    CreateListView *createListView = [[CreateListView alloc] initWithFrame:CGRectMake(30.0, 200.0, self.view.frame.size.width - 60.0, 150.0)];
+    createListView.delegate = self;
+    [self.tabBarController.view addSubview:createListView];
+}
+
+#pragma mark - Custom Methods
+
+-(void)addNewListWithName:(NSString *)listName {
+    NSDictionary *newListDic = @{@"list_name": listName, @"list_id" : @"235345", @"episodes" : @[]};
+    List *newList = [[List alloc] initWithDictionary:newListDic];
+    [self.parsedUserListsArray addObject:newList];
+    [self.tableView reloadData];
+}
+
+#pragma mark - CreateListViewDelegate
+
+-(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+    [self addNewListWithName:listName];
+}
+
+-(void)cancelButtonPressedInCreateListView:(CreateListView *)createListView {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+}
+
+-(void)hiddeAnimationDidEndInCreateListView:(CreateListView *)createListView {
+    [createListView removeFromSuperview];
+    createListView = nil;
 }
 
 #pragma mark - Interface Orientation
