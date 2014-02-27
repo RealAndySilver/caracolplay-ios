@@ -15,64 +15,53 @@
 #import "FileSaver.h"
 
 @interface LoginViewController ()
-@property (strong, nonatomic) UIImageView *backgroundImageView;
-@property (strong, nonatomic) UIButton *enterButton;
-@property (strong, nonatomic) UIButton *suscribeButton;
-@property (strong, nonatomic) UIButton *redeemCodeButton;
-@property (strong, nonatomic) UIButton *skipButton;
-@property (strong, nonatomic) UIButton *alertTestButton;
 @end
 
 @implementation LoginViewController
 
 -(void)UISetup {
+    CGRect screenFrame = [UIScreen mainScreen].bounds;
+    
     //1. Set the background image of the view
-    self.backgroundImageView = [[UIImageView alloc] init];
-    self.backgroundImageView.image = [UIImage imageNamed:@"Inicio.png"];
-    [self.view addSubview:self.backgroundImageView];
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:screenFrame];
+    backgroundImageView.image = [UIImage imageNamed:@"Inicio.png"];
+    [self.view addSubview:backgroundImageView];
     
     //2. Set the enter and suscribe button
-    self.enterButton = [[UIButton alloc] init];
-    [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
-    [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
-    self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [self.view addSubview:self.enterButton];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.7, 240.0, 45.0)];
+    [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+    [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
+    enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [self.view addSubview:enterButton];
     
-    self.suscribeButton = [[UIButton alloc] init];
-    [self.suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
-    [self.suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    self.suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [self.suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.suscribeButton];
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.4, 240.0, 45.0)];
+    [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+    [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:suscribeButton];
     
     //3. Set the 'redeem code' button
-    self.redeemCodeButton = [[UIButton alloc] init];
-    [self.redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
-    [self.redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
-    [self.redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
-    self.redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    self.redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:self.redeemCodeButton];
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, screenFrame.size.height - 80.0, 100.0, 100.0)];
+    [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
+    [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
+    [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
+    redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:redeemCodeButton];
     
     //4. Set the 'Skip' button
-    self.skipButton = [[UIButton alloc] init];
-    [self.skipButton setTitle:@"Saltar" forState:UIControlStateNormal];
-    [self.skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    self.skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [self.skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.skipButton];
-    
-    //5. boton para probar el alertview
-    /*self.alertTestButton = [[UIButton alloc] init];
-    [self.alertTestButton setTitle:@"Alerta" forState:UIControlStateNormal];
-    [self.alertTestButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    [self.alertTestButton addTarget:self action:@selector(showAlert) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.alertTestButton];*/
+    UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(250.0, 15.0, 80.0, 44.0)];
+    [skipButton setTitle:@"Saltar ▶︎" forState:UIControlStateNormal];
+    [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    [skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:skipButton];
     
     /*//6. Add a blurview to be displayed when a low connection alert has been displayed.
     self.blurView = [[FXBlurView alloc] init];
@@ -86,20 +75,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Volver" style:UIBarButtonItemStylePlain target:self action:nil];
+    //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Volver" style:UIBarButtonItemStylePlain target:self action:nil];
     [self UISetup];
 }
 
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    NSLog(@"me llame");
-    self.backgroundImageView.frame = self.view.bounds;
-    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.view.bounds.size.height/1.7, 240.0, 45.0);
-    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.view.bounds.size.height/1.4, 240.0, 45.0);
-    self.redeemCodeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height - 80.0, 100.0, 100.0);
-    self.skipButton.frame = CGRectMake(250.0, 10.0, 50.0, 44.0);
-    self.alertTestButton.frame = CGRectMake(20.0, 20.0, 100.0, 30.0);
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 #pragma mark - Button Actions 
@@ -115,11 +97,13 @@
 
 -(void)goToEnterViewController {
     IngresarViewController *ingresarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
+    ingresarViewController.controllerWasPresentedFromInitialScreen = YES;
     [self.navigationController pushViewController:ingresarViewController animated:YES];
 }
 
 -(void)goToSuscribeViewController {
     SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
+    suscriptionViewController.controllerWasPresentFromInitialScreen = YES;
     [self.navigationController pushViewController:suscriptionViewController animated:YES];
 }
 
@@ -128,9 +112,9 @@
     //we need to know this to present the suscription alert view controller
     //when the user tries to watch a production.
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserDidSkipKey": @YES} withKey:@"UserDidSkipDic"];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
     
-    if ([fileSaver getDictionary:@"UserDidSkipDic"]) {
+    if ([fileSaver getDictionary:@"UserHasLoginDic"]) {
         NSLog(@"si se guardó el diccionario");
     }
     

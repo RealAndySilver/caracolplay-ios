@@ -29,12 +29,7 @@
 
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.servicePoliticsLabel.frame.origin.y + self.servicePoliticsLabel.frame.size.height + 20.0, 240.0, 40.0);
-    } else {
-        self.nextButton.frame = CGRectMake(self.view.bounds.size.width / 2 - 120.0, self.servicePoliticsLabel.frame.origin.y + self.servicePoliticsLabel.frame.size.height + 20.0, 240.0, 40.0);
-    }
-    
+    self.nextButton.frame = CGRectMake(self.view.bounds.size.width/2 - 120.0, self.servicePoliticsLabel.frame.origin.y + self.servicePoliticsLabel.frame.size.height + 20.0, 240.0, 40.0);
     self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.nextButton.frame.origin.y + self.nextButton.frame.size.height + 180.0);
     NSLog(@"conten size: %f", self.scrollView.contentSize.height);
 }
@@ -54,32 +49,25 @@
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tapGestureRecognizer];
     
-    //Create a button to skip the subscription process and go directly to home screen.
+    //'Continuar' button setup
     self.nextButton = [[UIButton alloc] init];
     [self.nextButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nextButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    [self.nextButton addTarget:self action:@selector(goToSuscriptionConfirmationVC) forControlEvents:UIControlEventTouchUpInside];
+    self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 348.0, 20.0, 20.0)];
-        self.checkmarkView1.cornerRadius = 3.0;
-        self.checkmarkView1.tag = 1;
-        self.checkmarkView1.delegate = self;
-        self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 387.0, 20.0, 20.0)];
-        self.checkmarkView2.cornerRadius = 3.0;
-        self.checkmarkView2.tag = 2;
-        self.checkmarkView2.delegate = self;
-    } else {
-        self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
-        self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(350.0, 465.0, 40.0, 40.0)];
-        self.checkmarkView1.cornerRadius = 6.0;
-        self.checkmarkView1.delegate = self;
-        self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(350.0, 525.0, 40.0, 40.0)];
-        self.checkmarkView2.cornerRadius = 6.0;
-        self.checkmarkView2.delegate = self;
-    }
+    //Create the two checkbox
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 348.0, 20.0, 20.0)];
+    self.checkmarkView1.cornerRadius = 3.0;
+    self.checkmarkView1.tag = 1;
+    self.checkmarkView1.delegate = self;
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 387.0, 20.0, 20.0)];
+    self.checkmarkView2.cornerRadius = 3.0;
+    self.checkmarkView2.tag = 2;
+    self.checkmarkView2.delegate = self;
+  
+    self.scrollView.alwaysBounceVertical = YES;
     [self.scrollView addSubview:self.nextButton];
     [self.scrollView addSubview:self.checkmarkView1];
     [self.scrollView addSubview:self.checkmarkView2];
@@ -98,19 +86,24 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
--(void)goToHomeScreen {
+-(void)goToSuscriptionConfirmationVC {
     if ([self areTermsAndPoliticsConditionsAccepted]) {
+        //Test purposes only. If the terms are accepted, validate the suscription.
+        //Save a key locally indicating that the user is log in.
         FileSaver *fileSaver = [[FileSaver alloc] init];
-        [fileSaver setDictionary:@{@"UserDidSkipKey": @NO} withKey:@"UserDidSkipDic"];
         [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        
+        //Go to the suscription confirmation view controller.
         SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = self.controllerWasPresentFromInitialScreen;
         [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
-        /*MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarVC animated:YES completion:nil];*/
+        
     } else {
+        //The terms and conditions were not accepted, so show an alert.
         [[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             [self showErrorsInTermAndPoliticsConditions];
     }
@@ -169,11 +162,7 @@
 #pragma mark - Interface Orientation 
 
 -(NSUInteger)supportedInterfaceOrientations {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         return UIInterfaceOrientationMaskPortrait;
-    } else {
-        return UIInterfaceOrientationMaskLandscape;
-    }
 }
 
 @end

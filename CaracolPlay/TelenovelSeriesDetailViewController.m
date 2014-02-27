@@ -23,6 +23,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "SuscriptionAlertViewController.h"
 #import "SeasonsListView.h"
 #import "AddToListView.h"
+#import "MBHUDView.h"
+#import "IngresarViewController.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -69,7 +71,22 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                     @"category_id": @"7816234",
                                     @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
                                     @"watched_on": @"2014-02-05",
-                                    @"is_3g": @NO,},
+                                    @"is_3g": @NO},
+                                  
+                                  @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"La segunda prueba",
+                                    @"description": @"Pedro es rescatado después de un terrible incidente de...",
+                                    @"image_url": @"http://www.eldominio.com/laimagenparaestecapitulo.jpg",
+                                    @"episode_number": @3,
+                                    @"id": @"1235432",
+                                    @"url": @"http://www.eldominio.com/laurldeestevideo.video",
+                                    @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
+                                    @"rate": @4,
+                                    @"views": @"4321",//Número de veces visto
+                                    @"duration": @2700,//En segundos
+                                    @"category_id": @"7816234",
+                                    @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
+                                    @"watched_on": @"2014-02-05",
+                                    @"is_3g": @NO},
                                   ];
     }
     return _unparsedEpisodesInfo;
@@ -120,11 +137,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0,
                                                                                               20.0,
                                                                                               90.0,
-                                                                                              140.0)];
+                                                                                              self.view.frame.size.height/4.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
     secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
+    [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [self.view addSubview:secondaryMovieEventImageView];
     
     //Add the play icon to the secondary image view
@@ -181,7 +198,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:shareButton];
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
+    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 20.0, self.view.frame.size.width - 20.0, 70.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -194,7 +211,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     if (self.production.hasSeasons) {
         //'Temporadas' button setup
-        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, 265.0, self.view.frame.size.width - 20.0, 44.0)];
+        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, detailTextView.frame.origin.y + detailTextView.frame.size.height, self.view.frame.size.width - 20.0, 44.0)];
         [self.seasonsButton setTitle:@"Temporada 1" forState:UIControlStateNormal];
         self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -205,12 +222,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     CGFloat tableViewOriginY;
     if (self.production.hasSeasons) {
-        tableViewOriginY = 315.0;
+        tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height;
     } else {
-        tableViewOriginY = 285.0;
+        tableViewOriginY = detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0;
     }
     //8. Create a TableView to diaply the list of chapters
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - 220.0 - 44.0) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - 64.0 - 50.0) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -260,7 +277,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if ([[fileSaver getDictionary:@"UserDidSkipDic"][@"UserDidSkipKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        //The user isn't login.
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");
@@ -340,12 +358,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - TelenovelSeriesTableViewCellDelegate
 
 -(void)addButtonWasSelectedInCell:(TelenovelSeriesTableViewCell *)cell {
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder añadir producciones a tus listas de reproducción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+        return;
+    }
+    
     self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.7;
     [self.tabBarController.view addSubview:self.opacityView];
     
-    AddToListView *addToListView = [[AddToListView alloc] initWithFrame:CGRectMake(30.0, 150.0, self.view.frame.size.width - 60.0, 300.0)];
+    AddToListView *addToListView = [[AddToListView alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/3.8, self.view.frame.size.width - 60.0, 300.0)];
+    NSLog(@"add to list view frame: %@", NSStringFromCGRect(addToListView.frame));
     addToListView.delegate = self;
     [self.tabBarController.view addSubview:addToListView];
 }
@@ -354,6 +379,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)listWasSelectedAtIndex:(NSUInteger)index inAddToListView:(AddToListView *)addToListView {
     NSLog(@"index selected: %d", index);
+    [MBHUDView hudWithBody:@"Agregado a tu lista" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
 }
 
 -(void)addToListViewWillDisappear:(AddToListView *)addToListView {
@@ -388,6 +414,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.alpha = 0.0;
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        IngresarViewController *ingresarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
+        ingresarVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController pushViewController:ingresarVC animated:YES];
+    }
 }
 
 #pragma mark - UIActionSheetDelegate

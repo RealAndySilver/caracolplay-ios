@@ -47,15 +47,16 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)goToHomeScreen {
     if ([self.codeTextfield.text length] > 0) {
+        //Test purposes only. If the user wrote something in the textfield, pass to the redeem code confirmation.
         RedeemCodeAlertViewController *redeemCodeAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeAlert"];
         [self.navigationController pushViewController:redeemCodeAlertVC animated:YES];
-        /*MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarVC animated:YES completion:nil];*/
+        
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Código incorrecto." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

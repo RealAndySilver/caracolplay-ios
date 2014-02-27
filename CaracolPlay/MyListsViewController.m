@@ -193,7 +193,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.alpha = 0.7;
     [self.tabBarController.view addSubview:self.opacityView];
     
-    CreateListView *createListView = [[CreateListView alloc] initWithFrame:CGRectMake(30.0, 200.0, self.view.frame.size.width - 60.0, 150.0)];
+    CreateListView *createListView = [[CreateListView alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/2 - 30.0, self.view.frame.size.width - 60.0, 150.0)];
     createListView.delegate = self;
     [self.tabBarController.view addSubview:createListView];
 }

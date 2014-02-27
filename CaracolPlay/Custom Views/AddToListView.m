@@ -19,7 +19,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        self.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         self.layer.cornerRadius = 5.0;
         self.clipsToBounds = YES;
         self.alpha = 0.0;
@@ -34,12 +34,13 @@
         [self addSubview:titleLabel];
         
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 50.0, frame.size.width, frame.size.height - 120.0)];
-        tableView.backgroundColor = [UIColor lightGrayColor];
+        tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        tableView.separatorColor = [UIColor blackColor];
         tableView.delegate = self;
         tableView.dataSource = self;
         [self addSubview:tableView];
         
-        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, frame.size.height - 50.0, frame.size.width - 60.0, 40.0)];
+        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, frame.size.height - 55.0, frame.size.width - 60.0, 40.0)];
         [closeButton setTitle:@"Cerrar" forState:UIControlStateNormal];
         [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [closeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];

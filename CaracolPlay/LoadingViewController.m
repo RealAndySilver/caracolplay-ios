@@ -48,20 +48,17 @@
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        //The user is login, so go to the home screen directly
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarVC animated:YES completion:nil];
+        
     } else {
+        //The user isn't login, so go to the login screen.
         LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
         MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:navigationController animated:YES completion:nil];
     }
-    
-    /*LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-    MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:navigationController animated:YES completion:nil];*/
-    //[self.navigationController pushViewController:loginVC animated:YES];
 }
 
 #pragma mark - Interface Orientation

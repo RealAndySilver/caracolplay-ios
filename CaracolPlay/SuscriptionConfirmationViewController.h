@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SuscriptionConfirmationViewController : UIViewController
-
+@property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
 @end

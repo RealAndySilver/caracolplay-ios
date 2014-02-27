@@ -119,7 +119,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0,
                                                                                               20.0,
                                                                                               90.0,
-                                                                                              140.0)];
+                                                                                              self.view.frame.size.height/4.0)];
     secondaryMovieEventImageView.clipsToBounds = YES;
     secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -159,7 +159,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                              90.0,
+                                                                              self.view.frame.size.height/6.3,
                                                                               90.0,
                                                                               30.0)];
     [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
@@ -170,7 +170,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 90.0, 90.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.view.frame.size.height/6.3, 90.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
@@ -188,7 +188,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchProductionButton];
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, 70.0)];
+    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, self.view.frame.size.height/8.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -200,7 +200,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:detailTextView];
     
     //8. Create a background view and set it's color to gray
-    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0, self.view.frame.size.width, self.view.frame.size.height - (detailTextView.frame.origin.y + detailTextView.frame.size.height) - 44.0)];
+    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - (detailTextView.frame.origin.y + detailTextView.frame.size.height) - 44.0)];
     grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
     [self.view addSubview:grayView];
     
@@ -259,7 +259,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(100.0, 130.0);
+    return CGSizeMake(100.0, [UIScreen mainScreen].bounds.size.height/4.3);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -277,7 +277,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if ([[fileSaver getDictionary:@"UserDidSkipDic"][@"UserDidSkipKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");

@@ -41,7 +41,6 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
-    //[self forceLandscapeMode];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -71,7 +70,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     return UIInterfaceOrientationMaskAll;
 }
 
--(void)forceLandscapeMode{
+/*-(void)forceLandscapeMode{
     
     if(UIDeviceOrientationIsPortrait(self.interfaceOrientation)){
         
@@ -92,6 +91,6 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
             NSLog(@"dentro del if portrait");
         }
     }
-}
+}*/
 
 @end

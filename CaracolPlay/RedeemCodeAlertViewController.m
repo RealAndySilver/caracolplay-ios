@@ -28,9 +28,12 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
--(void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:nil
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = nil;
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 -(void)UISetup {
@@ -51,7 +54,7 @@
     [self.view addSubview:textView];
     
     //2. Set the enter and suscribe button
-    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, 390.0, screenFrame.size.width - 60.0, 50.0)];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/1.45, screenFrame.size.width - 60.0, 50.0)];
     [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -59,7 +62,7 @@
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:enterButton];
     
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, 450.0, screenFrame.size.width - 60.0, 50.0)];
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, enterButton.frame.origin.y + enterButton.frame.size.height + 10.0, screenFrame.size.width - 60.0, 50.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -69,7 +72,7 @@
     
     //4. Set the 'Skip' button
     UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width - 100.0, 22.0, 100.0, 30.0)];
-    [skipButton setTitle:@"Saltar" forState:UIControlStateNormal];
+    [skipButton setTitle:@"Saltar ▶︎" forState:UIControlStateNormal];
     [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
@@ -83,9 +86,9 @@
     //we need to know this to present the suscription alert view controller
     //when the user tries to watch a production.
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserDidSkipKey": @YES} withKey:@"UserDidSkipDic"];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
     
-    if ([fileSaver getDictionary:@"UserDidSkipDic"]) {
+    if ([fileSaver getDictionary:@"UserHasLoginDic"]) {
         NSLog(@"si se guardó el diccionario");
     }
     

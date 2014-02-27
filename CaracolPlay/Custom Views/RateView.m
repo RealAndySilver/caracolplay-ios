@@ -8,6 +8,7 @@
 
 #import "RateView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MyUtilities.h"
 
 @interface RateView()
 @property (strong, nonatomic) UIImageView *starImageView1;
@@ -28,21 +29,7 @@
     if (self = [super initWithFrame:frame]) {
         self.goldStars = goldStars;
         //////////////////////////////////////////////////////
-        //Parallax effect
-        UIInterpolatingMotionEffect* xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                                                              type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        xAxis.minimumRelativeValue = @-15.0;
-        xAxis.maximumRelativeValue = @15.0;
-        
-        UIInterpolatingMotionEffect* yAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y"
-                                                                                              type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        yAxis.minimumRelativeValue = @-15.0;
-        yAxis.maximumRelativeValue = @15.0;
-        
-        UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
-        group.motionEffects = @[xAxis, yAxis];
-        [self addMotionEffect:group];
-        ////////////////////////////////////////////////////////////
+        [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
         self.backgroundColor = [UIColor whiteColor];
         self.layer.cornerRadius = 5.0;

@@ -12,6 +12,7 @@
 #import "MoviesEventsDetailsViewController.h"
 #import "TelenovelSeriesDetailViewController.h"
 #import "MyUtilities.h"
+#import "FileSaver.h"
 
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -68,6 +69,9 @@
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
     self.scrollView.userInteractionEnabled = YES;
+    
+    //Create two pages at the left and right limit of the scroll view, this is used to
+    //make the effect of a circular scroll view.
     [self createPageAtPosition:0 withFeaturedProduction:[self.parsedFeaturedProductions lastObject]];
     [self createPageAtPosition:[self.parsedFeaturedProductions count]+1 withFeaturedProduction:[self.parsedFeaturedProductions firstObject]];
    
@@ -81,7 +85,7 @@
     self.scrollView.contentOffset = CGPointMake(320.0, 0.0);
     [self.view addSubview:self.scrollView];
     
-    //Create a tap gesture
+    //Create a tap gesture and add it to the scroll view
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedFeaturedProduction:)];
     [self.scrollView addGestureRecognizer:tapGesture];
     
@@ -93,34 +97,44 @@
     [self.view addSubview:self.pageControl];
     
     /*--------------------------------------------------------------*/
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Inicio" style:UIBarButtonItemStylePlain target:self action:@selector(backToLogin)];
-    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    /*FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Inicio" style:UIBarButtonItemStylePlain target:self action:@selector(backToLogin)];
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    }*/
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self UISetup];
+    
+    //Start the counter in 2, because the first real page in the scroll view
+    //is page 2 (page 1 is used to simulate the last page and make the circular
+    //scroll view effect)
     self.automaticCounter = 2;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    
+    //We don't need the timer anymore.
     [self.automaticScrollTimer invalidate];
     self.automaticScrollTimer = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
                                                   forBarMetrics:UIBarMetricsDefault];
+    //Start the automatic scrolling timer
     [self startScrollingTimer];
 }
 
 #pragma mark - Custom Methods
 
 -(void)backToLogin {
-    NSLog(@"volviiiii");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -152,15 +166,20 @@
     }
     
     if ([featuredProduction.type isEqualToString:@"Series"]) {
+        //The production is a serie.
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
+        
     } else if ([featuredProduction.type isEqualToString:@"Peliculas"]) {
+        //The production is a movie
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
     }
 }
 
 -(void)createPageAtPosition:(int)pagePosition withFeaturedProduction:(Featured *)featuredProduction {
+    //Method used to create the pages of the scroll view.
+    
     UIView *page = [[UIView alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width*pagePosition,
                                                             0.0,
                                                             self.scrollView.frame.size.width,
@@ -194,7 +213,7 @@
     
     //2. Label to display the type of video (Series, movie, tv show...)
     UILabel *videoTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        self.scrollView.frame.size.height / 1.28,
+                                                                        playIconImageView.frame.origin.y - 10.0,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
     videoTypeLabel.text = featuredProduction.type;
@@ -205,7 +224,7 @@
     
     //3. Label to display the video name (La selección, Mentiras Perfectas ...)
     UILabel *videoNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        self.scrollView.frame.size.height / 1.22,
+                                                                        videoTypeLabel.frame.origin.y + 20.0,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
     videoNameLabel.text = featuredProduction.name;
@@ -216,7 +235,7 @@
     
     //4. Label to display the season and episode of the video (Temporada 3, episodio 4...)
     UILabel *videoInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        self.scrollView.frame.size.height / 1.16,
+                                                                        videoTypeLabel.frame.origin.y + 40.0,
                                                                         self.scrollView.frame.size.width - 70.0,
                                                                         30.0)];
     videoInfoLabel.text = featuredProduction.featureText;

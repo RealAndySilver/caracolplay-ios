@@ -8,6 +8,7 @@
 
 #import "SuscriptionConfirmationViewController.h"
 #import "MainTabBarViewController.h"
+#import "MBHUDView.h"
 
 @interface SuscriptionConfirmationViewController ()
 
@@ -55,8 +56,33 @@
 #pragma mark - Actions 
 
 -(void)goToHomeViewController {
-    MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-    [self presentViewController:mainTabBar animated:YES completion:nil];
+    if (self.controllerWasPresentedFromInitialScreen) {
+        MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBar animated:YES completion:nil];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+  
+        //Create the 'Mis Listas' tab & 'Mas' tab
+        [self createAditionalTabsInTabBarController];
+        [MBHUDView hudWithBody:@"Suscripcion Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    }
+}
+
+-(void)createAditionalTabsInTabBarController {
+    //4. Fourth view of the TabBar - My Lists
+    MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
+    MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
+    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+    
+    //5. Fifth view of the TabBar - My Account
+    ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
+    MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
+    [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+    
+    NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
+    [viewControllersArray addObject:myListsNavigationController];
+    [viewControllersArray addObject:myAccountNavigationController];
+    self.tabBarController.viewControllers = viewControllersArray;
 }
 
 #pragma mark - Interface Orientation

@@ -7,6 +7,7 @@
 //
 
 #import "SeasonsListView.h"
+#import "MyUtilities.h"
 
 @interface SeasonsListView() <UITableViewDataSource, UITableViewDelegate>
 @end
@@ -18,23 +19,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
-        //////////////////////////////////////////////////////
-        //Parallax effect
-        UIInterpolatingMotionEffect* xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                                                             type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        xAxis.minimumRelativeValue = @-15.0;
-        xAxis.maximumRelativeValue = @15.0;
-        
-        UIInterpolatingMotionEffect* yAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y"
-                                                                                             type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        yAxis.minimumRelativeValue = @-15.0;
-        yAxis.maximumRelativeValue = @15.0;
-        
-        UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
-        group.motionEffects = @[xAxis, yAxis];
-        [self addMotionEffect:group];
-        ////////////////////////////////////////////////////////////
+        [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);

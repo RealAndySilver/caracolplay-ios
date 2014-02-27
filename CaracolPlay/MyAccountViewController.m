@@ -11,6 +11,7 @@
 #import "MBHUDView.h"
 #import "LoginViewController.h"
 #import "MyNavigationController.h"
+#import "HomeViewController.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -215,12 +216,22 @@
 
 -(void)closeSession {
     NSLog(@"Cerré Sesión");
+    
+    //Change our local key that indicates that the user has closed session
     FileSaver *fileSaver = [[FileSaver alloc] init];
     [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-    LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-    MyNavigationController *myNavigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
-    [self presentViewController:myNavigationController animated:YES completion:nil];
+    [MBHUDView hudWithBody:@"Salida exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    
+    //Erase 'Mis listas' tab & 'Mas' tab
+    NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
+    [tabViewControllers removeLastObject];
+    [tabViewControllers removeLastObject];
+    self.tabBarController.viewControllers = tabViewControllers;
+    self.tabBarController.selectedIndex = 0;
+    
+    MyNavigationController *navigationController = (MyNavigationController *)self.tabBarController.viewControllers[0];
+    //HomeViewController *homeViewController = navigationController.viewControllers[0];
+    [navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Interface Orientation

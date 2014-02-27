@@ -29,7 +29,7 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 140.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     self.tableView.separatorColor = [UIColor blackColor];
     [self.view addSubview:self.tableView];
 }
