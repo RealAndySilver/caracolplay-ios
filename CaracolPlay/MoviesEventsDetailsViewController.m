@@ -116,15 +116,22 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:opacityPatternView];
     
     //2. Create the secondary image of the movie/event
-    UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0,
-                                                                                              20.0,
-                                                                                              90.0,
-                                                                                              self.view.frame.size.height/4.0)];
+    UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
+                                                                 20.0,
+                                                                 90.0,
+                                                                  self.view.frame.size.height/4.0)];
+    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    shadowView.layer.shadowOpacity = 0.9;
+    shadowView.layer.shadowRadius = 5.0;
+    [self.view addSubview:shadowView];
+    
+    UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
     secondaryMovieEventImageView.clipsToBounds = YES;
     secondaryMovieEventImageView.userInteractionEnabled = YES;
     secondaryMovieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    [self.view addSubview:secondaryMovieEventImageView];
+    [shadowView addSubview:secondaryMovieEventImageView];
     
     //Add the play icon into the secondaty image view
     UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
@@ -176,6 +183,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
     [shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    
+    shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    shareButton.layer.shadowOpacity = 0.8;
+    shareButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+    shareButton.layer.shadowRadius = 5.0;
+    
     [self.view addSubview:shareButton];
     
     //Create the button to watch the production
@@ -185,6 +198,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [watchProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
+    
+    watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    watchTrailerButton.layer.shadowOpacity = 0.8;
+    watchTrailerButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+    watchTrailerButton.layer.shadowRadius = 5.0;
+    
     [self.view addSubview:watchProductionButton];
     
     //7. Create a text view to display the detail of the event/movie

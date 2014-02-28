@@ -8,6 +8,8 @@
 
 #import "LoadingiPadViewController.h"
 #import "LoginPadViewController.h"
+#import "FileSaver.h"
+#import "MainTabBarPadController.h"
 
 @interface LoadingiPadViewController ()
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -52,9 +54,22 @@
     [self.spinner removeFromSuperview];
     self.spinner = nil;
     
-    LoginPadViewController *loginPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginPad"];
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        //If the user has logged in, pass directly to the home screen
+        MainTabBarPadController *mainTabBarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarPadVC animated:YES completion:nil];
+        
+    } else {
+        //If the user hasn't logged in, go to the login view controller.
+        LoginPadViewController *loginPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginPad"];
+        loginPadViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:loginPadViewController animated:YES completion:nil];
+    }
+    
+    /*LoginPadViewController *loginPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginPad"];
     loginPadViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:loginPadViewController animated:YES completion:nil];
+    [self presentViewController:loginPadViewController animated:YES completion:nil];*/
 }
 
 

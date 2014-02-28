@@ -10,6 +10,7 @@
 
 @interface MyListsPadTableViewCell()
 @property (strong, nonatomic) UIImageView *playIconImageView;
+@property (strong, nonatomic) UIView *shadowView;
 @end
 
 @implementation MyListsPadTableViewCell
@@ -20,11 +21,19 @@
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
+        
+        self.shadowView = [[UIView alloc] init];
+        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+        self.shadowView.layer.shadowOpacity = 0.8;
+        self.shadowView.layer.shadowRadius = 5.0;
+        [self.contentView addSubview:self.shadowView];
+        
         // 1. Production image view
         self.productionImageView = [[UIImageView alloc] init];
         self.productionImageView.clipsToBounds = YES;
         self.productionImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.contentView addSubview:self.productionImageView];
+        [self.shadowView addSubview:self.productionImageView];
         
         // 2. Production name label setup
         self.productionNameLabel = [[UILabel alloc] init];
@@ -56,7 +65,8 @@
     
     //Set subviews frames
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.productionImageView.frame = CGRectMake(50.0, 10.0, 60.0, bounds.size.height - 20.0);
+        self.shadowView.frame = CGRectMake(50.0, 10.0, 60.0, bounds.size.height - 20.0);
+        self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
         self.productionNameLabel.frame = CGRectMake(130.0, bounds.size.height/2 - 30.0, 500.0, 30.0);
         self.productionDetailLabel.frame = CGRectMake(130.0, bounds.size.height/2, 500.0, 30.0);
         self.playIconImageView.frame = CGRectMake(bounds.size.width - 50.0, bounds.size.height/2 - 12.0, 24.0, 24.0);

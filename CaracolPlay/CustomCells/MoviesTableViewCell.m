@@ -9,6 +9,7 @@
 #import "MoviesTableViewCell.h"
 
 @interface MoviesTableViewCell()
+@property (strong, nonatomic) UIView *shadowView;
 @end
 
 @implementation MoviesTableViewCell
@@ -20,11 +21,18 @@
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         
+        self.shadowView = [[UIView alloc] init];
+        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+        self.shadowView.layer.shadowOpacity = 0.8;
+        self.shadowView.layer.shadowRadius = 4.0;
+        [self.contentView addSubview:self.shadowView];
+        
         //1. Create an ImageView to display the movie image
         self.movieImageView = [[UIImageView alloc] init];
         self.movieImageView.clipsToBounds = YES;
         self.movieImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.contentView addSubview:self.movieImageView];
+        [self.shadowView addSubview:self.movieImageView];
         
         //2. Create a label to display the movie title.
         self.movieTitleLabel = [[UILabel alloc] init];
@@ -47,11 +55,12 @@
     CGRect contentRect = self.contentView.bounds;
     CGRect frame;
     frame = CGRectMake(10.0, 10.0, 80.0, contentRect.size.height - 20.0);
-    self.movieImageView.frame = frame;
+    self.shadowView.frame = frame;
+    self.movieImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
     
-    frame = CGRectMake(self.movieImageView.frame.origin.x + self.movieImageView.frame.size.width + 10.0,
+    frame = CGRectMake(self.shadowView.frame.origin.x + self.shadowView.frame.size.width + 10.0,
                        contentRect.size.height/2 - 15.0,
-                       contentRect.size.width - (self.movieImageView.frame.origin.x + self.movieImageView.frame.size.width + 10.0),
+                       contentRect.size.width - (self.shadowView.frame.origin.x + self.shadowView.frame.size.width + 10.0),
                        30.0);
     self.movieTitleLabel.frame = frame;
     

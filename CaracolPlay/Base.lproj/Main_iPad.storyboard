@@ -91,6 +91,25 @@
             </objects>
             <point key="canvasLocation" x="-692" y="-478"/>
         </scene>
+        <!--Redeem Code Confirmation Pad View Controller-->
+        <scene sceneID="WWx-BC-Zsk">
+            <objects>
+                <viewController storyboardIdentifier="RedeemCodeConfirmation" id="nN6-uE-2yu" customClass="RedeemCodeConfirmationPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Atu-4E-cnu"/>
+                        <viewControllerLayoutGuide type="bottom" id="ftq-tX-YHM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PvK-iy-8sl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="597"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qgo-NH-0EO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-295" y="-913"/>
+        </scene>
         <!--Ingresar Pad View Controller-->
         <scene sceneID="wv9-8b-yGP">
             <objects>
@@ -559,6 +578,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k0n-lY-yjm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-692" y="509"/>
+        </scene>
+        <!--Suscription Confirmation Pad View Controller-->
+        <scene sceneID="lFK-sy-gFL">
+            <objects>
+                <viewController storyboardIdentifier="SuscriptionConfirmationPad" id="s2N-8E-8To" customClass="SuscriptionConfirmationPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NMX-Um-gnq"/>
+                        <viewControllerLayoutGuide type="bottom" id="rTH-kQ-aho"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zoP-mf-1R4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="597"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8S4-Yk-zgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-310" y="980"/>
         </scene>
         <!--Loadingi Pad View Controller-->
         <scene sceneID="YQY-vE-PIv">

@@ -7,7 +7,7 @@
 //
 
 #import "RedeemCodePadViewController.h"
-#import "MainTabBarPadController.h"
+#import "RedeemCodeConfirmationPadViewController.h"
 
 @interface RedeemCodePadViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
@@ -27,7 +27,7 @@
     
     //2. Dismiss button setup
     self.dismissButton = [[UIButton alloc] init];
-    [self.dismissButton setBackgroundImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
     
@@ -52,7 +52,7 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 386.0 + 20.0);
     
     self.backgroundImageView.frame = self.view.bounds;
-    self.dismissButton.frame =CGRectMake(self.view.bounds.size.width - 25.0, 0.0, 25.0, 25.0);
+    self.dismissButton.frame =CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
 }
 
 #pragma mark - Actions
@@ -61,8 +61,10 @@
     if (![self.codeTextfield.text length] > 0) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Código inválido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
-        MainTabBarPadController *mainTabBarController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarController animated:YES completion:nil];
+        RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmation"];
+        redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:redeemCodeConfirmationVC animated:YES completion:nil];
     }
 }
 

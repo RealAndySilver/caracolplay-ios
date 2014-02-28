@@ -13,6 +13,7 @@
 #import "JMImageCache.h"
 #import "MovieDetailsPadViewController.h"
 #import "SeriesDetailPadViewController.h"
+#import "FileSaver.h"
 
 @interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -83,6 +84,16 @@
     self.pageControl = [[UIPageControl alloc] init];
     self.pageControl.numberOfPages = [self.parsedFeaturedProductions count];
     [self.view addSubview:self.pageControl];
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, 30.0, 100.0, 44.0)];
+        [backButton setTitle:@"◀︎Volver" forState:UIControlStateNormal];
+        [backButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        backButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        [backButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:backButton];
+    }
 }
 
 #pragma  mark - View Lifecycle
@@ -113,6 +124,10 @@
 }
 
 #pragma mark - Actions 
+
+-(void)dismissVC {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 -(void)scrollCarousel {
     [self.carousel scrollByNumberOfItems:1 duration:1.0];

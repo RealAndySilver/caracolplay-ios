@@ -18,6 +18,7 @@
 #import "StarsView.h"
 #import "MyUtilities.h"
 #import "Reachability.h"
+#import "FileSaver.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -106,7 +107,7 @@
 -(void)UISetup {
     //1. dismiss buton setup
     self.dismissButton = [[UIButton alloc] init];
-    [self.dismissButton setBackgroundImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
     
@@ -127,12 +128,19 @@
     [self.backgroundImageView addSubview:self.opacityPatternView];
     
     //3. Small production image view setup
-    UIImageView *smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 30.0, 128.0, 194.0)];
+    UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(30.0, 30.0, 128.0, 194.0)];
+    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowView.layer.shadowOffset = CGSizeMake(10.0, 10.0);
+    shadowView.layer.shadowRadius = 6.0;
+    shadowView.layer.shadowOpacity = 0.8;
+    [self.view addSubview:shadowView];
+    
+    UIImageView *smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
     [smallProductionImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     smallProductionImageView.clipsToBounds = YES;
     smallProductionImageView.userInteractionEnabled = YES;
     smallProductionImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:smallProductionImageView];
+    [shadowView addSubview:smallProductionImageView];
     
     //Add the play icon into the secondaty image view
     UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(smallProductionImageView.frame.size.width/2 - 25.0, smallProductionImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
@@ -168,6 +176,12 @@
     [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.watchTrailerButton.layer.shadowOpacity = 0.8;
+    self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    self.watchTrailerButton.layer.shadowRadius = 5.0;
+    
     [self.view addSubview:self.watchTrailerButton];
     
     //6. Share button setup
@@ -177,6 +191,12 @@
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.shareButton.layer.shadowOpacity = 0.8;
+    self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    self.shareButton.layer.shadowRadius = 5.0;
+    
     [self.view addSubview:self.shareButton];
     
     //7. Production detail text view
@@ -225,7 +245,7 @@
     self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
     
     //Set subviews frame
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 25.0, 0.0, 25.0, 25.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.opacityPatternView.frame = self.view.bounds;
     self.productionNameLabel.frame = CGRectMake(180.0, 30.0, self.view.bounds.size.width - 180.0, 30.0);
@@ -314,6 +334,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView.tag == 2) {
+        
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+            //If the user isn't logged in, he can't watch the video
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+            return;
+        }
+        
         Reachability *reachability = [Reachability reachabilityForInternetConnection];
         [reachability startNotifier];
         NetworkStatus status = [reachability currentReachabilityStatus];

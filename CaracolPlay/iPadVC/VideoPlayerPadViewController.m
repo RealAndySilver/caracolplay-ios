@@ -56,7 +56,8 @@
 -(void)viewWillAppear:(BOOL)animated {
     NSLog(@"la vista aprecerá");
     [super viewWillAppear:animated];
-    [self.ooyalaPlayerViewController.player playWithInitialTime:1000.0];
+    [self.ooyalaPlayerViewController.player play];
+   // [self.ooyalaPlayerViewController.player playWithInitialTime:1000.0];
 }
 
 -(void)viewWillLayoutSubviews {

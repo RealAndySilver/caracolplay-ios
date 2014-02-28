@@ -9,14 +9,16 @@
 #import "MyListsMasterPadViewController.h"
 #import "MyListsDetailPadViewController.h"
 #import "List.h"
+#import "CreateListView.h"
 
-@interface MyListsMasterPadViewController () <UITableViewDataSource, UITableViewDelegate, UIBarPositioningDelegate>
+@interface MyListsMasterPadViewController () <UITableViewDataSource, UITableViewDelegate, UIBarPositioningDelegate, CreateListViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *unparsedUserListsArray;
 @property (strong, nonatomic) NSMutableArray *parsedUserListsArray;
 @property (strong, nonatomic) MyListsDetailPadViewController *myListsDetailVC;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UIImageView *titleImageView;
+@property (strong, nonatomic) UIView *opacityView;
 @end
 
 @implementation MyListsMasterPadViewController
@@ -120,6 +122,10 @@
     [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"SplitNavBarMaster.png"] forBarMetrics:UIBarMetricsDefault];
     [self.view addSubview:self.navigationBar];
     
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
+    self.navigationBar.items = @[navigationItem];
+    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createList)];
+    
     //3. Orange title image view
     self.titleImageView = [[UIImageView alloc] init];
     self.titleImageView.image = [UIImage imageNamed:@"MyListsOrangeTitle.png"];
@@ -169,6 +175,47 @@
     
     List *list = self.parsedUserListsArray[indexPath.row];
     self.myListsDetailVC.episodes = [NSMutableArray arrayWithArray:list.episodes];
+}
+
+#pragma mark - Actions
+
+-(void)createList {
+    CGRect frame = self.tabBarController.view.bounds;
+    
+    self.opacityView = [[UIView alloc] initWithFrame:frame];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+    
+    CreateListView *createListView = [[CreateListView alloc] initWithFrame:CGRectMake(frame.size.width/2 - 150.0, frame.size.height/2 - 75.0, 300.0, 150.0)];
+    createListView.delegate = self;
+    [self.tabBarController.view addSubview:createListView];
+}
+
+#pragma mark - Custom Methods
+
+-(void)addNewListWithName:(NSString *)listName {
+    NSDictionary *newListDic = @{@"list_name": listName, @"list_id" : @"235345", @"episodes" : @[]};
+    List *newList = [[List alloc] initWithDictionary:newListDic];
+    [self.parsedUserListsArray addObject:newList];
+    [self.tableView reloadData];
+}
+
+#pragma  mark - CreateListViewDelegate
+
+-(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+    [self addNewListWithName:listName];
+}
+
+-(void)cancelButtonPressedInCreateListView:(CreateListView *)createListView {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
+}
+
+-(void)hiddeAnimationDidEndInCreateListView:(CreateListView *)createListView {
+    createListView = nil;
 }
 
 #pragma mark - UIBarPositioningDelegate
