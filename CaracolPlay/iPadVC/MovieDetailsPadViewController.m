@@ -257,7 +257,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"No puedes ver la producción porque no has ingresado con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
         return;
     }
     

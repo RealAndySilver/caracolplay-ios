@@ -107,8 +107,12 @@
 #pragma mark - Actions 
 
 -(void)createList {
-    [self.delegate createButtonPressedInCreateListView:self withListName:self.listNameTextfield.text];
-    [self hiddeViewWithAnimation];
+    if ([self.listNameTextfield.text length] > 0) {
+        [self.delegate createButtonPressedInCreateListView:self withListName:self.listNameTextfield.text];
+        [self hiddeViewWithAnimation];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Debes asignarle un nombre a tu lista." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 -(void)cancel {

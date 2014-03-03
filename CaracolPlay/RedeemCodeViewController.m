@@ -73,6 +73,10 @@
     return YES;
 }
 
+-(BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
+}
+
 #pragma mark - Interface Orientation 
 
 -(NSUInteger)supportedInterfaceOrientations {

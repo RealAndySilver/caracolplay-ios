@@ -51,7 +51,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
-    cell.textLabel.text = @"Temporada 50";
+    cell.textLabel.text = @"Temporada 1";
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont boldSystemFontOfSize:14.0];

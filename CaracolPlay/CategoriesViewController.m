@@ -56,10 +56,10 @@ static NSString *CellIdentifier = @"CellIdentifier";
                                                                     style:UITableViewStylePlain];
     categoriesTableView.delegate = self;
     categoriesTableView.dataSource = self;
-    categoriesTableView.backgroundColor = [UIColor blackColor];
+    categoriesTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     categoriesTableView.rowHeight = 50.0;
     categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    categoriesTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    categoriesTableView.separatorColor = [UIColor blackColor];
     [self.view addSubview:categoriesTableView];
 }
 
@@ -90,8 +90,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
     
     Categoria *category = self.parsedCategoriesList[indexPath.row];
     cell.textLabel.text = category.name;
-    cell.backgroundColor = [UIColor blackColor];
+    cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }

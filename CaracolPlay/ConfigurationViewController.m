@@ -57,6 +57,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
     cell.backgroundColor = [UIColor clearColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
     cell.textLabel.text = self.menuItemsArray[indexPath.row];
     return cell;
 }

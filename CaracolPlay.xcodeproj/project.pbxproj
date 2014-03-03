@@ -163,6 +163,7 @@
 		8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */; };
 		8BE82937189BFE1E003EE7A6 /* TermsAndConditionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */; };
 		8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82939189C0309003EE7A6 /* MyAccountViewController.m */; };
+		8BEE1B4C18C4EE01004559EF /* SearchPadCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE1B4B18C4EE01004559EF /* SearchPadCollectionViewCell.m */; };
 		8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */; };
 		8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A0E188F16A80021AB03 /* Estrella@2x.png */; };
 		8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A11188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m */; };
@@ -502,6 +503,8 @@
 		8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndConditionsViewController.m; sourceTree = "<group>"; };
 		8BE82938189C0309003EE7A6 /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
 		8BE82939189C0309003EE7A6 /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
+		8BEE1B4A18C4EE01004559EF /* SearchPadCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchPadCollectionViewCell.h; path = CustomCells/SearchPadCollectionViewCell.h; sourceTree = "<group>"; };
+		8BEE1B4B18C4EE01004559EF /* SearchPadCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchPadCollectionViewCell.m; path = CustomCells/SearchPadCollectionViewCell.m; sourceTree = "<group>"; };
 		8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoviesTableViewCell.h; path = CustomCells/MoviesTableViewCell.h; sourceTree = "<group>"; };
 		8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoviesTableViewCell.m; path = CustomCells/MoviesTableViewCell.m; sourceTree = "<group>"; };
 		8BF16A0E188F16A80021AB03 /* Estrella@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Estrella@2x.png"; path = "Resources/Images/Estrella@2x.png"; sourceTree = "<group>"; };
@@ -1263,6 +1266,8 @@
 				A0A9B76D18A3005100D6D222 /* EpisodesPadTableViewCell.m */,
 				8B892B2618B27F4A0066926C /* MyListsPadTableViewCell.h */,
 				8B892B2718B27F4A0066926C /* MyListsPadTableViewCell.m */,
+				8BEE1B4A18C4EE01004559EF /* SearchPadCollectionViewCell.h */,
+				8BEE1B4B18C4EE01004559EF /* SearchPadCollectionViewCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -1625,6 +1630,7 @@
 				8B164B6F18A9549A001803A9 /* Episode.m in Sources */,
 				8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */,
 				8B892B2818B27F4A0066926C /* MyListsPadTableViewCell.m in Sources */,
+				8BEE1B4C18C4EE01004559EF /* SearchPadCollectionViewCell.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
 				8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */,
 				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,

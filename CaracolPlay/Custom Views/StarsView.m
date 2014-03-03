@@ -96,6 +96,7 @@
 }*/
 
 -(void)setRate:(NSUInteger)rate {
+    _rate = rate;
     [self tintStarsUsingRate:rate];
 }
 
