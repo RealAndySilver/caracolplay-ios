@@ -13,6 +13,7 @@
 #import "TelenovelSeriesDetailViewController.h"
 #import "MyUtilities.h"
 #import "FileSaver.h"
+#import "CPIAPHelper.h"
 
 @interface HomeViewController ()
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -107,7 +108,11 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self UISetup];
-    
+    [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+        if (success) {
+            NSLog(@"se cargó de forma exitosa");
+        }
+    }];
     //Start the counter in 2, because the first real page in the scroll view
     //is page 2 (page 1 is used to simulate the last page and make the circular
     //scroll view effect)

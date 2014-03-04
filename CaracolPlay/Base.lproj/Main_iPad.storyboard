@@ -598,6 +598,25 @@
             </objects>
             <point key="canvasLocation" x="-310" y="980"/>
         </scene>
+        <!--Suscription Alert Pad View Controller-->
+        <scene sceneID="ujl-XZ-pcm">
+            <objects>
+                <viewController storyboardIdentifier="SuscriptionAlertPad" id="L0m-NR-cx4" customClass="SuscriptionAlertPadViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Hb5-ow-zz2"/>
+                        <viewControllerLayoutGuide type="bottom" id="AmJ-CN-aGB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NaF-LE-bct">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="597"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xba-Tq-kaM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="68" y="980"/>
+        </scene>
         <!--Loadingi Pad View Controller-->
         <scene sceneID="YQY-vE-PIv">
             <objects>

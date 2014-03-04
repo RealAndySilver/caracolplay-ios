@@ -337,7 +337,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)showRateView {
-    self.opacityView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];

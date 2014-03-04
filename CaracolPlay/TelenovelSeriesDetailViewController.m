@@ -379,7 +379,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)addButtonWasSelectedInCell:(TelenovelSeriesTableViewCell *)cell {
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder añadir producciones a tus listas de reproducción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder crear listas de reproducción y añadir producciones debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
         return;
     }
     
@@ -450,26 +450,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         //Facebook
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-            NSLog(@"Facebook está disponible");
-            SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            [facebookViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
-            [self presentViewController:facebookViewController animated:YES completion:nil];
-            
-        } else {
-            NSLog(@"Facebook no está disponible");
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Facebook no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [facebookViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
+        [self presentViewController:facebookViewController animated:YES completion:nil];
+        
     } else if (buttonIndex == 1) {
         //Twitter
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-            NSLog(@"Twitter está disponible");
-            SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            [twitterViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
-            [self presentViewController:twitterViewController animated:YES completion:nil];
-        } else {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [twitterViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
+        [self presentViewController:twitterViewController animated:YES completion:nil];
     }
 }
 

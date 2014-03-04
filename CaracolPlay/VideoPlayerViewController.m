@@ -53,7 +53,8 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [super viewWillLayoutSubviews];
     NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
     self.ooyalaPlayerViewController.view.frame = self.view.bounds;
-    [self.ooyalaPlayerViewController.player playWithInitialTime:1000];
+    [self.ooyalaPlayerViewController.player play];
+    //[self.ooyalaPlayerViewController.player playWithInitialTime:1000];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

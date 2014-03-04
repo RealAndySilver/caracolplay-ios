@@ -10,6 +10,7 @@
 #import "CheckmarkView.h"
 #import "SuscriptionConfirmationPadViewController.h"
 #import "FileSaver.h"
+#import "CPIAPHelper.h"
 @import QuartzCore;
 
 @interface SuscribePadViewController ()
@@ -43,7 +44,7 @@
     [self.view addSubview:self.checkBox2];
     
     //4. 'Continuar' button
-    [self.continueButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    [self.continueButton addTarget:self action:@selector(suscribe) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - View Lifecycle
@@ -52,6 +53,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
+    
+    //Register as an observer of the notification 'UserDidSuscribe'
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -66,20 +73,31 @@
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
 }
 
-#pragma mark - Custom Methods 
+#pragma mark - Notifications Handler 
 
--(void)goToHomeScreen {
+-(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    NSLog(@"Me llegó la notificación de compraaaa");
+    //Save a key locally, indicating that the user has logged in.
+     FileSaver *fileSaver = [[FileSaver alloc] init];
+     [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+     
+     //The user can pass to the suscription confirmation view controller
+     SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
+     suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+     suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
+     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
+}
+
+#pragma mark - Custom Methods
+
+-(void)suscribe {
     if ([self areTermsAndConditionsAccepted]) {
-        //Save a key locally, indicating that the user has logged in.
-        FileSaver *fileSaver = [[FileSaver alloc] init];
-        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
-        
-        //The user can pass to the suscription confirmation view controller
-        SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
-        suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
-        
+        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+            if (success) {
+                IAPProduct *product = [products firstObject];
+                [[CPIAPHelper sharedInstance] buyProduct:product];
+            }
+        }];
     } else {
         //The user can't pass.
         [[[UIAlertView alloc] initWithTitle:nil message:@"Debes aceptar los terminos y condiciones y las políticas de privacidad para poder continuar." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

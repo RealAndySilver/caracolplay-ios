@@ -116,7 +116,7 @@
     if (!cell) {
         cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
-    [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.pnf"] completionBlock:nil failureBlock:nil];
+    [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
     cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue];
     return cell;

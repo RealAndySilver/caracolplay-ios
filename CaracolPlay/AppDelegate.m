@@ -7,11 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import "CPIAPHelper.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [CPIAPHelper sharedInstance];
+    
     // Override point for customization after application launch.
     [UITabBar appearance].barTintColor = [UIColor blackColor];
     [UITabBar appearance].tintColor = [UIColor orangeColor];

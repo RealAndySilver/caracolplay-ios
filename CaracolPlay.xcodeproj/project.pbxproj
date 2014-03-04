@@ -41,7 +41,6 @@
 		8B223A4918C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B223A4818C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m */; };
 		8B223A4C18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B223A4B18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m */; };
 		8B223A4E18C0F82100AC0A33 /* Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B223A4D18C0F82100AC0A33 /* Checkmark@2x.png */; };
-		8B3367EC18B668A5000DD1B5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3367EB18B668A5000DD1B5 /* MBProgressHUD.m */; };
 		8B33681318B66AE7000DD1B5 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3367F018B66AE6000DD1B5 /* NSString+Trim.m */; };
 		8B33681418B66AE7000DD1B5 /* UIFont+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3367F218B66AE6000DD1B5 /* UIFont+Alert.m */; };
 		8B33681518B66AE7000DD1B5 /* UIView+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3367F418B66AE6000DD1B5 /* UIView+Alert.m */; };
@@ -163,6 +162,11 @@
 		8BE7FDFE189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7FDFC189835830087A7E2 /* CaracolPlayHeaderWithLogo@2x.png */; };
 		8BE82937189BFE1E003EE7A6 /* TermsAndConditionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */; };
 		8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE82939189C0309003EE7A6 /* MyAccountViewController.m */; };
+		8BED8A8618C62A3F0076EA26 /* IAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED8A8518C62A3F0076EA26 /* IAPHelper.m */; };
+		8BED8A8818C62A8A0076EA26 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BED8A8718C62A8A0076EA26 /* StoreKit.framework */; };
+		8BED8A8B18C62BE00076EA26 /* CPIAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED8A8A18C62BE00076EA26 /* CPIAPHelper.m */; };
+		8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED8A8D18C62DEB0076EA26 /* IAPProduct.m */; };
+		8BED8A9118C679AF0076EA26 /* SuscriptionAlertPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED8A9018C679AF0076EA26 /* SuscriptionAlertPadViewController.m */; };
 		8BEE1B4C18C4EE01004559EF /* SearchPadCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE1B4B18C4EE01004559EF /* SearchPadCollectionViewCell.m */; };
 		8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A0B188EEE780021AB03 /* MoviesTableViewCell.m */; };
 		8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A0E188F16A80021AB03 /* Estrella@2x.png */; };
@@ -284,8 +288,6 @@
 		8B223A4A18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodeConfirmationPadViewController.h; path = iPadVC/RedeemCodeConfirmationPadViewController.h; sourceTree = "<group>"; };
 		8B223A4B18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedeemCodeConfirmationPadViewController.m; path = iPadVC/RedeemCodeConfirmationPadViewController.m; sourceTree = "<group>"; };
 		8B223A4D18C0F82100AC0A33 /* Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Checkmark@2x.png"; path = "Resources/Images/Checkmark@2x.png"; sourceTree = "<group>"; };
-		8B3367EA18B668A5000DD1B5 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		8B3367EB18B668A5000DD1B5 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		8B3367EF18B66AE6000DD1B5 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		8B3367F018B66AE6000DD1B5 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
 		8B3367F118B66AE6000DD1B5 /* UIFont+Alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Alert.h"; sourceTree = "<group>"; };
@@ -503,6 +505,15 @@
 		8BE82936189BFE1E003EE7A6 /* TermsAndConditionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndConditionsViewController.m; sourceTree = "<group>"; };
 		8BE82938189C0309003EE7A6 /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
 		8BE82939189C0309003EE7A6 /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
+		8BED8A8418C62A3F0076EA26 /* IAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAPHelper.h; path = "InApp Purchases/IAPHelper.h"; sourceTree = "<group>"; };
+		8BED8A8518C62A3F0076EA26 /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IAPHelper.m; path = "InApp Purchases/IAPHelper.m"; sourceTree = "<group>"; };
+		8BED8A8718C62A8A0076EA26 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8BED8A8918C62BE00076EA26 /* CPIAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPIAPHelper.h; path = "InApp Purchases/CPIAPHelper.h"; sourceTree = "<group>"; };
+		8BED8A8A18C62BE00076EA26 /* CPIAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPIAPHelper.m; path = "InApp Purchases/CPIAPHelper.m"; sourceTree = "<group>"; };
+		8BED8A8C18C62DEB0076EA26 /* IAPProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAPProduct.h; path = "InApp Purchases/IAPProduct.h"; sourceTree = "<group>"; };
+		8BED8A8D18C62DEB0076EA26 /* IAPProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IAPProduct.m; path = "InApp Purchases/IAPProduct.m"; sourceTree = "<group>"; };
+		8BED8A8F18C679AF0076EA26 /* SuscriptionAlertPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscriptionAlertPadViewController.h; path = iPadVC/SuscriptionAlertPadViewController.h; sourceTree = "<group>"; };
+		8BED8A9018C679AF0076EA26 /* SuscriptionAlertPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscriptionAlertPadViewController.m; path = iPadVC/SuscriptionAlertPadViewController.m; sourceTree = "<group>"; };
 		8BEE1B4A18C4EE01004559EF /* SearchPadCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchPadCollectionViewCell.h; path = CustomCells/SearchPadCollectionViewCell.h; sourceTree = "<group>"; };
 		8BEE1B4B18C4EE01004559EF /* SearchPadCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchPadCollectionViewCell.m; path = CustomCells/SearchPadCollectionViewCell.m; sourceTree = "<group>"; };
 		8BF16A0A188EEE780021AB03 /* MoviesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoviesTableViewCell.h; path = CustomCells/MoviesTableViewCell.h; sourceTree = "<group>"; };
@@ -589,6 +600,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BED8A8818C62A8A0076EA26 /* StoreKit.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
@@ -644,6 +656,7 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BED8A8718C62A8A0076EA26 /* StoreKit.framework */,
 				8B164B9118A996F8001803A9 /* ImageIO.framework */,
 				8B164B8F18A9941F001803A9 /* SDWebImage.framework */,
 				8BE7A37A189AF72A00AF8E90 /* Social.framework */,
@@ -669,17 +682,10 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
-				8B3367ED18B66AE6000DD1B5 /* MBAlertView */,
-				8B3367E918B668A5000DD1B5 /* MBProgressHud */,
-				8B0194E118B4262300380EC7 /* Filesaver */,
-				8BDC828518AD2EDC00E72B0E /* Reachability */,
-				8BB5220D18AA740F0027CA59 /* JMImageCache */,
+				8BED8A8318C62A1E0076EA26 /* InApp Purchases */,
+				8BED8A8218C629B90076EA26 /* Libraries */,
 				8B164B6918A95437001803A9 /* Model */,
-				8B7001A418A05AC3000B5C7B /* iCarousel */,
-				A05C44921899CEA700E72135 /* FXBlurView */,
-				A05C448A1899C87E00E72135 /* ILAlertView */,
 				8B67769F1896F860006E2241 /* Views */,
-				8BD52A9C1892AD6300792845 /* Ooyala Headers */,
 				8BDB8BBC188EB5080066279A /* Main */,
 				8BDB8BBD188EB5110066279A /* View Controllers */,
 				8BF16A1D188F29A80021AB03 /* Custom Classes */,
@@ -763,17 +769,10 @@
 				8B223A4818C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m */,
 				8B223A4A18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.h */,
 				8B223A4B18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m */,
+				8BED8A8F18C679AF0076EA26 /* SuscriptionAlertPadViewController.h */,
+				8BED8A9018C679AF0076EA26 /* SuscriptionAlertPadViewController.m */,
 			);
 			name = "Alerts ViewControllers";
-			sourceTree = "<group>";
-		};
-		8B3367E918B668A5000DD1B5 /* MBProgressHud */ = {
-			isa = PBXGroup;
-			children = (
-				8B3367EA18B668A5000DD1B5 /* MBProgressHUD.h */,
-				8B3367EB18B668A5000DD1B5 /* MBProgressHUD.m */,
-			);
-			path = MBProgressHud;
 			sourceTree = "<group>";
 		};
 		8B3367ED18B66AE6000DD1B5 /* MBAlertView */ = {
@@ -1249,6 +1248,34 @@
 			name = "Configuration Section";
 			sourceTree = "<group>";
 		};
+		8BED8A8218C629B90076EA26 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				8BD52A9C1892AD6300792845 /* Ooyala Headers */,
+				A05C448A1899C87E00E72135 /* ILAlertView */,
+				A05C44921899CEA700E72135 /* FXBlurView */,
+				8B7001A418A05AC3000B5C7B /* iCarousel */,
+				8BB5220D18AA740F0027CA59 /* JMImageCache */,
+				8BDC828518AD2EDC00E72B0E /* Reachability */,
+				8B0194E118B4262300380EC7 /* Filesaver */,
+				8B3367ED18B66AE6000DD1B5 /* MBAlertView */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		8BED8A8318C62A1E0076EA26 /* InApp Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				8BED8A8418C62A3F0076EA26 /* IAPHelper.h */,
+				8BED8A8518C62A3F0076EA26 /* IAPHelper.m */,
+				8BED8A8918C62BE00076EA26 /* CPIAPHelper.h */,
+				8BED8A8A18C62BE00076EA26 /* CPIAPHelper.m */,
+				8BED8A8C18C62DEB0076EA26 /* IAPProduct.h */,
+				8BED8A8D18C62DEB0076EA26 /* IAPProduct.m */,
+			);
+			name = "InApp Purchases";
+			sourceTree = "<group>";
+		};
 		8BF16A09188EEDF10021AB03 /* Custom Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1441,6 +1468,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = iAmStudio;
 				TargetAttributes = {
+					755DB154188DEE2C00E5C636 = {
+						DevelopmentTeam = 4U39LJL48R;
+					};
 					755DB178188DEE2C00E5C636 = {
 						TestTargetID = 755DB154188DEE2C00E5C636;
 					};
@@ -1594,6 +1624,7 @@
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
 				8B164B8118A9723A001803A9 /* Redeemed.m in Sources */,
+				8BED8A8618C62A3F0076EA26 /* IAPHelper.m in Sources */,
 				8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */,
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				8B33681418B66AE7000DD1B5 /* UIFont+Alert.m in Sources */,
@@ -1601,6 +1632,7 @@
 				A0A9B76E18A3005100D6D222 /* EpisodesPadTableViewCell.m in Sources */,
 				8BB5221618AA874C0027CA59 /* CategoriesMasterPadViewController.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
+				8BED8A9118C679AF0076EA26 /* SuscriptionAlertPadViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B33681818B66AE7000DD1B5 /* MBAlertViewItem.m in Sources */,
 				8B164B6C18A95460001803A9 /* User.m in Sources */,
@@ -1617,6 +1649,7 @@
 				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
+				8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
 				A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */,
@@ -1643,7 +1676,6 @@
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8B33682018B66AE7000DD1B5 /* MBSpinningCircle.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,
-				8B3367EC18B668A5000DD1B5 /* MBProgressHUD.m in Sources */,
 				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
 				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
 				8B223A4918C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m in Sources */,
@@ -1671,6 +1703,7 @@
 				8B164B8A18A97966001803A9 /* Watched.m in Sources */,
 				8B223A4C18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m in Sources */,
 				A095A05218B55A72004F05BB /* RedeemCodeAlertViewController.m in Sources */,
+				8BED8A8B18C62BE00076EA26 /* CPIAPHelper.m in Sources */,
 				8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,
 				8B98669B18AE911900AEA77A /* StarsView.m in Sources */,
@@ -1841,6 +1874,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

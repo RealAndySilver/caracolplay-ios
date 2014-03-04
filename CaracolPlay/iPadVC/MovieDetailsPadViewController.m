@@ -17,6 +17,7 @@
 #import "StarsView.h"
 #import "Reachability.h"
 #import "FileSaver.h"
+#import "SuscriptionAlertPadViewController.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -257,6 +258,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        /*SuscriptionAlertPadViewController *suscriptionAlertPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
+        suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];*/
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
         return;
     }
