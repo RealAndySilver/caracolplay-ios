@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class EpisodesPadTableViewCell;
+
+@protocol EpisodesPadTableViewCellDelegate <NSObject>
+-(void)addButtonWasSelectedInCell:(EpisodesPadTableViewCell *)cell;
+@end
 
 @interface EpisodesPadTableViewCell : UITableViewCell
 @property (strong, nonatomic) UILabel *episodeNumberLabel;
 @property (strong, nonatomic) UILabel *episodeNameLabel;
+@property (strong, nonatomic) id <EpisodesPadTableViewCellDelegate> delegate;
 @end

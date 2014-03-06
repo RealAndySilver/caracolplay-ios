@@ -7,7 +7,6 @@
 //
 
 #import "SeriesDetailPadViewController.h"
-#import "EpisodesPadTableViewCell.h"
 #import "VideoPlayerPadViewController.h"
 #import <Social/Social.h>
 #import "Product.h"
@@ -19,8 +18,10 @@
 #import "MyUtilities.h"
 #import "Reachability.h"
 #import "FileSaver.h"
+#import "EpisodesPadTableViewCell.h"
+#import "AddToListView.h"
 
-@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate>
+@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opacityPatternView;
@@ -322,6 +323,7 @@
         if (!cell) {
             cell = [[EpisodesPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
         }
+        cell.delegate = self;
         Episode *episode = self.production.episodes[indexPath.row];
         cell.episodeNameLabel.text = episode.episodeName;
         cell.episodeNumberLabel.text = [episode.episodeNumber description];
@@ -362,6 +364,43 @@
             [self watchTrailer];
         }
     }
+}
+
+#pragma mark - EpisodesPadTableViewCellDelegate
+
+-(void)addButtonWasSelectedInCell:(EpisodesPadTableViewCell *)cell {
+    NSLog(@"me llamé");
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder crear listas de reproducción y añadir producciones debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+        return;
+    }
+    
+    self.opacityView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.opacityView.backgroundColor = [UIColor blackColor];
+    self.opacityView.alpha = 0.7;
+    [self.view addSubview:self.opacityView];
+    
+    AddToListView *addToListView = [[AddToListView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2.0 - 200.0, self.view.bounds.size.height/2.0 - 150.0, 400.0, 300.0)];
+    NSLog(@"add to list view frame: %@", NSStringFromCGRect(addToListView.frame));
+    addToListView.delegate = self;
+    [self.view addSubview:addToListView];
+}
+
+#pragma mark - AddToListViewDelegate 
+
+-(void)listWasSelectedAtIndex:(NSUInteger)index inAddToListView:(AddToListView *)addToListView {
+    
+}
+
+-(void)addToListViewDidDisappear:(AddToListView *)addToListView {
+    [addToListView removeFromSuperview];
+    addToListView = nil;
+}
+
+-(void)addToListViewWillDisappear:(AddToListView *)addToListView {
+    [self.opacityView removeFromSuperview];
+    self.opacityView = nil;
 }
 
 #pragma mark - RateViewDelegate

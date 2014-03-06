@@ -10,6 +10,7 @@
 
 @interface EpisodesPadTableViewCell()
 @property (strong, nonatomic) UIImageView *playIconImageView;
+@property (strong, nonatomic) UIButton *addToListButton;
 @end
 
 @implementation EpisodesPadTableViewCell
@@ -35,15 +36,13 @@
         self.playIconImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.playIconImageView.clipsToBounds = YES;
         [self.contentView addSubview:self.playIconImageView];
+        
+        self.addToListButton = [[UIButton alloc] init];
+        [self.addToListButton setImage:[UIImage imageNamed:@"AddToListIcon.png"] forState:UIControlStateNormal];
+        [self.addToListButton addTarget:self action:@selector(addToList) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:self.addToListButton];
     }
     return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 -(void)layoutSubviews {
@@ -51,7 +50,15 @@
     CGRect contentRect = self.contentView.bounds;
     self.episodeNumberLabel.frame = CGRectMake(20.0, contentRect.size.height/2 - 15.0, 50.0, 30.0);
     self.episodeNameLabel.frame = CGRectMake(70.0, contentRect.size.height/2 - 15.0, 300.0, 30.0);
-    self.playIconImageView.frame = CGRectMake(contentRect.size.width - 30.0, contentRect.size.height/2 - 10.0, 20.0, 20.0);
+    self.playIconImageView.frame = CGRectMake(contentRect.size.width - 30.0, contentRect.size.height/2.0 - 10.0, 20.0, 20.0);
+    self.addToListButton.frame = CGRectMake(contentRect.size.width - 80.0, contentRect.size.height/2.0 - 15.0, 30.0, 30.0);
+}
+
+#pragma mark - Actions 
+
+-(void)addToList {
+    NSLog(@"me tocasteeee veee");
+    [self.delegate addButtonWasSelectedInCell:self];
 }
 
 @end
