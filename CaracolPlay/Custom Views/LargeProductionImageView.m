@@ -8,8 +8,8 @@
 
 #import "LargeProductionImageView.h"
 
-@interface LargeProductionImageView()
-//@property (strong, nonatomic) UIButton *closeButton;
+@interface LargeProductionImageView() <UIScrollViewDelegate>
+@property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 @end
 
@@ -20,13 +20,22 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.backgroundColor = [UIColor blackColor];
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+        //Scroll view
+        self.scrollView = [[UIScrollView alloc] init];
+        self.scrollView.minimumZoomScale = 0.5;
+        self.scrollView.zoomScale = 1.0;
+        self.scrollView.maximumZoomScale = 3.0;
+        self.scrollView.delegate = self;
+        [self addSubview:self.scrollView];
+        
         // 1. ImageView
         self.largeImageView = [[UIImageView alloc] init];
-        self.largeImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.largeImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.largeImageView.clipsToBounds = YES;
-        [self addSubview:self.largeImageView];
+        [self.scrollView addSubview:self.largeImageView];
         
         self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissView)];
         [self addGestureRecognizer:self.tapGesture];
@@ -42,17 +51,17 @@
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    self.largeImageView.frame = self.bounds;
+    self.scrollView.frame = self.bounds;
+    self.scrollView.contentSize = self.largeImageView.image.size;
+    self.largeImageView.frame = CGRectMake(0.0, 0.0, self.largeImageView.image.size.width, self.largeImageView.image.size.height);
     //self.closeButton.frame = CGRectMake(self.bounds.size.width - 30.0, 0.0, 30.0, 30.0);
     
     [self showView];
 }
 
 -(void)showView {
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.2
                           delay:0.0
-         usingSpringWithDamping:0.5
-          initialSpringVelocity:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(){
                          self.alpha = 1.0;
@@ -61,10 +70,8 @@
 }
 
 -(void)dismissView {
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.2
                           delay:0.0
-         usingSpringWithDamping:0.5
-          initialSpringVelocity:0.0
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(){
                          self.alpha = 0.0;
@@ -72,6 +79,12 @@
                      } completion:^(BOOL finished){
                          [self removeFromSuperview];
                      }];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return self.largeImageView;
 }
 
 @end

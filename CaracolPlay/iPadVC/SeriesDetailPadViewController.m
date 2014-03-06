@@ -390,7 +390,8 @@
 #pragma mark - AddToListViewDelegate 
 
 -(void)listWasSelectedAtIndex:(NSUInteger)index inAddToListView:(AddToListView *)addToListView {
-    
+    NSLog(@"Me agregaron a la lista que estaba en el index %d", index);
+    [[[UIAlertView alloc] initWithTitle:nil message:@"Agregado correctamente a tu lista!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 -(void)addToListViewDidDisappear:(AddToListView *)addToListView {
