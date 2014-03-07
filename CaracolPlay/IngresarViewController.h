@@ -13,4 +13,5 @@
  or from a production screen (if the user isn't allowed to watch a production,
  he could be taken to this screen to enter with it's user.)*/
 @property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromRentScreen;
 @end

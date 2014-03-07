@@ -42,7 +42,11 @@
 }
 
 -(void)buyProduct:(IAPProduct *)product {
-    NSAssert(product.allowedToPurchase, @"This product isn't allowed to purchase");
+    //NSAssert(product.allowedToPurchase, @"This product isn't allowed to purchase");
+    if (!product.allowedToPurchase) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no se puede comprar el producto. intenta en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        return;
+    }
     NSLog(@"Comprando: %@", product.productIdentifier);
     product.purchaseInProgress = YES;
     SKPayment *payment = [SKPayment paymentWithProduct:product.skProduct];

@@ -31,30 +31,28 @@
         //////////////////////////////////////////////////////
         [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         self.layer.cornerRadius = 5.0;
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
         
-        self.label = [[UILabel alloc] init];
+        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, frame.size.width, 30.0)];
         self.label.text = @"Califica esta producción";
-        self.label.textColor = [UIColor darkGrayColor];
+        self.label.textColor = [UIColor whiteColor];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font = [UIFont boldSystemFontOfSize:12.0];
         [self addSubview:self.label];
         
-        self.rateButton = [[UIButton alloc] init];
+        self.rateButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, frame.size.height - 49.0, frame.size.width - 60.0, 44.0)];
         [self.rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
         [self.rateButton addTarget:self action:@selector(rateButtonTapped) forControlEvents:UIControlEventTouchUpInside];
         self.rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
-        [self.rateButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+        [self.rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         [self addSubview:self.rateButton];
         
-        self.cancelButton = [[UIButton alloc] init];
-        [self.cancelButton setTitle:@"Cancelar" forState:UIControlStateNormal];
+        self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 58.0, -30.0, 78.0, 78.0)];
         [self.cancelButton addTarget:self action:@selector(cancelButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-        [self.cancelButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
-        self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
+        [self.cancelButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
         [self addSubview:self.cancelButton];
     }
     return self;
@@ -62,9 +60,6 @@
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    self.label.frame = CGRectMake(self.bounds.size.width/2 - 80.0, 4.0, 160.0, 30.0);
-    self.rateButton.frame = CGRectMake(0.0, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
-    self.cancelButton.frame = CGRectMake(self.bounds.size.width/2, self.bounds.size.height - 30.0, self.bounds.size.width/2, 30.0);
     [self createStarsImageViews];
     [self modifyGoldStarsNumber:self.goldStars];
     [self animateTransition];
@@ -108,7 +103,7 @@
     tapGesture.numberOfTapsRequired = 1;
     
     UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(40.0 + (position*30),
-                                                                               40.0,
+                                                                               45.0,
                                                                                20.0,
                                                                                20.0)];
     starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

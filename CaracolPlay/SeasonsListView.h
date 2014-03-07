@@ -12,6 +12,8 @@
 @protocol SeasonListViewDelegate <NSObject>
 @optional
 -(void)seasonsListView:(SeasonsListView *)seasonListView didSelectSeasonAtIndex:(NSUInteger)index;
+-(void)seasonsListWillDisappear:(SeasonsListView *)seasonsListView;
+-(void)seasonsListDidDisappear:(SeasonsListView *)seasonsListView;
 @end
 
 @interface SeasonsListView : UIView

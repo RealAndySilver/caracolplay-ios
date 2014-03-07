@@ -361,7 +361,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 100.0) goldStars:[self.production.myRate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.myRate intValue]];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }
@@ -415,8 +415,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)seasonsListView:(SeasonsListView *)seasonListView didSelectSeasonAtIndex:(NSUInteger)index {
     NSLog(@"Selected index: %d", index);
+}
+
+-(void)seasonsListWillDisappear:(SeasonsListView *)seasonsListView {
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
+}
+
+-(void)seasonsListDidDisappear:(SeasonsListView *)seasonsListView {
+    [seasonsListView removeFromSuperview];
+    seasonsListView = nil;
 }
 
 #pragma mark - RateViewDelegate

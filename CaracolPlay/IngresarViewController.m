@@ -11,18 +11,25 @@
 #import "FXBlurView.h"
 #import "FileSaver.h"
 #import "MBHUDView.h"
+#import "RentContentConfirmationViewController.h"
+#import "CPIAPHelper.h"
 
 @interface IngresarViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
-
 @end
 
 @implementation IngresarViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Register as an observer of the notification -UserDidSuscribe.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
     
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -73,15 +80,25 @@
         //make a succesful login and save a key to know that the user is login.
         FileSaver *fileSaver = [[FileSaver alloc] init];
         [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
-        [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
         
         if (self.controllerWasPresentedFromInitialScreen) {
+            [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
             //Present the home screen modally if the user came here from the initial screen.
             MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
             [self presentViewController:mainTabBarVC animated:YES completion:nil];
+            
+        } else if (self.controllerWasPresentedFromRentScreen) {
+            [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+                if (success) {
+                    IAPProduct *product = [products lastObject];
+                    [[CPIAPHelper sharedInstance] buyProduct:product];
+                }
+            }];
+            
         } else {
             //Pop all view controllers to the root view controller (home screen) if the
             //user came here from a production screen.
+            [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
             [self.navigationController popToRootViewControllerAnimated:YES];
             [self createAditionalTabsInTabBarController];
         }
@@ -110,6 +127,14 @@
     [viewControllersArray addObject:myListsNavigationController];
     [viewControllersArray addObject:myAccountNavigationController];
     self.tabBarController.viewControllers = viewControllersArray;
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    RentContentConfirmationViewController *rentContentVC =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
 #pragma mark - Interface Orientation

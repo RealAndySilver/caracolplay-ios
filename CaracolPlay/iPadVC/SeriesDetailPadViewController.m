@@ -41,6 +41,7 @@
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
 
+
 @end
 
 @implementation SeriesDetailPadViewController
@@ -277,7 +278,7 @@
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 100.0) goldStars:[self.production.myRate  intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 120.0) goldStars:[self.production.myRate  intValue]];
     rateView.delegate = self;
     [self.view addSubview:rateView];
 }

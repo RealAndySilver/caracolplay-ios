@@ -54,7 +54,7 @@
         [self addSubview:line];
         
         //'Crear' button setup
-        UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, frame.size.height - 50.0, frame.size.width/2 - 20 - 20, 40.0)];
+        UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(40.0, frame.size.height - 50.0, frame.size.width - 80.0, 40.0)];
         [createButton setTitle:@"Crear" forState:UIControlStateNormal];
         [createButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         createButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
@@ -63,12 +63,9 @@
         [self addSubview:createButton];
         
         //'Cancelar' button setup
-        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width/2.0 + 20.0, createButton.frame.origin.y, frame.size.width/2.0 - 20.0 - 20.0, 40.0)];
-        [cancelButton setTitle:@"Cancelar" forState:UIControlStateNormal];
-        [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [cancelButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width-58.0, -30.0, 88.0, 88.0)];
+        [cancelButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
-        cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
         [self addSubview:cancelButton];
         
         [self showViewWithAnimation];

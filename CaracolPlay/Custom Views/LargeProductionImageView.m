@@ -54,6 +54,7 @@
     self.scrollView.frame = self.bounds;
     self.scrollView.contentSize = self.largeImageView.image.size;
     self.largeImageView.frame = CGRectMake(0.0, 0.0, self.largeImageView.image.size.width, self.largeImageView.image.size.height);
+    NSLog(@"large ima size: %@", NSStringFromCGSize(self.largeImageView.image.size));
     //self.closeButton.frame = CGRectMake(self.bounds.size.width - 30.0, 0.0, 30.0, 30.0);
     
     [self showView];

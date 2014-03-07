@@ -108,6 +108,9 @@
 		8BB5222918AAA62E0027CA59 /* HomeScreenPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */; };
 		8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */; };
 		8BB5222D18AAE3380027CA59 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5222C18AAE3380027CA59 /* RateView.m */; };
+		8BBB936F18CA5D7700AC7A58 /* RentContentAlertBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BBB936D18CA5D7700AC7A58 /* RentContentAlertBackground.png */; };
+		8BBB937018CA5D7700AC7A58 /* RentContentAlertBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BBB936E18CA5D7700AC7A58 /* RentContentAlertBackground@2x.png */; };
+		8BBB937318CA5EF400AC7A58 /* RentContentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB937218CA5EF400AC7A58 /* RentContentConfirmationViewController.m */; };
 		8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */; };
 		8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */; };
 		8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */; };
@@ -394,6 +397,10 @@
 		8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenPlaceholder@2x.png"; path = "Resources/Images/HomeScreenPlaceholder@2x.png"; sourceTree = "<group>"; };
 		8BB5222B18AAE3380027CA59 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RateView.h; path = "Custom Views/RateView.h"; sourceTree = "<group>"; };
 		8BB5222C18AAE3380027CA59 /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RateView.m; path = "Custom Views/RateView.m"; sourceTree = "<group>"; };
+		8BBB936D18CA5D7700AC7A58 /* RentContentAlertBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RentContentAlertBackground.png; path = Resources/Images/RentContentAlertBackground.png; sourceTree = "<group>"; };
+		8BBB936E18CA5D7700AC7A58 /* RentContentAlertBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RentContentAlertBackground@2x.png"; path = "Resources/Images/RentContentAlertBackground@2x.png"; sourceTree = "<group>"; };
+		8BBB937118CA5EF400AC7A58 /* RentContentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentContentConfirmationViewController.h; sourceTree = "<group>"; };
+		8BBB937218CA5EF400AC7A58 /* RentContentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentContentConfirmationViewController.m; sourceTree = "<group>"; };
 		8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonCerrarSesion.png; path = Resources/Images/BotonCerrarSesion.png; sourceTree = "<group>"; };
 		8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonCerrarSesion@2x.png"; path = "Resources/Images/BotonCerrarSesion@2x.png"; sourceTree = "<group>"; };
 		8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FormErrorImage@2x.png"; path = "Resources/Images/FormErrorImage@2x.png"; sourceTree = "<group>"; };
@@ -1310,6 +1317,8 @@
 				A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */,
 				A095A04C18B558F6004F05BB /* RedeemCodeAlertBackground.png */,
 				A095A04D18B558F6004F05BB /* RedeemCodeAlertBackground@2x.png */,
+				8BBB936D18CA5D7700AC7A58 /* RentContentAlertBackground.png */,
+				8BBB936E18CA5D7700AC7A58 /* RentContentAlertBackground@2x.png */,
 				A095A04818B54B11004F05BB /* SuscriptionAlertBackground.png */,
 				A095A04918B54B11004F05BB /* SuscriptionAlertBackground@2x.png */,
 				8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */,
@@ -1399,6 +1408,8 @@
 				A095A05118B55A72004F05BB /* RedeemCodeAlertViewController.m */,
 				A095A05718B565A5004F05BB /* SuscriptionConfirmationViewController.h */,
 				A095A05818B565A5004F05BB /* SuscriptionConfirmationViewController.m */,
+				8BBB937118CA5EF400AC7A58 /* RentContentConfirmationViewController.h */,
+				8BBB937218CA5EF400AC7A58 /* RentContentConfirmationViewController.m */,
 			);
 			name = "Alerts ViewControllers";
 			sourceTree = "<group>";
@@ -1506,6 +1517,7 @@
 				8BA9B27518A0107E003DBBDC /* BackgroundIngresarPad@2x.png in Resources */,
 				8BA9B27418A0107E003DBBDC /* BackgroundIngresarPad.png in Resources */,
 				A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */,
+				8BBB937018CA5D7700AC7A58 /* RentContentAlertBackground@2x.png in Resources */,
 				8BE7A369189ADB1000AF8E90 /* HomeTabBarIcon@2x.png in Resources */,
 				8BD2C5E8189C545200C76AA5 /* FormErrorImage@2x.png in Resources */,
 				A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */,
@@ -1520,6 +1532,7 @@
 				8BDB8BC9188EC6D30066279A /* CaracolPlayLogo.png in Resources */,
 				A095A04F18B558F6004F05BB /* RedeemCodeAlertBackground@2x.png in Resources */,
 				8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */,
+				8BBB936F18CA5D7700AC7A58 /* RentContentAlertBackground.png in Resources */,
 				8B64F7FD18BBFEDE007E3C06 /* AddToListIcon@2x.png in Resources */,
 				8B892B2C18B2AF4C0066926C /* MoreTabBarIcon@2x.png in Resources */,
 				8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */,
@@ -1648,6 +1661,7 @@
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
+				8BBB937318CA5EF400AC7A58 /* RentContentConfirmationViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,

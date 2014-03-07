@@ -22,18 +22,32 @@
         [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
         self.alpha = 0.0;
+        self.backgroundColor = [UIColor blackColor];
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
         self.layer.cornerRadius = 5.0;
         self.clipsToBounds = YES;
         
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, frame.size.width, 30.0)];
+        titleLabel.text = @"Listado de Temporadas";
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        titleLabel.textColor = [UIColor whiteColor];
+        [self addSubview:titleLabel];
+        
         //Table view setup
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 50.0, frame.size.width, frame.size.height - 50.0)];
         tableView.delegate = self;
         tableView.dataSource = self;
         tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         tableView.separatorColor = [UIColor blackColor];
         [self addSubview:tableView];
+        
+        //Close button
+        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 58.0, -30.0, 88.0, 88.0)];
+        [closeButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+        [closeButton addTarget:self action:@selector(hiddeViewWithAnimation) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:closeButton];
         
         [self animateView];
     }
@@ -64,6 +78,7 @@
     [self.delegate seasonsListView:self didSelectSeasonAtIndex:indexPath.row];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.delegate seasonsListWillDisappear:self];
     [UIView animateWithDuration:0.3
                           delay:0.0
          usingSpringWithDamping:0.7
@@ -72,10 +87,27 @@
                      animations:^(){
                          self.alpha = 0.0;
                          self.transform = CGAffineTransformMakeScale(0.5, 0.5);
-                     } completion:^(BOOL finished){}];
+                     } completion:^(BOOL finished){
+                         [self.delegate seasonsListDidDisappear:self];
+                     }];
 }
 
 #pragma mark - Custom Methods
+
+-(void)hiddeViewWithAnimation {
+    [self.delegate seasonsListWillDisappear:self];
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+         usingSpringWithDamping:0.7
+          initialSpringVelocity:0.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(){
+                         self.alpha = 0.0;
+                         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
+                     } completion:^(BOOL finished){
+                         [self.delegate seasonsListDidDisappear:self];
+                     }];
+}
 
 -(void)animateView {
     [UIView animateWithDuration:0.3

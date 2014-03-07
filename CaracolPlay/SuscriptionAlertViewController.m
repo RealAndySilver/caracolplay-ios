@@ -99,6 +99,7 @@
 
 -(void)goToEnterViewController {
     IngresarViewController *ingresarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
+    ingresarViewController.controllerWasPresentedFromRentScreen = YES;
     [self.navigationController pushViewController:ingresarViewController animated:YES];
 }
 
