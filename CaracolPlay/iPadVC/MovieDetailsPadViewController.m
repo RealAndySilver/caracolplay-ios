@@ -85,7 +85,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.production = [[Product alloc] initWithDictionary:self.productionInfo];
 }
 
--(void)UISetup {
+/*-(void)UISetup {
     //1. Dismiss button
     self.dismissButton = [[UIButton alloc] init];
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
@@ -193,7 +193,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     //7. Productiond etail textview setup
     self.productionDetailTextView = [[UITextView alloc] init];
     self.productionDetailTextView.text = self.production.detailDescription;
-    /*self.productionDetailTextView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat.";*/
     self.productionDetailTextView.textColor = [UIColor whiteColor];
     self.productionDetailTextView.userInteractionEnabled = NO;
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
@@ -219,13 +218,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
     [self.view addSubview:self.collectionView];
-}
+}*/
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor darkGrayColor];
     [self parseProductionInfo];
-    [self UISetup];
+    //[self UISetup];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -294,7 +293,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 120.0) goldStars:[self.production.myRate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 120.0) goldStars:[self.production.rate intValue]];
     rateView.delegate = self;
     [self.view addSubview:rateView];
 }

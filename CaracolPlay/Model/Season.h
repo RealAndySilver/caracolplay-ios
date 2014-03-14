@@ -11,7 +11,7 @@
 @interface Season : NSObject
 
 @property (strong, nonatomic) NSString *seasonName;
-@property (strong, nonatomic) NSNumber *seasonNumber;
+@property (strong, nonatomic) NSString *seasonID;
 @property (strong, nonatomic) NSArray *episodes; // Of Episode
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;

@@ -152,7 +152,7 @@
     [smallProductionImageView addSubview:playIcon];
     
     // Add the stars to the view
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.myRate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.rate intValue]];
     [self.view addSubview:self.starsView];
     
     //Add a tap gesture to the star view. when the user touches the stars, show the rate view
@@ -278,7 +278,7 @@
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 120.0) goldStars:[self.production.myRate  intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100.0, self.view.frame.size.height/2 - 50.0, 200.0, 120.0) goldStars:[self.production.rate  intValue]];
     rateView.delegate = self;
     [self.view addSubview:rateView];
 }

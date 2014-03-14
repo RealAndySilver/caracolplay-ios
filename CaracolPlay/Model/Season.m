@@ -13,7 +13,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
         _seasonName = dictionary[@"season_name"];
-        _seasonNumber = dictionary[@"season_number"];
+        _seasonID = dictionary[@"season_id"];
         _episodes = dictionary[@"episodes"];
     }
     return self;

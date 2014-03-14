@@ -157,7 +157,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50.0, 100.0, 20.0) rate:[self.production.myRate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50.0, 100.0, 20.0) rate:[self.production.rate intValue]];
     [self.view addSubview:self.starsView];
     [self.view bringSubviewToFront:self.starsView];
     
@@ -343,7 +343,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.myRate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }

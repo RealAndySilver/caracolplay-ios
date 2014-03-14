@@ -76,7 +76,7 @@
         Featured *featuredProduction = [[Featured alloc] initWithDictionary:featuredProdDicWithoutNulls];
         [self.parsedFeaturedProductions addObject:featuredProduction];
     }
-    NSLog(@"Numero de producciones destacas: %d", [self.parsedFeaturedProductions count]);
+    NSLog(@"Numero de producciones destacas: %lu", (unsigned long)[self.parsedFeaturedProductions count]);
 }
 
 #pragma mark - UI Setup & Initilization Methods
@@ -97,7 +97,7 @@
     //Create two pages at the left and right limit of the scroll view, this is used to
     //make the effect of a circular scroll view.
     [self createPageAtPosition:0 withFeaturedProduction:[self.parsedFeaturedProductions lastObject]];
-    [self createPageAtPosition:[self.parsedFeaturedProductions count]+1 withFeaturedProduction:[self.parsedFeaturedProductions firstObject]];
+    [self createPageAtPosition:[self.parsedFeaturedProductions count]+1.0 withFeaturedProduction:[self.parsedFeaturedProductions firstObject]];
    
     for (int i = 1; i <= [self.parsedFeaturedProductions count]; i++) {
         Featured *featuredProduction = self.parsedFeaturedProductions[i - 1];
@@ -181,7 +181,7 @@
 
 -(void)serverError:(NSError *)error {
     [MBHUDView dismissCurrentHUD];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor revisa que te encuentres conectado a una red Wi-Fi y vuelve a cargar la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     NSLog(@"Server error: %@ %@", error, [error localizedDescription]);
 }
 

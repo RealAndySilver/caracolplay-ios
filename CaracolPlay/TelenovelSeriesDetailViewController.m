@@ -25,23 +25,28 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "AddToListView.h"
 #import "MBHUDView.h"
 #import "IngresarViewController.h"
+#import "ServerCommunicator.h"
+#import "Season.h"
+#import "SeasonsViewController.h"
 
-@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate>
+@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *productionInfo;
+@property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
 @property (strong, nonatomic) NSMutableArray *parsedEpisodesArray; //
 @property (strong, nonatomic) UIButton *seasonsButton;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
+@property (assign, nonatomic) NSUInteger selectedSeason;
 @end
 
 @implementation TelenovelSeriesDetailViewController
 
 #pragma mark - Lazy Instantiation
 
--(NSArray *)unparsedEpisodesInfo {
+/*-(NSArray *)unparsedEpisodesInfo {
     if (!_unparsedEpisodesInfo) {
         _unparsedEpisodesInfo = @[@{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Empieza Colombia's Next Top Model",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
@@ -90,19 +95,67 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                   ];
     }
     return _unparsedEpisodesInfo;
-}
+}*/
 
--(NSDictionary *)productionInfo {
+/*-(NSDictionary *)productionInfo {
     if (!_productionInfo) {
         _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @4, @"my_rate" : @1, @"category_id" : @"59393",
                             @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje.", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
     }
     return _productionInfo;
+}*/
+
+#pragma mark - Setters
+
+-(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
+    _unparsedProductionInfoDic = unparsedProductionInfoDic;
+    NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
+    self.production = [[Product alloc] initWithDictionary:parsedProductionInfoDic];
+    [self UISetup];
 }
 
+-(NSDictionary *)dictionaryWithParsedProductionInfo:(NSDictionary *)unparsedDic {
+    NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc] initWithDictionary:unparsedDic];
+    
+    //Check if the product has seasons
+    if ([unparsedDic[@"has_seasons"] boolValue]) {
+        //The product has seasons
+        NSLog(@"Si tiene temporadas, no episodios sueltos");
+        
+        NSArray *unparsedSeasonsArray = [NSArray arrayWithArray:unparsedDic[@"season_list"]];
+        NSLog(@"Numero de temporadas: %d", [unparsedSeasonsArray count]);
+        NSMutableArray *parsedSeasonsArray = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < [unparsedSeasonsArray count]; i++) {
+            NSArray *unparsedEpisodesFromSeason = unparsedSeasonsArray[i][@"episodes"];
+            NSLog(@"Numero de episodios en la temporada %d: %d", i+1, [unparsedEpisodesFromSeason count]);
+            
+            //Create a mutable array to store the Episodes objects that we are going to create
+            NSMutableArray *parsedEpisodesFromSeason = [[NSMutableArray alloc] init];
+            
+            //Loop through all the season episodes.
+            for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
+                Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                [parsedEpisodesFromSeason addObject:episode];
+            }
+            
+            Season *season = [[Season alloc] initWithDictionary:@{@"season_id": unparsedSeasonsArray[i][@"season_id"],
+                                                                  @"season_name" : unparsedSeasonsArray[i][@"season_name"],
+                                                                  @"episodes" : parsedEpisodesFromSeason}];
+            [parsedSeasonsArray addObject:season];
+        }
+        [newDictionary setObject:parsedSeasonsArray forKey:@"season_list"];
+        return newDictionary;
+    }
+    else {
+        //The product has no seasons
+        NSLog(@"El producto no tiene temporadas");
+        return nil;
+    }
+}
 
 #pragma mark - UISetup & Initialization stuff
--(void)parseEpisodesInfo {
+/*-(void)parseEpisodesInfo {
     self.parsedEpisodesArray = [[NSMutableArray alloc] init];
     for (int i = 0; i < [self.production.episodes count]; i++) {
         Episode *episode = [[Episode alloc] initWithDictionary:self.production.episodes[i]];
@@ -113,9 +166,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)parseProductionInfo {
     self.production = [[Product alloc] initWithDictionary:self.productionInfo];
-}
+}*/
 
 -(void)UISetup {
+    self.navigationItem.title = self.production.type;
     //1. Create the main image view of the movie/event
     UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      0.0,
@@ -123,7 +177,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                      self.view.frame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
     movieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
+    [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [self.view addSubview:movieEventImageView];
     
     //Create a view with an opacity pattern to apply an opacity to the image
@@ -176,7 +230,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50, 100.0, 20.0) rate:[self.production.myRate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(110.0, 50, 100.0, 20.0) rate:[self.production.rate intValue]/20 + 1];
     [self.view addSubview:self.starsView];
     
     //Create a tap gesture and add it to the stars view to display the rate view when the user touches the stars.
@@ -231,7 +285,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (self.production.hasSeasons) {
         //'Temporadas' button setup
         self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, detailTextView.frame.origin.y + detailTextView.frame.size.height, self.view.frame.size.width - 20.0, 44.0)];
-        [self.seasonsButton setTitle:@"Temporada 1" forState:UIControlStateNormal];
+        [self.seasonsButton setTitle:@"Temporada 1 ►" forState:UIControlStateNormal];
         self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [self.seasonsButton addTarget:self action:@selector(showSeasonsList) forControlEvents:UIControlEventTouchUpInside];
@@ -246,7 +300,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         tableViewOriginY = detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0;
     }
     //8. Create a TableView to diaply the list of chapters
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - 64.0 - 50.0) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - self.tabBarController.tabBar.frame.size.height) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -260,11 +314,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self parseProductionInfo];
-    [self parseEpisodesInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(seasonSelectedNotificationReceived:)
+                                                 name:@"SeasonSelectedNotification"
+                                               object:nil];
+    //[self parseProductionInfo];
+    //[self parseEpisodesInfo];
     self.view.backgroundColor = [UIColor blackColor];
-    self.navigationItem.title = self.production.type;
-    [self UISetup];
+    //[self UISetup];
+    [self getProductionWithID:@"1"];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -275,7 +333,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDataSource 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.production.episodes count];
+    Season *season = self.production.seasonList[self.selectedSeason];
+    return [season.episodes count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -283,9 +342,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[TelenovelSeriesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+    
+    Season *season = self.production.seasonList[self.selectedSeason];
+    Episode *episode = season.episodes[indexPath.row];
     cell.delegate = self;
-    cell.chapterNumberLabel.text = [((Episode *)self.production.episodes[indexPath.row]).episodeNumber description];
-    cell.chapterNameLabel.text = ((Episode *)self.production.episodes[indexPath.row]).episodeName;
+    cell.chapterNumberLabel.text = [episode.episodeNumber description];
+    cell.chapterNameLabel.text = episode.episodeName;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
@@ -326,13 +388,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)showSeasonsList {
     NSLog(@"Me oprimieron");
-    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
+    seasonsVC.numberOfSeasons = [self.production.seasonList count];
+    [self presentViewController:seasonsVC animated:YES completion:nil];
+    /*self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.7;
     [self.tabBarController.view addSubview:self.opacityView];
     SeasonsListView *seasonListView = [[SeasonsListView alloc] initWithFrame:CGRectMake(20.0, self.view.frame.size.height/2 - 100.0, 280.0, 280.0)];
     seasonListView.delegate = self;
-    [self.tabBarController.view addSubview:seasonListView];
+    [self.tabBarController.view addSubview:seasonListView];*/
 }
 
 -(void)watchTrailer {
@@ -362,7 +427,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.myRate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }
@@ -373,6 +438,39 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                         cancelButtonTitle:@"Volver"
                    destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
+#pragma mark - Server 
+
+-(void)getProductionWithID:(NSString *)productID {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"GetProductWithID"]) {
+        NSLog(@"Recibí la info del producto");
+        self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"Server Error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor comprueba que estés conectado a una red Wi-Fi e intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handler
+
+-(void)seasonSelectedNotificationReceived:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    NSLog(@"La temporada que se seleccionó fue %d", [info[@"SeasonSelected"] intValue]);
+    self.selectedSeason = [info[@"SeasonSelected"] intValue];
+    [self.seasonsButton setTitle:[NSString stringWithFormat:@"Temporada %d ►", self.selectedSeason + 1] forState:UIControlStateNormal];
+    [self.tableView reloadData];
 }
 
 #pragma mark - TelenovelSeriesTableViewCellDelegate
@@ -414,7 +512,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - SeasonListDelegate 
 
--(void)seasonsListView:(SeasonsListView *)seasonListView didSelectSeasonAtIndex:(NSUInteger)index {
+/*-(void)seasonsListView:(SeasonsListView *)seasonListView didSelectSeasonAtIndex:(NSUInteger)index {
     NSLog(@"Selected index: %d", index);
 }
 
@@ -426,7 +524,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)seasonsListDidDisappear:(SeasonsListView *)seasonsListView {
     [seasonsListView removeFromSuperview];
     seasonsListView = nil;
-}
+}*/
 
 #pragma mark - RateViewDelegate
 

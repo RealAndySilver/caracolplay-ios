@@ -52,8 +52,8 @@
 -(void)layoutSubviews {
     [super layoutSubviews];
     CGRect contentRect = self.contentView.bounds;
-    self.capLabel.frame = CGRectMake(10.0, 5.0, 50.0, 20.0);
-    self.chapterNumberLabel.frame = CGRectMake(10.0, 20.0, 25.0, 30.0);
+    self.capLabel.frame = CGRectMake(12.0, 5.0, 50.0, 20.0);
+    self.chapterNumberLabel.frame = CGRectMake(5.0, 20.0, 40.0, 30.0);
     self.chapterNameLabel.frame = CGRectMake(50.0, contentRect.size.height/2 - 15.0, contentRect.size.width - 100, 30.0);
     self.addToListButton.frame = CGRectMake(contentRect.size.width - 45.0, contentRect.size.height/2.0 - 14.0, 30.0, 30.0);
 }

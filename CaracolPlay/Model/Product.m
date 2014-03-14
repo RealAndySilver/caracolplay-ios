@@ -15,11 +15,10 @@
         _name = dictionary[@"name"];
         _type = dictionary[@"type"];
         _rate = dictionary[@"rate"];
-        _myRate = dictionary[@"my_rate"];
         _categoryID = dictionary[@"category_id"];
         _identifier = dictionary[@"id"];
         _imageURL = dictionary[@"image_url"];
-        _trailerURL = dictionary[@"trailer_url"];
+        _trailerURL = dictionary[@"trailer"];
         _hasSeasons = [dictionary[@"has_seasons"] boolValue];
         _detailDescription = dictionary[@"description"];
         _episodes = dictionary[@"episodes"];

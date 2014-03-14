@@ -228,6 +228,7 @@
 		A0D1DBC918AEDBD8007A434F /* MyListsDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */; };
 		A0D1DBCC18AEE001007A434F /* MyListsOrangeTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */; };
 		A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */; };
+		A0FF73ED18D3AE260062543A /* SeasonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FF73EC18D3AE260062543A /* SeasonsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -608,6 +609,8 @@
 		A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsDetailPadViewController.m; path = iPadVC/MyListsDetailPadViewController.m; sourceTree = "<group>"; };
 		A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyListsOrangeTitle.png; path = Resources/Images/iPad/MyListsOrangeTitle.png; sourceTree = "<group>"; };
 		A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyListsOrangeTitle@2x.png"; path = "Resources/Images/iPad/MyListsOrangeTitle@2x.png"; sourceTree = "<group>"; };
+		A0FF73EB18D3AE260062543A /* SeasonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeasonsViewController.h; sourceTree = "<group>"; };
+		A0FF73EC18D3AE260062543A /* SeasonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeasonsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1219,6 +1222,8 @@
 				8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */,
 				8BFD4F5A189175D800A88C8C /* TelenovelSeriesDetailViewController.h */,
 				8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */,
+				A0FF73EB18D3AE260062543A /* SeasonsViewController.h */,
+				A0FF73EC18D3AE260062543A /* SeasonsViewController.m */,
 			);
 			name = "Categories Section";
 			sourceTree = "<group>";
@@ -1698,6 +1703,7 @@
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
 				A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */,
+				A0FF73ED18D3AE260062543A /* SeasonsViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */,
 				8BDB8BCC188ECC9D0066279A /* CategoriesViewController.m in Sources */,
 				8BA9B27118A00BE2003DBBDC /* IngresarPadViewController.m in Sources */,

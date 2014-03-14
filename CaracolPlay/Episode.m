@@ -19,7 +19,7 @@
         _episodeNumber = dictionary[@"episode_number"];
         _identifier = dictionary[@"id"];
         _url = dictionary[@"url"];
-        _trailerURL = dictionary[@"trailer_url"];
+        _trailerURL = dictionary[@"trailer"];
         _rate = dictionary[@"rate"];
         _views = dictionary[@"views"];
         _duration = dictionary[@"duration"];
