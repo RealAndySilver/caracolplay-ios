@@ -14,8 +14,11 @@
 #import "MyUtilities.h"
 #import "FileSaver.h"
 #import "CPIAPHelper.h"
+#import "ServerCommunicator.h"
+#import "NSDictionary+NullReplacement.h"
+#import "MBHUDView.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIPageControl *pageControl;
 @property (strong, nonatomic) NSArray *unparsedFeaturedProductionsInfo;
@@ -29,7 +32,7 @@
 
 #pragma mark - Lazy Instantiation
 
--(NSArray *)unparsedFeaturedProductionsInfo {
+/*-(NSArray *)unparsedFeaturedProductionsInfo {
     if (!_unparsedFeaturedProductionsInfo) {
         _unparsedFeaturedProductionsInfo = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text": @"No te pierdas...", @"id": @"210",
                                         @"rate" : @3, @"category_id" : @"32224", @"image_url" : @"http://st.elespectador.co/files/imagecache/727x484/1933d136b94594f2db6f9145bbf0f72a.jpg", @"is_campaign" : @YES, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
@@ -44,9 +47,9 @@
                                                @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://2.bp.blogspot.com/-q96yFMADKm8/Urt_ZYchqWI/AAAAAAAADY0/Oe6F-0PQdRc/s1600/caracol%2B-%2Bla%2Bronca%2Bde%2Boro.png", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"}];
     }
     return _unparsedFeaturedProductionsInfo;
-}
+}*/
 
--(NSMutableArray *)parsedFeaturedProductions {
+/*-(NSMutableArray *)parsedFeaturedProductions {
     if (!_parsedFeaturedProductions) {
         _parsedFeaturedProductions = [[NSMutableArray alloc] init];
         for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
@@ -55,6 +58,25 @@
         }
     }
     return _parsedFeaturedProductions;
+}*/
+
+#pragma mark - Setters 
+
+-(void)setUnparsedFeaturedProductionsInfo:(NSArray *)unparsedFeaturedProductionsInfo {
+    _unparsedFeaturedProductionsInfo = unparsedFeaturedProductionsInfo;
+    [self parseFeaturedProductionsFromServer];
+    [self UISetup];
+}
+
+-(void)parseFeaturedProductionsFromServer {
+    self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
+        NSDictionary *featuredProdDicWithNulls = self.unparsedFeaturedProductionsInfo[i];
+        NSDictionary *featuredProdDicWithoutNulls = [featuredProdDicWithNulls dictionaryByReplacingNullWithBlanks];
+        Featured *featuredProduction = [[Featured alloc] initWithDictionary:featuredProdDicWithoutNulls];
+        [self.parsedFeaturedProductions addObject:featuredProduction];
+    }
+    NSLog(@"Numero de producciones destacas: %d", [self.parsedFeaturedProductions count]);
 }
 
 #pragma mark - UI Setup & Initilization Methods
@@ -64,11 +86,12 @@
     /*-----------------------------------------------------------*/
     //1. Create a ScrollView to display the main images
     self.scrollView = [[UIScrollView alloc] init];
-    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, self.view.bounds.size.height - 64 - 44);
+    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, self.view.bounds.size.height - self.tabBarController.tabBar.frame.size.height);
     
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.userInteractionEnabled = YES;
     
     //Create two pages at the left and right limit of the scroll view, this is used to
@@ -107,16 +130,18 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self UISetup];
-    [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+    self.view.backgroundColor = [UIColor blackColor];
+    //[self UISetup];
+    /*[[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
         if (success) {
             NSLog(@"se cargó de forma exitosa");
         }
-    }];
+    }];*/
     //Start the counter in 2, because the first real page in the scroll view
     //is page 2 (page 1 is used to simulate the last page and make the circular
     //scroll view effect)
     self.automaticCounter = 2;
+    [self getFeaturedProductsFromServer];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -135,6 +160,29 @@
                                                   forBarMetrics:UIBarMetricsDefault];
     //Start the automatic scrolling timer
     [self startScrollingTimer];
+}
+
+#pragma mark - Server
+
+-(void)getFeaturedProductsFromServer {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"GetFeatured" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"GetFeatured"]) {
+        NSLog(@"Si recibí info del server: %@", dictionary);
+        self.unparsedFeaturedProductionsInfo = dictionary[@"featured"];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    NSLog(@"Server error: %@ %@", error, [error localizedDescription]);
 }
 
 #pragma mark - Custom Methods
@@ -170,7 +218,7 @@
         return;
     }
     
-    if ([featuredProduction.type isEqualToString:@"Series"]) {
+    if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"]) {
         //The production is a serie.
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];

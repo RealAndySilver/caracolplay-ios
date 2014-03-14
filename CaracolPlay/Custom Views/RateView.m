@@ -43,11 +43,12 @@
         self.label.font = [UIFont boldSystemFontOfSize:12.0];
         [self addSubview:self.label];
         
-        self.rateButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, frame.size.height - 49.0, frame.size.width - 60.0, 44.0)];
+        self.rateButton = [[UIButton alloc] initWithFrame:CGRectMake(40.0, frame.size.height - 44.0, frame.size.width - 80.0, 30.0)];
         [self.rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
         [self.rateButton addTarget:self action:@selector(rateButtonTapped) forControlEvents:UIControlEventTouchUpInside];
         self.rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
-        [self.rateButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        [self.rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [self.rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:self.rateButton];
         
         self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 58.0, -30.0, 78.0, 78.0)];

@@ -62,15 +62,24 @@
     
     //'Ingresar' button setup
     UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 100.0, screenFrame.size.height/2 + 60.0, 200.0, 40.0)];
-    [enterButton setTitle:@"Alquilar" forState:UIControlStateNormal];
+    [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.view addSubview:enterButton];
     
+    //'Alquilar' button setup
+    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/2 + 110.0, screenFrame.size.width/2.0 - 25.0, 40.0)];
+    [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
+    [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rentButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
+    rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [self.view addSubview:rentButton];
+    
     // 'Suscribete' button setup
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 100.0, screenFrame.size.height/2 + 110.0, 200.0, 40.0)];
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 + 5.0, screenFrame.size.height/2 + 110.0, screenFrame.size.width/2.0 - 25.0, 40.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];

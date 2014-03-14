@@ -349,10 +349,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)imageTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
     LargeProductionImageView *largeImageView = [[LargeProductionImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    [largeImageView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+    largeImageView.largeImageView.image = ((UIImageView *)[tapGestureRecognizer view]).image;
+    /*[largeImageView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
                                        placeholder:nil
                                    completionBlock:nil
-                                      failureBlock:nil];
+                                      failureBlock:nil];*/
     [self.tabBarController.view addSubview:largeImageView];
 }
 

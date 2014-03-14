@@ -12,6 +12,7 @@
 #import "SuscriptionConfirmationViewController.h"
 #import "CPIAPHelper.h"
 #import "IAPProduct.h"
+#import "MBHUDView.h"
 
 @interface SuscriptionFormViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -100,9 +101,12 @@
 
 -(void)goToSuscriptionConfirmationVC {
     if ([self areTermsAndPoliticsConditionsAccepted]) {
+        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
             if (success) {
+                [MBHUDView dismissCurrentHUD];
+                NSLog(@"apareció el mensajito de itunes");
                 //Request succeded - Buy the product
                 IAPProduct *product = [products firstObject];
                 [[CPIAPHelper sharedInstance] buyProduct:product];

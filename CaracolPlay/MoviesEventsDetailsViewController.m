@@ -26,6 +26,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSArray *recommendedProductions;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
+@property (strong, nonatomic) UIImage *productionImage;
 /*@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) FXBlurView *tabBarBlurView;
 @property (strong, nonatomic) FXBlurView *navigationBarBlurView;*/
@@ -192,7 +193,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:shareButton];
     
     //Create the button to watch the production
-    UIButton *watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 100.0, 30.0)];
+    UIButton *watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
     [watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
     [watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -329,10 +330,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)imageTapped:(UITapGestureRecognizer *)tapGestureRecognizer {
     LargeProductionImageView *largeProdView = [[LargeProductionImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    [largeProdView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+    largeProdView.largeImageView.image = ((UIImageView *)[tapGestureRecognizer view]).image;
+    /*[largeProdView.largeImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
                                       placeholder:nil
                                   completionBlock:nil
-                                     failureBlock:nil];
+                                     failureBlock:nil];*/
     [self.tabBarController.view addSubview:largeProdView];
 }
 

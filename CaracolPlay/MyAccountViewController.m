@@ -91,17 +91,16 @@
     [self.scrollView addSubview:personalInfoTableView];
     
     //4. Some informative text label
-    NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editable en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
+    NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editables en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
     NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
     NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor orangeColor]};
     [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 20)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(90, 61)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 68)];
     
-    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(0.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width, 80.0)];
+    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(10.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width-20, 80.0)];
     informativeTextLabel.attributedText = informativeString;
     informativeTextLabel.backgroundColor = [UIColor blackColor];
-    informativeTextLabel.textAlignment = NSTextAlignmentJustified;
     informativeTextLabel.editable = NO;
     informativeTextLabel.selectable = NO;
     informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
@@ -142,7 +141,7 @@
     
     //9. 'Politicas del servicio' button
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.view.frame.size.width - 100.0, 30.0)];
-    [serviceTermsButton setTitle:@"Politicas del Servicio" forState:UIControlStateNormal];
+    [serviceTermsButton setTitle:@"Politicas de privacidad" forState:UIControlStateNormal];
     [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:serviceTermsButton];
@@ -151,7 +150,7 @@
     //10. App version label
     UILabel *appVersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(50.0, serviceTermsButton.frame.origin.y + serviceTermsButton.frame.size.height + 10.0, self.view.frame.size.width - 100.0, 30.0)];
     appVersionLabel.textAlignment = NSTextAlignmentCenter;
-    appVersionLabel.text = @"Caracol Play Versión 1.5";
+    appVersionLabel.text = @"Caracol Play Versión 1.0";
     appVersionLabel.textColor = [UIColor lightGrayColor];
     appVersionLabel.font = [UIFont boldSystemFontOfSize:11.0];
     [self.scrollView addSubview:appVersionLabel];

@@ -9,10 +9,11 @@
 #import "ConfigurationViewController.h"
 #import "TermsAndConditionsViewController.h"
 #import "MyAccountViewController.h"
+#import <MessageUI/MessageUI.h>
 
 NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface ConfigurationViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ConfigurationViewController () <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *menuItemsArray;
 @end
@@ -69,11 +70,35 @@ NSString *const cellIdentifier = @"CellIdentifier";
     if (indexPath.row == 0) {
         MyAccountViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccount"];
         [self.navigationController pushViewController:myAccountViewController animated:YES];
+    } else if (indexPath.row == 1) {
+        //Show Mail VC
+        [self showMailVC];
     }
+    
     else if ((indexPath.row == 2) || (indexPath.row == 3)) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
         [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
     }
+}
+
+#pragma mark - Actions 
+
+-(void)showMailVC {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
+        [mailComposeVC setToRecipients:[NSArray arrayWithObject:@"diefer_91@hotmail.com"]];
+        [mailComposeVC setSubject:@"Reporte de errores CaracolPlay"];
+        mailComposeVC.mailComposeDelegate = self;
+        [self presentViewController:mailComposeVC animated:YES completion:nil];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Tu dispositivo no esta configurado para enviar correo electrónico" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+#pragma mark - MFMailComposeDelegate
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Interface Orientation
