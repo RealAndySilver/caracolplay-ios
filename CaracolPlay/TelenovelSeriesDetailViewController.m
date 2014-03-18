@@ -447,7 +447,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"el dic está en null");
         } else {
-            self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
+            self.unparsedProductionInfoDic = dictionary[@"products"][@"products"][0][0];
         }
     }
 }
