@@ -10,6 +10,7 @@
 #import "RedeemCodeViewController.h"
 #import "IngresarViewController.h"
 #import "SuscriptionFormViewController.h"
+#import "RentContentViewController.h"
 
 @interface SuscriptionAlertViewController ()
 
@@ -61,7 +62,7 @@
     [self.view addSubview:detailTextView];
     
     //'Ingresar' button setup
-    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 100.0, screenFrame.size.height/2 + 60.0, 200.0, 40.0)];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/2 + 60.0, 160.0, 40.0)];
     [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -73,7 +74,7 @@
     UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/2 + 110.0, screenFrame.size.width/2.0 - 25.0, 40.0)];
     [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rentButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
+    [rentButton addTarget:self action:@selector(goToRentViewController) forControlEvents:UIControlEventTouchUpInside];
     rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.view addSubview:rentButton];
@@ -110,6 +111,11 @@
     IngresarViewController *ingresarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
     ingresarViewController.controllerWasPresentedFromRentScreen = YES;
     [self.navigationController pushViewController:ingresarViewController animated:YES];
+}
+
+-(void)goToRentViewController {
+    RentContentViewController *rentContentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContent"];
+    [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
 -(void)goToSuscribeViewController {

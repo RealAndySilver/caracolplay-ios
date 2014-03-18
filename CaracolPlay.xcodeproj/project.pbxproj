@@ -222,6 +222,9 @@
 		A0A9B77918A3073900D6D222 /* SearchBarPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77718A3073900D6D222 /* SearchBarPad.png */; };
 		A0A9B77A18A3073900D6D222 /* SearchBarPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */; };
 		A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0AB21DB18AEB68A00424B42 /* VideoPlayerPadViewController.m */; };
+		A0C0F12818D780B60069F321 /* AddToListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0F12718D780B60069F321 /* AddToListViewController.m */; };
+		A0C0F12A18D78A400069F321 /* NewHomeOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */; };
+		A0C0F12D18D79F710069F321 /* RentContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0F12C18D79F710069F321 /* RentContentViewController.m */; };
 		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
 		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
 		A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */; };
@@ -601,6 +604,11 @@
 		A0A9B77818A3073900D6D222 /* SearchBarPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchBarPad@2x.png"; path = "Resources/Images/iPad/SearchBarPad@2x.png"; sourceTree = "<group>"; };
 		A0AB21DA18AEB68A00424B42 /* VideoPlayerPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoPlayerPadViewController.h; path = iPadVC/VideoPlayerPadViewController.h; sourceTree = "<group>"; };
 		A0AB21DB18AEB68A00424B42 /* VideoPlayerPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoPlayerPadViewController.m; path = iPadVC/VideoPlayerPadViewController.m; sourceTree = "<group>"; };
+		A0C0F12618D780B60069F321 /* AddToListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddToListViewController.h; sourceTree = "<group>"; };
+		A0C0F12718D780B60069F321 /* AddToListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddToListViewController.m; sourceTree = "<group>"; };
+		A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NewHomeOpacityPattern@2x.png"; path = "Resources/Images/NewHomeOpacityPattern@2x.png"; sourceTree = "<group>"; };
+		A0C0F12B18D79F710069F321 /* RentContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentContentViewController.h; sourceTree = "<group>"; };
+		A0C0F12C18D79F710069F321 /* RentContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentContentViewController.m; sourceTree = "<group>"; };
 		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
 		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
 		A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsMasterPadViewController.h; path = iPadVC/MyListsMasterPadViewController.h; sourceTree = "<group>"; };
@@ -1192,6 +1200,8 @@
 				8BE7FDF1189826C70087A7E2 /* LoginViewController.m */,
 				8BE7A362189AC6F000AF8E90 /* IngresarViewController.h */,
 				8BE7A363189AC6F000AF8E90 /* IngresarViewController.m */,
+				A0C0F12B18D79F710069F321 /* RentContentViewController.h */,
+				A0C0F12C18D79F710069F321 /* RentContentViewController.m */,
 				8BE7A37C189B098300AF8E90 /* RedeemCodeViewController.h */,
 				8BE7A37D189B098300AF8E90 /* RedeemCodeViewController.m */,
 				8B67769A1896DB7C006E2241 /* SuscriptionFormViewController.h */,
@@ -1255,6 +1265,8 @@
 				8BFD4F641891906900A88C8C /* MyListsViewController.m */,
 				A095A04118B531EF004F05BB /* MyListsDetailsViewController.h */,
 				A095A04218B531EF004F05BB /* MyListsDetailsViewController.m */,
+				A0C0F12618D780B60069F321 /* AddToListViewController.h */,
+				A0C0F12718D780B60069F321 /* AddToListViewController.m */,
 			);
 			name = "MyList Section";
 			sourceTree = "<group>";
@@ -1328,6 +1340,7 @@
 			children = (
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
+				A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */,
 				8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */,
 				8B64F7FB18BBFEDE007E3C06 /* AddToListIcon@2x.png */,
 				A095A05318B56582004F05BB /* SuscriptionConfirmationBackground.png */,
@@ -1546,6 +1559,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0C0F12A18D78A400069F321 /* NewHomeOpacityPattern@2x.png in Resources */,
 				8BE7A36F189AEEA900AF8E90 /* SearchTabBarIcon@2x.png in Resources */,
 				8BE79D2F18A137750049B64B /* CategoriesNavBarImage@2x.png in Resources */,
 				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
@@ -1685,6 +1699,7 @@
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B33681818B66AE7000DD1B5 /* MBAlertViewItem.m in Sources */,
 				8B164B6C18A95460001803A9 /* User.m in Sources */,
+				A0C0F12818D780B60069F321 /* AddToListViewController.m in Sources */,
 				8B33681718B66AE7000DD1B5 /* MBAlertViewButton.m in Sources */,
 				8B33681D18B66AE7000DD1B5 /* MBFlatAlertView.m in Sources */,
 				8BB5221218AA740F0027CA59 /* JMImageCache.m in Sources */,
@@ -1698,6 +1713,7 @@
 				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
 				8BBB937318CA5EF400AC7A58 /* RentContentConfirmationViewController.m in Sources */,
+				A0C0F12D18D79F710069F321 /* RentContentViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,

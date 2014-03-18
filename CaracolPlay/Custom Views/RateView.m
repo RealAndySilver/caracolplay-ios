@@ -51,7 +51,7 @@
         [self.rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:self.rateButton];
         
-        self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 58.0, -30.0, 78.0, 78.0)];
+        self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 40.0, -38.0, 78.0, 78.0)];
         [self.cancelButton addTarget:self action:@selector(cancelButtonTapped) forControlEvents:UIControlEventTouchUpInside];
         [self.cancelButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
         [self addSubview:self.cancelButton];

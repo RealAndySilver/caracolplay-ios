@@ -28,6 +28,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "ServerCommunicator.h"
 #import "Season.h"
 #import "SeasonsViewController.h"
+#import "AddToListViewController.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -155,18 +156,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - UISetup & Initialization stuff
-/*-(void)parseEpisodesInfo {
-    self.parsedEpisodesArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.production.episodes count]; i++) {
-        Episode *episode = [[Episode alloc] initWithDictionary:self.production.episodes[i]];
-        [self.parsedEpisodesArray addObject:episode];
-    }
-    self.production.episodes = self.parsedEpisodesArray;
-}
-
--(void)parseProductionInfo {
-    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
-}*/
 
 -(void)UISetup {
     self.navigationItem.title = self.production.type;
@@ -322,11 +311,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //[self parseEpisodesInfo];
     self.view.backgroundColor = [UIColor blackColor];
     //[self UISetup];
-    [self getProductionWithID:@"1"];
+    [self getProductionWithID:@"13"];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
@@ -452,8 +442,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     if ([methodName isEqualToString:@"GetProductWithID"]) {
-        NSLog(@"Recibí la info del producto");
-        self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
+        NSLog(@"Recibí la info del producto: %@", dictionary);
+        if (!dictionary) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            NSLog(@"el dic está en null");
+        } else {
+            self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
+        }
     }
 }
 
@@ -482,7 +477,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    AddToListViewController *addToListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"AddToList"];
+    [self presentViewController:addToListVC animated:YES completion:nil];
+    /*self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.7;
     [self.tabBarController.view addSubview:self.opacityView];
@@ -490,7 +487,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     AddToListView *addToListView = [[AddToListView alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/3.8, self.view.frame.size.width - 60.0, 300.0)];
     NSLog(@"add to list view frame: %@", NSStringFromCGRect(addToListView.frame));
     addToListView.delegate = self;
-    [self.tabBarController.view addSubview:addToListView];
+    [self.tabBarController.view addSubview:addToListView];*/
 }
 
 #pragma mark - AddToListViewDelegate

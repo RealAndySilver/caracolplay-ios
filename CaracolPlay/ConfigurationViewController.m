@@ -84,12 +84,12 @@ NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Actions 
 
 -(void)showMailVC {
+    MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
+    [mailComposeVC setToRecipients:@[@"diefer_91@hotmail.com"]];
+    [mailComposeVC setSubject:@"Reporte de errores CaracolPlay"];
+    mailComposeVC.mailComposeDelegate = self;
     if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
-        [mailComposeVC setToRecipients:[NSArray arrayWithObject:@"diefer_91@hotmail.com"]];
-        [mailComposeVC setSubject:@"Reporte de errores CaracolPlay"];
-        mailComposeVC.mailComposeDelegate = self;
-        [self presentViewController:mailComposeVC animated:YES completion:nil];
+            [self presentViewController:mailComposeVC animated:YES completion:nil];
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Tu dispositivo no esta configurado para enviar correo electrónico" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

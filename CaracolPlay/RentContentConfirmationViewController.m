@@ -11,6 +11,8 @@
 #import "ConfigurationViewController.h"
 #import "MyListsViewController.h"
 #import "MBHUDView.h"
+#import "TelenovelSeriesDetailViewController.h"
+#import "MoviesEventsDetailsViewController.h"
 
 @interface RentContentConfirmationViewController ()
 
@@ -84,7 +86,14 @@
 -(void)goToHomeScreen {
     [MBHUDView hudWithBody:@"Alquiler Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
     [self createAditionalTabsInTabBarController];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    for (int i = [viewControllers count] - 1; i >= 0; i--){
+        id obj = [viewControllers objectAtIndex:i];
+        if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
+            [self.navigationController popToViewController:obj animated:YES];
+            return;
+        }
+     }
 }
 
 -(void)createAditionalTabsInTabBarController {

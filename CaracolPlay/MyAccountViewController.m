@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "MyNavigationController.h"
 #import "HomeViewController.h"
+#import "TermsAndConditionsViewController.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -57,6 +58,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.title = @"Mi Cuenta";
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
 }
@@ -136,6 +138,7 @@
     UIButton *termsAndConditionsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, closeSessionButton.frame.origin.y + closeSessionButton.frame.size.height + 20.0, self.view.frame.size.width - 100.0, 30.0)];
     [termsAndConditionsButton setTitle:@"Términos y Condiciones" forState:UIControlStateNormal];
     [termsAndConditionsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [termsAndConditionsButton addTarget:self action:@selector(goToConditionsTerms) forControlEvents:UIControlEventTouchUpInside];
     termsAndConditionsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:termsAndConditionsButton];
     
@@ -143,6 +146,7 @@
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.view.frame.size.width - 100.0, 30.0)];
     [serviceTermsButton setTitle:@"Politicas de privacidad" forState:UIControlStateNormal];
     [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:serviceTermsButton];
     
@@ -212,6 +216,16 @@
 }
 
 #pragma mark - Actions
+
+-(void)goToConditionsTerms {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
+
+-(void)goToPrivacyTerms {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
 
 -(void)closeSession {
     NSLog(@"Cerré Sesión");

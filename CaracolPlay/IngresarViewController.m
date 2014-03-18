@@ -26,10 +26,10 @@
     [super viewDidLoad];
     
     //Register as an observer of the notification -UserDidSuscribe.
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    /*[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userDidSuscribeNotificationReceived:)
                                                  name:@"UserDidSuscribe"
-                                               object:nil];
+                                               object:nil];*/
     
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -87,19 +87,28 @@
             MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
             [self presentViewController:mainTabBarVC animated:YES completion:nil];
             
-        } else if (self.controllerWasPresentedFromRentScreen) {
+        /*} else if (self.controllerWasPresentedFromRentScreen) {
             [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
                 if (success) {
                     IAPProduct *product = [products lastObject];
                     [[CPIAPHelper sharedInstance] buyProduct:product];
                 }
-            }];
+            }];*/
             
         } else {
             //Pop all view controllers to the root view controller (home screen) if the
             //user came here from a production screen.
             [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            NSArray *viewControllers = [self.navigationController viewControllers];
+            for (int i = [viewControllers count] - 1; i >= 0; i--){
+                id obj = [viewControllers objectAtIndex:i];
+                if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
+                    [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
+                    [self.navigationController popToViewController:obj animated:YES];
+                    break;
+                }
+            }
+            //[self.navigationController popToRootViewControllerAnimated:YES];
             [self createAditionalTabsInTabBarController];
         }
         
@@ -109,6 +118,7 @@
 }
 
 -(void)createAditionalTabsInTabBarController {
+    NSLog(@"Entré a crear los tabs");
     //This method create the two aditional tab bars in the tab bar. this is neccesary because
     //when the user is logout, we activate just three tabs, but when the user is log in, we activate
     //the five tabs.
@@ -129,13 +139,13 @@
     self.tabBarController.viewControllers = viewControllersArray;
 }
 
-#pragma mark - Notification Handlers 
+/*#pragma mark - Notification Handlers
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     RentContentConfirmationViewController *rentContentVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
     [self.navigationController pushViewController:rentContentVC animated:YES];
-}
+}*/
 
 #pragma mark - Interface Orientation
 

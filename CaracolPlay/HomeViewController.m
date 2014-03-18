@@ -175,7 +175,11 @@
     [MBHUDView dismissCurrentHUD];
     if ([methodName isEqualToString:@"GetFeatured"]) {
         NSLog(@"Si recibí info del server: %@", dictionary);
-        self.unparsedFeaturedProductionsInfo = dictionary[@"featured"];
+        if (!dictionary) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else {
+            self.unparsedFeaturedProductionsInfo = dictionary[@"featured"];
+        }
     }
 }
 
@@ -242,7 +246,7 @@
     UIImageView *pageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
                                                                                0.0,
                                                                                self.scrollView.frame.size.width,
-                                                                               self.scrollView.frame.size.height)];
+                                                                               self.scrollView.frame.size.width)];
     pageImageView.clipsToBounds = YES;
     pageImageView.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -251,9 +255,9 @@
     [page addSubview:pageImageView];
     
     //Create a view to add a pattern image to the main image view
-    UIView *opacityPatternView = [[UIView alloc] initWithFrame:pageImageView.frame];
-    UIImage *opacityPatternImage = [UIImage imageNamed:@"OpacityPattern.png"];
-    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, pageImageView.frame.size.height)];
+    UIView *opacityPatternView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
+    UIImage *opacityPatternImage = [UIImage imageNamed:@"NewHomeOpacityPattern.png"];
+    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, self.scrollView.frame.size.height)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [page addSubview:opacityPatternView];
     

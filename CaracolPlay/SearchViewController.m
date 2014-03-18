@@ -83,7 +83,7 @@
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     [self.view addSubview:self.searchBar];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 120.0 - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0)) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 112.0 - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0)) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 130.0;

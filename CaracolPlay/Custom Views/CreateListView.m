@@ -22,7 +22,7 @@
         // Initialization code
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
-        self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        self.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         self.layer.cornerRadius = 5.0;
         [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
@@ -54,7 +54,7 @@
         [self addSubview:line];
         
         //'Crear' button setup
-        UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(40.0, frame.size.height - 50.0, frame.size.width - 80.0, 40.0)];
+        UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, frame.size.height - 50.0, frame.size.width - 100.0, 40.0)];
         [createButton setTitle:@"Crear" forState:UIControlStateNormal];
         [createButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         createButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
@@ -63,7 +63,7 @@
         [self addSubview:createButton];
         
         //'Cancelar' button setup
-        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width-58.0, -30.0, 88.0, 88.0)];
+        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width-48.0, -42.0, 88.0, 88.0)];
         [cancelButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:cancelButton];

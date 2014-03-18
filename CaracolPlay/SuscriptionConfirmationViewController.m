@@ -26,6 +26,11 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //self.navigationController.navigationBarHidden = NO;
+}
+
 -(void)UISetup {
     CGRect screenFrame = [UIScreen mainScreen].bounds;
     // Background image setup
@@ -60,11 +65,18 @@
         MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBar animated:YES completion:nil];
     } else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-  
         //Create the 'Mis Listas' tab & 'Mas' tab
         [self createAditionalTabsInTabBarController];
         [MBHUDView hudWithBody:@"Suscripcion Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+        
+        NSArray *viewControllers = [self.navigationController viewControllers];
+        for (int i = [viewControllers count] - 1; i >= 0; i--){
+            id obj = [viewControllers objectAtIndex:i];
+            if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
+                [self.navigationController popToViewController:obj animated:YES];
+                return;
+            }
+        }
     }
 }
 

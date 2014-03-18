@@ -9,6 +9,7 @@
 #import "IAPHelper.h"
 #import "IAPProduct.h"
 #import <StoreKit/StoreKit.h>
+#import "MBHUDView.h"
 
 @interface IAPHelper () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 @property (strong, nonatomic) SKProductsRequest *productsRequest;
@@ -47,6 +48,7 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no se puede comprar el producto. intenta en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         return;
     }
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     NSLog(@"Comprando: %@", product.productIdentifier);
     product.purchaseInProgress = YES;
     SKPayment *payment = [SKPayment paymentWithProduct:product.skProduct];
@@ -111,12 +113,14 @@
 }
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
+    [MBHUDView dismissCurrentHUD];
     NSLog(@"completeTransaction...");
     [self provideContentForTransaction:transaction
                      productIdentifier:transaction.payment.productIdentifier];
 }
 
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction {
+    [MBHUDView dismissCurrentHUD];
     NSLog(@"restoreTransaction...");
     [self provideContentForTransaction:transaction
                      productIdentifier:
@@ -124,6 +128,7 @@
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction {
+    [MBHUDView dismissCurrentHUD];
     NSLog(@"failedTransaction...");
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
