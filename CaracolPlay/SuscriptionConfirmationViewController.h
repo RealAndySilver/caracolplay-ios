@@ -10,4 +10,5 @@
 
 @interface SuscriptionConfirmationViewController : UIViewController
 @property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionScreen;
 @end

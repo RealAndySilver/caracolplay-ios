@@ -8,6 +8,7 @@
 
 #import "TelenovelSeriesTableViewCell.h"
 #import "AddToListView.h"
+#import "MyUtilities.h"
 
 @interface TelenovelSeriesTableViewCell()
 @property (strong, nonatomic) UILabel *capLabel;
@@ -42,7 +43,8 @@
         [self.contentView addSubview:self.chapterNameLabel];
         
         self.addToListButton = [[UIButton alloc] init];
-        [self.addToListButton setImage:[UIImage imageNamed:@"AddToListIcon.png"] forState:UIControlStateNormal];
+        UIImage *resizedButtonImage = [MyUtilities imageWithName:[UIImage imageNamed:@"AddToListIcon.png"] ScaleToSize:CGSizeMake(25.0, 25.0)];
+        [self.addToListButton setImage:resizedButtonImage forState:UIControlStateNormal];
         [self.addToListButton addTarget:self action:@selector(showAddToListView) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.addToListButton];
     }
@@ -55,7 +57,7 @@
     self.capLabel.frame = CGRectMake(12.0, 5.0, 50.0, 20.0);
     self.chapterNumberLabel.frame = CGRectMake(5.0, 20.0, 40.0, 30.0);
     self.chapterNameLabel.frame = CGRectMake(50.0, contentRect.size.height/2 - 15.0, contentRect.size.width - 100, 30.0);
-    self.addToListButton.frame = CGRectMake(contentRect.size.width - 45.0, contentRect.size.height/2.0 - 14.0, 30.0, 30.0);
+    self.addToListButton.frame = CGRectMake(contentRect.size.width - 45.0, contentRect.size.height/2.0 - 22.0, 44.0, 44.0);
 }
 
 -(void)showAddToListView {

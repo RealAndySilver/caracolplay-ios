@@ -29,6 +29,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "Season.h"
 #import "SeasonsViewController.h"
 #import "AddToListViewController.h"
+#import "ContentNotAvailableForUserViewController.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -356,21 +357,30 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    Reachability *reachability = [Reachability reachabilityForInternetConnection];
-    [reachability startNotifier];
-    NetworkStatus status = [reachability currentReachabilityStatus];
-    if (status == NotReachable) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"No estás conectado a internet. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    } else if (status == ReachableViaWWAN) {
-        if ([self.production.episodes[indexPath.row][@"is_3g"] boolValue]) {
+    BOOL contentIsAvailableForUser = NO;
+    if (!contentIsAvailableForUser) {
+        //The content is not availble for the user
+        ContentNotAvailableForUserViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        [self.navigationController pushViewController:contentNotAvailableVC animated:YES];
+        
+    } else {
+        //The content is available for the user
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        if (status == NotReachable) {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"No estás conectado a internet. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else if (status == ReachableViaWWAN) {
+            if ([self.production.episodes[indexPath.row][@"is_3g"] boolValue]) {
+                VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                [self.navigationController pushViewController:videoPlayerVC animated:YES];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else if (status == ReachableViaWiFi) {
             VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             [self.navigationController pushViewController:videoPlayerVC animated:YES];
-        } else {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
-    } else if (status == ReachableViaWiFi) {
-        VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-        [self.navigationController pushViewController:videoPlayerVC animated:YES];
     }
 }
 
@@ -447,7 +457,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"el dic está en null");
         } else {
-            self.unparsedProductionInfoDic = dictionary[@"products"][@"products"][0][0];
+            self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
         }
     }
 }

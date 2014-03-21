@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface IngresarViewController : UIViewController
-/* Used to identify is the controller was presented from the initial screen, 
+/* Used to identify if the controller was presented from the initial screen,
  or from a production screen (if the user isn't allowed to watch a production,
  he could be taken to this screen to enter with it's user.)*/
 @property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
-@property (nonatomic) BOOL controllerWasPresentedFromRentScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromInitialSuscriptionScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionSuscriptionScreen;
 @end

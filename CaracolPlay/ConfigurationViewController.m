@@ -85,7 +85,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)showMailVC {
     MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
-    [mailComposeVC setToRecipients:@[@"diefer_91@hotmail.com"]];
+    [mailComposeVC setToRecipients:@[@"soporte@caracolplay.com"]];
     [mailComposeVC setSubject:@"Reporte de errores CaracolPlay"];
     mailComposeVC.mailComposeDelegate = self;
     if ([MFMailComposeViewController canSendMail]) {

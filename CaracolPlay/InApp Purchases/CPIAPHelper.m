@@ -10,7 +10,7 @@
 #import "IAPProduct.h"
 
 @interface CPIAPHelper() <UIAlertViewDelegate>
-
+@property (strong, nonatomic) NSString *productoComprado;
 @end
 
 @implementation CPIAPHelper
@@ -38,13 +38,18 @@
                         string:(NSString *)string {
     NSString * message = [NSString stringWithFormat:@"%@: %@",
                           product.skProduct.localizedTitle, string];
+    if ([product.productIdentifier isEqualToString:@"com.iamstudio.CaracolPlay.testsuscription"]) {
+        self.productoComprado = @"suscripcion";
+    } else {
+        self.productoComprado = @"alquiler";
+    }
     [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - UIAlertViewDelegate 
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TypeOfProduct": self.productoComprado}];
 }
 
 @end

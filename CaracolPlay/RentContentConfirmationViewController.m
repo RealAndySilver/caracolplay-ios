@@ -91,6 +91,7 @@
         id obj = [viewControllers objectAtIndex:i];
         if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
             [self.navigationController popToViewController:obj animated:YES];
+            NSLog(@"encontré el navigation correcto");
             return;
         }
      }

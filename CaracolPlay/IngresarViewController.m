@@ -12,6 +12,7 @@
 #import "FileSaver.h"
 #import "MBHUDView.h"
 #import "RentContentConfirmationViewController.h"
+#import "SuscriptionConfirmationViewController.h"
 #import "CPIAPHelper.h"
 
 @interface IngresarViewController () <UITextFieldDelegate>
@@ -33,7 +34,25 @@
     
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
-    [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (self.controllerWasPresentedFromInitialScreen) {
+        [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(goToHomeScreenDirectly) forControlEvents:UIControlEventTouchUpInside];
+        
+    } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
+        [self.enterButton setTitle:@"Ingresar y Suscribirse" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(enterAndReturnToProduction) forControlEvents:UIControlEventTouchUpInside];
+    
+    } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
+        [self.enterButton setTitle:@"Ingresar y Suscribirse" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    
     
     //Create a tap gesture to dismiss the keyboard when the user taps
     //outside of it.
@@ -74,18 +93,60 @@
     [self.passwordTextfield resignFirstResponder];
 }
 
--(void)goToHomeScreen {
+-(void)enterAndReturnToProduction {
+    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        
+        //Pop all view controllers to the root view controller (home screen) if the
+        //user came here from a production screen.
+        [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+        NSArray *viewControllers = [self.navigationController viewControllers];
+        for (int i = [viewControllers count] - 1; i >= 0; i--){
+            id obj = [viewControllers objectAtIndex:i];
+            if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
+                [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
+                [self.navigationController popToViewController:obj animated:YES];
+                break;
+            }
+        }
+        [self createAditionalTabsInTabBarController];
+    } else {
+         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en los datos. Por favor revisa que los hayas ingresado correctamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)enterSuscribeAndGoToHomeScreen {
+    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
+        
+        //Request products from Apple
+        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+            if (success) {
+                [MBHUDView dismissCurrentHUD];
+                if (products) {
+                    IAPProduct *product = [products firstObject];
+                    [[CPIAPHelper sharedInstance] buyProduct:product];
+                }
+            }
+        }];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en los datos. Por favor revisa que los hayas ingresado correctamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)goToHomeScreenDirectly {
     if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
         //Testing purposes only. If the user has entered information in both textfields,
         //make a succesful login and save a key to know that the user is login.
         FileSaver *fileSaver = [[FileSaver alloc] init];
         [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
         
-        if (self.controllerWasPresentedFromInitialScreen) {
-            [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-            //Present the home screen modally if the user came here from the initial screen.
-            MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-            [self presentViewController:mainTabBarVC animated:YES completion:nil];
+        [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+        //Present the home screen modally if the user came here from the initial screen.
+        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];
             
         /*} else if (self.controllerWasPresentedFromRentScreen) {
             [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -95,7 +156,9 @@
                 }
             }];*/
             
-        } else {
+            
+            
+        /*else {
             //Pop all view controllers to the root view controller (home screen) if the
             //user came here from a production screen.
             [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
@@ -110,7 +173,7 @@
             }
             //[self.navigationController popToRootViewControllerAnimated:YES];
             [self createAditionalTabsInTabBarController];
-        }
+        }*/
         
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Error en la información. Por favor revisa que hayas completado todos los campos correctamente." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
@@ -139,13 +202,25 @@
     self.tabBarController.viewControllers = viewControllersArray;
 }
 
-/*#pragma mark - Notification Handlers
+#pragma mark - Notification Handlers
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
-    RentContentConfirmationViewController *rentContentVC =
+    NSLog(@"recibí la notificación de compra");
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+    
+    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+    if (self.controllerWasPresentedFromInitialSuscriptionScreen || self.controllerWasPresentedFromInitialScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
+    } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
+    }
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+    
+    /*RentContentConfirmationViewController *rentContentVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
-    [self.navigationController pushViewController:rentContentVC animated:YES];
-}*/
+    [self.navigationController pushViewController:rentContentVC animated:YES];*/
+}
 
 #pragma mark - Interface Orientation
 

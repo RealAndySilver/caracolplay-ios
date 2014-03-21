@@ -53,31 +53,33 @@
     [continueButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [continueButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [continueButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [continueButton addTarget:self action:@selector(goToHomeViewController) forControlEvents:UIControlEventTouchUpInside];
+    if (self.controllerWasPresentedFromInitialScreen) {
+        [continueButton addTarget:self action:@selector(goToHomeViewController) forControlEvents:UIControlEventTouchUpInside];
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        [continueButton addTarget:self action:@selector(returnToProductionScreen) forControlEvents:UIControlEventTouchUpInside];
+    }
     continueButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:continueButton];
 }
 
 #pragma mark - Actions 
 
--(void)goToHomeViewController {
-    if (self.controllerWasPresentedFromInitialScreen) {
-        MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBar animated:YES completion:nil];
-    } else {
-        //Create the 'Mis Listas' tab & 'Mas' tab
-        [self createAditionalTabsInTabBarController];
-        [MBHUDView hudWithBody:@"Suscripcion Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-        
-        NSArray *viewControllers = [self.navigationController viewControllers];
-        for (int i = [viewControllers count] - 1; i >= 0; i--){
-            id obj = [viewControllers objectAtIndex:i];
-            if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
-                [self.navigationController popToViewController:obj animated:YES];
-                return;
-            }
+-(void)returnToProductionScreen {
+    [MBHUDView hudWithBody:@"Suscripción Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    [self createAditionalTabsInTabBarController];
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    for (int i = [viewControllers count] - 1; i >= 0; i--){
+        id obj = [viewControllers objectAtIndex:i];
+        if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
+            [self.navigationController popToViewController:obj animated:YES];
+            return;
         }
     }
+}
+
+-(void)goToHomeViewController {
+    MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    [self presentViewController:mainTabBar animated:YES completion:nil];
 }
 
 -(void)createAditionalTabsInTabBarController {

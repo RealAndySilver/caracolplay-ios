@@ -24,10 +24,10 @@
     [super viewDidLoad];
     
     //Register as an observer of the notification -UserDidSuscribe.
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    /*[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userDidSuscribeNotificationReceived:)
                                                  name:@"UserDidSuscribe"
-                                               object:nil];
+                                               object:nil];*/
 
     
     self.userTextfield.delegate = self;
@@ -79,8 +79,8 @@
 #pragma mark - Notification Handlers
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
-    RentContentConfirmationViewController *rentContentVC =
-    [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    NSLog(@"Recibí la notificación");
+    RentContentConfirmationViewController *rentContentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
     [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
