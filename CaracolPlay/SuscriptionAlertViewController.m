@@ -63,7 +63,7 @@
     [self.view addSubview:detailTextView];
     
     //'Ingresar' button setup
-    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/2 + 60.0, 160.0, 40.0)];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/1.65, 160.0, 40.0)];
     [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -72,7 +72,7 @@
     [self.view addSubview:enterButton];
     
     //'Alquilar' button setup
-    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/2 + 110.0, screenFrame.size.width/2.0 - 25.0, 40.0)];
+    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/1.44, screenFrame.size.width/2.0 - 25.0, 40.0)];
     [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [rentButton addTarget:self action:@selector(goToRentViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -81,7 +81,7 @@
     [self.view addSubview:rentButton];
     
     // 'Suscribete' button setup
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 + 5.0, screenFrame.size.height/2 + 110.0, screenFrame.size.width/2.0 - 25.0, 40.0)];
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 + 5.0, screenFrame.size.height/1.44, screenFrame.size.width/2.0 - 25.0, 40.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -90,7 +90,8 @@
     [self.view addSubview:suscribeButton];
     
     // 'Redimir código' button setup
-    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, 450.0, 100.0, 70.0)];
+    CGFloat buttonHeight = screenFrame.size.height/8.11;
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, self.view.frame.size.height - 44.0 - buttonHeight, 100.0, buttonHeight)];
     [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];

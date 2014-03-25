@@ -49,6 +49,8 @@
                                                  name:@"UserDidSuscribe"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
+    
     //Set textfields delegates
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
@@ -69,11 +71,11 @@
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
-    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 438.0, 20.0, 20.0)];
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 403.0, 20.0, 20.0)];
     self.checkmarkView1.cornerRadius = 3.0;
     self.checkmarkView1.tag = 1;
     self.checkmarkView1.delegate = self;
-    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 477.0, 20.0, 20.0)];
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 442.0, 20.0, 20.0)];
     self.checkmarkView2.cornerRadius = 3.0;
     self.checkmarkView2.tag = 2;
     self.checkmarkView2.delegate = self;
@@ -120,12 +122,18 @@
         
     } else {
         //The terms and conditions were not accepted, so show an alert.
-        [[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             [self showErrorsInTermAndPoliticsConditions];
     }
 }
 
 #pragma mark - Notification Handlers
+
+-(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    NSLog(@"Me llegó la notificacion de que falló la transaccion");
+    NSDictionary *notificationInfo = [notification userInfo];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción");
@@ -140,6 +148,7 @@
     
     if (self.controllerWasPresentFromInitialScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
+        suscriptionConfirmationVC.userWasAlreadyLoggedin = NO;
     } else if (self.controllerWasPresentedFromProductionScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
     }

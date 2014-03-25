@@ -48,6 +48,11 @@
                                                  name:@"UserDidSuscribe"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(transactionFailedNotificationReceived:)
+                                                 name:@"TransactionFailedNotification"
+                                               object:nil];
+    
     //Set textfields delegates
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
@@ -126,7 +131,7 @@
         
     } else {
         //The terms and conditions were not accepted, so show an alert.
-        [[[UIAlertView alloc] initWithTitle:@"Condiciones no aceptadas" message:@"Debes aceptar los terminos y condiciones y las politicas del servicio para poder ingresar a la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         [self showErrorsInTermAndPoliticsConditions];
     }
 }
@@ -164,6 +169,12 @@
 }
 
 #pragma mark - Notification Handlers
+
+-(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    NSLog(@"Falló la transacción");
+    NSDictionary *notificationInfo = [notification userInfo];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción");

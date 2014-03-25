@@ -40,7 +40,7 @@
         [self.enterButton addTarget:self action:@selector(goToHomeScreenDirectly) forControlEvents:UIControlEventTouchUpInside];
         
     } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
-        [self.enterButton setTitle:@"Ingresar y Suscribirse" forState:UIControlStateNormal];
+        [self.enterButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     
     } else if (self.controllerWasPresentedFromProductionScreen) {
@@ -48,7 +48,7 @@
         [self.enterButton addTarget:self action:@selector(enterAndReturnToProduction) forControlEvents:UIControlEventTouchUpInside];
     
     } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
-        [self.enterButton setTitle:@"Ingresar y Suscribirse" forState:UIControlStateNormal];
+        [self.enterButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -112,7 +112,7 @@
         }
         [self createAditionalTabsInTabBarController];
     } else {
-         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en los datos. Por favor revisa que los hayas ingresado correctamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -132,7 +132,7 @@
         }];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en los datos. Por favor revisa que los hayas ingresado correctamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -176,7 +176,7 @@
         }*/
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Error en la información. Por favor revisa que hayas completado todos los campos correctamente." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

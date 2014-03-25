@@ -43,13 +43,14 @@
     } else {
         self.productoComprado = @"alquiler";
     }
-    [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TypeOfProduct": self.productoComprado}];
+    //[[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
-#pragma mark - UIAlertViewDelegate 
+/*#pragma mark - UIAlertViewDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TypeOfProduct": self.productoComprado}];
-}
+}*/
 
 @end

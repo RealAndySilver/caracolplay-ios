@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RentContentConfirmationViewController : UIViewController
-
+@property (nonatomic) BOOL userWasAlreadyLoggedin;
 @end

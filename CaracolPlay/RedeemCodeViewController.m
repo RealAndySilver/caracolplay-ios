@@ -58,7 +58,7 @@
         [self.navigationController pushViewController:redeemCodeAlertVC animated:YES];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Código incorrecto." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El código no existe o no se puede canjear." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

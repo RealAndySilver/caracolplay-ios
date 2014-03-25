@@ -66,15 +66,22 @@
 
 -(void)returnToProductionScreen {
     [MBHUDView hudWithBody:@"Suscripción Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-    [self createAditionalTabsInTabBarController];
     NSArray *viewControllers = [self.navigationController viewControllers];
     for (int i = [viewControllers count] - 1; i >= 0; i--){
         id obj = [viewControllers objectAtIndex:i];
         if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
             [self.navigationController popToViewController:obj animated:YES];
-            return;
+            break;
         }
     }
+    if (!self.userWasAlreadyLoggedin) {
+        //If the user hasn't logged in with his user, create the aditional tabs
+        NSLog(@"Cree los tabs");
+        [self createAditionalTabsInTabBarController];
+    } else  {
+        NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
+    }
+
 }
 
 -(void)goToHomeViewController {

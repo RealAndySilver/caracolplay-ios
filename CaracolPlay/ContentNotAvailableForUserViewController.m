@@ -22,8 +22,15 @@
     [super viewDidLoad];
     
     //Reigster as an observer to the user suscribe notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidSuscribeNotificationReceived:) name:@"UserDidSuscribe" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(transactionFailedNotificationReceived:)
+                                                 name:@"TransacationFailedNotification"
+                                               object:nil];
     [self UISetup];
 }
 
@@ -65,7 +72,7 @@
     [self.view addSubview:detailTextView];
     
     //'Alquilar' button setup
-    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/2 + 50.0, 200.0, 44.0)];
+    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.7, 200.0, 44.0)];
     [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [rentButton addTarget:self action:@selector(rentProduct) forControlEvents:UIControlEventTouchUpInside];
@@ -74,7 +81,7 @@
     [self.view addSubview:rentButton];
     
     // 'Suscribete' button setup
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/2 + 110.0, 200.0, 44.0)];
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.44, 200.0, 44.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton addTarget:self action:@selector(suscribe) forControlEvents:UIControlEventTouchUpInside];
@@ -83,7 +90,8 @@
     [self.view addSubview:suscribeButton];
     
     // 'Redimir código' button setup
-    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, 450.0, 100.0, 70.0)];
+    CGFloat buttonHeight = screenFrame.size.height/8.11;
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, self.view.frame.size.height - 44.0 - buttonHeight, 100.0, buttonHeight)];
     [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
@@ -124,6 +132,15 @@
 
 #pragma mark - Notification Handler 
 
+-(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    NSLog(@"Falló la notificación");
+    NSDictionary *notificationInfo = [notification userInfo];
+    [[[UIAlertView alloc] initWithTitle:@"Error"
+                                message:notificationInfo[@"Message"]
+                               delegate:self cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
+}
+
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"recibí la notificación");
     NSDictionary *productInfo = [notification userInfo];
@@ -131,12 +148,21 @@
     if ([typeOfProduct isEqualToString:@"suscripcion"]) {
         //Go to suscription confirmation view controller
         SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+        
+        //The user was already logged in, so the suscription confirmation VC doesn't
+        //need to create the aditional tabs
+        suscriptionConfirmationVC.userWasAlreadyLoggedin = YES;
+        
         suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
         [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
         
     } else if ([typeOfProduct isEqualToString:@"alquiler"]) {
         //Go to rent confirmation VC
         RentContentConfirmationViewController *rentContentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+        
+        //The user was already logged in, so the rentContentConfirmationVC doesn't
+        //need to create the aditional tabs
+        rentContentConfirmationVC.userWasAlreadyLoggedin = YES;
         [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
     }
 }

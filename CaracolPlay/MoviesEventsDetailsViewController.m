@@ -17,6 +17,7 @@
 #import "VideoPlayerViewController.h"
 #import "FileSaver.h"
 #import "SuscriptionAlertViewController.h"
+#import "ContentNotAvailableForUserViewController.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -306,14 +307,22 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    Reachability *reachability = [Reachability reachabilityForInternetConnection];
-    [reachability startNotifier];
-    NetworkStatus status = [reachability currentReachabilityStatus];
-    if (status == NotReachable) {
-        [[[UIAlertView alloc] initWithTitle:nil  message:@"Para poder ver la producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    BOOL contentIsAvailableForUser = NO;
+    if (!contentIsAvailableForUser) {
+        //The content is not availble for the user
+        ContentNotAvailableForUserViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        [self.navigationController pushViewController:contentNotAvailableVC animated:YES];
+        
     } else {
-        VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-        [self.navigationController pushViewController:videoPlayerVC animated:YES];
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        if (status == NotReachable) {
+            [[[UIAlertView alloc] initWithTitle:nil  message:@"Para poder ver la producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else {
+            VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            [self.navigationController pushViewController:videoPlayerVC animated:YES];
+        }
     }
 }
 
