@@ -71,6 +71,9 @@
         id obj = [viewControllers objectAtIndex:i];
         if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
             [self.navigationController popToViewController:obj animated:YES];
+            
+            //Post a notification to tell the production view controller that it needs to display the video inmediatly
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
             break;
         }
     }

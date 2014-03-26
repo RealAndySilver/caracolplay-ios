@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface IngresarPadViewController : UIViewController
-
+@property (assign, nonatomic) CGFloat viewHeight;
+@property (assign, nonatomic) CGFloat viewWidth;
 @end

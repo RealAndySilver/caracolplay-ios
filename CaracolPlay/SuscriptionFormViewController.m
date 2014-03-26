@@ -51,12 +51,15 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
     
-    //Set textfields delegates
+    //Set textfields properties
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
     self.confirmPasswordTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     self.emailTextfield.delegate = self;
+    self.nameTextfield.tag = 1;
+    self.lastNameTextfield.tag = 2;
+    self.emailTextfield.tag = 3;
     
     //Create a tap gesture recognizer to dismiss the keyboard tapping on the view
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
@@ -107,7 +110,7 @@
 }
 
 -(void)goToSuscriptionConfirmationVC {
-    if ([self areTermsAndPoliticsConditionsAccepted]) {
+    if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -170,6 +173,10 @@
 
 #pragma mark - Custom Methods
 
+-(BOOL)textfieldsInfoIsCorrect {
+    return [self NSStringIsValidEmail:self.emailTextfield.text];
+}
+
 -(void)showErrorsInTermAndPoliticsConditions {
     if (![self.checkmarkView1 viewIsChecked]) {
         NSLog(@"chekmark 1 no chuleado");
@@ -200,6 +207,23 @@
     }
 }
 
+#pragma mark - Regex Stuff
+
+-(BOOL)NSStringIsValidEmail:(NSString *)checkString{
+    BOOL stricterFilter = NO;
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
+/*-(BOOL)validateNameAndLastNameWithString:(NSString *)checkString {
+    NSString *nameRegexString = @"/^[A-Za-z]+$/";
+    NSPredicate *namePredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", nameRegexString];
+    return [namePredicate evaluateWithObject:checkString];
+}*/
+
 #pragma mark - UITextFieldDelegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -207,6 +231,30 @@
     return YES;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    /*if (textField.tag == 1) {
+        //Validate name textfield
+        if (![self validateNameAndLastNameWithString:textField.text]) {
+            NSLog(@"El nombre no es válido");
+            textField.textColor = [UIColor redColor];
+        } else {
+            NSLog(@"el nombre si es válido");
+            textField.textColor = [UIColor whiteColor];
+        }
+        
+    }*/
+    if (textField.tag == 3) {
+        //Validate email textfield
+        if (![self NSStringIsValidEmail:textField.text]) {
+            NSLog(@"el email no es válido");
+            textField.textColor = [UIColor redColor];
+        } else {
+            NSLog(@"el email es válido");
+            textField.textColor = [UIColor whiteColor];
+        }
+    }
+    return YES;
+}
 #pragma mark - CheckmarkViewDelegate 
 
 -(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
@@ -215,7 +263,6 @@
 }
 
 -(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
-    NSLog(@"");
 }
 
 #pragma mark - Interface Orientation 

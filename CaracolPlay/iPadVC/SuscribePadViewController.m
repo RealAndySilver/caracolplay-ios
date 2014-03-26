@@ -11,9 +11,11 @@
 #import "SuscriptionConfirmationPadViewController.h"
 #import "FileSaver.h"
 #import "CPIAPHelper.h"
+#import "IngresarPadViewController.h"
 @import QuartzCore;
 
 @interface SuscribePadViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -37,14 +39,17 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 418.0, 30.0, 30.0)];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 458.0, 30.0, 30.0)];
     [self.view addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 458.0, 30.0, 30.0)];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 498.0, 30.0, 30.0)];
     [self.view addSubview:self.checkBox2];
     
     //4. 'Continuar' button
     [self.continueButton addTarget:self action:@selector(suscribe) forControlEvents:UIControlEventTouchUpInside];
+    
+    //'Ingresa aquí' button setup
+    [self.enterHereButton addTarget:self action:@selector(goToIngresarVC) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - View Lifecycle
@@ -61,6 +66,11 @@
                                                object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     NSLog(@"bound: %@", NSStringFromCGRect(self.view.bounds));
@@ -71,6 +81,17 @@
     
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
+}
+
+#pragma mark - Actions 
+
+-(void)goToIngresarVC {
+    IngresarPadViewController *ingresarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarPad"];
+    ingresarPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    ingresarPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarPadVC.viewWidth = 320.0;
+    ingresarPadVC.viewHeight = 597.0;
+    [self presentViewController:ingresarPadVC animated:YES completion:nil];
 }
 
 #pragma mark - Notifications Handler 
@@ -100,7 +121,7 @@
         }];
     } else {
         //The user can't pass.
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Debes aceptar los terminos y condiciones y las políticas de privacidad para poder continuar." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo. " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

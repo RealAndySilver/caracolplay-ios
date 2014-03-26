@@ -42,6 +42,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
 @property (assign, nonatomic) NSUInteger selectedSeason;
+
+//BOOL that indicates if the view controller received a notification
+//indicating that ith has to display the production video automaticly
+//when the view appears.
+@property (assign, nonatomic) BOOL receivedVideoNotification;
+
 @end
 
 @implementation TelenovelSeriesDetailViewController
@@ -304,9 +310,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Add as an observer of the notification -seasonSelectedNotification, to make the
+    //chapters table view changes when neccesary
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(seasonSelectedNotificationReceived:)
                                                  name:@"SeasonSelectedNotification"
+                                               object:nil];
+    
+    //Add as an observer of the TelenovelVideoShouldBeDisplayed notification, to display
+    //the video inmediatly
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(telenovelVideoShouldBeDisplayedNotification:)
+                                                 name:@"VideoShouldBeDisplayed"
                                                object:nil];
     //[self parseProductionInfo];
     //[self parseEpisodesInfo];
@@ -319,6 +335,23 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.receivedVideoNotification) {
+        VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self.navigationController pushViewController:videoPlayer animated:YES];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    //Set this BOOL to NO. This BOOL is set to YES when we received a
+    //notification indicating that we have to display the production video
+    //automaticly when the view appears.
+    self.receivedVideoNotification = NO;
 }
 
 #pragma mark - UITableViewDataSource 
@@ -469,6 +502,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Notification Handler
+
+-(void)telenovelVideoShouldBeDisplayedNotification:(NSNotification *)notification {
+    NSLog(@"me llegó la notificación de que debo mostrar el video");
+    self.receivedVideoNotification = YES;
+}
 
 -(void)seasonSelectedNotificationReceived:(NSNotification *)notification {
     NSDictionary *info = [notification userInfo];

@@ -28,6 +28,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
 @property (strong, nonatomic) UIImage *productionImage;
+
+//BOOL that indicates if the view controller received a notification
+//indicating that ith has to display the production video automaticly
+//when the view appears.
+@property (assign, nonatomic) BOOL receivedVideoNotification;
+
 /*@property (strong, nonatomic) FXBlurView *blurView;
 @property (strong, nonatomic) FXBlurView *tabBarBlurView;
 @property (strong, nonatomic) FXBlurView *navigationBarBlurView;*/
@@ -77,6 +83,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Add as an observer of the -VideoShouldBeDisplayed notification, to show
+    //the production video inmediatly
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoShoulBeDisplayedNotification:)
+                                                 name:@"VideoShouldBeDisplayed"
+                                               object:nil];
+    
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.type;
     [self UISetup];
@@ -88,6 +102,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.receivedVideoNotification) {
+        NSLog(@"iré al video de unaaaa");
+        VideoPlayerViewController *videoPLayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        [self.navigationController pushViewController:videoPLayerVC animated:YES];
+    }
+}
+
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     //self.navigationBarBlurView.frame = self.navigationController.navigationBar.bounds;
@@ -95,6 +118,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    //Set this BOOL to NO. This BOOL is set to YES when we received a
+    //notification indicating that we have to display the production video
+    //automaticly when the view appears.
+    self.receivedVideoNotification = NO;
     /*[self.blurView removeFromSuperview];
     [self.navigationBarBlurView removeFromSuperview];
     [self.tabBarBlurView removeFromSuperview];*/
@@ -364,6 +392,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                        cancelButtonTitle:@"Volver"
                   destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)videoShoulBeDisplayedNotification:(NSNotification *)notification {
+    NSLog(@"Me llegó la notificacion de que deberia mostrar el video de one");
+    self.receivedVideoNotification = YES;
 }
 
 #pragma mark - UIActionSheetDelegate 

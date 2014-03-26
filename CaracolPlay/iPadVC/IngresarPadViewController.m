@@ -27,6 +27,8 @@
 -(void)UISetup {
     //1. Background image setup
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundIngresarPad.png"]];
+    self.backgroundImageView.clipsToBounds = YES;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
     
@@ -54,14 +56,22 @@
     [super viewWillLayoutSubviews];
     
     //Set our superview bounds, in order to present this view with the correct size (320, 386)
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 386.0);
+    if (self.viewHeight != 0 && self.viewWidth != 0) {
+        //320 597
+        NSLog(@"entré acá mirá con los datos %f, %f", self.viewWidth, self.viewHeight);
+        self.view.superview.bounds = CGRectMake(0.0, 0.0, self.viewWidth, self.viewHeight);
+        self.view.frame = CGRectMake(-10, -10, self.viewWidth + 20.0, self.viewHeight + 20);
+    } else {
+        NSLog(@"entre aca porque no habia altura ni ancho");
+        self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 386.0);
+        self.view.frame = CGRectMake(-10.0, -10.0, 320.0, 386.0);
+    }
     
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10, -10, 320 + 20.0, 386 + 20);
 
     //Set Subviews frames
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 58, -25.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
 
@@ -71,7 +81,7 @@
     
     if (!([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0)) {
         //Show an alert to the user indicating that the info is wrong
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Error en los datos ingresados." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         //Save a key locally indicating that the user has logged in.
         FileSaver *fileSaver = [[FileSaver alloc] init];
