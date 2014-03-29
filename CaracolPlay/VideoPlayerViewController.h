@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface VideoPlayerViewController : UIViewController
-
+@property (strong, nonatomic) NSString *embedCode;
 @end

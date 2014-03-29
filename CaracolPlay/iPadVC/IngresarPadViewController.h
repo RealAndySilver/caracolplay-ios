@@ -11,4 +11,8 @@
 @interface IngresarPadViewController : UIViewController
 @property (assign, nonatomic) CGFloat viewHeight;
 @property (assign, nonatomic) CGFloat viewWidth;
+@property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromInitialSuscriptionScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionSuscriptionScreen;
 @end

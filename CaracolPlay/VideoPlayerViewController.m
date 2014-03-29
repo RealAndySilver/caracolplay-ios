@@ -40,7 +40,11 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [self.view addSubview:self.ooyalaPlayerViewController.view];
     
     //Load the video
-    [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
+    if (self.embedCode) {
+        [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
+    } else {
+        [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated {

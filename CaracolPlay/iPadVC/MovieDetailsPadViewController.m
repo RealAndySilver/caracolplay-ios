@@ -85,7 +85,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.production = [[Product alloc] initWithDictionary:self.productionInfo];
 }
 
-/*-(void)UISetup {
+-(void)UISetup {
     //1. Dismiss button
     self.dismissButton = [[UIButton alloc] init];
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
@@ -129,7 +129,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [smallProductionImageView addSubview:playIcon];
     
     //Stars view
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.myRate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.rate intValue]];
     [self.view addSubview:self.starsView];
     UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
     [self.starsView addGestureRecognizer:starsTapGesture];
@@ -218,13 +218,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
     [self.view addSubview:self.collectionView];
-}*/
+}
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor darkGrayColor];
     [self parseProductionInfo];
-    //[self UISetup];
+    [self UISetup];
 }
 
 -(void)viewWillLayoutSubviews {

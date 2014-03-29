@@ -7,22 +7,69 @@
 //
 
 #import "TermsAndConditionsViewController.h"
+#import "ServerCommunicator.h"
+#import "MBHUDView.h"
 
-@interface TermsAndConditionsViewController ()
-@property (strong, nonatomic) UITextView *textView;
+@interface TermsAndConditionsViewController () <ServerCommunicatorDelegate>
+@property (strong, nonatomic) NSString *termsAndConditionsString;
 @end
 
 @implementation TermsAndConditionsViewController
 
+#pragma mark - Setters & Getters 
+
+-(void)setTermsAndConditionsString:(NSString *)termsAndConditionsString {
+    _termsAndConditionsString = termsAndConditionsString;
+    [self setupUI];
+}
+
+#pragma mark - View Lifecycle & UISetup
+
 -(void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.title = @"Términos y Condiciones";
     self.view.backgroundColor = [UIColor blackColor];
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 20.0, self.view.frame.size.width - 20.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0) - 44.0)];
-    self.textView.backgroundColor = [UIColor blackColor];
-    self.textView.font = [UIFont systemFontOfSize:15.0];
-    self.textView.textColor = [UIColor whiteColor];
-    self.textView.textAlignment = NSTextAlignmentJustified;
-    self.textView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat. Mauris suscipit accumsan porttitor. Maecenas rhoncus nec diam et cursus. Pellentesque lacinia erat ullamcorper, vulputate risus sit amet, mollis ante. Mauris aliquet posuere nunc. Sed in pharetra odio. Suspendisse tempor sed nisl vitae ultrices. Phasellus ac risus lorem. Nullam rutrum molestie dictum. Vestibulum sed lectus at nisi bibendum eleifend. Fusce in lectus id dolor cursus venenatis vel nec leo. Ut a augue nec turpis semper commodo. Ut sit amet mi in sapien dapibus sodales interdum eget magna. Maecenas eget metus non quam sodales posuere. Donec non magna a est gravida gravida. Maecenas eleifend sodales risus, id dictum odio vehicula pulvinar. Nullam pellentesque euismod porta.";
-    [self.view addSubview:self.textView];
+    [self getTermsAndConditionsFromServer];
+    [self setupUI];
+}
+
+-(void)setupUI {
+    CGRect screenFrame = [UIScreen mainScreen].bounds;
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenFrame.size.width, screenFrame.size.height - 110.0)];
+    [webView loadHTMLString:self.termsAndConditionsString baseURL:nil];
+    [self.view addSubview:webView];
+}
+
+#pragma mark - Server Stuff
+
+-(void)getTermsAndConditionsFromServer {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"GetTerms" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"Recibí info del server");
+    if ([methodName isEqualToString:@"GetTerms"] && [responseDictionary[@"status"] boolValue]) {
+        NSLog(@"La petición fue exitosa");
+        self.termsAndConditionsString = responseDictionary[@"text"];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor ntenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

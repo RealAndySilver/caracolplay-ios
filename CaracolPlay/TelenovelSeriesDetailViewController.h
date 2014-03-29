@@ -10,5 +10,5 @@
 #import "TelenovelSeriesTableViewCell.h"
 
 @interface TelenovelSeriesDetailViewController : UIViewController
-
+@property (strong, nonatomic) NSString *serieID;
 @end

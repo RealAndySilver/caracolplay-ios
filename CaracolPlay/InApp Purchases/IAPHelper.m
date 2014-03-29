@@ -48,7 +48,11 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no se puede comprar el producto. intenta en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         return;
     }
-    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    } else {
+        [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    }
     NSLog(@"Comprando: %@", product.productIdentifier);
     product.purchaseInProgress = YES;
     SKPayment *payment = [SKPayment paymentWithProduct:product.skProduct];

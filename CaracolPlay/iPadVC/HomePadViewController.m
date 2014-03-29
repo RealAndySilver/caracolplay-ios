@@ -14,8 +14,11 @@
 #import "MovieDetailsPadViewController.h"
 #import "SeriesDetailPadViewController.h"
 #import "FileSaver.h"
+#import "ServerCommunicator.h"
+#import "NSDictionary+NullReplacement.h"
+#import "MBHUDView.h"
 
-@interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate>
+@interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIPageControl *pageControl;
 @property (strong, nonatomic) NSArray *unparsedFeaturedProductionsInfo;
@@ -31,7 +34,7 @@
 
 #pragma mark - Lazy Instantiation
 
--(NSArray *)unparsedFeaturedProductionsInfo {
+/*-(NSArray *)unparsedFeaturedProductionsInfo {
     if (!_unparsedFeaturedProductionsInfo) {
         _unparsedFeaturedProductionsInfo = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text": @"No te pierdas...", @"id": @"210",
                                                @"rate" : @3, @"category_id" : @"32224", @"image_url" : @"http://st.elespectador.co/files/imagecache/727x484/1933d136b94594f2db6f9145bbf0f72a.jpg", @"is_campaign" : @YES, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
@@ -49,7 +52,7 @@
                                                @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://static.canalcaracol.com/sites/caracoltv.com/files/imgs_12801024/fdb9f15a1610815e39b2dcbb298e223f.jpg", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"}];
     }
     return _unparsedFeaturedProductionsInfo;
-}
+}*/
 
 #pragma mark - UI Setup & Initilization Methods
 
@@ -57,14 +60,30 @@
     self.carouselScrollingTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(scrollCarousel) userInfo:nil repeats:YES];
 }
 
--(void)parseFeaturedInfo {
+/*-(void)parseFeaturedInfo {
     self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
     for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
         Featured *featuredProduction = [[Featured alloc] initWithDictionary:self.unparsedFeaturedProductionsInfo[i]];
         [self.parsedFeaturedProductions addObject:featuredProduction];
     }
+}*/
+
+-(void)setUnparsedFeaturedProductionsInfo:(NSArray *)unparsedFeaturedProductionsInfo {
+    _unparsedFeaturedProductionsInfo = unparsedFeaturedProductionsInfo;
+    [self parseFeaturedProductionsFromServer];
+    [self UISetup];
 }
 
+-(void)parseFeaturedProductionsFromServer {
+    self.parsedFeaturedProductions = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
+        NSDictionary *featuredProdDicWithNulls = self.unparsedFeaturedProductionsInfo[i];
+        NSDictionary *featuredProdDicWithoutNulls = [featuredProdDicWithNulls dictionaryByReplacingNullWithBlanks];
+        Featured *featuredProduction = [[Featured alloc] initWithDictionary:featuredProdDicWithoutNulls];
+        [self.parsedFeaturedProductions addObject:featuredProduction];
+    }
+    NSLog(@"Numero de producciones destacas: %lu", (unsigned long)[self.parsedFeaturedProductions count]);
+}
 
 -(void)UISetup {
     //1. background image setup
@@ -84,16 +103,6 @@
     self.pageControl = [[UIPageControl alloc] init];
     self.pageControl.numberOfPages = [self.parsedFeaturedProductions count];
     [self.view addSubview:self.pageControl];
-    
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, 30.0, 100.0, 44.0)];
-        [backButton setTitle:@"◀︎Volver" forState:UIControlStateNormal];
-        [backButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-        backButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
-        [backButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:backButton];
-    }
 }
 
 #pragma  mark - View Lifecycle
@@ -101,8 +110,9 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self parseFeaturedInfo];
-    [self UISetup];
+    [self getFeaturedFromServer];
+    //[self parseFeaturedInfo];
+    //[self UISetup];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -125,12 +135,33 @@
 
 #pragma mark - Actions 
 
--(void)dismissVC {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 -(void)scrollCarousel {
     [self.carousel scrollByNumberOfItems:1 duration:1.0];
+}
+
+#pragma mark - Server stuff
+
+-(void)getFeaturedFromServer {
+    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetFeatured" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    NSLog(@"Recibí info del servidor: %@", responseDictionary);
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"GetFeatured"] && [responseDictionary[@"status"] boolValue]) {
+        self.unparsedFeaturedProductionsInfo = responseDictionary[@"featured"];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - iCarouselDataSource
@@ -154,9 +185,9 @@
     [view addSubview:imageView];
     
     //Add an opacity pattern to the view to be able to read everything
-    UIView *opacityPatternView = [[UIView alloc] initWithFrame:view.bounds];
+    UIView *opacityPatternView = [[UIView alloc] initWithFrame:CGRectMake(0.0, view.bounds.size.height - 150.0, view.bounds.size.width, 150.0)];
     UIImage *opacityPatternImage = [UIImage imageNamed:@"OpacityPattern.png"];
-    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, view.bounds.size.height)];
+    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, 150.0)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [view addSubview:opacityPatternView];
     
@@ -235,19 +266,21 @@
     //Stop the automatic scrolling of the carousel
     [self.carouselScrollingTimer invalidate];
     self.carouselScrollingTimer = nil;
+    Featured *selectedProduction = self.parsedFeaturedProductions[index];
     
-    if (((Featured *)self.parsedFeaturedProductions[index]).isCampaign) {
+    if (selectedProduction.isCampaign) {
         if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:((Featured *)self.parsedFeaturedProductions[index]).campaignURL]]) {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Error abriendo la URL. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
         return;
     }
     
-    if ([((Featured *)self.parsedFeaturedProductions[index]).type isEqualToString:@"Series"]) {
+    if ([selectedProduction.type isEqualToString:@"Series"] || [selectedProduction.type isEqualToString:@"Telenovelas"]) {
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
-    } else if ([((Featured *)self.parsedFeaturedProductions[index]).type isEqualToString:@"Peliculas"]) {
+        
+    } else if ([selectedProduction.type isEqualToString:@"Películas"]) {
         MovieDetailsPadViewController *movieDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:movieDetailPad animated:YES completion:nil];

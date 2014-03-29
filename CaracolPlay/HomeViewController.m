@@ -227,7 +227,7 @@
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
         
-    } else if ([featuredProduction.type isEqualToString:@"Peliculas"]) {
+    } else if ([featuredProduction.type isEqualToString:@"Películas"]) {
         //The production is a movie
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
@@ -355,6 +355,8 @@
     NSLog(@"el contador está en %d", self.automaticCounter);
     [self startScrollingTimer];
 }
+
+#pragma mark - Interface Orientation
 
 - (NSUInteger) supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;

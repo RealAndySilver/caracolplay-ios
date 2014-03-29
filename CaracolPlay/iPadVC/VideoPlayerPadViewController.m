@@ -15,7 +15,6 @@
 @property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UINavigationItem *navBarItem;
-@property (strong, nonatomic) NSString *embedCode;
 @property (strong, nonatomic) NSString *pcode;
 @property (strong, nonatomic) NSString *playerDomain;
 @end
@@ -24,7 +23,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.embedCode = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
+    //self.embedCode = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
     self.pcode = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
     self.playerDomain = @"www.ooyala.com";
     

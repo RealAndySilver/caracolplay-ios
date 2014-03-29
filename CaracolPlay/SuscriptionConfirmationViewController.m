@@ -65,7 +65,6 @@
 #pragma mark - Actions 
 
 -(void)returnToProductionScreen {
-    [MBHUDView hudWithBody:@"Suscripción Exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
     NSArray *viewControllers = [self.navigationController viewControllers];
     for (int i = [viewControllers count] - 1; i >= 0; i--){
         id obj = [viewControllers objectAtIndex:i];

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SuscriptionConfirmationPadViewController : UIViewController
-
+@property (nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (nonatomic) BOOL controllerWasPresentedFromProductionScreen;
 @end

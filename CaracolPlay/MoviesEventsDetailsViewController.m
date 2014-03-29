@@ -18,10 +18,12 @@
 #import "FileSaver.h"
 #import "SuscriptionAlertViewController.h"
 #import "ContentNotAvailableForUserViewController.h"
+#import "ServerCommunicator.h"
+#import "MBHUDView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate>
+@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
@@ -51,23 +53,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     return _productionInfo;
 }
 
--(NSArray *)recommendedProductions {
-    if (!_recommendedProductions) {
-        _recommendedProductions = @[@{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.eltiempo.com/entretenimiento/tv/IMAGEN/IMAGEN-8759821-2.png"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.bluradio.com/sites/default/files/la_voz_colombia.jpg"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://hispanic-tv.jumptv.com/images/2008/09/18/diaadiatucasa_2.png"}];
-    }
-    return _recommendedProductions;
-}
-
 -(Product *)production {
     if (!_production) {
         _production = [[Product alloc] initWithDictionary:self.productionInfo];
@@ -75,9 +60,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     return _production;
 }
 
-/*-(void)parseProductionInfo {
-    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
-}*/
+-(void)setRecommendedProductions:(NSArray *)recommendedProductions {
+    _recommendedProductions = recommendedProductions;
+    [self UISetup];
+}
 
 #pragma mark - View Lifecycle
 
@@ -93,7 +79,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.type;
-    [self UISetup];
+    [self getRecommendedProductionsFromServer];
+    //[self UISetup];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -130,10 +117,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)UISetup {
     //1. Create the main image view of the movie/event
+    CGRect screenFrame = [UIScreen mainScreen].bounds;
     UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      0.0,
-                                                                                     self.view.frame.size.width,
-                                                                                     self.view.frame.size.height/3)];
+                                                                                     screenFrame.size.width,
+                                                                                    screenFrame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
     movieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
     [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
@@ -150,7 +138,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
                                                                  20.0,
                                                                  90.0,
-                                                                  self.view.frame.size.height/4.0)];
+                                                                  screenFrame.size.height/4.0)];
     shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowOpacity = 0.9;
@@ -197,7 +185,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                              self.view.frame.size.height/6.3,
+                                                                              screenFrame.size.height/6.3,
                                                                               90.0,
                                                                               30.0)];
     [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
@@ -208,7 +196,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.view.frame.size.height/6.3, 90.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, screenFrame.size.height/6.3, 90.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
@@ -238,7 +226,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchProductionButton];
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, self.view.frame.size.width - 20.0, self.view.frame.size.height/8.0)];
+    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -250,7 +238,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:detailTextView];
     
     //8. Create a background view and set it's color to gray
-    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - (detailTextView.frame.origin.y + detailTextView.frame.size.height) - 44.0)];
+    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, screenFrame.size.width, screenFrame.size.height - (detailTextView.frame.origin.y + detailTextView.frame.size.height) - 44.0)];
     grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
     [self.view addSubview:grayView];
     
@@ -303,7 +291,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecommendedProdCollectionViewCell *cell = (RecommendedProdCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"product"][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     return cell;
 }
 
@@ -314,13 +302,18 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+    if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] ||
+        [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"]) {
+        
+        TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+        telenovelSeriesVC.serieID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
+        [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
+        /*MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        [self.navigationController pushViewController:moviesEventDetail animated:YES];*/
+        
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Peliculas"]) {
         MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];
-        
-    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
-        TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
-        [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     }
 }
 
@@ -392,6 +385,32 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                        cancelButtonTitle:@"Volver"
                   destructiveButtonTitle:nil
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
+}
+
+#pragma mark - Server Stuff 
+
+-(void)getRecommendedProductionsFromServer {
+    ServerCommunicator *serveCommunicator = [[ServerCommunicator alloc] init];
+    serveCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serveCommunicator callServerWithGETMethod:@"GetRecommendationsWithProductID" andParameter:@"1"];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"Recibí respuesta del servidor");
+    if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && [responseDictionary[@"status"] boolValue]) {
+        NSLog(@"la petición fue exitosa");
+        self.recommendedProductions = responseDictionary[@"recommended_products"];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Notification Handlers 

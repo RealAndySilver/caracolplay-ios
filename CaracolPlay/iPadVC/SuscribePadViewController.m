@@ -31,7 +31,7 @@
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
-    
+
     //2. Dismiss view controller button
     self.dismissButton = [[UIButton alloc] init];
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
@@ -58,6 +58,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
     
     //Register as an observer of the notification 'UserDidSuscribe'
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -66,9 +71,9 @@
                                                object:nil];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSLog(@"Desapareceré");
 }
 
 -(void)viewWillLayoutSubviews {
@@ -86,11 +91,15 @@
 #pragma mark - Actions 
 
 -(void)goToIngresarVC {
+    //Remove as an observer of the notification -userDidSuscribe
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UserDidSuscribe" object:nil];
+    
     IngresarPadViewController *ingresarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarPad"];
     ingresarPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     ingresarPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
     ingresarPadVC.viewWidth = 320.0;
     ingresarPadVC.viewHeight = 597.0;
+    ingresarPadVC.controllerWasPresentedFromInitialSuscriptionScreen = YES;
     [self presentViewController:ingresarPadVC animated:YES completion:nil];
 }
 
@@ -99,14 +108,14 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"Me llegó la notificación de compraaaa");
     //Save a key locally, indicating that the user has logged in.
-     FileSaver *fileSaver = [[FileSaver alloc] init];
-     [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
      
-     //The user can pass to the suscription confirmation view controller
-     SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
-     suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-     suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
-     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
+    //The user can pass to the suscription confirmation view controller
+    SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
+    suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }
 
 #pragma mark - Custom Methods

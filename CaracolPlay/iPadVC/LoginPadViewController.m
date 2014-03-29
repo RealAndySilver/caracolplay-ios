@@ -102,6 +102,7 @@
     ingresarPadViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     ingresarPadViewController.viewWidth = 320.0;
     ingresarPadViewController.viewHeight = 386.0;
+    ingresarPadViewController.controllerWasPresentedFromInitialScreen = YES;
     [self presentViewController:ingresarPadViewController animated:YES completion:nil];
 }
 

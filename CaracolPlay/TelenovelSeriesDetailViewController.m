@@ -158,7 +158,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     else {
         //The product has no seasons
         NSLog(@"El producto no tiene temporadas");
-        return nil;
+        NSArray *unparsedEpisodesArray = [NSArray arrayWithArray:unparsedDic[@"episodes"]];
+        NSMutableArray *parsedEpisodesArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [unparsedEpisodesArray count]; i++) {
+            Episode *episode = unparsedEpisodesArray[i];
+            [parsedEpisodesArray addObject:episode];
+        }
+        [newDictionary setObject:parsedEpisodesArray forKey:@"episodes"];
+        return newDictionary;
     }
 }
 
@@ -328,7 +335,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //[self parseEpisodesInfo];
     self.view.backgroundColor = [UIColor blackColor];
     //[self UISetup];
-    [self getProductionWithID:@"13"];
+    if (!self.serieID) {
+        [self getProductionWithID:@"13"];
+    } else {
+        [self getProductionWithID:self.serieID];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -341,6 +352,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [super viewDidAppear:animated];
     if (self.receivedVideoNotification) {
         VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayer.embedCode = self.production.trailerURL;
         [self.navigationController pushViewController:videoPlayer animated:YES];
     }
 }
@@ -441,6 +453,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerVC.embedCode = self.production.trailerURL;
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
     }
 }

@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIButton *rentButton;
 @property (strong, nonatomic) UIButton *suscribeButton;
 @property (strong, nonatomic) UIButton *redeemButton;
+@property (strong, nonatomic) UIButton *enterButton;
 @end
 
 @implementation SuscriptionAlertPadViewController
@@ -41,6 +42,14 @@
     self.detailTextView.textAlignment = NSTextAlignmentCenter;
     self.detailTextView.userInteractionEnabled = NO;
     [self.view addSubview:self.detailTextView];
+    
+    // enter Button
+    self.enterButton = [[UIButton alloc] init];
+    [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+    [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.view addSubview:self.enterButton];
     
     //3. Rent button
     self.rentButton = [[UIButton alloc] init];
@@ -70,12 +79,13 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 600.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.detailTextView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, 200.0, 300.0, 200.0);
-    self.rentButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, 300.0, 200.0, 50.0);
-    self.suscribeButton.frame = CGRectOffset(self.rentButton.frame, 0.0, 70.0);
+    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, 300.0, 200.0, 50.0);
+    self.rentButton.frame = CGRectMake(70.0, 370.0, self.view.bounds.size.width/2.0 - 90.0, 50.0);
+    self.suscribeButton.frame = CGRectOffset(self.rentButton.frame, self.rentButton.frame.size.width + 40.0, 0.0);
     self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 450.0, 100.0, 100.0);
 }
 

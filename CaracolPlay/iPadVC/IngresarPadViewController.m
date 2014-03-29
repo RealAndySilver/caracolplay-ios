@@ -7,8 +7,11 @@
 //
 
 #import "IngresarPadViewController.h"
+#import "SuscriptionConfirmationPadViewController.h"
 #import "MainTabBarPadController.h"
 #import "FileSaver.h"
+#import "CPIAPHelper.h"
+#import "MBHUDView.h"
 @import QuartzCore;
 
 @interface IngresarPadViewController () <UITextFieldDelegate>
@@ -25,6 +28,22 @@
 #pragma mark - View Lifecycle
 
 -(void)UISetup {
+    if (self.controllerWasPresentedFromInitialScreen) {
+        [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(goToHomeScreenDirectly) forControlEvents:UIControlEventTouchUpInside];
+        
+    } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
+        [self.enterButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
+        [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+        
+        //Register as an observer of the notification 'UserDidSuscribe'
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(userDidSuscribeNotificationReceived:)
+                                                     name:@"UserDidSuscribe"
+                                                   object:nil];
+        
+    }
+    
     //1. Background image setup
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundIngresarPad.png"]];
     self.backgroundImageView.clipsToBounds = YES;
@@ -37,9 +56,6 @@
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
-    
-    //3. 'Ingresar' button
-    [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -77,7 +93,22 @@
 
 #pragma mark - Actions
 
--(void)goToHomeScreen {
+-(void)enterSuscribeAndGoToHomeScreen {
+    if (([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0)) {
+        [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+            [MBHUDView dismissCurrentHUD];
+            if (success) {
+                IAPProduct *product = [products firstObject];
+                [[CPIAPHelper sharedInstance] buyProduct:product];
+            }
+        }];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)goToHomeScreenDirectly {
     
     if (!([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0)) {
         //Show an alert to the user indicating that the info is wrong
@@ -95,6 +126,21 @@
 
 -(void)dismissVC {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Notification Handlers
+
+-(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    NSLog(@"Me llegó la notificación de compraaaa");
+    //Save a key locally, indicating that the user has logged in.
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+    
+    //The user can pass to the suscription confirmation view controller
+    SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
+    suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }
 
 #pragma mark - UITextfieldDelegate

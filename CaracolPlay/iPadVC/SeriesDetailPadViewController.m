@@ -20,8 +20,12 @@
 #import "FileSaver.h"
 #import "EpisodesPadTableViewCell.h"
 #import "AddToListView.h"
+#import "ServerCommunicator.h"
+#import "MBHUDView.h"
+#import "Season.h"
+#import "SuscriptionAlertPadViewController.h"
 
-@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate>
+@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opacityPatternView;
@@ -33,14 +37,15 @@
 @property (strong, nonatomic) UITableView *seasonsTableView;
 @property (strong, nonatomic) UITableView *chaptersTableView;
 
-@property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
-@property (strong, nonatomic) NSDictionary *productionInfo;
-@property (strong, nonatomic) NSMutableArray *parsedEpisodesArray;
+//@property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
+//@property (strong, nonatomic) NSDictionary *productionInfo;
+//@property (strong, nonatomic) NSMutableArray *parsedEpisodesArray;
+@property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) Product *production;
 
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
-
+@property (assign, nonatomic) NSInteger selectedSeason;
 
 @end
 
@@ -48,7 +53,7 @@
 
 #pragma mark - Lazy Instantiation
 
--(NSArray *)unparsedEpisodesInfo {
+/*-(NSArray *)unparsedEpisodesInfo {
     if (!_unparsedEpisodesInfo) {
         _unparsedEpisodesInfo = @[@{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Empieza Colombia's Next Top Model",
                                     @"description": @"Pedro es rescatado después de un terrible incidente de...",
@@ -82,18 +87,71 @@
                                   ];
     }
     return _unparsedEpisodesInfo;
-}
+}*/
 
--(NSDictionary *)productionInfo {
+/*-(NSDictionary *)productionInfo {
     if (!_productionInfo) {
         _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
                             @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
     }
     return _productionInfo;
+}*/
+-(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
+    _unparsedProductionInfoDic = unparsedProductionInfoDic;
+    NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
+    self.production = [[Product alloc] initWithDictionary:parsedProductionInfoDic];
+    [self UISetup];
+}
+
+-(NSDictionary *)dictionaryWithParsedProductionInfo:(NSDictionary *)unparsedDic {
+    NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc] initWithDictionary:unparsedDic];
+    
+    //Check if the product has seasons
+    if ([unparsedDic[@"has_seasons"] boolValue]) {
+        //The product has seasons
+        NSLog(@"Si tiene temporadas, no episodios sueltos");
+        
+        NSArray *unparsedSeasonsArray = [NSArray arrayWithArray:unparsedDic[@"season_list"]];
+        NSLog(@"Numero de temporadas: %d", [unparsedSeasonsArray count]);
+        NSMutableArray *parsedSeasonsArray = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < [unparsedSeasonsArray count]; i++) {
+            NSArray *unparsedEpisodesFromSeason = unparsedSeasonsArray[i][@"episodes"];
+            NSLog(@"Numero de episodios en la temporada %d: %d", i+1, [unparsedEpisodesFromSeason count]);
+            
+            //Create a mutable array to store the Episodes objects that we are going to create
+            NSMutableArray *parsedEpisodesFromSeason = [[NSMutableArray alloc] init];
+            
+            //Loop through all the season episodes.
+            for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
+                Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                [parsedEpisodesFromSeason addObject:episode];
+            }
+            
+            Season *season = [[Season alloc] initWithDictionary:@{@"season_id": unparsedSeasonsArray[i][@"season_id"],
+                                                                  @"season_name" : unparsedSeasonsArray[i][@"season_name"],
+                                                                  @"episodes" : parsedEpisodesFromSeason}];
+            [parsedSeasonsArray addObject:season];
+        }
+        [newDictionary setObject:parsedSeasonsArray forKey:@"season_list"];
+        return newDictionary;
+    }
+    else {
+        //The product has no seasons
+        NSLog(@"El producto no tiene temporadas");
+        NSArray *unparsedEpisodesArray = [NSArray arrayWithArray:unparsedDic[@"episodes"]];
+        NSMutableArray *parsedEpisodesArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [unparsedEpisodesArray count]; i++) {
+            Episode *episode = unparsedEpisodesArray[i];
+            [parsedEpisodesArray addObject:episode];
+        }
+        [newDictionary setObject:parsedEpisodesArray forKey:@"episodes"];
+        return newDictionary;
+    }
 }
 
 #pragma mark - UISetup & Initialization stuff
--(void)parseEpisodesInfo {
+/*-(void)parseEpisodesInfo {
     self.parsedEpisodesArray = [[NSMutableArray alloc] init];
     for (int i = 0; i < [self.production.episodes count]; i++) {
         Episode *episode = [[Episode alloc] initWithDictionary:self.production.episodes[i]];
@@ -104,17 +162,11 @@
 
 -(void)parseProductionInfo {
     self.production = [[Product alloc] initWithDictionary:self.productionInfo];
-}
+}*/
 
 -(void)UISetup {
-    //1. dismiss buton setup
-    self.dismissButton = [[UIButton alloc] init];
-    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
-    [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.dismissButton];
-    
     //2. background image view setup
-    self.backgroundImageView = [[UIImageView alloc] init];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     self.backgroundImageView.clipsToBounds = YES;
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -122,7 +174,7 @@
     [self.view sendSubviewToBack:self.backgroundImageView];
     
     //Set the opacity pattern view
-    self.opacityPatternView = [[UIView alloc] init];
+    self.opacityPatternView = [[UIView alloc] initWithFrame:self.view.frame];
     UIImage *opacityPatternImage = [UIImage imageNamed:@"SeriesOpacityPatternPad.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, 626.0)];
     self.opacityPatternView.clipsToBounds = YES;
@@ -165,14 +217,14 @@
     [smallProductionImageView addGestureRecognizer:tapGesture];
     
     //4. production name label setup
-    self.productionNameLabel = [[UILabel alloc] init];
+    self.productionNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(180.0, 30.0, self.view.bounds.size.width - 180.0, 30.0)];
     self.productionNameLabel.text = self.production.name;
     self.productionNameLabel.textColor = [UIColor whiteColor];
     self.productionNameLabel.font = [UIFont boldSystemFontOfSize:20.0];
     [self.view addSubview:self.productionNameLabel];
     
     //5. Watch Trailer button setup
-    self.watchTrailerButton = [[UIButton alloc] init];
+    self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
     [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
     [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -187,7 +239,7 @@
     [self.view addSubview:self.watchTrailerButton];
     
     //6. Share button setup
-    self.shareButton = [[UIButton alloc] init];
+    self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(340.0, 100.0, 140.0, 35.0)];
     [self.shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -202,7 +254,7 @@
     [self.view addSubview:self.shareButton];
     
     //7. Production detail text view
-    self.productionDetailTextView = [[UITextView alloc] init];
+    self.productionDetailTextView = [[UITextView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
     self.productionDetailTextView.text = self.production.detailDescription;
     /*self.productionDetailTextView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat.";*/
     self.productionDetailTextView.userInteractionEnabled = NO;
@@ -211,18 +263,20 @@
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
     [self.view addSubview:self.productionDetailTextView];
     
-    //8. Seasons table view setup
-    self.seasonsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    self.seasonsTableView.delegate = self;
-    self.seasonsTableView.dataSource = self;
-    self.seasonsTableView.tag = 1;
-    self.seasonsTableView.backgroundColor = [UIColor clearColor];
-    self.seasonsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.seasonsTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.2];
-    [self.view addSubview:self.seasonsTableView];
+    if (self.production.hasSeasons) {
+        //8. Seasons table view setup
+        self.seasonsTableView = [[UITableView alloc] initWithFrame:CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 280.0) style:UITableViewStylePlain];
+        self.seasonsTableView.delegate = self;
+        self.seasonsTableView.dataSource = self;
+        self.seasonsTableView.tag = 1;
+        self.seasonsTableView.backgroundColor = [UIColor clearColor];
+        self.seasonsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.seasonsTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.2];
+        [self.view addSubview:self.seasonsTableView];
+    }
     
     //9. Chapters table view setup
-    self.chaptersTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.chaptersTableView = [[UITableView alloc] initWithFrame:CGRectMake(180.0, 280.0, self.view.bounds.size.width - 180.0 - 30.0, self.view.bounds.size.height - 280.0 - 30.0) style:UITableViewStylePlain];
     self.chaptersTableView.delegate = self;
     self.chaptersTableView.dataSource = self;
     self.chaptersTableView.tag = 2;
@@ -237,17 +291,28 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self parseProductionInfo];
-    [self parseEpisodesInfo];
-    [self UISetup];
+    [self getProductionInfoFromServer];
+
+    //Create the dismiss button. It's neccesary to create te button here, because
+    //if there's a server error, the UISetup method won't get called, and nothing will
+    //load, so the user won't be able to dismiss the view
+    //1. dismiss buton setup
+    self.dismissButton = [[UIButton alloc] init];
+    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.dismissButton];
+
+    //[self parseProductionInfo];
+    //[self parseEpisodesInfo];
+    //[self UISetup];
 }
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
-    
-    //Set subviews frame
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
+    //Set subviews frame
+    /*self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.opacityPatternView.frame = self.view.bounds;
     self.productionNameLabel.frame = CGRectMake(180.0, 30.0, self.view.bounds.size.width - 180.0, 30.0);
@@ -256,7 +321,7 @@
     self.shareButton.frame = CGRectMake(340.0, 100.0, 140.0, 35.0);
     self.productionDetailTextView.frame = CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0);
     self.seasonsTableView.frame = CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 250.0);
-    self.chaptersTableView.frame = CGRectMake(180.0, 280.0, self.view.bounds.size.width - 180.0 - 30.0, self.view.bounds.size.height - 280.0 - 30.0);
+    self.chaptersTableView.frame = CGRectMake(180.0, 280.0, self.view.bounds.size.width - 180.0 - 30.0, self.view.bounds.size.height - 280.0 - 30.0);*/
 }
 
 #pragma mark - Actions
@@ -269,6 +334,7 @@
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para ver el trailer de esta producción debes estar conectado a internet." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerPadVC.embedCode = self.production.trailerURL;
         [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
     }
 }
@@ -302,30 +368,37 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView.tag == 1) {
-        return 5;
+        //Seasons table view
+        return [self.production.seasonList count];
     } else {
-        return [self.production.episodes count];
+        //Episodes table view
+        Season *season = self.production.seasonList[self.selectedSeason];
+        return [season.episodes count];
     }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView.tag == 1) {
+        //Seasons table view
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
         }
-        cell.textLabel.text = @"Temporada 1";
+        cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.font = [UIFont systemFontOfSize:13.0];
         return cell;
+        
     } else {
+        //Episodes table view
         EpisodesPadTableViewCell *cell = (EpisodesPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
         if (!cell) {
             cell = [[EpisodesPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
         }
         cell.delegate = self;
-        Episode *episode = self.production.episodes[indexPath.row];
+        Season *season = self.production.seasonList[self.selectedSeason];
+        Episode *episode = season.episodes[indexPath.row];
         cell.episodeNameLabel.text = episode.episodeName;
         cell.episodeNumberLabel.text = [episode.episodeNumber description];
         return cell;
@@ -336,12 +409,23 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (tableView.tag == 1) {
+        //Seasons table view
+        self.selectedSeason = indexPath.row;
+        [self.chaptersTableView reloadData];
+    }
+    
     if (tableView.tag == 2) {
-        
+        //Episodes table view
         FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
             //If the user isn't logged in, he can't watch the video
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];
+            SuscriptionAlertPadViewController *suscriptionAlertPadVC =
+                [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
+            suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
+            /*[[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];*/
             return;
         }
         
@@ -365,6 +449,33 @@
             [self watchTrailer];
         }
     }
+}
+
+#pragma mark - ServerCommunicator 
+
+-(void)getProductionInfoFromServer {
+    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:@"1"];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+        //Petición exitosa
+        self.unparsedProductionInfoDic = responseDictionary[@"products"][0][0];
+        NSLog(@"diccionario de la telenovela: %@", self.unparsedProductionInfoDic);
+    } else {
+        //Error en la petición
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - EpisodesPadTableViewCellDelegate

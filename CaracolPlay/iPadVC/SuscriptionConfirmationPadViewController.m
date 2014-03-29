@@ -19,7 +19,10 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setupUI];
+}
+
+-(void)setupUI {
     //Set the background image
     self.backgroundImageView = [[UIImageView alloc] init];
     self.backgroundImageView.image = [UIImage imageNamed:@"SuscriptionConfirmationBackground.png"];
