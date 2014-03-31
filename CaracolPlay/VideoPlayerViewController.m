@@ -18,9 +18,6 @@
 
 @implementation VideoPlayerViewController
 
-//NSString * const EMBED_CODE = @"xxbjk1YjpHm4-VkWfWfEKBbyEkh358su";
-//NSString * const PCODE = @"Z5Mm06XeZlcDlfU_1R9v_L2KwYG6";
-//NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 NSString * const EMBED_CODE = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
 NSString * const PCODE = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
 NSString * const PLAYERDOMAIN = @"www.ooyala.com";
@@ -65,6 +62,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
+    NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 
 -(void)notificacion:(NSNotification *)notification {

@@ -119,29 +119,12 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //Categoria *category = self.parsedCategoriesList[indexPath.row];
+    Categoria *category = self.parsedCategoriesList[indexPath.row];
     ProductionsListViewController *productionListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
+    productionListVC.categoryID = category.identifier;
+    productionListVC.navigationBarTitle = category.name;
     [self.navigationController pushViewController:productionListVC animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    /*if (indexPath.row == 0) {
-        //Watched Recently
-        WatchedRecentlyViewController *watchedRecentlyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"WatchedRecently"];
-        [self.navigationController pushViewController:watchedRecentlyVC animated:YES];
-    }
-    else if (indexPath.row == 1 || indexPath.row == 2) {
-        //Telenovel/Series
-        ProductionsListViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
-        //moviesVC.isTelenovelOrSeriesList = YES;
-        moviesVC.navigationBarTitle = category.name;
-        [self.navigationController pushViewController:moviesVC animated:YES];
-    }
-    else if (indexPath.row == 3 || indexPath.row == 5) {
-        //Movies
-        ProductionsListViewController *moviesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
-        //moviesVC.isTelenovelOrSeriesList = NO;
-        moviesVC.navigationBarTitle = category.name;
-        [self.navigationController pushViewController:moviesVC animated:YES];
-    }*/
 }
 
 #pragma mark - Server Stuff

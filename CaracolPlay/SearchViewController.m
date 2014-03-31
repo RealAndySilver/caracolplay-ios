@@ -12,11 +12,13 @@
 #import "TelenovelSeriesDetailViewController.h"
 #import "MoviesEventsDetailsViewController.h"
 #import "ServerCommunicator.h"
+#import "NSArray+NullReplacement.h"
 
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *searchResultsArray;
+@property (strong, nonatomic) NSMutableArray *searchResultsArrayWithNulls;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
@@ -24,59 +26,6 @@
 @implementation SearchViewController
 
 @synthesize searchResultsArray = _searchResultsArray;
-
-/*-(NSArray *)searchResultsArray {
-    if (!_searchResultsArray) {
-        _searchResultsArray = @[@{@"name" : @"La pena máximo",
-                                  @"type": @"Peliculas",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @3,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://www.colombiancinema.org/web2008/posters/poster-lapenamaxima.jpg"},
-                                
-                                @{@"name" : @"La esquina",
-                                  @"type": @"Peliculas",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @3,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://cinecolombiano.com/wp-content/uploads/2013/06/La-Esquina-165x243.png"},
-                                
-                                @{@"name" : @"Pecados Capitales",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @5,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://2.bp.blogspot.com/-oDOoJn-nx3s/T_4rXnA7ZtI/AAAAAAAAAB4/qcm5N2bmG48/s1600/pecados.png"},
-                                
-                                @{@"name" : @"Escobar, el patrón del mal",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @5,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://cubademocraciayvida.org/media/ooooooooooooooooooo%20a%20fotos%20a%201/PABLO-ESCOBAR.jpg"},
-                                
-                                @{@"name" : @"Colombia's Next Top Model",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @2,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png"},
-                                
-                                @{@"name" : @"El Carro",
-                                  @"type": @"Peliculas",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @2,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://2.bp.blogspot.com/-b53JD5BbF3M/Tl4VeZwpu5I/AAAAAAAAETs/OBqESxznww4/s1600/carro.jpg"}];
-    }
-    return _searchResultsArray;
-}*/
 
 #pragma mark - Lazy Instantiation, Getters & Setters
 
@@ -95,8 +44,9 @@
     return _searchResultsArray;
 }
 
--(void)setSearchResultsArray:(NSMutableArray *)searchResultsArray {
-    _searchResultsArray = searchResultsArray;
+-(void)setSearchResultsArrayWithNulls:(NSMutableArray *)searchResultsArrayWithNulls {
+    _searchResultsArrayWithNulls = searchResultsArrayWithNulls;
+    self.searchResultsArray = [[_searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks] mutableCopy];
     [self.tableView reloadData];
 }
 
@@ -123,6 +73,7 @@
 
 -(void)createTapGesture {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSearchKeyboard)];
+    tapGesture.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGesture];
 }
 
@@ -154,22 +105,25 @@
     if (!cell) {
         cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
-    //[cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
-    //cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue];
+    cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0;
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Elegí uno de los resultados");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"]) {
+    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+        telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     
-    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Peliculas"]) {
+    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Peliculas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        movieEventDetailsVC.productionID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
     }
 }
@@ -194,7 +148,7 @@
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
         NSLog(@"La petición fue exitosa");
-        self.searchResultsArray = [responseDictionary[@"products"] mutableCopy];
+        self.searchResultsArrayWithNulls = [responseDictionary[@"products"] mutableCopy];
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

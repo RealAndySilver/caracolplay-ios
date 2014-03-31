@@ -20,12 +20,16 @@
 #import "ContentNotAvailableForUserViewController.h"
 #import "ServerCommunicator.h"
 #import "MBHUDView.h"
+#import "Season.h"
+#import "Episode.h"
+#import "NSDictionary+NullReplacement.h"
+#import "Video.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
 @interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) Product *production;
-@property (strong, nonatomic) NSDictionary *productionInfo;
+@property (strong, nonatomic) NSDictionary *unparsedProductionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
@@ -43,26 +47,63 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 @implementation MoviesEventsDetailsViewController
 
-#pragma mark - Lazy Instantiation
+#pragma mark - Setters & Getters
 
--(NSDictionary *)productionInfo {
-    if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"rate" : @4, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : @[], @"season_list" : @[]};
-    }
-    return _productionInfo;
-}
-
--(Product *)production {
-    if (!_production) {
-        _production = [[Product alloc] initWithDictionary:self.productionInfo];
-    }
-    return _production;
+-(void)setUnparsedProductionInfo:(NSDictionary *)unparsedProductionInfo {
+    _unparsedProductionInfo = unparsedProductionInfo;
+    NSDictionary *parsedDictionaryWithNulls = [self parseProductionInfoWithDictionary:unparsedProductionInfo];
+    NSDictionary *parsedDictionaryWithoutNulls = [parsedDictionaryWithNulls dictionaryByReplacingNullWithBlanks];
+    self.production = [[Product alloc] initWithDictionary:parsedDictionaryWithoutNulls];
+    [self UISetup];
 }
 
 -(void)setRecommendedProductions:(NSArray *)recommendedProductions {
     _recommendedProductions = recommendedProductions;
-    [self UISetup];
+    [self setupRecommendedProductionsCollectionView];
+}
+
+#pragma mark - Parsing Methods
+
+-(NSDictionary *)parseProductionInfoWithDictionary:(NSDictionary *)unparsedDic {
+    NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc] initWithDictionary:unparsedDic];
+    
+    //Check if the product has seasons
+    if ([unparsedDic[@"has_seasons"] boolValue]) {
+        //The product has seasons
+        NSLog(@"Si tiene temporadas, no episodios sueltos");
+        
+        NSArray *unparsedSeasonsArray = [NSArray arrayWithArray:unparsedDic[@"season_list"]];
+        NSLog(@"Numero de temporadas: %d", [unparsedSeasonsArray count]);
+        NSMutableArray *parsedSeasonsArray = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < [unparsedSeasonsArray count]; i++) {
+            NSArray *unparsedEpisodesFromSeason = unparsedSeasonsArray[i][@"episodes"];
+            NSLog(@"Numero de episodios en la temporada %d: %d", i+1, [unparsedEpisodesFromSeason count]);
+            
+            //Create a mutable array to store the Episodes objects that we are going to create
+            NSMutableArray *parsedEpisodesFromSeason = [[NSMutableArray alloc] init];
+            
+            //Loop through all the season episodes.
+            for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
+                Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                [parsedEpisodesFromSeason addObject:episode];
+            }
+            
+            Season *season = [[Season alloc] initWithDictionary:@{@"season_id": unparsedSeasonsArray[i][@"season_id"],
+                                                                  @"season_name" : unparsedSeasonsArray[i][@"season_name"],
+                                                                  @"episodes" : parsedEpisodesFromSeason}];
+            [parsedSeasonsArray addObject:season];
+        }
+        [newDictionary setObject:parsedSeasonsArray forKey:@"season_list"];
+        return newDictionary;
+    }
+    else {
+        //The product has no seasons
+        NSLog(@"El producto no tiene temporadas");
+        NSDictionary *productionVideoDic = unparsedDic[@"episodes"];
+        [newDictionary setObject:productionVideoDic forKey:@"episodes"];
+        return newDictionary;
+    }
 }
 
 #pragma mark - View Lifecycle
@@ -79,7 +120,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.type;
-    [self getRecommendedProductionsFromServer];
+    [self getRecommendedProductionsForProductID:self.productionID];
+    [self getProductWithID:self.productionID];
     //[self UISetup];
 }
 
@@ -113,6 +155,39 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     /*[self.blurView removeFromSuperview];
     [self.navigationBarBlurView removeFromSuperview];
     [self.tabBarBlurView removeFromSuperview];*/
+}
+
+#pragma mark - UISetup
+
+-(void)setupRecommendedProductionsCollectionView {
+    CGRect screenRect = [UIScreen mainScreen].bounds;
+    
+    //8. Create a background view and set it's color to gray
+    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, screenRect.size.height/2.0, screenRect.size.width, screenRect.size.height - 300.0 - 44.0)];
+    grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
+    [self.view addSubview:grayView];
+    
+    //9. 'Producciones recomendadas'
+    UILabel *recomendedProductionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 200.0, 20.0)];
+    recomendedProductionsLabel.textAlignment = NSTextAlignmentLeft;
+    recomendedProductionsLabel.textColor = [UIColor whiteColor];
+    recomendedProductionsLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    recomendedProductionsLabel.text = @"Producciones Recomendadas";
+    [grayView addSubview:recomendedProductionsLabel];
+    
+    //10. Create a collection view to display a list of recommended productions
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewFlowLayout.minimumInteritemSpacing = 0;
+    collectionViewFlowLayout.minimumLineSpacing = 0;
+    collectionViewFlowLayout.itemSize = CGSizeMake(100.0, [UIScreen mainScreen].bounds.size.height/4.3);
+    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 30.0, grayView.frame.size.width, [UIScreen mainScreen].bounds.size.height/4.3) collectionViewLayout:collectionViewFlowLayout];
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.dataSource = self;
+    [collectionView registerClass:[RecommendedProdCollectionViewCell class] forCellWithReuseIdentifier:cellIdentifier];
+    collectionView.delegate = self;
+    collectionView.backgroundColor = [UIColor clearColor];
+    [grayView addSubview:collectionView];
 }
 
 -(void)UISetup {
@@ -237,32 +312,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     detailTextView.font = [UIFont systemFontOfSize:13.0];
     [self.view addSubview:detailTextView];
     
-    //8. Create a background view and set it's color to gray
-    UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, screenFrame.size.width, screenFrame.size.height - (detailTextView.frame.origin.y + detailTextView.frame.size.height) - 44.0)];
-    grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
-    [self.view addSubview:grayView];
-    
-    //9. 'Producciones recomendadas'
-    UILabel *recomendedProductionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 200.0, 20.0)];
-    recomendedProductionsLabel.textAlignment = NSTextAlignmentLeft;
-    recomendedProductionsLabel.textColor = [UIColor whiteColor];
-    recomendedProductionsLabel.font = [UIFont boldSystemFontOfSize:13.0];
-    recomendedProductionsLabel.text = @"Producciones Recomendadas";
-    [grayView addSubview:recomendedProductionsLabel];
-    
-    //10. Create a collection view to display a list of recommended productions
-    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    collectionViewFlowLayout.minimumInteritemSpacing = 0;
-    collectionViewFlowLayout.minimumLineSpacing = 0;
-    collectionViewFlowLayout.itemSize = CGSizeMake(100.0, [UIScreen mainScreen].bounds.size.height/4.3);
-    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 30.0, grayView.frame.size.width, [UIScreen mainScreen].bounds.size.height/4.3) collectionViewLayout:collectionViewFlowLayout];
-    collectionView.showsHorizontalScrollIndicator = NO;
-    collectionView.dataSource = self;
-    [collectionView registerClass:[RecommendedProdCollectionViewCell class] forCellWithReuseIdentifier:cellIdentifier];
-    collectionView.delegate = self;
-    collectionView.backgroundColor = [UIColor clearColor];
-    [grayView addSubview:collectionView];
     
     //Add a blur view to display when the user shares the production but an error was produced.
     /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
@@ -319,6 +368,38 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Custom Methods
 
+-(void)checkVideoAvailability:(Video *)video {
+    if (video.status) {
+        //The video is available to the user, so check the network connection to
+        //decide if the user can watch the video
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        
+        if (status == NotReachable) {
+            //There's no network connection, the user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            //The user can't watch the video because the connection is to slow
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            [self.navigationController pushViewController:videoPlayer animated:YES];
+        }
+        
+    } else {
+        //The video is not available for the user, so pass to the
+        //Content not available for user
+        ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
+    }
+}
+
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
@@ -328,7 +409,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    BOOL contentIsAvailableForUser = NO;
+    [self getIsContentAvailableForUserWithID:self.production.identifier];
+    /*BOOL contentIsAvailableForUser = NO;
     if (!contentIsAvailableForUser) {
         //The content is not availble for the user
         ContentNotAvailableForUserViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
@@ -344,7 +426,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             [self.navigationController pushViewController:videoPlayerVC animated:YES];
         }
-    }
+    }*/
 }
 
 -(void)watchTrailer {
@@ -355,6 +437,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerVC.embedCode = self.production.trailerURL;
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
     }
 }
@@ -389,21 +472,45 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff 
 
--(void)getRecommendedProductionsFromServer {
+-(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:ProductionID];
+}
+
+-(void)getProductWithID:(NSString *)productID {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
+}
+
+-(void)getRecommendedProductionsForProductID:(NSString *)productID {
     ServerCommunicator *serveCommunicator = [[ServerCommunicator alloc] init];
     serveCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    [serveCommunicator callServerWithGETMethod:@"GetRecommendationsWithProductID" andParameter:@"1"];
+    //FIXME: El parámetro debe ser el id de la producción.
+    [serveCommunicator callServerWithGETMethod:@"GetRecommendationsWithProductID" andParameter:productID];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"Recibí respuesta del servidor");
     if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && [responseDictionary[@"status"] boolValue]) {
-        NSLog(@"la petición fue exitosa");
         self.recommendedProductions = responseDictionary[@"recommended_products"];
+        
+    } else if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+        //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
+        //en este momento.
+        self.unparsedProductionInfo = responseDictionary[@"products"][0][0];
+        NSLog(@"La petición fue exitosa. producto: %@", self.unparsedProductionInfo);
+        
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
+        Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
+        [self checkVideoAvailability:video];
+        
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

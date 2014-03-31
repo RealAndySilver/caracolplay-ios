@@ -30,6 +30,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "SeasonsViewController.h"
 #import "AddToListViewController.h"
 #import "ContentNotAvailableForUserViewController.h"
+#import "ServerCommunicator.h"
+#import "Video.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -393,6 +395,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    //Check if the user is logged in.
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         //The user isn't login.
@@ -402,31 +405,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    BOOL contentIsAvailableForUser = NO;
-    if (!contentIsAvailableForUser) {
-        //The content is not availble for the user
-        ContentNotAvailableForUserViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
-        [self.navigationController pushViewController:contentNotAvailableVC animated:YES];
-        
-    } else {
-        //The content is available for the user
-        Reachability *reachability = [Reachability reachabilityForInternetConnection];
-        [reachability startNotifier];
-        NetworkStatus status = [reachability currentReachabilityStatus];
-        if (status == NotReachable) {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"No estás conectado a internet. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        } else if (status == ReachableViaWWAN) {
-            if ([self.production.episodes[indexPath.row][@"is_3g"] boolValue]) {
-                VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-                [self.navigationController pushViewController:videoPlayerVC animated:YES];
-            } else {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            }
-        } else if (status == ReachableViaWiFi) {
-            VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-            [self.navigationController pushViewController:videoPlayerVC animated:YES];
-        }
-    }
+    //The user is logged in, so get the selected item ID
+    Season *currentSeason = self.production.seasonList[self.selectedSeason];
+    Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
+    [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
 }
 
 #pragma mark - Actions 
@@ -436,13 +418,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
     seasonsVC.numberOfSeasons = [self.production.seasonList count];
     [self presentViewController:seasonsVC animated:YES completion:nil];
-    /*self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.opacityView.backgroundColor = [UIColor blackColor];
-    self.opacityView.alpha = 0.7;
-    [self.tabBarController.view addSubview:self.opacityView];
-    SeasonsListView *seasonListView = [[SeasonsListView alloc] initWithFrame:CGRectMake(20.0, self.view.frame.size.height/2 - 100.0, 280.0, 280.0)];
-    seasonListView.delegate = self;
-    [self.tabBarController.view addSubview:seasonListView];*/
 }
 
 -(void)watchTrailer {
@@ -486,12 +461,52 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                         otherButtonTitles:@"Facebook", @"Twitter", nil] showInView:self.view];
 }
 
-#pragma mark - Server 
+#pragma mark - Custom Methods
+
+-(void)checkVideoAvailability:(Video *)video {
+    if (video.status) {
+        //The video is available for the user, so check the network connection to decide
+        //if the user can pass to watch it or not.
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        if (status == NotReachable) {
+            //The user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            //The user can't watch the video because the connection is to slow
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            [self.navigationController pushViewController:videoPlayer animated:YES];
+        }
+        
+    } else {
+        //The video is not available for the user, so pass to the
+        //Content not available for user
+        ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
+    }
+}
+
+#pragma mark - Server Methods
+
+-(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+}
 
 -(void)getProductionWithID:(NSString *)productID {
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
 }
 
@@ -505,6 +520,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         } else {
             self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
         }
+    
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [dictionary[@"status"] boolValue]) {
+        //La petición fue exitosa
+        NSLog(@"info del video: %@", dictionary);
+        Video *video = [[Video alloc] initWithDictionary:dictionary[@"video"]];
+        [self checkVideoAvailability:video];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

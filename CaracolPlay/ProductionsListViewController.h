@@ -12,6 +12,6 @@
 #import "TelenovelSeriesDetailViewController.h"
 
 @interface ProductionsListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-//@property (nonatomic) BOOL isTelenovelOrSeriesList;
 @property (strong, nonatomic) NSString *navigationBarTitle;
+@property (strong, nonatomic) NSString *categoryID;
 @end

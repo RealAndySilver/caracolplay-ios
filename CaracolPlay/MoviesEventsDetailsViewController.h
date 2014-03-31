@@ -13,5 +13,5 @@
 #import "FXBlurView.h"
 
 @interface MoviesEventsDetailsViewController : UIViewController
-
+@property (strong, nonatomic) NSString *productionID;
 @end
