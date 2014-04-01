@@ -49,6 +49,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 //indicating that ith has to display the production video automaticly
 //when the view appears.
 @property (assign, nonatomic) BOOL receivedVideoNotification;
+@property (strong, nonatomic) NSString *selectedEpisodeID;
 
 @end
 
@@ -337,11 +338,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //[self parseEpisodesInfo];
     self.view.backgroundColor = [UIColor blackColor];
     //[self UISetup];
-    if (!self.serieID) {
-        [self getProductionWithID:@"13"];
-    } else {
-        [self getProductionWithID:self.serieID];
-    }
+    [self getProductionWithID:self.serieID];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -353,9 +350,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.receivedVideoNotification) {
-        VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-        videoPlayer.embedCode = self.production.trailerURL;
-        [self.navigationController pushViewController:videoPlayer animated:YES];
+        NSLog(@"iré al video de unaaaa");
+        [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
     }
 }
 
@@ -394,6 +390,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //The user is logged in, so get the selected item ID
+    Season *currentSeason = self.production.seasonList[self.selectedSeason];
+    Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
+    self.selectedEpisodeID = selectedEpisode.identifier;
+    NSLog(@"selected episode id: %@", self.selectedEpisodeID);
     
     //Check if the user is logged in.
     FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -405,9 +406,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    //The user is logged in, so get the selected item ID
-    Season *currentSeason = self.production.seasonList[self.selectedSeason];
-    Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
     [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
 }
 
@@ -448,7 +446,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]/20.0 + 1];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }
@@ -496,6 +494,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Methods
 
+-(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.production.identifier, rate];
+    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+}
+
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
@@ -518,7 +524,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"el dic está en null");
         } else {
-            self.unparsedProductionInfoDic = dictionary[@"products"][0][0];
+            self.unparsedProductionInfoDic = dictionary[@"products"][@"0"][0];
         }
     
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [dictionary[@"status"] boolValue]) {
@@ -526,8 +532,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         NSLog(@"info del video: %@", dictionary);
         Video *video = [[Video alloc] initWithDictionary:dictionary[@"video"]];
         [self checkVideoAvailability:video];
+        
+    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && dictionary){
+        NSLog(@"llegó la info de la caloficación: %@", dictionary);
+        
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -615,6 +625,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     self.starsView.rate = rate;
+    [self updateUserFeedbackForProductWithRate:rate*20];
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

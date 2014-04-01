@@ -100,13 +100,15 @@
         
         //Pop all view controllers to the root view controller (home screen) if the
         //user came here from a production screen.
-        [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+        //[MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
         NSArray *viewControllers = [self.navigationController viewControllers];
         for (int i = [viewControllers count] - 1; i >= 0; i--){
             id obj = [viewControllers objectAtIndex:i];
             if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
                 [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
                 [self.navigationController popToViewController:obj animated:YES];
+                //Post a notification to tell the production view controller that it needs to display the video inmediatly
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
                 break;
             }
         }
@@ -122,12 +124,14 @@
         //Request products from Apple
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+            [MBHUDView dismissCurrentHUD];
             if (success) {
-                [MBHUDView dismissCurrentHUD];
                 if (products) {
                     IAPProduct *product = [products firstObject];
                     [[CPIAPHelper sharedInstance] buyProduct:product];
                 }
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Imposible conectarse con iTunes Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
         }];
         

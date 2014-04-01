@@ -10,4 +10,6 @@
 
 @interface VideoPlayerViewController : UIViewController
 @property (strong, nonatomic) NSString *embedCode;
+@property (assign, nonatomic) int progressSec;
+@property (strong, nonatomic) NSString *productID;
 @end

@@ -26,6 +26,9 @@
 @property (nonatomic) int numberOfPages;
 @property (strong, nonatomic) NSTimer *automaticScrollTimer;
 @property (nonatomic) NSInteger automaticCounter;
+
+@property (assign, nonatomic) BOOL firstTimeViewAppears;
+
 @end
 
 @implementation HomeViewController
@@ -66,6 +69,9 @@
     _unparsedFeaturedProductionsInfo = unparsedFeaturedProductionsInfo;
     [self parseFeaturedProductionsFromServer];
     [self UISetup];
+    [self startScrollingTimer];
+    self.automaticCounter = 2;
+    self.firstTimeViewAppears = NO;
 }
 
 -(void)parseFeaturedProductionsFromServer {
@@ -131,12 +137,14 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    //[self UISetup];
-    /*[[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        if (success) {
-            NSLog(@"se cargó de forma exitosa");
-        }
-    }];*/
+    self.firstTimeViewAppears = YES;
+    
+    //Create a bar button item to recall the getFeaturedProductsFromServer
+    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                          target:self
+                                                                                          action:@selector(getFeaturedProductsFromServer)];
+    self.navigationItem.rightBarButtonItem = refreshBarButtonItem;
+    
     //Start the counter in 2, because the first real page in the scroll view
     //is page 2 (page 1 is used to simulate the last page and make the circular
     //scroll view effect)
@@ -159,7 +167,9 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
                                                   forBarMetrics:UIBarMetricsDefault];
     //Start the automatic scrolling timer
-    [self startScrollingTimer];
+    if (!self.firstTimeViewAppears) {
+        [self startScrollingTimer];
+    }
 }
 
 #pragma mark - Server
@@ -196,6 +206,7 @@
 }
 
 -(void)startScrollingTimer {
+    [self.automaticScrollTimer invalidate];
     self.automaticScrollTimer = [NSTimer scheduledTimerWithTimeInterval:4.0
                                                                  target:self
                                                                selector:@selector(scrollFeaturedProductions)
@@ -223,13 +234,15 @@
     }
     
     if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"]) {
-        //The production is a serie.
+        //The production is a serie
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+        telenovelSeriesDetailVC.serieID = featuredProduction.identifier;
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
         
-    } else if ([featuredProduction.type isEqualToString:@"Películas"]) {
-        //The production is a movie
+    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"] || [featuredProduction.type isEqualToString:@"Noticias"]) {
+        //The production is a movie, news or live event
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        movieEventDetailsVC.productionID = featuredProduction.identifier;
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
     }
 }

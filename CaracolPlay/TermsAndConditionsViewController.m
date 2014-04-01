@@ -16,21 +16,25 @@
 
 @implementation TermsAndConditionsViewController
 
-#pragma mark - Setters & Getters 
-
--(void)setTermsAndConditionsString:(NSString *)termsAndConditionsString {
-    _termsAndConditionsString = termsAndConditionsString;
-    [self setupUI];
-}
-
 #pragma mark - View Lifecycle & UISetup
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"Términos y Condiciones";
     self.view.backgroundColor = [UIColor blackColor];
-    [self getTermsAndConditionsFromServer];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+    self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    NSLog(@"%@", self.termsAndConditionsString);
+    //[self getTermsAndConditionsFromServer];
     [self setupUI];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)setupUI {
@@ -39,33 +43,6 @@
     [webView loadHTMLString:self.termsAndConditionsString baseURL:nil];
     [self.view addSubview:webView];
 }
-
-#pragma mark - Server Stuff
-
--(void)getTermsAndConditionsFromServer {
-    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
-    serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    [serverCommunicator callServerWithGETMethod:@"GetTerms" andParameter:@""];
-}
-
--(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
-    NSLog(@"Recibí info del server");
-    if ([methodName isEqualToString:@"GetTerms"] && [responseDictionary[@"status"] boolValue]) {
-        NSLog(@"La petición fue exitosa");
-        self.termsAndConditionsString = responseDictionary[@"text"];
-    } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-}
-
--(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
-    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor ntenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-}
-
 #pragma mark - Interface Orientation
 
 -(NSUInteger)supportedInterfaceOrientations {

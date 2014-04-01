@@ -24,10 +24,14 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    self.tabBarController.tabBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    self.tabBarController.tabBar.hidden = NO;
     //self.navigationController.navigationBarHidden = NO;
 }
 

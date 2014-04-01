@@ -10,6 +10,7 @@
 #import "MyListsPadTableViewCell.h"
 #import "JMImageCache.h"
 #import "VideoPlayerViewController.h"
+#import "Episode.h"
 
 @interface MyListsDetailsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -20,6 +21,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    self.navigationItem.title = self.navigationBarTitle;
     [self UISetup];
 }
 
@@ -51,16 +53,17 @@
     if (!cell) {
         cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
-    cell.productionNameLabel.text = self.episodes[indexPath.row][@"product_name"];
-    cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", self.episodes[indexPath.row][@"episode_number"], self.episodes[indexPath.row][@"episode_name"]];
-    [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.episodes[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    Episode *episode = self.episodes[indexPath.row];
+    cell.productionNameLabel.text = episode.productName;
+    cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", episode.episodeNumber, episode.episodeName];
+    [cell.productionImageView setImageWithURL:[NSURL URLWithString:episode.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    /*[tableView deselectRowAtIndexPath:indexPath animated:YES];
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
     NetworkStatus status = [reachability currentReachabilityStatus];
@@ -76,7 +79,7 @@
     } else if (status == ReachableViaWiFi) {
         VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
-    }
+    }*/
 }
 
 @end

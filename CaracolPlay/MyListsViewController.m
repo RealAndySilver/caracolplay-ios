@@ -7,13 +7,18 @@
 //
 
 #import "MyListsViewController.h"
-#import "List.h"
 #import "MyListsDetailsViewController.h"
 #import "CreateListView.h"
+#import "ServerCommunicator.h"
+#import "MBHUDView.h"
+#import "Episode.h"
+#import "List.h"
+#import "NSArray+NullReplacement.h"
+#import "NSDictionary+NullReplacement.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MyListsViewController () <UITableViewDataSource, UITableViewDelegate, CreateListViewDelegate>
+@interface MyListsViewController () <UITableViewDataSource, UITableViewDelegate, CreateListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *unparsedUserListsArray;
 @property (strong, nonatomic) NSMutableArray *parsedUserListsArray;
@@ -22,104 +27,47 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 @implementation MyListsViewController
 
-#pragma mark - Lazy Instantiation 
+#pragma mark - Setters & Getters 
 
--(NSArray *)unparsedUserListsArray {
-    if (!_unparsedUserListsArray) {
-        _unparsedUserListsArray = @[@{@"list_name": @"Series clásicas", @"list_id" : @"1223",
-                                      @"episodes" : @[@{@"product_name": @"Pedro el Escamoso",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Pedro regresa después de un terrible incidente de...",
-                                                        @"image_url": @"http://4.bp.blogspot.com/__dyzpfPCZVk/SGva2EeqlKI/AAAAAAAAALM/1ctbJwwRrw8/s400/telenovelas10d.jpg",
-                                                        @"episode_number": @6,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO},
-                                                      
-                                                      @{@"product_name": @"Mujeres al límite",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Las mujeres están al limite",
-                                                        @"image_url": @"http://www.eldiario.com.co/uploads/userfiles/20100704/image/monica_alta%5B1%5D-copia.jpg",
-                                                        @"episode_number": @8,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO}
-                                                      ]},
-                                    
-                                    @{@"list_name": @"Lo mejor de lo mejor", @"list_id" : @"1223",
-                                      @"episodes" : @[@{@"product_name": @"Escobar el patrón del mal",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Escobar es el gran capo",
-                                                        @"image_url": @"http://www.vanguardia.com/sites/default/files/imagecache/Noticia_600x400/foto_grandes_400x300_noticia/2012/06/26/27salud01a013_big_tp.jpg",
-                                                        @"episode_number": @3,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO},
-                                                      
-                                                      @{@"product_name": @"Mentiras perfectas",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Las mentiras de Carolina afectan a Carlos",
-                                                        @"image_url": @"http://www.publimetro.co/_internal/gxml!0/r0dc21o2f3vste5s7ezej9x3a10rp3w$b3cmqcdhj94frubk4j04omkoakkg83r/mentiras-perfectas.jpeg",
-                                                        @"episode_number": @5,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO}
-                                                      ]}];
-    }
-    return _unparsedUserListsArray;
+-(void)setUnparsedUserListsArray:(NSArray *)unparsedUserListsArray {
+    NSLog(@"entré al setter");
+    _unparsedUserListsArray = unparsedUserListsArray;
+    //NSArray *unparsedUserListsWithoutNulls = [_unparsedUserListsArray arrayByReplacingNullsWithBlanks];
+    self.parsedUserListsArray = [self parseUserListsArrayWithArray:unparsedUserListsArray];
+    NSLog(@"numero de listas parseadas: %d", [self.parsedUserListsArray count]);
+    [self UISetup];
 }
 
--(NSMutableArray *)parsedUserListsArray {
-    if (!_parsedUserListsArray) {
-        _parsedUserListsArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < [self.unparsedUserListsArray count]; i++) {
-            List *list = [[List alloc] initWithDictionary:self.unparsedUserListsArray[i]];
-            [_parsedUserListsArray addObject:list];
+#pragma mark - Parsing Methods
+
+-(NSMutableArray *)parseUserListsArrayWithArray:(NSArray *)unparsedArray {
+    NSMutableArray *parsedArray = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [unparsedArray count]; i++) {
+        NSLog(@"numero de lista: %d", [unparsedArray[i] count]);
+        NSDictionary *unparsedListDic = unparsedArray[i];
+        NSArray *episodesFromListArray = unparsedListDic[@"episodes"];
+        NSMutableArray *parsedEpisodesFromList = [[NSMutableArray alloc] init];
+        
+        for (int j = 0; j < [episodesFromListArray count]; j++) {
+            NSDictionary *dicWithoutNulls = [episodesFromListArray[j] dictionaryByReplacingNullWithBlanks];
+            Episode *episode = [[Episode alloc] initWithDictionary:dicWithoutNulls];
+            [parsedEpisodesFromList addObject:episode];
         }
+        
+        List *list = [[List alloc] initWithDictionary:unparsedListDic];
+        list.episodes = parsedEpisodesFromList;
+        
+        [parsedArray addObject:list];
     }
-    return _parsedUserListsArray;
+    
+    return parsedArray;
 }
-
-/*-(void)parseUserLists {
-    self.parsedUserListsArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.unparsedUserListsArray count]; i++) {
-        List *list = [[List alloc] initWithDictionary:self.unparsedUserListsArray[i]];
-        [self.parsedUserListsArray addObject:list];
-    }
-}*/
-
 
 #pragma mark - UISetup & Initialization Stuff
 
 -(void)UISetup {
+    NSLog(@"entré al setup");
     //1. Create a segmented control to choose my lists or the recommended lists
     /*UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mis Listas", @"Recomendadas"]];
     segmentedControl.frame = CGRectMake(40.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 10.0, self.view.frame.size.width - 80.0, 29.0);
@@ -130,10 +78,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIBarButtonItem *createListBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                              target:self
                                                                                              action:@selector(createList)];
-    self.navigationItem.rightBarButtonItem = createListBarButtonItem;
+    self.navigationItem.leftBarButtonItem = createListBarButtonItem;
     
     //2. Create a table view to display the user's lists
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 50.0)) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 44.0) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -145,8 +93,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    [self getUserLists];
     //[self parseLists];
-    [self UISetup];
+    //[self UISetup];
+    
+    //Create a bar button item to reload the table view
+    UIBarButtonItem *reloadBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                         target:self
+                                                                                         action:@selector(getUserLists)];
+    self.navigationItem.rightBarButtonItem = reloadBarButtonItem;
+    
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Mis Listas";
 }
@@ -167,7 +123,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    cell.textLabel.text = ((List *)self.parsedUserListsArray[indexPath.row]).listName;
+    List *list = self.parsedUserListsArray[indexPath.row];
+    cell.textLabel.text = list.listName;
     cell.backgroundColor = [UIColor clearColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -179,9 +136,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //TODO: terminar este método
     MyListsDetailsViewController *myListsDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
     List *list = self.parsedUserListsArray[indexPath.row];
-    myListsDetailsVC.episodes = [NSMutableArray arrayWithArray:list.episodes];
+    myListsDetailsVC.episodes = list.episodes;
+    myListsDetailsVC.navigationBarTitle = list.listName;
     [self.navigationController pushViewController:myListsDetailsVC animated:YES];
 }
 
@@ -201,18 +160,57 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Custom Methods
 
 -(void)addNewListWithName:(NSString *)listName {
-    NSDictionary *newListDic = @{@"list_name": listName, @"list_id" : @"235345", @"episodes" : @[]};
+    /*NSDictionary *newListDic = @{@"list_name": listName, @"list_id" : @"235345"};
     List *newList = [[List alloc] initWithDictionary:newListDic];
     [self.parsedUserListsArray addObject:newList];
-    [self.tableView reloadData];
+    [self.tableView reloadData];*/
+}
+
+#pragma mark - Server Stuff
+
+-(void)createListWithName:(NSString *)listName userID:(NSInteger)userID {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Creando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    NSString *parameter = [NSString stringWithFormat:@"list_name=%@&user_id=%d", listName, userID];
+    [serverCommunicator callServerWithPOSTMethod:@"CreateList" andParameter:parameter httpMethod:@"POST"];
+}
+
+-(void)getUserLists {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [serverCommunicator callServerWithGETMethod:@"GetUserLists" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"recibí info del server");
+    if ([methodName isEqualToString:@"GetUserLists"] && responseDictionary) {
+        self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+        
+    } else if ([methodName isEqualToString:@"CreateList"] && responseDictionary) {
+        NSLog(@"llegó la respuesta de la creación de la lista: %@", responseDictionary);
+        
+    } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark - CreateListViewDelegate
 
 -(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
-    [self.opacityView removeFromSuperview];
+    /*[self.opacityView removeFromSuperview];
     self.opacityView = nil;
-    [self addNewListWithName:listName];
+    NSLog(@"cree la lista");
+    [self createListWithName:listName userID:554];
+    //[self addNewListWithName:listName];*/
 }
 
 -(void)cancelButtonPressedInCreateListView:(CreateListView *)createListView {

@@ -18,6 +18,7 @@
         _progressSec = [dictionary[@"progress_sec"] intValue];
         _embedSD = dictionary[@"embed_sd"];
         _embedHD = dictionary[@"embed_hd"];
+        _trailer = dictionary[@"trailer"];
     }
     return self;
 }

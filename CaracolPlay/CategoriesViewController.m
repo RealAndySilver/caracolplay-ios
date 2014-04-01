@@ -86,6 +86,13 @@ static NSString *CellIdentifier = @"CellIdentifier";
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Categorías";
     [self getCategoriesFromServer];
+    
+    //Create a bar button item to recall the getCategoriesFromServer method
+    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                          target:self
+                                                                                          action:@selector(getCategoriesFromServer)];
+    self.navigationItem.rightBarButtonItem = refreshBarButtonItem;
+    
     //[self parseCategoriesList];
     //[self UISetup];
 }

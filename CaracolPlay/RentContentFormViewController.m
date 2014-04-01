@@ -13,6 +13,7 @@
 #import "MBHUDView.h"
 #import "CPIAPHelper.h"
 #import "RentContentViewController.h"
+#import "TermsAndConditionsViewController.h"
 
 @interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *servicePoliticsLabel;
@@ -26,6 +27,8 @@
 @property (strong, nonatomic) CheckmarkView *checkmarkView1;
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UIButton *termsButton;
+@property (weak, nonatomic) IBOutlet UIButton *politicsButton;
 
 @end
 
@@ -90,6 +93,10 @@
     //'Ingresa aquí' button setup
     [self.enterHereButton addTarget:self action:@selector(goToIngresarVC) forControlEvents:UIControlEventTouchUpInside];
     
+    //Other buttons setup
+    [self.termsButton addTarget:self action:@selector(goToTermsVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.politicsButton addTarget:self action:@selector(goToTermsVC) forControlEvents:UIControlEventTouchUpInside];
+    
     /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
      self.blurView.blurRadius = 7.0;
      self.blurView.alpha = 0.0;
@@ -109,6 +116,11 @@
 }
 
 #pragma mark - Actions 
+
+-(void)goToTermsVC {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
 
 -(void)goToIngresarVC {
     RentContentViewController *rentContentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContent"];

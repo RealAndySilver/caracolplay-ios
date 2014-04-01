@@ -98,6 +98,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     self.tableView.backgroundColor = [UIColor colorWithRed:40.0/255.0 green:40.0/255.0 blue:40.0/255.0 alpha:1.0];
     self.tableView.rowHeight = 140.0;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.tableView];
 }
 
@@ -125,7 +126,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
     NSURL *productionImageURL = [NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]];
     [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20;
+    productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
     productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return productionCell;
@@ -135,7 +136,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
@@ -172,7 +173,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         self.unparsedProductionsArray = responseDictionary[@"products"];
     
     } else {
-          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -180,7 +181,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [MBHUDView dismissCurrentHUD];
 #warning Aquí hay un log
     NSLog(@"server errror: %@, %@", error, [error localizedDescription]);
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Interface Orientation 

@@ -11,9 +11,11 @@
 #import "OOOoyalaPlayer.h"
 #import "OOOoyalaError.h"
 #import <objc/message.h>
+#import "ServerCommunicator.h"
 
-@interface VideoPlayerViewController ()
+@interface VideoPlayerViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
+@property (assign, nonatomic) BOOL sendProgressSecToServer;
 @end
 
 @implementation VideoPlayerViewController
@@ -25,6 +27,10 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.sendProgressSecToServer = NO;
+    //[self performSelector:@selector(postProgressSecToServer) withObject:nil afterDelay:5.0];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
     
     //Create the Ooyala ViewController
     self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:PCODE domain:PLAYERDOMAIN controlType:OOOoyalaPlayerControlTypeInline];
@@ -54,20 +60,51 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [super viewWillLayoutSubviews];
     NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
     self.ooyalaPlayerViewController.view.frame = self.view.bounds;
-    [self.ooyalaPlayerViewController.player play];
-    //[self.ooyalaPlayerViewController.player playWithInitialTime:1000];
+    //[self.ooyalaPlayerViewController.player play];
+    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    //[self postProgressSecToServer];
     self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
     NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 
--(void)notificacion:(NSNotification *)notification {
-    NSLog(@"Llegó la notificación");
+#pragma mark - Server Stuff
+
+-(void)postProgressSecToServer {
+    //FIXME: no está funcionando la petición
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&time=%f", self.productID, self.ooyalaPlayerViewController.player.playheadTime];
+    [serverCommunicator callServerWithPOSTMethod:@"VideoWatched" andParameter:parameters httpMethod:@"POST"];
+    NSLog(@"parámetros: %@", parameters);
 }
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    if ([methodName isEqualToString:@"VideoWatched"] && responseDictionary) {
+        NSLog(@"Petición exitosa: %@", responseDictionary);
+    } else {
+        NSLog(@"Hubo un problema enviando la info al server");
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    NSLog(@"hubo un problema enviando la info al server");
+}
+
+#pragma mark - Notification Handlers
+
+-(void)videoStartedPlaying {
+    NSLog(@"el video empezó a reproducirse");
+    self.sendProgressSecToServer = YES;
+}
+
+/*-(void)notificacion:(NSNotification *)notification {
+    NSLog(@"Llegó la notificación");
+}*/
 
 -(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;

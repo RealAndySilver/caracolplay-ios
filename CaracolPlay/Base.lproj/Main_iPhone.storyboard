@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="cUe-wy-g3O">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="cUe-wy-g3O">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -1025,8 +1025,10 @@
                         <outlet property="lastNameTextfield" destination="we9-fp-Hq2" id="p8u-39-DPk"/>
                         <outlet property="nameTextfield" destination="T6F-o1-Iwt" id="8EO-XW-130"/>
                         <outlet property="passwordTextfield" destination="DHq-bY-Ihm" id="4Uq-AY-j4n"/>
+                        <outlet property="politicsButton" destination="8XC-bD-eJr" id="0dE-RL-mF6"/>
                         <outlet property="scrollView" destination="hm3-gk-XNd" id="o7V-rd-YAn"/>
                         <outlet property="servicePoliticsLabel" destination="TTi-T6-tVJ" id="ReE-Fh-lpS"/>
+                        <outlet property="termsButton" destination="co4-7S-t3J" id="jO0-cw-z0V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cuu-T6-Ka4" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -29,6 +29,8 @@
     [super viewWillAppear:animated];
     //Make the navigation bar totally translucent
     self.navigationController.navigationBar.hidden = YES;
+    self.tabBarController.tabBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     /*[self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init]
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
@@ -40,6 +42,8 @@
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = NO;
+    self.tabBarController.tabBar.hidden = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     /*[self.navigationController.navigationBar setBackgroundImage:nil
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;
@@ -90,6 +94,8 @@
         if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
             [self.navigationController popToViewController:obj animated:YES];
             NSLog(@"encontré el navigation correcto");
+            //Post a notification to tell the production view controller that it needs to display the video inmediatly
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
             break;
         }
      }

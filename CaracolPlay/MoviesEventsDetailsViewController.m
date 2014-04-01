@@ -54,6 +54,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSDictionary *parsedDictionaryWithNulls = [self parseProductionInfoWithDictionary:unparsedProductionInfo];
     NSDictionary *parsedDictionaryWithoutNulls = [parsedDictionaryWithNulls dictionaryByReplacingNullWithBlanks];
     self.production = [[Product alloc] initWithDictionary:parsedDictionaryWithoutNulls];
+    [self getRecommendedProductionsForProductID:self.productionID];
     [self UISetup];
 }
 
@@ -120,7 +121,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.type;
-    [self getRecommendedProductionsForProductID:self.productionID];
     [self getProductWithID:self.productionID];
     //[self UISetup];
 }
@@ -135,8 +135,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [super viewDidAppear:animated];
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");
-        VideoPlayerViewController *videoPLayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-        [self.navigationController pushViewController:videoPLayerVC animated:YES];
+        [self getIsContentAvailableForUserWithID:self.productionID];
+        //VideoPlayerViewController *videoPLayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        //[self.navigationController pushViewController:videoPLayerVC animated:YES];
     }
 }
 
@@ -250,7 +251,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50.0, 100.0, 20.0) rate:[self.production.rate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(120.0, 50.0, 100.0, 20.0) rate:[self.production.rate intValue]/20.0 + 1];
     [self.view addSubview:self.starsView];
     [self.view bringSubviewToFront:self.starsView];
     
@@ -388,6 +389,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             //The user can watch the video
             VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.embedCode = video.embedHD;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = self.production.identifier;
             [self.navigationController pushViewController:videoPlayer animated:YES];
         }
         
@@ -457,7 +460,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
     [self.tabBarController.view addSubview:self.opacityView];
-    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]];
+    RateView *rateView = [[RateView alloc] initWithFrame:CGRectMake(50.0, self.view.frame.size.height/2 - 50.0, self.view.frame.size.width - 100.0, 120.0) goldStars:[self.production.rate intValue]/20.0 + 1];
     rateView.delegate = self;
     [self.tabBarController.view addSubview:rateView];
 }
@@ -471,6 +474,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Server Stuff 
+
+-(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.production.identifier, rate];
+    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+}
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
@@ -499,15 +510,37 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && [responseDictionary[@"status"] boolValue]) {
         self.recommendedProductions = responseDictionary[@"recommended_products"];
         
+        
+        
     } else if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
         //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
         //en este momento.
-        self.unparsedProductionInfo = responseDictionary[@"products"][0][0];
-        NSLog(@"La petición fue exitosa. producto: %@", self.unparsedProductionInfo);
+        if (![responseDictionary[@"products"][@"status"] boolValue]) {
+            NSLog(@"El producto no está disponible");
+            //Hubo algún problema y no se pudo acceder al producto
+            if (responseDictionary[@"products"][@"response"]) {
+                //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
+                NSString *alertMessage = responseDictionary[@"products"][@"response"];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else {
+            //El status llegó true, entonces no hubo problema accediendo al producto
+            NSLog(@"El producto si está disponible");
+            self.unparsedProductionInfo = responseDictionary[@"products"][@"0"][0];
+        }
+        
+        
         
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
         Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
         [self checkVideoAvailability:video];
+        
+    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {
+        NSLog(@"llegó la info de la calificación: %@", responseDictionary);
         
     } else {
           [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
@@ -562,6 +595,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     self.starsView.rate = rate;
+    NSLog(@"rate: %d", rate);
+    
+    //FIXME: tal vez toque cambiar esto. hay que multiplicarlo por 20
+    //porque los rates de caracol van de 0 a 100, no de 0 a 5
+    [self updateUserFeedbackForProductWithRate:rate*20];
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

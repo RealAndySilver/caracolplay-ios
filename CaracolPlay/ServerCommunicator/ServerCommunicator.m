@@ -53,6 +53,7 @@
     parameter=[parameter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     parameter=[parameter stringByExpandingTildeInPath];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",ENDPOINT,method]];
+    NSLog(@"URL : %@", [url description]);
 	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
     [theRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];

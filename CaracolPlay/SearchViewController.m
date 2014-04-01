@@ -107,7 +107,7 @@
     }
     [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
-    cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0;
+    cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0 + 1;
     return cell;
 }
 
@@ -121,7 +121,7 @@
         telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     
-    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Peliculas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];

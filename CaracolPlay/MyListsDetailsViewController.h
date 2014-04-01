@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MyListsDetailsViewController : UIViewController
-@property (strong, nonatomic) NSMutableArray *episodes;
+@property (strong, nonatomic) NSArray *episodes;
+@property (strong, nonatomic) NSString *navigationBarTitle;
 @end
