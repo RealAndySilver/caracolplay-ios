@@ -18,10 +18,14 @@
 #import "Reachability.h"
 #import "FileSaver.h"
 #import "SuscriptionAlertPadViewController.h"
+#import "ServerCommunicator.h"
+#import "Episode.h"
+#import "Season.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
-@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate>
+@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate, ServerCommunicatorDelegate>
+
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opaqueView;
@@ -35,63 +39,81 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property (strong, nonatomic) NSDictionary *productionInfo;
+@property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) NSArray *recommendedProductions;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation MovieDetailsPadViewController
 
-#pragma mark - Lazy Instantiation
+#pragma mark - Setters & Getters
 
--(NSDictionary *)productionInfo {
-    if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg", @"trailer_url" : @"", @"has_seasons" : @NO, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : @[], @"season_list" : @[]};
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(335 - 20.0, 300 - 20.0, 40.0, 40.0);
     }
-    return _productionInfo;
+    return _spinner;
 }
 
--(NSArray *)recommendedProductions {
-    if (!_recommendedProductions) {
-        _recommendedProductions = @[@{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.eltiempo.com/entretenimiento/tv/IMAGEN/IMAGEN-8759821-2.png"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.bluradio.com/sites/default/files/la_voz_colombia.jpg"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://hispanic-tv.jumptv.com/images/2008/09/18/diaadiatucasa_2.png"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Peliculas", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.eltiempo.com/entretenimiento/tv/IMAGEN/IMAGEN-8759821-2.png"},
-                                    
-                                    @{@"name": @"Pedro el Escamoso",@"type": @"Series", @"id": @"90182734", @"rate": @3, @"category_id": @"823714",
-                                      @"image_url": @"http://www.bluradio.com/sites/default/files/la_voz_colombia.jpg"},
-];
-    }
-    return _recommendedProductions;
+-(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
+    _unparsedProductionInfoDic = unparsedProductionInfoDic;
+    NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
+    self.production = [[Product alloc] initWithDictionary:parsedProductionInfoDic];
+    [self UISetup];
 }
 
--(void)parseProductionInfo {
-    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
+-(NSDictionary *)dictionaryWithParsedProductionInfo:(NSDictionary *)unparsedDic {
+    NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc] initWithDictionary:unparsedDic];
+    
+    //Check if the product has seasons
+    if ([unparsedDic[@"has_seasons"] boolValue]) {
+        //The product has seasons
+        NSLog(@"Si tiene temporadas, no episodios sueltos");
+        
+        NSArray *unparsedSeasonsArray = [NSArray arrayWithArray:unparsedDic[@"season_list"]];
+        NSLog(@"Numero de temporadas: %d", [unparsedSeasonsArray count]);
+        NSMutableArray *parsedSeasonsArray = [[NSMutableArray alloc] init];
+        
+        for (int i = 0; i < [unparsedSeasonsArray count]; i++) {
+            NSArray *unparsedEpisodesFromSeason = unparsedSeasonsArray[i][@"episodes"];
+            NSLog(@"Numero de episodios en la temporada %d: %d", i+1, [unparsedEpisodesFromSeason count]);
+            
+            //Create a mutable array to store the Episodes objects that we are going to create
+            NSMutableArray *parsedEpisodesFromSeason = [[NSMutableArray alloc] init];
+            
+            //Loop through all the season episodes.
+            for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
+                Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                [parsedEpisodesFromSeason addObject:episode];
+            }
+            
+            Season *season = [[Season alloc] initWithDictionary:@{@"season_id": unparsedSeasonsArray[i][@"season_id"],
+                                                                  @"season_name" : unparsedSeasonsArray[i][@"season_name"],
+                                                                  @"episodes" : parsedEpisodesFromSeason}];
+            [parsedSeasonsArray addObject:season];
+        }
+        [newDictionary setObject:parsedSeasonsArray forKey:@"season_list"];
+        return newDictionary;
+    }
+    else {
+        //The product has no seasons
+        NSLog(@"El producto no tiene temporadas");
+        NSArray *unparsedEpisodesArray = [NSArray arrayWithArray:unparsedDic[@"episodes"]];
+        NSMutableArray *parsedEpisodesArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [unparsedEpisodesArray count]; i++) {
+            Episode *episode = unparsedEpisodesArray[i];
+            [parsedEpisodesArray addObject:episode];
+        }
+        [newDictionary setObject:parsedEpisodesArray forKey:@"episodes"];
+        return newDictionary;
+    }
 }
 
 -(void)UISetup {
-    //1. Dismiss button
-    self.dismissButton = [[UIButton alloc] init];
-    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
-    [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.dismissButton];
-    
     //2. Background image view
     self.backgroundImageView = [[UIImageView alloc] init];
     [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
@@ -222,9 +244,15 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor darkGrayColor];
-    [self parseProductionInfo];
-    [self UISetup];
+    self.view.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.spinner];
+    [self getProductWithID:self.productID];
+    
+    //Dismiss button setup
+    self.dismissButton = [[UIButton alloc] init];
+    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.dismissButton];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -243,6 +271,54 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 100.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
+}
+
+#pragma mark - UICollectionViewDataSource
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [self.recommendedProductions count];
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:moviesCellIdentifier forIndexPath:indexPath];
+    
+    UIView *shadowView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
+    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    shadowView.layer.shadowRadius = 5.0;
+    shadowView.layer.shadowOpacity = 1.0;
+    [cell.contentView addSubview:shadowView];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10.0, cell.contentView.bounds.size.width - 20.0, cell.contentView.bounds.size.height - 20.0)];
+    [imageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.item][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    imageView.clipsToBounds = YES;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [shadowView addSubview:imageView];
+    cell.backgroundColor = [UIColor clearColor];
+    return cell;
+}
+
+#pragma  mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    //return CGSizeMake(120.0, 180.0);
+    return CGSizeMake(140.0, 200.0);
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Seleccioné el item %d", indexPath.item);
+    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+        SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+        seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
+        seriesDetailPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:seriesDetailPad animated:YES completion:nil];
+        
+    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
+        MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+        movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
+        movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:movieDetailsPad animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Custom Methods 
@@ -312,51 +388,45 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UICollectionViewDataSource 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.recommendedProductions count];
+#pragma mark - Server Stuff
+
+-(void)getProductWithID:(NSString *)productID {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:self.productID];
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:moviesCellIdentifier forIndexPath:indexPath];
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
     
-    UIView *shadowView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
-    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
-    shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    shadowView.layer.shadowRadius = 5.0;
-    shadowView.layer.shadowOpacity = 1.0;
-    [cell.contentView addSubview:shadowView];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10.0, cell.contentView.bounds.size.width - 20.0, cell.contentView.bounds.size.height - 20.0)];
-    [imageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.item][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    imageView.clipsToBounds = YES;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [shadowView addSubview:imageView];
-    cell.backgroundColor = [UIColor clearColor];
-    return cell;
-}
-
-#pragma  mark - UICollectionViewDelegate 
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //return CGSizeMake(120.0, 180.0);
-    return CGSizeMake(140.0, 200.0);
-}
-
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Seleccioné el item %d", indexPath.item);
-    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"]) {
-        SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
-        seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
-        seriesDetailPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        [self presentViewController:seriesDetailPad animated:YES completion:nil];
-        
-    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
-        MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
-        movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
-        movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        [self presentViewController:movieDetailsPad animated:YES completion:nil];
+    //Responses: GetProductWithID
+    if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+        //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
+        //en este momento.
+        if (![responseDictionary[@"products"][@"status"] boolValue]) {
+            NSLog(@"El producto no está disponible");
+            //Hubo algún problema y no se pudo acceder al producto
+            if (responseDictionary[@"products"][@"response"]) {
+                //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
+                NSString *alertMessage = responseDictionary[@"products"][@"response"];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            //El producto si está disponible
+            self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
+        }
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
+}
+
+-(void)serverError:(NSError *)error {
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - RateViewDelegate

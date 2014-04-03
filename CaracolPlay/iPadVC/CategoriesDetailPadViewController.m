@@ -13,12 +13,16 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #import "SeriesDetailPadViewController.h"
 #import "MovieDetailsPadViewController.h"
 #import "JMImageCache.h"
+#import "ServerCommunicator.h"
+#import "NSArray+NullReplacement.h"
 
-@interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate>
+@interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UICollectionView *collectionView;
+@property (strong, nonatomic) NSArray *unparsedProductionsArray;
 @property (strong, nonatomic) NSArray *productionsArray;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation CategoriesDetailPadViewController
@@ -27,33 +31,24 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(NSArray *)productionsArray {
     if (!_productionsArray) {
-        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text" : @"No te pierda...", @"rate" : @4,
-                                @"id" : @"48393", @"category_id" : @"23432", @"image_url" : @"http://www.mundonets.com/images/johanna-cruz-laura-ramos.jpg"},
-                              
-                              @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @5,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg"},
-                              
-                              @{@"name": @"Yo me llamo", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @1,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.cartagenacity.co/sites/default/files/field/image/yo-me-llamo.jpg"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.canalcaracol.com/sites/caracoltv.com/files/imgs_12801024/fdb9f15a1610815e39b2dcbb298e223f.jpg"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.eldiario.com.co/uploads/userfiles/20100704/image/monica_alta%5B1%5D-copia.jpg"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://1.bp.blogspot.com/-5SeBwwOE0ak/T_4HH5Wj1YI/AAAAAAAAHw8/1aYXf8zxUNo/s1600/Stephanie%2BCayo%2BBLOG.png"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://p1.trrsf.com/image/fget/cf/619/464/images.terra.com/2013/06/12/seleccion-5.jpg"},];
+        _productionsArray = [[NSArray alloc] init];
     }
     return _productionsArray;
 }
 
+-(void)setUnparsedProductionsArray:(NSArray *)unparsedProductionsArray {
+    _unparsedProductionsArray = unparsedProductionsArray;
+    self.productionsArray = [_unparsedProductionsArray arrayByReplacingNullsWithBlanks];
+    [self.collectionView reloadData];
+}
+
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(300.0 - 20.0, self.view.bounds.size.height/2.0 - 20.0, 40.0, 40.0);
+    }
+    return _spinner;
+}
 
 -(void)UISetup {
     
@@ -64,7 +59,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.navigationBar];
     
     //2. Segmented Control
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Todo"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Nombre"]];
+    self.segmentedControl.selectedSegmentIndex = 0;
     [self.view addSubview:self.segmentedControl];
     
     //3. CollectionView
@@ -80,6 +76,12 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    [self.view addSubview:self.spinner];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(categoryIDNotificationReceived:)
+                                                 name:@"CategoryIDNotification"
+                                               object:nil];
+    //[self getListFromCategoryID:self.categoryID withFilter:0];
     [self UISetup];
 }
 
@@ -123,6 +125,43 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
     }
+}
+
+#pragma mark - Server Stuff
+
+-(void)getListFromCategoryID:(NSString *)categoryID withFilter:(NSInteger)filter {
+    NSLog(@"llamaré al server");
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.categoryID, filter];
+    NSLog(@"parametros: %@", parameters);
+    [serverCommunicator callServerWithGETMethod:@"GetListFromCategoryID" andParameter:parameters];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
+    if ([methodName isEqualToString:@"GetListFromCategoryID"] && [responseDictionary[@"status"] boolValue]) {
+        NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
+        self.unparsedProductionsArray = responseDictionary[@"products"];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [self.spinner stopAnimating];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)categoryIDNotificationReceived:(NSNotification *)notification {
+    NSLog(@"recibí la notificación");
+    NSDictionary *notificationDic = [notification userInfo];
+    NSString *categoryID = notificationDic[@"CategoryID"];
+    [self getListFromCategoryID:categoryID withFilter:0];
 }
 
 #pragma mark - UIBarPositioningDelegate

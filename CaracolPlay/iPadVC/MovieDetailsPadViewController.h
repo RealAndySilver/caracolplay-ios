@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface MovieDetailsPadViewController : UIViewController
-
+@property (strong, nonatomic) NSString *productID;
 @end

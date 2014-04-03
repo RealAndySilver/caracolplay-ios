@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CategoriesDetailPadViewController : UIViewController
-@property (strong, nonatomic) UIColor *bgColor;
+@property (strong, nonatomic) NSString *categoryID;
 @end

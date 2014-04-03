@@ -26,23 +26,6 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Setters & Getters
 
-/*-(NSArray *)productionsArray {
-    if (!_productionsArray) {
-        _productionsArray = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text" : @"No te pierda...", @"rate" : @4,
-                                @"id" : @"48393", @"category_id" : @"23432", @"image_url" : @"http://www.mundonets.com/images/johanna-cruz-laura-ramos.jpg"},
-                              
-                              @{@"name": @"Colombia's Next Top Model", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @5,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://static.cromos.com.co/sites/cromos.com.co/files/images/2013/01/ba6538c2bf4d087330be745adfa8d0bd.jpg"},
-                              
-                              @{@"name": @"Yo me llamo", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @1,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://www.cartagenacity.co/sites/default/files/field/image/yo-me-llamo.jpg"},
-                              
-                              @{@"name": @"Escobar, el patrón del mal", @"type" : @"Peliculas", @"feature_text" : @"No te pierda...", @"rate" : @3,
-                                @"id" : @"481233", @"category_id" : @"21232", @"image_url" : @"http://compass-images-1.comcast.net/ccp_img/pkr_prod/VMS_POC_Image_Ingest/9/258/escobar_el_patron_del_mal_21_3000x1500_16613258.jpg"}];
-    }
-    return _productionsArray;
-}*/
-
 -(NSArray *)productionsArray {
     if (!_productionsArray) {
         _productionsArray = [[NSArray alloc] init];

@@ -24,6 +24,7 @@
 #import "MBHUDView.h"
 #import "Season.h"
 #import "SuscriptionAlertPadViewController.h"
+#import "Video.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -47,55 +48,22 @@
 @property (strong, nonatomic) StarsView *starsView;
 @property (assign, nonatomic) NSInteger selectedSeason;
 
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
+
 @end
 
 @implementation SeriesDetailPadViewController
 
-#pragma mark - Lazy Instantiation
+#pragma mark - Setters & Getters
 
-/*-(NSArray *)unparsedEpisodesInfo {
-    if (!_unparsedEpisodesInfo) {
-        _unparsedEpisodesInfo = @[@{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Empieza Colombia's Next Top Model",
-                                    @"description": @"Pedro es rescatado después de un terrible incidente de...",
-                                    @"image_url": @"http://www.eldominio.com/laimagenparaestecapitulo.jpg",
-                                    @"episode_number": @1,
-                                    @"id": @"1235432",
-                                    @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                    @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                    @"rate": @4,
-                                    @"views": @"4321",//Número de veces visto
-                                    @"duration": @2700,//En segundos
-                                    @"category_id": @"7816234",
-                                    @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                    @"watched_on": @"2014-02-05",
-                                    @"is_3g": @NO,},
-                                  
-                                  @{@"product_name": @"Pedro el Escamoso", @"episode_name": @"Primera prueba para las modelos.",
-                                    @"description": @"Pedro es rescatado después de un terrible incidente de...",
-                                    @"image_url": @"http://www.eldominio.com/laimagenparaestecapitulo.jpg",
-                                    @"episode_number": @2,
-                                    @"id": @"1235432",
-                                    @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                    @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                    @"rate": @4,
-                                    @"views": @"4321",//Número de veces visto
-                                    @"duration": @2700,//En segundos
-                                    @"category_id": @"7816234",
-                                    @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                    @"watched_on": @"2014-02-05",
-                                    @"is_3g": @YES,},
-                                  ];
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(335 - 20.0, 313.0 - 20.0, 40.0, 40.0);
     }
-    return _unparsedEpisodesInfo;
-}*/
+    return _spinner;
+}
 
-/*-(NSDictionary *)productionInfo {
-    if (!_productionInfo) {
-        _productionInfo = @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"rate" : @5, @"my_rate" : @3, @"category_id" : @"59393",
-                            @"id" : @"567", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"trailer_url" : @"", @"has_seasons" : @YES, @"description" : @"Colombia's Next Top Model (a menudo abreviado como CNTM), fue un reality show de Colombia basado el en popular formato estadounidense America's Next Top Model en el que un número de mujeres compite por el título de Colombia's Next Top Model y una oportunidad para iniciar su carrera en la industria del modelaje", @"episodes" : self.unparsedEpisodesInfo, @"season_list" : @[]};
-    }
-    return _productionInfo;
-}*/
 -(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
     _unparsedProductionInfoDic = unparsedProductionInfoDic;
     NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
@@ -204,7 +172,7 @@
     [smallProductionImageView addSubview:playIcon];
     
     // Add the stars to the view
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.rate intValue]];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.rate intValue]/20.0 + 1];
     [self.view addSubview:self.starsView];
     
     //Add a tap gesture to the star view. when the user touches the stars, show the rate view
@@ -290,8 +258,15 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    //Add the spinner to the view inmediatly
+    [self.view addSubview:self.spinner];
+    [self.view bringSubviewToFront:self.spinner];
+    
+    //Start the view with season 1
+    self.selectedSeason = 0;
+    
     self.view.backgroundColor = [UIColor blackColor];
-    [self getProductionInfoFromServer];
+    [self getProductionInfoWithID:self.productID];
 
     //Create the dismiss button. It's neccesary to create te button here, because
     //if there's a server error, the UISetup method won't get called, and nothing will
@@ -301,27 +276,106 @@
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
-
-    //[self parseProductionInfo];
-    //[self parseEpisodesInfo];
-    //[self UISetup];
 }
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
-    //Set subviews frame
-    /*self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
-    self.backgroundImageView.frame = self.view.bounds;
-    self.opacityPatternView.frame = self.view.bounds;
-    self.productionNameLabel.frame = CGRectMake(180.0, 30.0, self.view.bounds.size.width - 180.0, 30.0);
-    self.rateButton.frame = CGRectMake(340.0, 60.0, 140.0, 35.0);
-    self.watchTrailerButton.frame = CGRectMake(180.0, 100.0, 140.0, 35.0);
-    self.shareButton.frame = CGRectMake(340.0, 100.0, 140.0, 35.0);
-    self.productionDetailTextView.frame = CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0);
-    self.seasonsTableView.frame = CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 250.0);
-    self.chaptersTableView.frame = CGRectMake(180.0, 280.0, self.view.bounds.size.width - 180.0 - 30.0, self.view.bounds.size.height - 280.0 - 30.0);*/
+}
+
+#pragma mark - UITableViewDataSource
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView.tag == 1) {
+        //Seasons table view
+        return [self.production.seasonList count];
+    } else {
+        //Episodes table view
+        if (self.production.hasSeasons) {
+            //The product has seasons
+            Season *season = self.production.seasonList[self.selectedSeason];
+            return [season.episodes count];
+        } else {
+            //The product doesn't have episodes
+            return [self.production.episodes count];
+        }
+    }
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView.tag == 1) {
+        //Seasons table view
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        }
+        cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.font = [UIFont systemFontOfSize:13.0];
+        return cell;
+        
+    } else {
+        //Episodes table view
+        EpisodesPadTableViewCell *cell = (EpisodesPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+        if (!cell) {
+            cell = [[EpisodesPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        }
+        cell.delegate = self;
+        
+        if (self.production.hasSeasons) {
+            //The product has seasons
+            Season *season = self.production.seasonList[self.selectedSeason];
+            Episode *episode = season.episodes[indexPath.row];
+            cell.episodeNameLabel.text = episode.episodeName;
+            cell.episodeNumberLabel.text = [episode.episodeNumber description];
+            return cell;
+        } else {
+            //the product doesn't have seasons
+            Episode *episode = self.production.episodes[indexPath.row];
+            cell.episodeNameLabel.text = episode.episodeName;
+            cell.episodeNumberLabel.text = [episode.episodeNumber description];
+            return cell;
+        }
+    }
+}
+
+#pragma mark - UITableViewDelegate
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (tableView.tag == 1) {
+        //Seasons table view
+        self.selectedSeason = indexPath.row;
+        [self.chaptersTableView reloadData];
+    }
+    
+    if (tableView.tag == 2) {
+        //Episodes table view
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+            //If the user isn't logged in, he can't watch the video
+            SuscriptionAlertPadViewController *suscriptionAlertPadVC =
+            [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
+            suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
+            
+        } else {
+            //The user is already logged in, so check if the video is available
+            if (self.production.hasSeasons) {
+                Season *currentSeason = self.production.seasonList[self.selectedSeason];
+                Episode *episode = currentSeason.episodes[indexPath.row];
+                [self getIsContentAvailableForUserWithID:episode.identifier];
+                NSLog(@"el identificador del capítulo es: %@", episode.identifier);
+                
+            } else {
+                Episode *episode = self.production.episodes[indexPath.row];
+                [self getIsContentAvailableForUserWithID:episode.identifier];
+            }
+        }
+    }
 }
 
 #pragma mark - Actions
@@ -335,6 +389,7 @@
     } else {
         VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
         videoPlayerPadVC.embedCode = self.production.trailerURL;
+        videoPlayerPadVC.isWatchingTrailer = YES;
         [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
     }
 }
@@ -364,116 +419,116 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UITableViewDataSource 
+#pragma mark - Custom Methods
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView.tag == 1) {
-        //Seasons table view
-        return [self.production.seasonList count];
-    } else {
-        //Episodes table view
-        Season *season = self.production.seasonList[self.selectedSeason];
-        return [season.episodes count];
-    }
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView.tag == 1) {
-        //Seasons table view
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
-        }
-        cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.font = [UIFont systemFontOfSize:13.0];
-        return cell;
-        
-    } else {
-        //Episodes table view
-        EpisodesPadTableViewCell *cell = (EpisodesPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
-        if (!cell) {
-            cell = [[EpisodesPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
-        }
-        cell.delegate = self;
-        Season *season = self.production.seasonList[self.selectedSeason];
-        Episode *episode = season.episodes[indexPath.row];
-        cell.episodeNameLabel.text = episode.episodeName;
-        cell.episodeNumberLabel.text = [episode.episodeNumber description];
-        return cell;
-    }
-}
-
-#pragma mark - UITableViewDelegate
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (tableView.tag == 1) {
-        //Seasons table view
-        self.selectedSeason = indexPath.row;
-        [self.chaptersTableView reloadData];
-    }
-    
-    if (tableView.tag == 2) {
-        //Episodes table view
-        FileSaver *fileSaver = [[FileSaver alloc] init];
-        if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-            //If the user isn't logged in, he can't watch the video
-            SuscriptionAlertPadViewController *suscriptionAlertPadVC =
-                [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
-            suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-            [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
-            /*[[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];*/
-            return;
-        }
-        
+-(void)checkVideoAvailability:(Video *)video {
+    if (video.status) {
+        //The video is available for the user, so check the network connection to decide
+        //if the user can pass to watch it or not.
         Reachability *reachability = [Reachability reachabilityForInternetConnection];
         [reachability startNotifier];
         NetworkStatus status = [reachability currentReachabilityStatus];
-        
         if (status == NotReachable) {
-            NSLog(@"no hay internet");
-            [[[UIAlertView alloc] initWithTitle:nil message:@"No es posible ver el video. Por favor revisa que tu dispositivo esté conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            //The user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             
         } else if (status == ReachableViaWWAN) {
-            NSLog(@"si hay internet pero 3g");
-            if (((Episode *)self.production.episodes[indexPath.row]).is3G) {
-                [self watchTrailer];
-            } else {
-                [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta para ver esta producción. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            }
+            //The user can't watch the video because the connection is to slow
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
         } else if (status == ReachableViaWiFi) {
-            NSLog(@"hay wifi");
-            [self watchTrailer];
+            //The user can watch the video
+            VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            videoPlayer.isWatchingTrailer = NO;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = self.productID;
+            [self presentViewController:videoPlayer animated:YES completion:nil];
         }
+        
+    } else {
+        //The video is not available for the user, so pass to the
+        //Content not available for user
+        //TODO: definir que se hará cuando el video no esté disponible para el usuario
+        NSLog(@"el contenido no está disponible para el usuario");
     }
 }
 
 #pragma mark - ServerCommunicator 
 
--(void)getProductionInfoFromServer {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+-(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:@"1"];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+}
+
+-(void)updateUserFeedbackForProductWithID:(NSString *)productID rate:(NSInteger)rate {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.productID, rate];
+    NSLog(@"paramters = %@", parameters);
+    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+}
+
+-(void)getProductionInfoWithID:(NSString *)productID {
+    //Start animating the spinner
+    [self.spinner startAnimating];
+    
+    //Communicate with the server
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    //Stop the spinner
+    [self.spinner stopAnimating];
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    //Responses: GetProductWithID
     if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
-        //Petición exitosa
-        self.unparsedProductionInfoDic = responseDictionary[@"products"][0][0];
-        NSLog(@"diccionario de la telenovela: %@", self.unparsedProductionInfoDic);
+        //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
+        //en este momento.
+        if (![responseDictionary[@"products"][@"status"] boolValue]) {
+            NSLog(@"El producto no está disponible");
+            //Hubo algún problema y no se pudo acceder al producto
+            if (responseDictionary[@"products"][@"response"]) {
+                //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
+                NSString *alertMessage = responseDictionary[@"products"][@"response"];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            //El producto si está disponible
+            self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
+        }
+    
+    //Response:UpdateUserFeedbackForProduct
+    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {
+        NSLog(@"recibí respuesta exitosa de UpdateUserFeedbackForProduct: %@", responseDictionary);
+        
+    //Response: IsContentAvailableForUser
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]) {
+        NSLog(@"info del video: %@", responseDictionary);
+        Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
+        [self checkVideoAvailability:video];
+        
     } else {
-        //Error en la petición
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    //Stop the spinner
+    [self.spinner stopAnimating];
+    
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
@@ -523,6 +578,7 @@
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     self.starsView.rate = rate;
+    [self updateUserFeedbackForProductWithID:self.productID rate:rate*20.0];
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

@@ -37,10 +37,10 @@
         self.playIconImageView.clipsToBounds = YES;
         [self.contentView addSubview:self.playIconImageView];
         
-        self.addToListButton = [[UIButton alloc] init];
+        /*self.addToListButton = [[UIButton alloc] init];
         [self.addToListButton setImage:[UIImage imageNamed:@"AddToListIcon.png"] forState:UIControlStateNormal];
         [self.addToListButton addTarget:self action:@selector(addToList) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:self.addToListButton];
+        [self.contentView addSubview:self.addToListButton];*/
     }
     return self;
 }

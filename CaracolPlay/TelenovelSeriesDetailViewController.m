@@ -403,10 +403,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");
-        return;
+        
+    } else {
+        [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
     }
-    
-    [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
 }
 
 #pragma mark - Actions 

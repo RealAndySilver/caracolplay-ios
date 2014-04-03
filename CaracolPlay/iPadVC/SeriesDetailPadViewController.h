@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SeriesDetailPadViewController : UIViewController
-
+@property (strong, nonatomic) NSString *productID;
 @end

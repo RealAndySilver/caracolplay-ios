@@ -10,6 +10,7 @@
 #import "OOOoyalaPlayerViewController.h"
 #import "OOOoyalaPlayer.h"
 #import "OOOoyalaError.h"
+#import "ServerCommunicator.h"
 
 @interface VideoPlayerPadViewController () < UIBarPositioningDelegate>
 @property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
@@ -17,15 +18,22 @@
 @property (strong, nonatomic) UINavigationItem *navBarItem;
 @property (strong, nonatomic) NSString *pcode;
 @property (strong, nonatomic) NSString *playerDomain;
+@property (assign, nonatomic) BOOL videoWasPlayed;
 @end
 
 @implementation VideoPlayerPadViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    //self.embedCode = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
     self.pcode = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
     self.playerDomain = @"www.ooyala.com";
+    
+    if (!self.isWatchingTrailer) {
+        //Add as an observer of the OoyalaPlayerPlayStartedNotification. When this notification is received,
+        //the video started playing, so we have to send to the server the progress seconds of the video when the
+        //user stops watching it.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
+    }
     
     //Navigation bar setup
     self.navigationBar = [[UINavigationBar alloc] init];
@@ -39,6 +47,11 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Atrás" style:UIBarButtonItemStylePlain target:self action:@selector(dismissVC)];
     self.navBarItem.leftBarButtonItem = backBarButtonItem;
     
+    //Ooyala Setup
+    [self ooyalaSetup];
+}
+
+-(void)ooyalaSetup {
     //Create the Ooyala ViewController
     self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:self.pcode domain:self.playerDomain controlType:OOOoyalaPlayerControlTypeInline];
     
@@ -55,8 +68,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     NSLog(@"la vista aprecerá");
     [super viewWillAppear:animated];
-    [self.ooyalaPlayerViewController.player play];
-   // [self.ooyalaPlayerViewController.player playWithInitialTime:1000.0];
+    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -72,9 +84,24 @@
     [self.ooyalaPlayerViewController.player pause];
 }
 
+#pragma mark - Notification Handlers 
+
+-(void)videoStartedPlaying {
+    NSLog(@"llegó la notificación");
+    self.videoWasPlayed = YES;
+}
+
 #pragma mark - Actions
 
 -(void)dismissVC {
+    if (self.videoWasPlayed) {
+        NSLog(@"envié la info de los segundos al server");
+        //If the video was played, send the progress sec info to the server
+        ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+        NSString *parameters = [NSString stringWithFormat:@"product_id=%@&time=%f", self.productID, self.ooyalaPlayerViewController.player.playheadTime];
+        [serverCommunicator callServerWithPOSTMethod:@"VideoWatched" andParameter:parameters httpMethod:@"POST"];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface VideoPlayerPadViewController : UIViewController
+@property (assign, nonatomic) int progressSec;
+@property (strong, nonatomic) NSString *productID;
 @property (strong, nonatomic) NSString *embedCode;
+@property (assign, nonatomic) BOOL isWatchingTrailer;
 @end
