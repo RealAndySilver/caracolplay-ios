@@ -190,7 +190,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         
-        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(150.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
+        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(330.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
         secondaryLabel.text = self.personalInfoTableViewSecondaryInfo[indexPath.row];
         secondaryLabel.textAlignment = NSTextAlignmentRight;
         secondaryLabel.textColor = [UIColor lightGrayColor];
@@ -210,7 +210,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
         
-        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(150.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
+        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(330.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
         secondaryLabel.text = self.suscriptionInfoTableViewSecondaryInfo[indexPath.row];
         secondaryLabel.textColor = [UIColor lightGrayColor];
         secondaryLabel.font = [UIFont systemFontOfSize:14.0];

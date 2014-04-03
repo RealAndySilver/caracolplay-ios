@@ -10,6 +10,7 @@
 #import "VideoPlayerPadViewController.h"
 #import "MyListsPadTableViewCell.h"
 #import "JMImageCache.h"
+#import "Episode.h"
 
 @interface MyListsDetailPadViewController () < UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
@@ -20,13 +21,18 @@
 
 @synthesize episodes = _episodes;
 
-#pragma mark - Lazy Instantiation 
+#pragma mark - Setters & Getters
 
 -(NSMutableArray *)episodes {
     if (!_episodes) {
         _episodes = [[NSMutableArray alloc] init];
     }
     return _episodes;
+}
+
+-(void)setEpisodes:(NSMutableArray *)episodes {
+    _episodes = episodes;
+    [self.tableView reloadData];
 }
 
 #pragma mark - UISetup & Initialization stuff
@@ -52,6 +58,8 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userListInfoReceived:) name:@"FirstUserListNotification" object:nil];
+    
     [self UISetup];
 }
 
@@ -61,13 +69,6 @@
     //Set subviews frame
     self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
     self.tableView.frame = CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height - (self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height));
-}
-
-#pragma mark - Setters
-
--(void)setEpisodes:(NSMutableArray *)episodes {
-    _episodes = episodes;
-    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -81,24 +82,14 @@
     if (!cell) {
         cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
-    [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.episodes[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    cell.productionNameLabel.text = self.episodes[indexPath.row][@"product_name"];
-    cell.productionDetailLabel.text = self.episodes[indexPath.row][@"description"];
+    Episode *episode = self.episodes[indexPath.row];
+    [cell.productionImageView setImageWithURL:[NSURL URLWithString:episode.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    cell.productionNameLabel.text = episode.productName;
+    cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %d: %@", [episode.episodeNumber intValue], episode.description];
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
-
--(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.episodes removeObjectAtIndex:indexPath.row];
-        [self.tableView reloadData];
-    }
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -128,6 +119,14 @@
 -(void)watchEpisode {
     VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
     [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)userListInfoReceived:(NSNotification *)notification {
+    NSLog(@"recibí la info de las listas");
+    NSDictionary *notificationDictionary = [notification userInfo];
+    self.episodes = notificationDictionary[@"FirstUserList"];
 }
 
 #pragma mark - UIBarPositioningDelegate 

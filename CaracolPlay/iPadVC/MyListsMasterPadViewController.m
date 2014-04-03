@@ -10,8 +10,12 @@
 #import "MyListsDetailPadViewController.h"
 #import "List.h"
 #import "CreateListView.h"
+#import "ServerCommunicator.h"
+#import "Episode.h"
+#import "NSArray+NullReplacement.h"
+#import "NSDictionary+NullReplacement.h"
 
-@interface MyListsMasterPadViewController () <UITableViewDataSource, UITableViewDelegate, UIBarPositioningDelegate, CreateListViewDelegate>
+@interface MyListsMasterPadViewController () <UITableViewDataSource, UITableViewDelegate, UIBarPositioningDelegate, CreateListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *unparsedUserListsArray;
 @property (strong, nonatomic) NSMutableArray *parsedUserListsArray;
@@ -19,91 +23,56 @@
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UIImageView *titleImageView;
 @property (strong, nonatomic) UIView *opacityView;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation MyListsMasterPadViewController
 
-#pragma mark - Lazy Instantiation
+#pragma mark - Setters & Getters
 
--(NSArray *)unparsedUserListsArray {
-    if (!_unparsedUserListsArray) {
-        _unparsedUserListsArray = @[@{@"list_name": @"Series clásicas", @"list_id" : @"1223",
-                                      @"episodes" : @[@{@"product_name": @"Pedro el Escamoso",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Pedro regresa después de un terrible incidente de...",
-                                                        @"image_url": @"http://4.bp.blogspot.com/__dyzpfPCZVk/SGva2EeqlKI/AAAAAAAAALM/1ctbJwwRrw8/s400/telenovelas10d.jpg",
-                                                        @"episode_number": @6,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO},
-                                                      
-                                                      @{@"product_name": @"Mujeres al límite",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Las mujeres están al limite",
-                                                        @"image_url": @"http://www.eldiario.com.co/uploads/userfiles/20100704/image/monica_alta%5B1%5D-copia.jpg",
-                                                        @"episode_number": @6,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO}
-                                                      ]},
-                                    
-                                    @{@"list_name": @"Lo mejor de lo mejor", @"list_id" : @"1223",
-                                      @"episodes" : @[@{@"product_name": @"Escobar el patrón del mal",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Escobar es el gran capo",
-                                                        @"image_url": @"http://www.vanguardia.com/sites/default/files/imagecache/Noticia_600x400/foto_grandes_400x300_noticia/2012/06/26/27salud01a013_big_tp.jpg",
-                                                        @"episode_number": @6,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO},
-                                                      
-                                                      @{@"product_name": @"Mentiras perfectas",
-                                                        @"episode_name": @"Pedro regresa",
-                                                        @"description": @"Las mentiras de Carolina afectan a Carlos",
-                                                        @"image_url": @"http://www.publimetro.co/_internal/gxml!0/r0dc21o2f3vste5s7ezej9x3a10rp3w$b3cmqcdhj94frubk4j04omkoakkg83r/mentiras-perfectas.jpeg",
-                                                        @"episode_number": @6,
-                                                        @"id": @"1235435",
-                                                        @"url": @"http://www.eldominio.com/laurldeestevideo.video",
-                                                        @"trailer_url": @"http://www.eldominio.com/laurldeltrailerdeestevideo.video",
-                                                        @"rate": @3,
-                                                        @"views": @4231,//Número de veces visto
-                                                        @"duration": @2750,//En segundos
-                                                        @"category_id": @"7816234",
-                                                        @"progress_sec": @1500,//Tiempo del progreso (cuanto ha sido visto por el usuario)
-                                                        @"watched_on": @"2014-02-05",
-                                                        @"is_3g": @NO}
-                                                      ]}];
-    }
-    return _unparsedUserListsArray;
+-(void)setUnparsedUserListsArray:(NSArray *)unparsedUserListsArray {
+    NSLog(@"entré al setter");
+    _unparsedUserListsArray = unparsedUserListsArray;
+    self.parsedUserListsArray = [self parseUserListsArrayWithArray:unparsedUserListsArray];
+    List *list = self.parsedUserListsArray[0];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FirstUserListNotification" object:nil userInfo:@{@"FirstUserList": list.episodes}];
+    
+    NSLog(@"numero de listas parseadas: %d", [self.parsedUserListsArray count]);
+    [self UISetup];
 }
 
--(void)parseUserLists {
-    self.parsedUserListsArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.unparsedUserListsArray count]; i++) {
-        List *list = [[List alloc] initWithDictionary:self.unparsedUserListsArray[i]];
-        [self.parsedUserListsArray addObject:list];
+#pragma mark - Parsing Methods
+
+-(NSMutableArray *)parseUserListsArrayWithArray:(NSArray *)unparsedArray {
+    NSMutableArray *parsedArray = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [unparsedArray count]; i++) {
+        NSLog(@"numero de lista: %d", [unparsedArray[i] count]);
+        NSDictionary *unparsedListDic = unparsedArray[i];
+        NSArray *episodesFromListArray = unparsedListDic[@"episodes"];
+        NSMutableArray *parsedEpisodesFromList = [[NSMutableArray alloc] init];
+        
+        for (int j = 0; j < [episodesFromListArray count]; j++) {
+            NSDictionary *dicWithoutNulls = [episodesFromListArray[j] dictionaryByReplacingNullWithBlanks];
+            Episode *episode = [[Episode alloc] initWithDictionary:dicWithoutNulls];
+            [parsedEpisodesFromList addObject:episode];
+        }
+        
+        List *list = [[List alloc] initWithDictionary:unparsedListDic];
+        list.episodes = parsedEpisodesFromList;
+        
+        [parsedArray addObject:list];
     }
+    
+    return parsedArray;
+}
+
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(160.0 - 20.0, 384 - 20.0, 40.0, 40.0);
+    }
+    return _spinner;
 }
 
 -(void)UISetup {
@@ -135,8 +104,8 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor cyanColor];
-    [self parseUserLists];
-    [self UISetup];
+    [self.view addSubview:self.spinner];
+    [self getUserLists];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -174,6 +143,7 @@
     self.myListsDetailVC = self.splitViewController.viewControllers[1];
     
     List *list = self.parsedUserListsArray[indexPath.row];
+    NSLog(@"list name: %@", list.listName);
     self.myListsDetailVC.episodes = [NSMutableArray arrayWithArray:list.episodes];
 }
 
@@ -199,6 +169,30 @@
     List *newList = [[List alloc] initWithDictionary:newListDic];
     [self.parsedUserListsArray addObject:newList];
     [self.tableView reloadData];
+}
+
+#pragma mark - Server Stuff
+
+-(void)getUserLists {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetUserLists" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    if ([methodName isEqualToString:@"GetUserLists"] && responseDictionary) {
+        self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [self.spinner stopAnimating];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo al servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma  mark - CreateListViewDelegate

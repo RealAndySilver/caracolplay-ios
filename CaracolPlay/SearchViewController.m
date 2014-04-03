@@ -57,7 +57,7 @@
     self.searchBar.translucent = YES;
     self.searchBar.delegate = self;
     self.searchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
-    [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
+    [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarBackground.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     [self.view addSubview:self.searchBar];
     

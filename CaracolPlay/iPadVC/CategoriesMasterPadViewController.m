@@ -30,6 +30,7 @@
     [self parseCategoriesListFromServer];
     //Post a notification with the first category ID and send this info to the CategoriesDetailController
     Categoria *firstCategory = self.parsedCategoriesList[0];
+    NSLog(@"first category id: %@", firstCategory.identifier);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryIDNotification" object:nil userInfo:@{@"CategoryID": firstCategory.identifier}];
     [self UISetup];
 }
@@ -112,7 +113,6 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Categoria *category = self.parsedCategoriesList[indexPath.row];
     self.categoriesDetailVC = self.splitViewController.viewControllers[1];
     self.categoriesDetailVC.categoryID = category.identifier;

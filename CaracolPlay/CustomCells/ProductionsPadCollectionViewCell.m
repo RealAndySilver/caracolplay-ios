@@ -44,6 +44,11 @@
     [self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
 
+-(void)setGoldStars:(int)goldStars {
+    _goldStars = goldStars;
+    [self createStarsImageViewsWithGoldStarsNumber:goldStars];
+}
+
 #pragma mark - Custom Methods
 
 -(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {

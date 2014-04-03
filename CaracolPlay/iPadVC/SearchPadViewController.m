@@ -12,69 +12,43 @@
 #import "JMImageCache.h"
 #import "MovieDetailsPadViewController.h"
 #import "SeriesDetailPadViewController.h"
+#import "ServerCommunicator.h"
+#import "NSArray+NullReplacement.h"
+#import "NSDictionary+NullReplacement.h"
 
-@interface SearchPadViewController () < UIBarPositioningDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SearchPadViewController () < UIBarPositioningDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
-@property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchBar *mySearchBar;
 @property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) NSArray *searchResultsArray;
+@property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
+@property (strong, nonatomic) NSMutableArray *searchResultsArray;
+@property (strong, nonatomic) NSMutableArray *searchResultsArrayWithNulls;
 @end
 
 @implementation SearchPadViewController
 
-#pragma mark - Lazy Instantiation 
+#pragma mark - Setters & Getters
 
--(NSArray *)searchResultsArray {
+-(NSMutableArray *)searchResultsArray {
     if (!_searchResultsArray) {
-        _searchResultsArray = @[@{@"name" : @"La pena máximo",
-                                @"type": @"Peliculas",
-                                @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                @"rate": @3,
-                                @"id": @"90182734",
-                                @"category_id": @"823714",
-                                @"image_url": @"http://www.colombiancinema.org/web2008/posters/poster-lapenamaxima.jpg"},
-                                
-                                @{@"name" : @"La esquina",
-                                  @"type": @"Peliculas",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @3,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://cinecolombiano.com/wp-content/uploads/2013/06/La-Esquina-165x243.png"},
-                                
-                                @{@"name" : @"Pecados Capitales",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @5,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://2.bp.blogspot.com/-oDOoJn-nx3s/T_4rXnA7ZtI/AAAAAAAAAB4/qcm5N2bmG48/s1600/pecados.png"},
-                                
-                                @{@"name" : @"Escobar, el patrón del mal",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @5,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://cubademocraciayvida.org/media/ooooooooooooooooooo%20a%20fotos%20a%201/PABLO-ESCOBAR.jpg"},
-                                
-                                @{@"name" : @"Colombia's Next Top Model",
-                                  @"type": @"Series",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @2,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png"},
-                                
-                                @{@"name" : @"El Carro",
-                                  @"type": @"Peliculas",
-                                  @"feature_text": @"no te pierdas el capítulo de hoy!",
-                                  @"rate": @2,
-                                  @"id": @"90182734",
-                                  @"category_id": @"823714",
-                                  @"image_url": @"http://2.bp.blogspot.com/-b53JD5BbF3M/Tl4VeZwpu5I/AAAAAAAAETs/OBqESxznww4/s1600/carro.jpg"}];
+        _searchResultsArray = [[NSMutableArray alloc] init];
     }
     return _searchResultsArray;
+}
+
+-(void)setSearchResultsArrayWithNulls:(NSMutableArray *)searchResultsArrayWithNulls {
+    _searchResultsArrayWithNulls = searchResultsArrayWithNulls;
+    self.searchResultsArray = [[_searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks] mutableCopy];
+    [self.collectionView reloadData];
+}
+
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _spinner.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
+    }
+    return _spinner;
 }
 
 -(void)UISetup {
@@ -85,18 +59,27 @@
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
     
+    //NAvigation item
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:nil];
+    self.navigationBar.items = @[navigationItem];
+    
+    //Add the spinner to the navigation bar
+    UIBarButtonItem *spinnerBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.spinner];
+    navigationItem.rightBarButtonItem = spinnerBarButtonItem;
+    
     //2. SearchBar setup
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, screenFrame.size.width - 10.0, 30.0)];
-    self.searchBar.translucent = YES;
+    self.mySearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, screenFrame.size.width, 30.0)];
+    self.mySearchBar.translucent = YES;
+    self.mySearchBar.delegate = self;
+    self.mySearchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
-    self.searchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
-    [self.view addSubview:self.searchBar];
+    [self.view addSubview:self.mySearchBar];
     
     //3. Collection view
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.itemSize = CGSizeMake(320.0, 130.0);
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, screenFrame.size.width, screenFrame.size.height - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 20.0) - 64.0)collectionViewLayout:collectionViewFlowLayout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 130.0, screenFrame.size.width, screenFrame.size.height - 100.0) collectionViewLayout:collectionViewFlowLayout];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -110,8 +93,14 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
+    [self createTapGesture];
 }
 
+-(void)createTapGesture {
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSearchKeyboard)];
+    tapGesture.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGesture];
+}
 #pragma mark - UIColelctionViewDataSource 
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -122,7 +111,8 @@
     SearchPadCollectionViewCell *cell = (SearchPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.item][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.productionNameLabel.text = self.searchResultsArray[indexPath.item][@"name"];
-    cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue];
+    //cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
+    cell.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
     cell.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     return cell;
 }
@@ -130,26 +120,72 @@
 #pragma mark - UICollectionViewDelegate 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
+    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        movieDetailsPadVC.productID = self.searchResultsArray[indexPath.item][@"id"];
         [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
         NSLog(@"peliculas");
         
-    } else if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+    } else if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        seriesDetailPadVC.productID = self.searchResultsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         NSLog(@"series");
     }
 }
 
-#pragma mark - UIBarPositioningDelegate
+#pragma mark - Actions
 
--(UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
-    return UIBarPositionTopAttached;
+-(void)hideSearchKeyboard {
+    [self.mySearchBar resignFirstResponder];
+}
+
+#pragma mark - Server Stuff
+
+-(void)getSearchResultsFromServer {
+    NSLog(@"llamé al server");
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetListFromSearchWithKey" andParameter:self.mySearchBar.text];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
+    if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
+        NSLog(@"La petición fue exitosa");
+        self.searchResultsArrayWithNulls = [responseDictionary[@"products"] mutableCopy];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [self.spinner stopAnimating];
+    NSLog(@"server error: %@, %@", error, [error localizedDescription]);
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - UISearchBarDelegate
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    NSLog(@"Cambió el texto de la barra de búsqueda");
+    [self.timer invalidate];
+    if ([searchBar.text length] > 0) {
+        [self.spinner startAnimating];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSearchResultsFromServer) userInfo:nil repeats:NO];
+    } else {
+        [self.searchResultsArray removeAllObjects];
+        [self.spinner stopAnimating];
+        [self.collectionView reloadData];
+    }
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
 }
 
 @end

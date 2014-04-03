@@ -12,5 +12,6 @@
 @interface SearchPadCollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) UIImageView *productionImageView;
 @property (strong, nonatomic) UILabel *productionNameLabel;
-@property (strong, nonatomic) StarsView *productionStarsView;
+@property (assign, nonatomic) int rate;
+//@property (strong, nonatomic) StarsView *productionStarsView;
 @end

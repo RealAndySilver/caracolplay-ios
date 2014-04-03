@@ -9,8 +9,9 @@
 #import "MorePadMasterViewController.h"
 #import "TermsAndConditionsPadViewController.h"
 #import "MyAccountDetailPadViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface MorePadMasterViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface MorePadMasterViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 @property (strong, nonatomic) NSArray *menuOptionsArray;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UITableView *tableView;
@@ -84,17 +85,37 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 0) {
+        //Mi cuenta
         MyAccountDetailPadViewController *myAccountDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccountDetailPad"];
         NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.splitViewController.viewControllers];
         [viewControllersArray replaceObjectAtIndex:1 withObject:myAccountDetailPadVC];
         self.splitViewController.viewControllers = viewControllersArray;
         
-    } else if (indexPath.row == 2 || indexPath.row == 3) {
+    } else if (indexPath.row == 1) {
+        //Reportar un problema
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
+            [mailComposeViewController setToRecipients:@[@"soporte@caracolplay.com"]];
+            [mailComposeViewController setSubject:@"Reporte de errores CaracolPlay"];
+            mailComposeViewController.mailComposeDelegate = self;
+            mailComposeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:mailComposeViewController animated:YES completion:nil];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Tu dispositivo no está configurado para enviar corre electrónico." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
+    }   else if (indexPath.row == 2 || indexPath.row == 3) {
         TermsAndConditionsPadViewController *termsConditionsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
         NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.splitViewController.viewControllers];
         [viewControllersArray replaceObjectAtIndex:1 withObject:termsConditionsPadVC];
         self.splitViewController.viewControllers = viewControllersArray;
     }
+}
+
+#pragma mark - MFMailComposeViewController 
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIBarPositioningDelegate 

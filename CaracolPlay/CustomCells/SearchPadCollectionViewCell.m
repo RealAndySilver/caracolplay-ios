@@ -11,6 +11,7 @@
 
 @interface SearchPadCollectionViewCell()
 @property (strong, nonatomic) UIView *shadowView;
+@property (strong, nonatomic) StarsView *productionStarsView;
 @end
 
 @implementation SearchPadCollectionViewCell
@@ -47,8 +48,13 @@
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
     self.productionNameLabel.frame = CGRectMake(self.productionImageView.frame.origin.x + self.productionImageView.frame.size.width + 30.0, bounds.size.height/2.0 - 30.0, bounds.size.width - (self.productionImageView.frame.origin.x + self.productionImageView.frame.size.width + 20.0), 30.0);
     
-    self.productionStarsView = [[StarsView alloc]initWithFrame:CGRectMake(self.productionImageView.frame.origin.x + self.productionImageView.frame.size.width + 30.0, bounds.size.height/2.0, 80.0, 16.0) rate:4];
+    self.productionStarsView = [[StarsView alloc]initWithFrame:CGRectMake(self.productionImageView.frame.origin.x + self.productionImageView.frame.size.width + 30.0, bounds.size.height/2.0, 80.0, 16.0) rate:self.rate];
     [self.contentView addSubview:self.productionStarsView];
+}
+
+-(void)setRate:(int)rate {
+    _rate = rate;
+    self.productionStarsView.rate = rate;
 }
 
 @end
