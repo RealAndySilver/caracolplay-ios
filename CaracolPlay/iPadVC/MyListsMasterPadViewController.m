@@ -38,7 +38,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FirstUserListNotification" object:nil userInfo:@{@"FirstUserList": list.episodes}];
     
     NSLog(@"numero de listas parseadas: %d", [self.parsedUserListsArray count]);
-    [self UISetup];
+    [self setupTableView];
 }
 
 #pragma mark - Parsing Methods
@@ -75,7 +75,7 @@
     return _spinner;
 }
 
--(void)UISetup {
+-(void)setupTableView {
     //1. categories list
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.delegate = self;
@@ -84,7 +84,9 @@
     self.tableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     self.tableView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.tableView];
-    
+}
+
+-(void)setupUI {
     //2. navigation Bar
     self.navigationBar = [[UINavigationBar alloc] init];
     self.navigationBar.delegate = self;
@@ -99,12 +101,17 @@
     self.titleImageView = [[UIImageView alloc] init];
     self.titleImageView.image = [UIImage imageNamed:@"MyListsOrangeTitle.png"];
     [self.view addSubview:self.titleImageView];
+    
+    //Create a bar button item to reload the content
+    UIBarButtonItem *reloadBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(getUserLists)];
+    navigationItem.rightBarButtonItem = reloadBarButtonItem;
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor cyanColor];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self.view addSubview:self.spinner];
+    [self setupUI];
     [self getUserLists];
 }
 
@@ -186,13 +193,13 @@
         self.unparsedUserListsArray = responseDictionary[@"user_lists"];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
     [self.spinner stopAnimating];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo al servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma  mark - CreateListViewDelegate

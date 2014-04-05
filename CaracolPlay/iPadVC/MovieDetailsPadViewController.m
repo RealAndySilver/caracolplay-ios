@@ -24,7 +24,7 @@
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
-@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate, ServerCommunicatorDelegate>
+@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -411,22 +411,30 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             if (responseDictionary[@"products"][@"response"]) {
                 //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
                 NSString *alertMessage = responseDictionary[@"products"][@"response"];
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             } else {
                 //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
         } else {
             //El producto si está disponible
             self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
         }
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
     }
 }
 
 -(void)serverError:(NSError *)error {
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    alert.tag = 1;
+    [alert show];
 }
 
 #pragma mark - RateViewDelegate
@@ -469,5 +477,12 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     }
 }
 
+#pragma mark - UIAlertViewDelegate 
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 
 @end

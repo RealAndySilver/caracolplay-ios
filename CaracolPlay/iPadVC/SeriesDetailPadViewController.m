@@ -26,7 +26,7 @@
 #import "SuscriptionAlertPadViewController.h"
 #import "Video.h"
 
-@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
+@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opacityPatternView;
@@ -49,7 +49,7 @@
 @property (assign, nonatomic) NSInteger selectedSeason;
 
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
-
+@property (strong, nonatomic) NSString *selectedEpisodeID;
 @end
 
 @implementation SeriesDetailPadViewController
@@ -119,18 +119,6 @@
 }
 
 #pragma mark - UISetup & Initialization stuff
-/*-(void)parseEpisodesInfo {
-    self.parsedEpisodesArray = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.production.episodes count]; i++) {
-        Episode *episode = [[Episode alloc] initWithDictionary:self.production.episodes[i]];
-        [self.parsedEpisodesArray addObject:episode];
-    }
-    self.production.episodes = self.parsedEpisodesArray;
-}
-
--(void)parseProductionInfo {
-    self.production = [[Product alloc] initWithDictionary:self.productionInfo];
-}*/
 
 -(void)UISetup {
     //2. background image view setup
@@ -258,6 +246,15 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    //Add as an oberver of the VideoShoulBeDisplayed notification. when this notification
+    //is received, the video controller should be presented automaticly
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoShouldBeDisplayedReceived)
+                                                 name:@"Video"
+                                               object:nil];
+    
     //Add the spinner to the view inmediatly
     [self.view addSubview:self.spinner];
     [self.view bringSubviewToFront:self.spinner];
@@ -265,13 +262,12 @@
     //Start the view with season 1
     self.selectedSeason = 0;
     
-    self.view.backgroundColor = [UIColor blackColor];
+    //Call Server
     [self getProductionInfoWithID:self.productID];
 
     //Create the dismiss button. It's neccesary to create te button here, because
     //if there's a server error, the UISetup method won't get called, and nothing will
     //load, so the user won't be able to dismiss the view
-    //1. dismiss buton setup
     self.dismissButton = [[UIButton alloc] init];
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
@@ -344,7 +340,6 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView.tag == 1) {
         //Seasons table view
         self.selectedSeason = indexPath.row;
@@ -355,6 +350,16 @@
         //Episodes table view
         FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+            if (self.production.hasSeasons) {
+                Season *currentSeason = self.production.seasonList[self.selectedSeason];
+                Episode *episode = currentSeason.episodes[indexPath.row];
+                self.selectedEpisodeID = episode.identifier;
+                
+            } else {
+                Episode *episode = self.production.episodes[indexPath.row];
+                self.selectedEpisodeID = episode.identifier;
+            }
+            
             //If the user isn't logged in, he can't watch the video
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
@@ -367,11 +372,14 @@
             if (self.production.hasSeasons) {
                 Season *currentSeason = self.production.seasonList[self.selectedSeason];
                 Episode *episode = currentSeason.episodes[indexPath.row];
+                self.selectedEpisodeID = episode.identifier;
                 [self getIsContentAvailableForUserWithID:episode.identifier];
                 NSLog(@"el identificador del capítulo es: %@", episode.identifier);
                 
             } else {
                 Episode *episode = self.production.episodes[indexPath.row];
+                self.selectedEpisodeID = episode.identifier;
+                NSLog(@"el dientifcador del episodio es %@", self.selectedEpisodeID);
                 [self getIsContentAvailableForUserWithID:episode.identifier];
             }
         }
@@ -443,6 +451,7 @@
             videoPlayer.isWatchingTrailer = NO;
             videoPlayer.progressSec = video.progressSec;
             videoPlayer.productID = self.productID;
+            videoPlayer.episodeID = self.selectedEpisodeID;
             [self presentViewController:videoPlayer animated:YES completion:nil];
         }
         
@@ -454,7 +463,13 @@
     }
 }
 
-#pragma mark - ServerCommunicator 
+#pragma mark - Notification Handlers
+
+-(void)videoShouldBeDisplayedReceived {
+    [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
+}
+
+#pragma mark - ServerCommunicator
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
     [self.view bringSubviewToFront:self.spinner];
@@ -470,9 +485,9 @@
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.productID, rate];
+    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.productID, rate];
     NSLog(@"paramters = %@", parameters);
-    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+    [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
 -(void)getProductionInfoWithID:(NSString *)productID {
@@ -500,10 +515,14 @@
             if (responseDictionary[@"products"][@"response"]) {
                 //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
                 NSString *alertMessage = responseDictionary[@"products"][@"response"];
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             } else {
                 //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
         } else {
             //El producto si está disponible
@@ -511,7 +530,7 @@
         }
     
     //Response:UpdateUserFeedbackForProduct
-    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {
+    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
         NSLog(@"recibí respuesta exitosa de UpdateUserFeedbackForProduct: %@", responseDictionary);
         
     //Response: IsContentAvailableForUser
@@ -521,7 +540,9 @@
         [self checkVideoAvailability:video];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
     }
 }
 
@@ -530,7 +551,9 @@
     [self.spinner stopAnimating];
     
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    alert.tag = 1;
+    [alert show];
 }
 
 #pragma mark - EpisodesPadTableViewCellDelegate
@@ -609,6 +632,14 @@
         } else {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

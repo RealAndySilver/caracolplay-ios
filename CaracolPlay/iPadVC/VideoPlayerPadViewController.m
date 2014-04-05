@@ -12,7 +12,7 @@
 #import "OOOoyalaError.h"
 #import "ServerCommunicator.h"
 
-@interface VideoPlayerPadViewController () < UIBarPositioningDelegate>
+@interface VideoPlayerPadViewController () < UIBarPositioningDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UINavigationItem *navBarItem;
@@ -96,13 +96,30 @@
 -(void)dismissVC {
     if (self.videoWasPlayed) {
         NSLog(@"envié la info de los segundos al server");
+        
         //If the video was played, send the progress sec info to the server
         ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
-        NSString *parameters = [NSString stringWithFormat:@"product_id=%@&time=%f", self.productID, self.ooyalaPlayerViewController.player.playheadTime];
-        [serverCommunicator callServerWithPOSTMethod:@"VideoWatched" andParameter:parameters httpMethod:@"POST"];
+        serverCommunicator.delegate = self;
+        int segundos = (int)self.ooyalaPlayerViewController.player.playheadTime;
+        NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.episodeID, segundos];
+        NSLog(@"parámetros: %@", parameters);
+        [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    if ([methodName isEqualToString:@"VideoWatched"] && responseDictionary) {
+        NSLog(@"respuesta de los segundos del video: %@", responseDictionary);
+        
+    } else {
+        NSLog(@"No se envio la info al server");
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    NSLog(@"no se envió la info al server");
 }
 
 #pragma mark - UIBarPositioningDelegate

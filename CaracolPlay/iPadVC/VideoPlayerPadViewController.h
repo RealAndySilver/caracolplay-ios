@@ -13,4 +13,5 @@
 @property (strong, nonatomic) NSString *productID;
 @property (strong, nonatomic) NSString *embedCode;
 @property (assign, nonatomic) BOOL isWatchingTrailer;
+@property (assign, nonatomic) NSString *episodeID;
 @end

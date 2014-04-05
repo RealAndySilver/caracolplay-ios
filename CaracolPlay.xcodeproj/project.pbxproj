@@ -204,6 +204,10 @@
 		A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44901899CC8100E72135 /* AlertViewBackground.png */; };
 		A05C44951899CEA700E72135 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C44941899CEA700E72135 /* FXBlurView.m */; };
 		A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C44961899CEF000E72135 /* Accelerate.framework */; };
+		A069A74C18EF1472003BF3AD /* RefreshIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74A18EF1472003BF3AD /* RefreshIcon.png */; };
+		A069A74D18EF1472003BF3AD /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */; };
+		A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */; };
+		A069A75318EF7706003BF3AD /* RentConfirmFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A069A75218EF7706003BF3AD /* RentConfirmFromInsideViewController.m */; };
 		A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */; };
 		A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */; };
 		A06C2D6A18A41DD700044F81 /* MoviesOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */; };
@@ -589,6 +593,12 @@
 		A05C44931899CEA700E72135 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		A05C44941899CEA700E72135 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		A05C44961899CEF000E72135 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		A069A74A18EF1472003BF3AD /* RefreshIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshIcon.png; path = Resources/Images/iPad/RefreshIcon.png; sourceTree = "<group>"; };
+		A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RefreshIcon@2x.png"; path = "Resources/Images/iPad/RefreshIcon@2x.png"; sourceTree = "<group>"; };
+		A069A74E18EF7018003BF3AD /* RentFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentFromInsideViewController.h; path = iPadVC/RentFromInsideViewController.h; sourceTree = "<group>"; };
+		A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentFromInsideViewController.m; path = iPadVC/RentFromInsideViewController.m; sourceTree = "<group>"; };
+		A069A75118EF7706003BF3AD /* RentConfirmFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentConfirmFromInsideViewController.h; path = iPadVC/RentConfirmFromInsideViewController.h; sourceTree = "<group>"; };
+		A069A75218EF7706003BF3AD /* RentConfirmFromInsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentConfirmFromInsideViewController.m; path = iPadVC/RentConfirmFromInsideViewController.m; sourceTree = "<group>"; };
 		A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FondoBarraBusqueda.png; path = Resources/Images/FondoBarraBusqueda.png; sourceTree = "<group>"; };
 		A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoviesOpacityPattern.png; path = Resources/Images/MoviesOpacityPattern.png; sourceTree = "<group>"; };
 		A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoviesOpacityPattern@2x.png"; path = "Resources/Images/MoviesOpacityPattern@2x.png"; sourceTree = "<group>"; };
@@ -1020,6 +1030,10 @@
 			children = (
 				8B8A215A18E6270A004C262D /* IngresarFromInsideViewController.h */,
 				8B8A215B18E6270A004C262D /* IngresarFromInsideViewController.m */,
+				A069A74E18EF7018003BF3AD /* RentFromInsideViewController.h */,
+				A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */,
+				A069A75118EF7706003BF3AD /* RentConfirmFromInsideViewController.h */,
+				A069A75218EF7706003BF3AD /* RentConfirmFromInsideViewController.m */,
 			);
 			name = "Login&Stuff From Production";
 			sourceTree = "<group>";
@@ -1027,6 +1041,8 @@
 		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				A069A74A18EF1472003BF3AD /* RefreshIcon.png */,
+				A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */,
 				8B33682218B68353000DD1B5 /* PlayIconHomeScreenPad.png */,
 				8B33682318B68353000DD1B5 /* PlayIconHomeScreenPad@2x.png */,
 				A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */,
@@ -1616,6 +1632,7 @@
 				A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */,
 				8BB5222118AA9BC60027CA59 /* CategoriesOrangeTitle.png in Resources */,
 				8BD2C5E6189C22BF00C76AA5 /* BotonCerrarSesion@2x.png in Resources */,
+				A069A74D18EF1472003BF3AD /* RefreshIcon@2x.png in Resources */,
 				8BE7A374189AEFBD00AF8E90 /* MyListsTabBarIcon.png in Resources */,
 				8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */,
 				8BA9B27918A01DD9003DBBDC /* Close@2x.png in Resources */,
@@ -1627,6 +1644,7 @@
 				8BA9B267189FFFD1003DBBDC /* InicioiPad@2x.png in Resources */,
 				8BBB936F18CA5D7700AC7A58 /* RentContentAlertBackground.png in Resources */,
 				8B64F7FD18BBFEDE007E3C06 /* AddToListIcon@2x.png in Resources */,
+				A069A74C18EF1472003BF3AD /* RefreshIcon.png in Resources */,
 				8B892B2C18B2AF4C0066926C /* MoreTabBarIcon@2x.png in Resources */,
 				8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */,
 				8B0194E018B3F4CB00380EC7 /* CaracolPlayHeader@2x.png in Resources */,
@@ -1785,6 +1803,7 @@
 				8B33681E18B66AE7000DD1B5 /* MBCheckMarkView.m in Sources */,
 				8B33681A18B66AE7000DD1B5 /* UIView+Autolayout.m in Sources */,
 				8B164B8418A97412001803A9 /* Rented.m in Sources */,
+				A069A75318EF7706003BF3AD /* RentConfirmFromInsideViewController.m in Sources */,
 				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
 				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
@@ -1822,6 +1841,7 @@
 				A095A05218B55A72004F05BB /* RedeemCodeAlertViewController.m in Sources */,
 				8BED8A8B18C62BE00076EA26 /* CPIAPHelper.m in Sources */,
 				8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */,
+				A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,
 				8B98669B18AE911900AEA77A /* StarsView.m in Sources */,
 				8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */,

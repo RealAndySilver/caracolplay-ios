@@ -7,6 +7,8 @@
 //
 
 #import "SuscriptionAlertPadViewController.h"
+#import "IngresarFromInsideViewController.h"
+#import "RentFromInsideViewController.h"
 
 @interface SuscriptionAlertPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -49,6 +51,7 @@
     [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.enterButton addTarget:self action:@selector(goToIngresarFromInside) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.enterButton];
     
     //3. Rent button
@@ -57,6 +60,7 @@
     [self.rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.rentButton addTarget:self action:@selector(goToRentFromInside) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.rentButton];
     
     //4. suscribe button
@@ -91,11 +95,26 @@
 
 #pragma mark - Actions 
 
+-(void)goToIngresarFromInside {
+    IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
+    ingresarFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:ingresarFromInsideVC animated:YES completion:nil];
+}
+
+-(void)goToRentFromInside {
+    RentFromInsideViewController *rentFromInside = [self.storyboard instantiateViewControllerWithIdentifier:@"RentFromInside"];
+    rentFromInside.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    rentFromInside.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:rentFromInside animated:YES completion:nil];
+}
+
 -(void)goToSuscriptionVC {
     
 }
 
 -(void)dismissVC {
+    NSLog(@"haré dismiss");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

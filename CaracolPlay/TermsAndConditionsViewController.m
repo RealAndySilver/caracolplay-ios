@@ -28,7 +28,6 @@
     self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
     self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
     NSLog(@"%@", self.termsAndConditionsString);
-    //[self getTermsAndConditionsFromServer];
     [self setupUI];
 }
 

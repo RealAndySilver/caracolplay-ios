@@ -7,6 +7,7 @@
 //
 
 #import "MyAccountDetailPadViewController.h"
+#import "TermsAndConditionsPadViewController.h"
 #import "FileSaver.h"
 
 @interface MyAccountDetailPadViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -140,6 +141,7 @@
     UIButton *termsAndConditionsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, closeSessionButton.frame.origin.y + closeSessionButton.frame.size.height + 20.0, self.scrollView.frame.size.width - 100.0, 30.0)];
     [termsAndConditionsButton setTitle:@"Términos y Condiciones" forState:UIControlStateNormal];
     [termsAndConditionsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [termsAndConditionsButton addTarget:self action:@selector(goToConditionsTerms) forControlEvents:UIControlEventTouchUpInside];
     termsAndConditionsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:termsAndConditionsButton];
     
@@ -147,6 +149,7 @@
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.scrollView.frame.size.width - 100.0, 30.0)];
     [serviceTermsButton setTitle:@"Politicas del Servicio" forState:UIControlStateNormal];
     [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:serviceTermsButton];
     
@@ -222,6 +225,20 @@
 }
 
 #pragma mark - Actions 
+
+-(void)goToPrivacyTerms {
+    TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+    termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
+    [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
+}
+
+-(void)goToConditionsTerms {
+    TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+    termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
+    [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
+}
 
 -(void)closeSession {
     NSLog(@"Cerré Sesión");

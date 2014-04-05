@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TermsAndConditionsPadViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedInFormSheet;
 @end

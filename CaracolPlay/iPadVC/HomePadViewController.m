@@ -16,7 +16,10 @@
 #import "FileSaver.h"
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
-#import "MBHUDView.h"
+#import "MyListsDetailPadViewController.h"
+#import "MyListsMasterPadViewController.h"
+#import "MorePadMasterViewController.h"
+#import "MyAccountDetailPadViewController.h"
 
 @interface HomePadViewController () <iCarouselDataSource, iCarouselDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -25,6 +28,7 @@
 @property (strong, nonatomic) NSMutableArray *parsedFeaturedProductions;
 @property (strong, nonatomic) NSTimer *carouselScrollingTimer;
 @property (strong, nonatomic) iCarousel *carousel;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation HomePadViewController
@@ -32,20 +36,26 @@
 #define SCREEN_WIDTH 1024.0
 #define SCREEN_HEIGHT 768.0
 
-#pragma mark - Lazy Instantiation
-
-
-
-#pragma mark - UI Setup & Initilization Methods
-
--(void)setupAutomaticCarouselScrolling {
-    self.carouselScrollingTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(scrollCarousel) userInfo:nil repeats:YES];
-}
+#pragma mark - Setters & Getters
 
 -(void)setUnparsedFeaturedProductionsInfo:(NSArray *)unparsedFeaturedProductionsInfo {
     _unparsedFeaturedProductionsInfo = unparsedFeaturedProductionsInfo;
     [self parseFeaturedProductionsFromServer];
     [self UISetup];
+}
+
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(SCREEN_WIDTH/2.0 - 20.0, SCREEN_HEIGHT/2.0 - 20.0, 40.0, 40.0);
+    }
+    return _spinner;
+}
+
+#pragma mark - UI Setup & Initilization Methods
+
+-(void)setupAutomaticCarouselScrolling {
+    self.carouselScrollingTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(scrollCarousel) userInfo:nil repeats:YES];
 }
 
 -(void)parseFeaturedProductionsFromServer {
@@ -60,11 +70,6 @@
 }
 
 -(void)UISetup {
-    //1. background image setup
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HomeScreenBackgroundPad.png"]];
-    self.backgroundImageView.frame = CGRectMake(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT - 44.0);
-    [self.view addSubview:self.backgroundImageView];
-    
     //2. Carousel setup
     self.carousel = [[iCarousel alloc] init];
     self.carousel.type = iCarouselTypeRotary;
@@ -84,9 +89,27 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.spinner];
+    
+    //Add as an observer of the notification center to create the
+    //the aditional tabs of the tab bar controller when neccesaty
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createAditionalTabs)
+                                                 name:@"CreateAditionalTabsNotification"
+                                               object:nil];
+    
+    //1. background image setup
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HomeScreenBackgroundPad.png"]];
+    self.backgroundImageView.frame = CGRectMake(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT - 44.0);
+    [self.view addSubview:self.backgroundImageView];
+    
+    //Create a reload button
+    UIButton *reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 40.0, 44.0, 44.0)];
+    [reloadButton setBackgroundImage:[UIImage imageNamed:@"RefreshIcon.png"] forState:UIControlStateNormal];
+    [reloadButton addTarget:self action:@selector(getFeaturedFromServer) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:reloadButton];
+    
+    //Call server
     [self getFeaturedFromServer];
-    //[self parseFeaturedInfo];
-    //[self UISetup];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -116,26 +139,57 @@
 #pragma mark - Server stuff
 
 -(void)getFeaturedFromServer {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"GetFeatured" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
+    
     NSLog(@"Recibí info del servidor: %@", responseDictionary);
-    [MBHUDView dismissCurrentHUD];
     if ([methodName isEqualToString:@"GetFeatured"] && [responseDictionary[@"status"] boolValue]) {
         self.unparsedFeaturedProductionsInfo = responseDictionary[@"featured"];
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a las producciones destacadas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [self.spinner stopAnimating];
+    
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a las producciones destacadas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)createAditionalTabs {
+    NSLog(@"crearé los tabs adicionale");
+    //This method create the two aditional tab bars in the tab bar. this is neccesary because
+    //when the user is logout, we activate just three tabs, but when the user is log in, we activate
+    //the five tabs.
+    
+    //4. MyLists View
+    UISplitViewController *myListsSplitViewController = [[UISplitViewController alloc] init];
+    MyListsMasterPadViewController *myListsMasterVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsMaster"];
+    MyListsDetailPadViewController *myListsDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
+    myListsSplitViewController.viewControllers = @[myListsMasterVC, myListsDetailVC];
+    [myListsSplitViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+    
+    //5 'Mas' splitview controller
+    UISplitViewController *moreSplitViewController = [[UISplitViewController alloc] init];
+    MorePadMasterViewController *morePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MorePadMaster"];
+    MyAccountDetailPadViewController *myAccountDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccountDetailPad"];
+    moreSplitViewController.viewControllers = @[morePadViewController, myAccountDetailPadVC];
+    [moreSplitViewController.tabBarItem initWithTitle:@"Más" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+    
+    NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
+    [viewControllersArray addObject:myListsSplitViewController];
+    [viewControllersArray addObject:moreSplitViewController];
+    self.tabBarController.viewControllers = viewControllersArray;
 }
 
 #pragma mark - iCarouselDataSource

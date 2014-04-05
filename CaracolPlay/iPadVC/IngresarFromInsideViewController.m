@@ -7,43 +7,61 @@
 //
 
 #import "IngresarFromInsideViewController.h"
+#import "FileSaver.h"
 
 @interface IngresarFromInsideViewController ()
-
+@property (strong, nonatomic) UIButton *dismissButton;
+@property (weak, nonatomic) IBOutlet UIButton *enterButton;
+@property (weak, nonatomic) IBOutlet UITextField *userTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @end
 
 @implementation IngresarFromInsideViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
+-(void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor blackColor];
+    [self setupUI];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)setupUI {
+    //1. dismiss buton setup
+    self.dismissButton = [[UIButton alloc] init];
+    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.dismissButton];
+    
+    //Enter button
+    [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
 }
-*/
+
+#pragma mark - Actions 
+
+-(void)dismissVC {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)enter {
+    if ([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0) {
+        //[self dismissVC];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+        
+        //Save a key to indicate that the user is logged in
+        //Save a key locally indicating that the user has logged in.
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
 
 @end
