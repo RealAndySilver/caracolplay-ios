@@ -28,8 +28,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.sendProgressSecToServer = NO;
-    //[self performSelector:@selector(postProgressSecToServer) withObject:nil afterDelay:5.0];
-    
+    [self sendPlayVideoPetitionToServer];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
     
     //Create the Ooyala ViewController
@@ -43,11 +42,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [self.view addSubview:self.ooyalaPlayerViewController.view];
     
     //Load the video
-    if (self.embedCode) {
-        [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
-    } else {
-        [self.ooyalaPlayerViewController.player setEmbedCode:EMBED_CODE];
-    }
+    [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -66,7 +61,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    //[self postProgressSecToServer];
+    [self postProgressSecToServer];
     self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
     NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
@@ -74,18 +69,27 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 #pragma mark - Server Stuff
 
+-(void)sendPlayVideoPetitionToServer {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"PlayVideo" andParameter:self.productID];
+}
+
 -(void)postProgressSecToServer {
     //FIXME: no está funcionando la petición
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&time=%f", self.productID, self.ooyalaPlayerViewController.player.playheadTime];
-    [serverCommunicator callServerWithPOSTMethod:@"VideoWatched" andParameter:parameters httpMethod:@"POST"];
+    NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.productID, (int)self.ooyalaPlayerViewController.player.playheadTime];
+    [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];
     NSLog(@"parámetros: %@", parameters);
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     if ([methodName isEqualToString:@"VideoWatched"] && responseDictionary) {
         NSLog(@"Petición exitosa: %@", responseDictionary);
+        
+    } else if ([methodName isEqualToString:@"PlayVideo"] && responseDictionary) {
+        NSLog(@"peticion PlayVideo exitosa: %@", responseDictionary);
     } else {
         NSLog(@"Hubo un problema enviando la info al server");
     }

@@ -17,6 +17,7 @@
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
 #import "MBHUDView.h"
+//#import "CPIAPHelper.h"
 
 @interface HomeViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -137,6 +138,13 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    /*[[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+        if (success) {
+            NSLog(@"el numero de productos que hay es %d", [products count]);
+        } else {
+            NSLog(@"no hay productos");
+        }
+    }];*/
     self.firstTimeViewAppears = YES;
     
     //Create a bar button item to recall the getFeaturedProductsFromServer
@@ -195,7 +203,7 @@
 
 -(void)serverError:(NSError *)error {
     [MBHUDView dismissCurrentHUD];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor revisa que te encuentres conectado a una red Wi-Fi y vuelve a cargar la aplicación" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor revisa que te encuentres conectado a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     NSLog(@"Server error: %@ %@", error, [error localizedDescription]);
 }
 

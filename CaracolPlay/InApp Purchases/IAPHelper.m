@@ -119,6 +119,7 @@
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"completeTransaction...");
+    NSLog(@"Transaction identifier: %@", transaction.transactionIdentifier);
     [self provideContentForTransaction:transaction
                      productIdentifier:transaction.payment.productIdentifier];
 }

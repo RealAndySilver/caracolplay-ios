@@ -10,6 +10,7 @@
 
 @interface Video : NSObject
 @property (assign, nonatomic) BOOL status;
+@property (assign, nonatomic) BOOL is3G;
 @property (assign, nonatomic) int codMessage;
 @property (strong, nonatomic) NSString *message;
 @property (assign, nonatomic) int progressSec;

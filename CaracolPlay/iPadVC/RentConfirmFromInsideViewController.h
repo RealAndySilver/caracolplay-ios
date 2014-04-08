@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RentConfirmFromInsideViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromIngresarFromInside;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromRentFromInside;
 @end

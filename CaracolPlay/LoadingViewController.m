@@ -11,6 +11,7 @@
 #import "MyNavigationController.h"
 #import "MainTabBarViewController.h"
 #import "FileSaver.h"
+#import "UserInfo.h"
 
 @interface LoadingViewController ()
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -47,7 +48,12 @@
     self.spinner = nil;
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+    NSDictionary *userDic = [fileSaver getDictionary:@"UserHasLoginDic"];
+    if ([userDic[@"UserHasLoginKey"] boolValue]) {
+        [UserInfo sharedInstance].userName = userDic[@"UserName"];
+        [UserInfo sharedInstance].password = userDic[@"Password"];
+        [UserInfo sharedInstance].session = userDic[@"Session"];
+        
         //The user is login, so go to the home screen directly
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarVC animated:YES completion:nil];

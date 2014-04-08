@@ -12,6 +12,8 @@
 //#define ENDPOINT @"http://iamstudio-sweetwater.herokuapp.com/"
 //#define ENDPOINT @"http://sweetwater.jit.su"
 #define ENDPOINT @"http://appsbetadev.caracolplay.com"
+#import "IAmCoder.h"
+#import "UserInfo.h"
 
 @implementation ServerCommunicator
 @synthesize tag,delegate;
@@ -28,15 +30,15 @@
     parameter=[parameter stringByExpandingTildeInPath];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@",ENDPOINT,method,parameter]];
     NSLog(@"URL : %@", [url description]);
-	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
-    [theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];
+	//NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *theRequest = [self getHeaderForUrl:url];
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject
                                                                  delegate:nil
                                                             delegateQueue:[NSOperationQueue mainQueue]];
     
-    NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
+    NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithRequest:theRequest
                                                     completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
                                                         if(error == nil){
                                                             NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -54,9 +56,9 @@
     parameter=[parameter stringByExpandingTildeInPath];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",ENDPOINT,method]];
     NSLog(@"URL : %@", [url description]);
-	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
+	//NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *theRequest = [self getHeaderForUrl:url];
     [theRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];
     [theRequest setHTTPMethod:httpMethod];
     NSData *data=[NSData dataWithBytes:[parameter UTF8String] length:[parameter length]];
     [theRequest setHTTPBody: data];
@@ -78,4 +80,40 @@
                                                     }];
     [dataTask resume];
 }
+//usuario:satinramiro pass: caracol11
+//auth-> doble vez encodeado en base 64 usuario:password:session
+//TS70-> tiempo desde 1970
+//token-> tiempo+llave -> base 64
+
+#pragma mark - http header
+-(NSMutableURLRequest*)getHeaderForUrl:(NSURL*)url{
+    /*NSString *key=@"lop+2dzuioa/000mojijiaop";
+    NSString *time=[IAmCoder dateString];
+    NSString *encoded=[NSString stringWithFormat:@"%@",[IAmCoder sha256:[NSString stringWithFormat:@"%@%@",key,time]]];
+	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
+    [theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    [theRequest setValue:[NSString stringWithFormat:@"%@",[IAmCoder base64String:key]] forHTTPHeaderField:@"C99-RSA"];
+    [theRequest setValue:[NSString stringWithFormat:@"%@",[IAmCoder base64String:time]] forHTTPHeaderField:@"SSL"];
+    [theRequest setValue:encoded forHTTPHeaderField:@"token"];
+    NSLog(@"Header %@\nTime %@",theRequest.allHTTPHeaderFields,time);
+    return theRequest;*/
+ 
+    NSString *privateKey = @"aREwKMVVmjA81aea0mVNFh";
+    NSString *time = [IAmCoder dateString];
+    //NSString *authString = [NSString stringWithFormat:@"%@:%@", self.user, self.password];
+    NSString *authString = [NSString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
+    NSLog(@"authstring: %@", authString);
+    NSString *authEncoded = [IAmCoder base64EncodeString:authString];
+    NSString *authDoubleEncoded = [IAmCoder base64EncodeString:authEncoded];
+    NSString *token = [time stringByAppendingString:privateKey];
+    NSString *tokenEncoded = [IAmCoder base64EncodeString:token];
+    
+    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
+    //[theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    [theRequest setValue:authDoubleEncoded forHTTPHeaderField:@"auth"];
+    [theRequest setValue:time forHTTPHeaderField:@"TS70"];
+    [theRequest setValue:tokenEncoded forHTTPHeaderField:@"token"];
+    return theRequest;
+}
+
 @end

@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface IngresarFromInsideViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromRentScreen;
+@property (assign, nonatomic) BOOL controllerWasPresentFromAlertScreen;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromSuscriptionScreen;
 @end

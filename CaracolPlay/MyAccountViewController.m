@@ -13,13 +13,17 @@
 #import "MyNavigationController.h"
 #import "HomeViewController.h"
 #import "TermsAndConditionsViewController.h"
+#import "UserInfo.h"
+#import "ServerCommunicator.h"
+#import "MBHUDView.h"
 
-@interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate,  ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSArray *personalInfoTableViewTitles;
-@property (strong, nonatomic) NSArray *personalInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSMutableArray *personalInfoTableViewSecondaryInfo;
 @property (strong, nonatomic) NSArray *suscriptionInfoTableViewTitles;
-@property (strong, nonatomic) NSArray *suscriptionInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSMutableArray *suscriptionInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSDictionary *personalInfo;
 @end
 
 @implementation MyAccountViewController
@@ -33,12 +37,12 @@
     return _suscriptionInfoTableViewTitles;
 }
 
--(NSArray *)suscriptionInfoTableViewSecondaryInfo {
+/*-(NSArray *)suscriptionInfoTableViewSecondaryInfo {
     if (!_suscriptionInfoTableViewSecondaryInfo) {
         _suscriptionInfoTableViewSecondaryInfo = @[@"Normal", @"15/10/2015"];
     }
     return _suscriptionInfoTableViewSecondaryInfo;
-}
+}*/
 
 -(NSArray *)personalInfoTableViewTitles {
     if (!_personalInfoTableViewTitles) {
@@ -47,11 +51,26 @@
     return _personalInfoTableViewTitles;
 }
 
--(NSArray *)personalInfoTableViewSecondaryInfo {
-    if (!_personalInfoTableViewSecondaryInfo) {
-        _personalInfoTableViewSecondaryInfo = @[@"Diego Fernando", @"Vidal Illera", @"10/01/1991", @"Masculino", @"Dieluma", @"diefer_91@hotmail.com"];
+-(void)setPersonalInfo:(NSDictionary *)personalInfo {
+    _personalInfo = personalInfo;
+    self.personalInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"nombres"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"Apellidos"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"fecha_de_nacimiento"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"genero"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"alias"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"mail"]];
+    
+    self.suscriptionInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
+    if ([personalInfo[@"is_suscription"] boolValue]) {
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"Normal"];
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:personalInfo[@"suscription_ends"]];
+    } else {
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
     }
-    return _personalInfoTableViewSecondaryInfo;
+    
+    [self UISetup];
 }
 
 #pragma mark - View Lifecycle
@@ -60,7 +79,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"Mi Cuenta";
     self.view.backgroundColor = [UIColor blackColor];
-    [self UISetup];
+    [self getUser];
 }
 
 #pragma mark - UI Setup
@@ -68,7 +87,7 @@
 -(void)UISetup {
     
     //1. Scroll view
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 50.0)];
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.alwaysBounceVertical = YES;
     [self.view addSubview:self.scrollView];
@@ -232,8 +251,16 @@
     
     //Change our local key that indicates that the user has closed session
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO,
+                               @"UserName" : @"",
+                               @"Password" : @""
+                               } withKey:@"UserHasLoginDic"];
     [MBHUDView hudWithBody:@"Salida exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    
+    //Erase user data from our user info singleton
+    [UserInfo sharedInstance].userName = @"";
+    [UserInfo sharedInstance].password = @"";
+    [UserInfo sharedInstance].session = @"";
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
@@ -245,6 +272,31 @@
     MyNavigationController *navigationController = (MyNavigationController *)self.tabBarController.viewControllers[0];
     //HomeViewController *homeViewController = navigationController.viewControllers[0];
     [navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark - Server Stuff
+
+-(void)getUser {
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetUser" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"GetUser"] && dictionary) {
+        NSLog(@"Peticio GetUser exitosa: %@", dictionary);
+        self.personalInfo = dictionary[@"user"][@"info"][0];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Interface Orientation

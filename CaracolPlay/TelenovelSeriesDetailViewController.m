@@ -32,6 +32,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "ContentNotAvailableForUserViewController.h"
 #import "ServerCommunicator.h"
 #import "Video.h"
+#import "NSDictionary+NullReplacement.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -227,7 +228,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     detailTextView.font = [UIFont systemFontOfSize:13.0];
     [self.view addSubview:detailTextView];
     
-    if (self.production.hasSeasons) {
+    if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //'Temporadas' button setup
         self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, detailTextView.frame.origin.y + detailTextView.frame.size.height, self.view.frame.size.width - 20.0, 44.0)];
         [self.seasonsButton setTitle:@"Temporada 1 ►" forState:UIControlStateNormal];
@@ -239,7 +240,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
     
     CGFloat tableViewOriginY;
-    if (self.production.hasSeasons) {
+    if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height;
     } else {
         tableViewOriginY = detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0;
@@ -307,6 +308,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     Season *season = self.production.seasonList[self.selectedSeason];
+    NSLog(@"selected season: %d", self.selectedSeason);
     return [season.episodes count];
 }
 
@@ -328,7 +330,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     //The user is logged in, so get the selected item ID
     Season *currentSeason = self.production.seasonList[self.selectedSeason];
     Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
@@ -412,13 +413,24 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             
         } else if (status == ReachableViaWWAN) {
-            //The user can't watch the video because the connection is to slow
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            if (video.is3G) {
+                //The user can watch it with 3G
+                VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.productID = self.selectedEpisodeID;
+                videoPlayer.progressSec = video.progressSec;
+                [self.navigationController pushViewController:videoPlayer animated:YES];
+            } else {
+                //The user can't watch the video because the connection is to slow
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
             
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
             VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.embedCode = video.embedHD;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = self.selectedEpisodeID;
             [self.navigationController pushViewController:videoPlayer animated:YES];
         }
         
@@ -437,8 +449,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.production.identifier, rate];
-    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
+    [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
@@ -457,19 +469,36 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
-    if ([methodName isEqualToString:@"GetProductWithID"]) {
-        NSLog(@"Recibí la info del producto: %@", dictionary);
-        if (!dictionary) {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            NSLog(@"el dic está en null");
+    
+    if ([methodName isEqualToString:@"GetProductWithID"] && [dictionary[@"status"] boolValue]) {
+        if (![dictionary[@"products"][@"status"] boolValue]) {
+            NSLog(@"El producto no está disponible");
+            //Hubo algún problema y no se pudo acceder al producto
+            if (dictionary[@"products"][@"response"]) {
+                //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
+                NSString *alertMessage = dictionary[@"products"][@"response"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
+                
+            } else {
+                //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
+            }
+            
         } else {
+            //El status llegó true, entonces no hubo problema accediendo al producto
+            NSLog(@"El producto si está disponible");
             self.unparsedProductionInfoDic = dictionary[@"products"][@"0"][0];
         }
     
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [dictionary[@"status"] boolValue]) {
         //La petición fue exitosa
         NSLog(@"info del video: %@", dictionary);
-        Video *video = [[Video alloc] initWithDictionary:dictionary[@"video"]];
+        NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
+        Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
         [self checkVideoAvailability:video];
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && dictionary){
@@ -495,8 +524,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)seasonSelectedNotificationReceived:(NSNotification *)notification {
     NSDictionary *info = [notification userInfo];
-    NSLog(@"La temporada que se seleccionó fue %d", [info[@"SeasonSelected"] intValue]);
     self.selectedSeason = [info[@"SeasonSelected"] intValue];
+    NSLog(@"se selecciono la temporada %d", self.selectedSeason);
     [self.seasonsButton setTitle:[NSString stringWithFormat:@"Temporada %d ►", self.selectedSeason + 1] forState:UIControlStateNormal];
     [self.tableView reloadData];
 }
@@ -576,11 +605,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UIAlertViewDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    if (alertView.tag == 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    /*if (buttonIndex == 1) {
         IngresarViewController *ingresarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
         ingresarVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController pushViewController:ingresarVC animated:YES];
-    }
+    }*/
 }
 
 #pragma mark - UIActionSheetDelegate

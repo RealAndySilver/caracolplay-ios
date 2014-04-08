@@ -16,9 +16,22 @@
 @implementation CPIAPHelper
 
 -(instancetype)init {
-    IAPProduct *suscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testsuscription"];
-    IAPProduct *rentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testrentedproduction"];
-    NSMutableDictionary *products = [@{suscriptionProduct.productIdentifier : suscriptionProduct, rentedProduct.productIdentifier : rentedProduct} mutableCopy];
+    //IAPProduct *suscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testsuscription"];
+    //IAPProduct *rentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testrentedproduction"];
+    //NSMutableDictionary *products = [@{suscriptionProduct.productIdentifier : suscriptionProduct, rentedProduct.productIdentifier : rentedProduct} mutableCopy];
+    IAPProduct *colombiaEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.event"];
+    IAPProduct *colombiaRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.rent"];
+    IAPProduct *colombiaSuscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
+    IAPProduct *restOfWorldEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.event"];
+    IAPProduct *restOfWorldRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.rent"];
+    IAPProduct *restOfWorldSuscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
+    NSMutableDictionary *products = [@{colombiaEventProduct.productIdentifier : colombiaEventProduct,
+                                       colombiaRentedProduct.productIdentifier : colombiaRentedProduct,
+                                       colombiaSuscriptionProduct.productIdentifier : colombiaSuscriptionProduct,
+                                       restOfWorldEventProduct.productIdentifier : restOfWorldEventProduct,
+                                       restOfWorldRentedProduct.productIdentifier : restOfWorldRentedProduct,
+                                       restOfWorldSuscriptionProduct.productIdentifier : restOfWorldSuscriptionProduct
+                                       } mutableCopy];
     if (self = [super initWithProducts:products]) {
         
     }

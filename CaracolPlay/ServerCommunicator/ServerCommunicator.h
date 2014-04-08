@@ -16,6 +16,8 @@
 @interface ServerCommunicator : NSObject<UITextFieldDelegate,NSXMLParserDelegate,UIApplicationDelegate>{
 }
 @property int tag;
+//@property (strong, nonatomic) NSString *user;
+//@property (strong, nonatomic) NSString *password;
 @property (nonatomic,retain) id<ServerCommunicatorDelegate> delegate;
 
 -(void)callServerWithGETMethod:(NSString*)method andParameter:(NSString*)parameter;

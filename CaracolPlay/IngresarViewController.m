@@ -14,8 +14,10 @@
 #import "RentContentConfirmationViewController.h"
 #import "SuscriptionConfirmationViewController.h"
 #import "CPIAPHelper.h"
+#import "ServerCommunicator.h"
+#import "UserInfo.h"
 
-@interface IngresarViewController () <UITextFieldDelegate>
+@interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -37,19 +39,19 @@
     
     if (self.controllerWasPresentedFromInitialScreen) {
         [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
-        [self.enterButton addTarget:self action:@selector(goToHomeScreenDirectly) forControlEvents:UIControlEventTouchUpInside];
+        [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
         
     } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
         [self.enterButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
-        [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+        [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
     
     } else if (self.controllerWasPresentedFromProductionScreen) {
         [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
-        [self.enterButton addTarget:self action:@selector(enterAndReturnToProduction) forControlEvents:UIControlEventTouchUpInside];
+        [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
     
     } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
         [self.enterButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
-        [self.enterButton addTarget:self action:@selector(enterSuscribeAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+        [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
     }
     
     
@@ -93,26 +95,19 @@
     [self.passwordTextfield resignFirstResponder];
 }
 
--(void)enterAndReturnToProduction {
-    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
-        FileSaver *fileSaver = [[FileSaver alloc] init];
-        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+-(void)enter {
+    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
         
-        //Pop all view controllers to the root view controller (home screen) if the
-        //user came here from a production screen.
-        //[MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-        NSArray *viewControllers = [self.navigationController viewControllers];
-        for (int i = [viewControllers count] - 1; i >= 0; i--){
-            id obj = [viewControllers objectAtIndex:i];
-            if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
-                [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
-                [self.navigationController popToViewController:obj animated:YES];
-                //Post a notification to tell the production view controller that it needs to display the video inmediatly
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
-                break;
-            }
-        }
-        [self createAditionalTabsInTabBarController];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+/*-(void)enterAndReturnToProduction {
+    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
+        
     } else {
          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -120,21 +115,8 @@
 
 -(void)enterSuscribeAndGoToHomeScreen {
     if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
-        
-        //Request products from Apple
-        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-            [MBHUDView dismissCurrentHUD];
-            if (success) {
-                if (products) {
-                    IAPProduct *product = [products firstObject];
-                    [[CPIAPHelper sharedInstance] buyProduct:product];
-                }
-            } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Imposible conectarse con iTunes Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            }
-        }];
-        
+        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
+    
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -142,46 +124,46 @@
 
 -(void)goToHomeScreenDirectly {
     if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
-        //Testing purposes only. If the user has entered information in both textfields,
-        //make a succesful login and save a key to know that the user is login.
-        FileSaver *fileSaver = [[FileSaver alloc] init];
-        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
         
-        [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-        //Present the home screen modally if the user came here from the initial screen.
-        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-        [self presentViewController:mainTabBarVC animated:YES completion:nil];
-            
-        /*} else if (self.controllerWasPresentedFromRentScreen) {
-            [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-                if (success) {
-                    IAPProduct *product = [products lastObject];
-                    [[CPIAPHelper sharedInstance] buyProduct:product];
-                }
-            }];*/
-            
-            
-            
-        /*else {
-            //Pop all view controllers to the root view controller (home screen) if the
-            //user came here from a production screen.
-            [MBHUDView hudWithBody:@"Ingreso Exitoso" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
-            NSArray *viewControllers = [self.navigationController viewControllers];
-            for (int i = [viewControllers count] - 1; i >= 0; i--){
-                id obj = [viewControllers objectAtIndex:i];
-                if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
-                    [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
-                    [self.navigationController popToViewController:obj animated:YES];
-                    break;
-                }
-            }
-            //[self.navigationController popToRootViewControllerAnimated:YES];
-            [self createAditionalTabsInTabBarController];
-        }*/
-        
-    } else {
+       } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
+}*/
+
+-(void)goToHomeScreen {
+    MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    [self presentViewController:mainTabBarVC animated:YES completion:nil];
+}
+
+-(void)returnToProduction {
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    for (int i = [viewControllers count] - 1; i >= 0; i--){
+        id obj = [viewControllers objectAtIndex:i];
+        if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] ||
+            [obj isKindOfClass:[MoviesEventsDetailsViewController class]]) {
+            [self.navigationController popToViewController:obj animated:YES];
+            //Post a notification to tell the production view controller that it needs to display the video inmediatly
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
+            break;
+        }
+    }
+    [self createAditionalTabsInTabBarController];
+}
+
+-(void)buySubscription {
+    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+        [MBHUDView dismissCurrentHUD];
+        if (success) {
+            if (products) {
+                IAPProduct *product = [products firstObject];
+                [[CPIAPHelper sharedInstance] buyProduct:product];
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Imposible conectarse con iTunes Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }];
 }
 
 -(void)createAditionalTabsInTabBarController {
@@ -204,6 +186,64 @@
     [viewControllersArray addObject:myListsNavigationController];
     [viewControllersArray addObject:myAccountNavigationController];
     self.tabBarController.viewControllers = viewControllersArray;
+}
+
+#pragma mark - Server Stuff
+
+-(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
+    [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [UserInfo sharedInstance].userName = userName;
+    [UserInfo sharedInstance].password = password;
+    [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"AuthenticateUser"] && dictionary) {
+        if ([dictionary[@"status"] boolValue]) {
+            NSLog(@"autenticación exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password
+                                       } withKey:@"UserHasLoginDic"];
+            
+            if (self.controllerWasPresentedFromInitialScreen) {
+                //Go to home screen directly
+                [self goToHomeScreen];
+                
+                
+            } else if (self.controllerWasPresentedFromProductionScreen) {
+                //Return to production
+                [self returnToProduction];
+            
+            } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
+                //Request products from Apple
+                [self buySubscription];
+                
+            } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
+                //Request products from Apple
+                [self buySubscription];
+            }
+            
+        } else {
+            [UserInfo sharedInstance].userName = nil;
+            [UserInfo sharedInstance].password = nil;
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            NSLog(@"la autenticación no fue exitosa: %@", dictionary);
+        }
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Notification Handlers

@@ -75,10 +75,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:segmentedControl];*/
     
     //1. Create a bar button item to create lists
-    UIBarButtonItem *createListBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+    /*UIBarButtonItem *createListBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                              target:self
                                                                                              action:@selector(createList)];
-    self.navigationItem.leftBarButtonItem = createListBarButtonItem;
+    self.navigationItem.leftBarButtonItem = createListBarButtonItem;*/
     
     //2. Create a table view to display the user's lists
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 44.0) style:UITableViewStylePlain];
@@ -172,8 +172,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [MBHUDView hudWithBody:@"Creando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    NSString *parameter = [NSString stringWithFormat:@"list_name=%@&user_id=%d", listName, userID];
-    [serverCommunicator callServerWithPOSTMethod:@"CreateList" andParameter:parameter httpMethod:@"POST"];
+    NSString *parameter = [NSString stringWithFormat:@"%@/%d", listName, userID];
+    [serverCommunicator callServerWithGETMethod:@"CreateList" andParameter:parameter];
 }
 
 -(void)getUserLists {
@@ -186,31 +186,40 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"recibí info del server");
-    if ([methodName isEqualToString:@"GetUserLists"] && responseDictionary) {
-        self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+    
+    if ([methodName isEqualToString:@"GetUserLists"]) {
+        if (!responseDictionary) {
+             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible acceder a tus listas. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else {
+            self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+        }
         
-    } else if ([methodName isEqualToString:@"CreateList"] && responseDictionary) {
-        NSLog(@"llegó la respuesta de la creación de la lista: %@", responseDictionary);
+    } else if ([methodName isEqualToString:@"CreateList"]) {
+        if (!responseDictionary) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible crear la lista. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else {
+            NSLog(@"llegó la respuesta de la creación de la lista: %@", responseDictionary);
+        }
         
     } else {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark - CreateListViewDelegate
 
 -(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
-    /*[self.opacityView removeFromSuperview];
+    [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     NSLog(@"cree la lista");
     [self createListWithName:listName userID:554];
-    //[self addNewListWithName:listName];*/
+    //[self addNewListWithName:listName];
 }
 
 -(void)cancelButtonPressedInCreateListView:(CreateListView *)createListView {

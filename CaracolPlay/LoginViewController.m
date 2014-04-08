@@ -13,8 +13,9 @@
 #import "RedeemCodeViewController.h"
 #import "MainTabBarViewController.h"
 #import "FileSaver.h"
+#import "ServerCommunicator.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <ServerCommunicatorDelegate>
 @end
 
 @implementation LoginViewController
@@ -77,6 +78,23 @@
     [super viewDidLoad];
     //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Volver" style:UIBarButtonItemStylePlain target:self action:nil];
     [self UISetup];
+    [self authenticateUser];
+}
+
+-(void)authenticateUser {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    if ([methodName isEqualToString:@"AuthenticateUser"]) {
+        NSLog(@"respuesta de la autenticacion: %@", dictionary);
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    NSLog(@"error en el server");
 }
 
 -(void)viewWillAppear:(BOOL)animated {

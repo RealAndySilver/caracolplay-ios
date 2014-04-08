@@ -65,14 +65,16 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self dismissVC];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SeasonSelectedNotification" object:nil userInfo:@{@"SeasonSelected": @(indexPath.row)}];
+    [self dismissVCWithSelectedSeason:indexPath.row];
+  
 }
 
 #pragma mark - Actions
 
--(void)dismissVC {
-    [self dismissViewControllerAnimated:YES completion:nil];
+-(void)dismissVCWithSelectedSeason:(NSUInteger)selectedSeason {
+    [self dismissViewControllerAnimated:YES completion:^(){
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"SeasonSelectedNotification" object:nil userInfo:@{@"SeasonSelected": @(selectedSeason)}];
+    }];
 }
 
 #pragma mark - UIBarPositioningDelegate

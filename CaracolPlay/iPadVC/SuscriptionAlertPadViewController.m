@@ -9,6 +9,7 @@
 #import "SuscriptionAlertPadViewController.h"
 #import "IngresarFromInsideViewController.h"
 #import "RentFromInsideViewController.h"
+#import "SuscribeFromInsideViewController.h"
 
 @interface SuscriptionAlertPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -24,7 +25,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self UISetup];
 }
 
@@ -99,6 +100,7 @@
     IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
     ingresarFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarFromInsideVC.controllerWasPresentFromAlertScreen = YES;
     [self presentViewController:ingresarFromInsideVC animated:YES completion:nil];
 }
 
@@ -110,7 +112,10 @@
 }
 
 -(void)goToSuscriptionVC {
-    
+    SuscribeFromInsideViewController *suscribeFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeFromInside"];
+    suscribeFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscribeFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:suscribeFromInsideVC animated:YES completion:nil];
 }
 
 -(void)dismissVC {

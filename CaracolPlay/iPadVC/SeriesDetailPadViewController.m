@@ -466,6 +466,7 @@
 #pragma mark - Notification Handlers
 
 -(void)videoShouldBeDisplayedReceived {
+    NSLog(@"llegó la notificación: video");
     [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
 }
 

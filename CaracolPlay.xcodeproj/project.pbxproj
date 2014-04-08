@@ -39,6 +39,11 @@
 		8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8B18A97E75001803A9 /* SearchBarBackground.png */; };
 		8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B164B8C18A97E75001803A9 /* SearchBarBackground@2x.png */; };
 		8B18BED818EA189900E61EFE /* NSArray+NullReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B18BED718EA189900E61EFE /* NSArray+NullReplacement.m */; };
+		8B1DAFFF18F2FA0300C06A53 /* SuscribeFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1DAFFE18F2FA0300C06A53 /* SuscribeFromInsideViewController.m */; };
+		8B1DB00218F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1DB00118F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m */; };
+		8B1DB00A18F33F0100C06A53 /* IAmCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1DB00518F33F0100C06A53 /* IAmCoder.m */; };
+		8B1DB00B18F33F0100C06A53 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1DB00718F33F0100C06A53 /* NSData+Base64.m */; };
+		8B1DB00C18F33F0100C06A53 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1DB00918F33F0100C06A53 /* NSString+Base64.m */; };
 		8B223A4918C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B223A4818C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m */; };
 		8B223A4C18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B223A4B18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m */; };
 		8B223A4E18C0F82100AC0A33 /* Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B223A4D18C0F82100AC0A33 /* Checkmark@2x.png */; };
@@ -62,6 +67,7 @@
 		8B33682818B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682718B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m */; };
 		8B33682B18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */; };
 		8B3F104A18EB74BA005FA46D /* TermsAndPrivacy.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */; };
+		8B52252718F44A18004ADD20 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B52252618F44A18004ADD20 /* UserInfo.m */; };
 		8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */; };
 		8B64F7F918BBE660007E3C06 /* CreateListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F818BBE660007E3C06 /* CreateListView.m */; };
 		8B64F7FC18BBFEDE007E3C06 /* AddToListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */; };
@@ -305,6 +311,16 @@
 		8B164B9118A996F8001803A9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B18BED618EA189900E61EFE /* NSArray+NullReplacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+NullReplacement.h"; path = "Categories/NSArray+NullReplacement.h"; sourceTree = "<group>"; };
 		8B18BED718EA189900E61EFE /* NSArray+NullReplacement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+NullReplacement.m"; path = "Categories/NSArray+NullReplacement.m"; sourceTree = "<group>"; };
+		8B1DAFFD18F2FA0300C06A53 /* SuscribeFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscribeFromInsideViewController.h; path = iPadVC/SuscribeFromInsideViewController.h; sourceTree = "<group>"; };
+		8B1DAFFE18F2FA0300C06A53 /* SuscribeFromInsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscribeFromInsideViewController.m; path = iPadVC/SuscribeFromInsideViewController.m; sourceTree = "<group>"; };
+		8B1DB00018F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscribeConfirmFromInsideViewController.h; path = iPadVC/SuscribeConfirmFromInsideViewController.h; sourceTree = "<group>"; };
+		8B1DB00118F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscribeConfirmFromInsideViewController.m; path = iPadVC/SuscribeConfirmFromInsideViewController.m; sourceTree = "<group>"; };
+		8B1DB00418F33F0100C06A53 /* IAmCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAmCoder.h; sourceTree = "<group>"; };
+		8B1DB00518F33F0100C06A53 /* IAmCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAmCoder.m; sourceTree = "<group>"; };
+		8B1DB00618F33F0100C06A53 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		8B1DB00718F33F0100C06A53 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		8B1DB00818F33F0100C06A53 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
+		8B1DB00918F33F0100C06A53 /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		8B223A4718C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscriptionConfirmationPadViewController.h; path = iPadVC/SuscriptionConfirmationPadViewController.h; sourceTree = "<group>"; };
 		8B223A4818C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscriptionConfirmationPadViewController.m; path = iPadVC/SuscriptionConfirmationPadViewController.m; sourceTree = "<group>"; };
 		8B223A4A18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodeConfirmationPadViewController.h; path = iPadVC/RedeemCodeConfirmationPadViewController.h; sourceTree = "<group>"; };
@@ -348,6 +364,8 @@
 		8B33682918B6ACED000DD1B5 /* TermsAndConditionsPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TermsAndConditionsPadViewController.h; path = iPadVC/TermsAndConditionsPadViewController.h; sourceTree = "<group>"; };
 		8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TermsAndConditionsPadViewController.m; path = iPadVC/TermsAndConditionsPadViewController.m; sourceTree = "<group>"; };
 		8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TermsAndPrivacy.plist; path = Plist/TermsAndPrivacy.plist; sourceTree = "<group>"; };
+		8B52252518F44A18004ADD20 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfo.h; path = Model/UserInfo.h; sourceTree = "<group>"; };
+		8B52252618F44A18004ADD20 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfo.m; path = Model/UserInfo.m; sourceTree = "<group>"; };
 		8B64F7F418BBC3AC007E3C06 /* SeasonsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeasonsListView.h; sourceTree = "<group>"; };
 		8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeasonsListView.m; sourceTree = "<group>"; };
 		8B64F7F718BBE660007E3C06 /* CreateListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateListView.h; path = "Custom Views/CreateListView.h"; sourceTree = "<group>"; };
@@ -737,6 +755,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8B1DB00318F33F0100C06A53 /* iAmCoder */,
 				8B3F104818EB7484005FA46D /* Plist */,
 				A049E32918D270B20040E051 /* ServerCommunicator */,
 				8BED8A8318C62A1E0076EA26 /* InApp Purchases */,
@@ -796,6 +815,8 @@
 		8B164B6918A95437001803A9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8B52252518F44A18004ADD20 /* UserInfo.h */,
+				8B52252618F44A18004ADD20 /* UserInfo.m */,
 				8B164B6A18A95460001803A9 /* User.h */,
 				8B164B6B18A95460001803A9 /* User.m */,
 				8B164B6D18A9549A001803A9 /* Episode.h */,
@@ -820,6 +841,19 @@
 				8B6B716918E9D22D00F9B098 /* Video.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		8B1DB00318F33F0100C06A53 /* iAmCoder */ = {
+			isa = PBXGroup;
+			children = (
+				8B1DB00418F33F0100C06A53 /* IAmCoder.h */,
+				8B1DB00518F33F0100C06A53 /* IAmCoder.m */,
+				8B1DB00618F33F0100C06A53 /* NSData+Base64.h */,
+				8B1DB00718F33F0100C06A53 /* NSData+Base64.m */,
+				8B1DB00818F33F0100C06A53 /* NSString+Base64.h */,
+				8B1DB00918F33F0100C06A53 /* NSString+Base64.m */,
+			);
+			path = iAmCoder;
 			sourceTree = "<group>";
 		};
 		8B223A4618C0E07200AC0A33 /* Alerts ViewControllers */ = {
@@ -1034,6 +1068,10 @@
 				A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */,
 				A069A75118EF7706003BF3AD /* RentConfirmFromInsideViewController.h */,
 				A069A75218EF7706003BF3AD /* RentConfirmFromInsideViewController.m */,
+				8B1DAFFD18F2FA0300C06A53 /* SuscribeFromInsideViewController.h */,
+				8B1DAFFE18F2FA0300C06A53 /* SuscribeFromInsideViewController.m */,
+				8B1DB00018F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.h */,
+				8B1DB00118F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m */,
 			);
 			name = "Login&Stuff From Production";
 			sourceTree = "<group>";
@@ -1588,7 +1626,7 @@
 				ORGANIZATIONNAME = iAmStudio;
 				TargetAttributes = {
 					755DB154188DEE2C00E5C636 = {
-						DevelopmentTeam = 4U39LJL48R;
+						DevelopmentTeam = VY536C84VC;
 					};
 					755DB178188DEE2C00E5C636 = {
 						TestTargetID = 755DB154188DEE2C00E5C636;
@@ -1748,6 +1786,7 @@
 				A049E33018D27FA80040E051 /* NSDictionary+NullReplacement.m in Sources */,
 				8B164B7E18A9710C001803A9 /* Categoria.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
+				8B1DB00C18F33F0100C06A53 /* NSString+Base64.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
 				8B164B8118A9723A001803A9 /* Redeemed.m in Sources */,
 				8BED8A8618C62A3F0076EA26 /* IAPHelper.m in Sources */,
@@ -1756,6 +1795,7 @@
 				8BF16A0C188EEE780021AB03 /* MoviesTableViewCell.m in Sources */,
 				8B33681418B66AE7000DD1B5 /* UIFont+Alert.m in Sources */,
 				8B33682B18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m in Sources */,
+				8B1DB00218F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m in Sources */,
 				A0A9B76E18A3005100D6D222 /* EpisodesPadTableViewCell.m in Sources */,
 				8BB5221618AA874C0027CA59 /* CategoriesMasterPadViewController.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
@@ -1763,6 +1803,7 @@
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B33681818B66AE7000DD1B5 /* MBAlertViewItem.m in Sources */,
 				8B164B6C18A95460001803A9 /* User.m in Sources */,
+				8B1DB00A18F33F0100C06A53 /* IAmCoder.m in Sources */,
 				A0C0F12818D780B60069F321 /* AddToListViewController.m in Sources */,
 				8B33681718B66AE7000DD1B5 /* MBAlertViewButton.m in Sources */,
 				8B18BED818EA189900E61EFE /* NSArray+NullReplacement.m in Sources */,
@@ -1781,6 +1822,7 @@
 				A0C0F12D18D79F710069F321 /* RentContentViewController.m in Sources */,
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */,
+				8B1DAFFF18F2FA0300C06A53 /* SuscribeFromInsideViewController.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
 				A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */,
@@ -1799,6 +1841,7 @@
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
 				8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */,
 				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,
+				8B52252718F44A18004ADD20 /* UserInfo.m in Sources */,
 				8B164B7818A96EEC001803A9 /* Product.m in Sources */,
 				8B33681E18B66AE7000DD1B5 /* MBCheckMarkView.m in Sources */,
 				8B33681A18B66AE7000DD1B5 /* UIView+Autolayout.m in Sources */,
@@ -1831,6 +1874,7 @@
 				8B33681518B66AE7000DD1B5 /* UIView+Alert.m in Sources */,
 				8B8A215C18E6270A004C262D /* IngresarFromInsideViewController.m in Sources */,
 				8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */,
+				8B1DB00B18F33F0100C06A53 /* NSData+Base64.m in Sources */,
 				8B70019F18A05507000B5C7B /* HomePadViewController.m in Sources */,
 				8B33681918B66AE7000DD1B5 /* AutoLayoutHelpers.m in Sources */,
 				8B33682118B66AE7000DD1B5 /* MBAlertAbstract.m in Sources */,
@@ -2010,7 +2054,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

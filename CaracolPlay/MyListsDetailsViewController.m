@@ -63,23 +63,32 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    Episode *episode = self.episodes[indexPath.row];
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
     NetworkStatus status = [reachability currentReachabilityStatus];
+    
     if (status == NotReachable) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver esta producción debes estar conectado a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Para poder ver esta producción debes estar conectado a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        
     } else if (status == ReachableViaWWAN) {
         if ([self.episodes[indexPath.row][@"is_3g"] boolValue]) {
             VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayerVC.progressSec = [episode.progressSec intValue];
+            videoPlayerVC.productID = episode.identifier;
+            videoPlayerVC.embedCode = episode.url;
             [self.navigationController pushViewController:videoPlayerVC animated:YES];
         } else {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta para poder ver la producción. Por favor conéctate a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
+        
     } else if (status == ReachableViaWiFi) {
         VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerVC.progressSec = [episode.progressSec intValue];
+        videoPlayerVC.productID = episode.identifier;
+        videoPlayerVC.embedCode = episode.url;
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
-    }*/
+    }
 }
 
 @end

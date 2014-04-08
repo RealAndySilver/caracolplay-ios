@@ -19,6 +19,7 @@
         _embedSD = dictionary[@"embed_sd"];
         _embedHD = dictionary[@"embed_hd"];
         _trailer = dictionary[@"trailer"];
+        _is3G = [dictionary[@"is_3g"] boolValue];
     }
     return self;
 }

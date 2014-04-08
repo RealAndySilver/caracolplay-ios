@@ -464,14 +464,14 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3ae-rv-qI6">
                                         <rect key="frame" x="190" y="353" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="LineaBlanca.png" translatesAutoresizingMaskIntoConstraints="NO" id="HNQ-qX-ehy">
                                         <rect key="frame" x="38" y="226" width="249" height="3"/>
@@ -522,7 +522,9 @@
                         <outlet property="nameTextfield" destination="SQK-2i-AIV" id="Uz8-XB-HyT"/>
                         <outlet property="passwordTextfield" destination="oNm-s6-rgm" id="UoH-Wl-lQe"/>
                         <outlet property="scrollView" destination="8tk-k3-ZnO" id="Ckh-cq-fD2"/>
+                        <outlet property="servicePoliticsButton" destination="TeW-fC-jAG" id="zzO-a7-HOG"/>
                         <outlet property="servicePoliticsLabel" destination="0ix-WE-PVX" id="E7H-8R-L4s"/>
+                        <outlet property="termsAndConditionsButton" destination="Nhp-zi-qaH" id="w0t-qz-PpA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P0s-Zi-jeM" userLabel="First Responder" sceneMemberID="firstResponder"/>

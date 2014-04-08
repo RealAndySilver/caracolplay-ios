@@ -14,8 +14,11 @@
 #import "IAPProduct.h"
 #import "MBHUDView.h"
 #import "IngresarViewController.h"
+#import "TermsAndConditionsViewController.h"
 
 @interface SuscriptionFormViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
+@property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextfield;
@@ -42,6 +45,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
+    [self setupUI];
     
     //Register as an observer of the notification -UserDidSuscribe.
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -50,7 +54,9 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
-    
+}
+
+-(void)setupUI {
     //Set textfields properties
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
@@ -82,7 +88,7 @@
     self.checkmarkView2.cornerRadius = 3.0;
     self.checkmarkView2.tag = 2;
     self.checkmarkView2.delegate = self;
-  
+    
     self.scrollView.alwaysBounceVertical = YES;
     [self.scrollView addSubview:self.nextButton];
     [self.scrollView addSubview:self.checkmarkView1];
@@ -91,16 +97,20 @@
     //'Ingresa aquí' button setup
     [self.enterHereButton addTarget:self action:@selector(goToIngresarVC) forControlEvents:UIControlEventTouchUpInside];
     
-    /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
-    self.blurView.blurRadius = 7.0;
-    self.blurView.alpha = 0.0;
-    [self.view addSubview:self.blurView];
+    //Terms and politics buttons
+    [self.termsAndConditionsButton addTarget:self action:@selector(goToTerms) forControlEvents:UIControlEventTouchUpInside];
+    [self.servicePoliticsButton addTarget:self action:@selector(goToPolitics) forControlEvents:UIControlEventTouchUpInside];
     
-    self.navigationBarBlurView = [[FXBlurView alloc] init];
-    self.navigationBarBlurView.blurRadius = 7.0;
-    self.navigationBarBlurView.alpha = 0.0;
-    [self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
-    [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
+    /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
+     self.blurView.blurRadius = 7.0;
+     self.blurView.alpha = 0.0;
+     [self.view addSubview:self.blurView];
+     
+     self.navigationBarBlurView = [[FXBlurView alloc] init];
+     self.navigationBarBlurView.blurRadius = 7.0;
+     self.navigationBarBlurView.alpha = 0.0;
+     [self.navigationController.navigationBar addSubview:self.navigationBarBlurView];
+     [self.navigationController.navigationBar bringSubviewToFront:self.navigationBarBlurView];*/
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -114,12 +124,19 @@
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+            [MBHUDView dismissCurrentHUD];
             if (success) {
-                [MBHUDView dismissCurrentHUD];
                 NSLog(@"apareció el mensajito de itunes");
+                for (IAPProduct *product in products) {
+                    if ([product.productIdentifier isEqualToString:@"net.icck.CaracolPlay.Colombia.subscription"]) {
+                        [[CPIAPHelper sharedInstance] buyProduct:product];
+                        break;
+                    }
+                }
                 //Request succeded - Buy the product
-                IAPProduct *product = [products firstObject];
-                [[CPIAPHelper sharedInstance] buyProduct:product];
+                //IAPProduct *product = [products firstObject];
+                //[[CPIAPHelper sharedInstance] buyProduct:product];
+            
             }
         }];
         
@@ -171,10 +188,39 @@
     [self.navigationController pushViewController:ingresarVC animated:YES];
 }
 
+-(void)goToTerms {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
+
+-(void)goToPolitics {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
+
 #pragma mark - Custom Methods
 
 -(BOOL)textfieldsInfoIsCorrect {
-    return [self NSStringIsValidEmail:self.emailTextfield.text];
+    BOOL namesAreCorrect = NO;
+    BOOL emailIsCorrect = NO;
+    BOOL passwordsAreCorrect = NO;
+    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0) {
+        namesAreCorrect = YES;
+    }
+    
+    if ([self.passwordTextfield.text isEqualToString:self.confirmPasswordTextfield.text]) {
+        passwordsAreCorrect = YES;
+    }
+    
+    if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
+        emailIsCorrect = YES;
+    }
+    
+    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect) {
+        return YES;
+    } else {
+        return  NO;
+    }
 }
 
 -(void)showErrorsInTermAndPoliticsConditions {

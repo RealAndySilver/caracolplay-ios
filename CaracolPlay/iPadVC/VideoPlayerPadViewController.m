@@ -87,7 +87,7 @@
 #pragma mark - Notification Handlers 
 
 -(void)videoStartedPlaying {
-    NSLog(@"llegó la notificación");
+    NSLog(@"llegó la notificación de que el video empezó a correr");
     self.videoWasPlayed = YES;
 }
 

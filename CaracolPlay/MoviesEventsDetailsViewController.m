@@ -27,7 +27,7 @@
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate>
+@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
@@ -413,23 +413,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
     
     [self getIsContentAvailableForUserWithID:self.production.identifier];
-    /*BOOL contentIsAvailableForUser = NO;
-    if (!contentIsAvailableForUser) {
-        //The content is not availble for the user
-        ContentNotAvailableForUserViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
-        [self.navigationController pushViewController:contentNotAvailableVC animated:YES];
-        
-    } else {
-        Reachability *reachability = [Reachability reachabilityForInternetConnection];
-        [reachability startNotifier];
-        NetworkStatus status = [reachability currentReachabilityStatus];
-        if (status == NotReachable) {
-            [[[UIAlertView alloc] initWithTitle:nil  message:@"Para poder ver la producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        } else {
-            VideoPlayerViewController *videoPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-            [self.navigationController pushViewController:videoPlayerVC animated:YES];
-        }
-    }*/
 }
 
 -(void)watchTrailer {
@@ -479,8 +462,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&rate=%d", self.production.identifier, rate];
-    [serverCommunicator callServerWithPOSTMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters httpMethod:@"POST"];
+    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
+    [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
@@ -521,10 +504,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             if (responseDictionary[@"products"][@"response"]) {
                 //Existe un mensaje de respuesta en el server, así que lo usamos en nuestra alerta
                 NSString *alertMessage = responseDictionary[@"products"][@"response"];
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:alertMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
+                
             } else {
                 //No existía un mensaje de respuesta en el servidor, entonces usamos un mensaje genérico.
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No se pudo acceder al contenido. Por favor inténtalo de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
             
         } else {
@@ -606,6 +594,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.opacityView.alpha = 0.0;
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Interface Orientation 
