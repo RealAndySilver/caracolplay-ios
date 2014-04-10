@@ -10,10 +10,10 @@
 #import "SuscriptionFormViewController.h"
 #import "FXBlurView.h"
 #import "IngresarViewController.h"
-#import "RedeemCodeViewController.h"
 #import "MainTabBarViewController.h"
 #import "FileSaver.h"
 #import "ServerCommunicator.h"
+#import "RedeemCodeFormViewController.h"
 
 @interface LoginViewController () <ServerCommunicatorDelegate>
 @end
@@ -109,8 +109,8 @@
 }
 
 -(void)goToRedeemCodeViewController {
-    RedeemCodeViewController *redeemCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Redeem"];
-    [self.navigationController pushViewController:redeemCodeVC animated:YES];
+    RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
+    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];
 }
 
 -(void)goToEnterViewController {

@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
+@property (weak, nonatomic) IBOutlet UITextField *aliasTextfield;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -80,11 +81,11 @@
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
-    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 403.0, 20.0, 20.0)];
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 440.0, 20.0, 20.0)];
     self.checkmarkView1.cornerRadius = 3.0;
     self.checkmarkView1.tag = 1;
     self.checkmarkView1.delegate = self;
-    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 442.0, 20.0, 20.0)];
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 480.0, 20.0, 20.0)];
     self.checkmarkView2.cornerRadius = 3.0;
     self.checkmarkView2.tag = 2;
     self.checkmarkView2.delegate = self;
@@ -121,6 +122,7 @@
 
 -(void)goToSuscriptionConfirmationVC {
     if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
+        [self suscribeUserInServer];
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -172,8 +174,25 @@
     } else if (self.controllerWasPresentedFromProductionScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
     }
-    //suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = self.controllerWasPresentFromInitialScreen;
     [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+    //[self suscribeUserInServer];
+}
+
+#pragma mark - Server Stuff
+
+-(void)suscribeUserInServer {
+    //Create JSON string with user info
+    NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
+                                  @"lastname" : self.lastNameTextfield.text,
+                                  @"email" : self.emailTextfield.text,
+                                  @"password" : self.passwordTextfield.text,
+                                  @"alias" : self.aliasTextfield.text};
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"Json String: %@", jsonString);
 }
 
 #pragma mark - Actions 
@@ -204,6 +223,7 @@
     BOOL namesAreCorrect = NO;
     BOOL emailIsCorrect = NO;
     BOOL passwordsAreCorrect = NO;
+    BOOL aliasIsCorrect = NO;
     if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0) {
         namesAreCorrect = YES;
     }
@@ -216,7 +236,11 @@
         emailIsCorrect = YES;
     }
     
-    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect) {
+    if ([self.aliasTextfield.text length] > 0) {
+        aliasIsCorrect = YES;
+    }
+    
+    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect && aliasIsCorrect) {
         return YES;
     } else {
         return  NO;
@@ -243,6 +267,7 @@
     [self.confirmPasswordTextfield resignFirstResponder];
     [self.passwordTextfield resignFirstResponder];
     [self.emailTextfield resignFirstResponder];
+    [self.aliasTextfield resignFirstResponder];
 }
 
 -(BOOL)areTermsAndPoliticsConditionsAccepted {
@@ -287,7 +312,6 @@
             NSLog(@"el nombre si es válido");
             textField.textColor = [UIColor whiteColor];
         }
-        
     }*/
     if (textField.tag == 3) {
         //Validate email textfield

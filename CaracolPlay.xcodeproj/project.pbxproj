@@ -202,6 +202,7 @@
 		8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */; };
 		A049E32C18D270B20040E051 /* ServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = A049E32B18D270B20040E051 /* ServerCommunicator.m */; };
 		A049E33018D27FA80040E051 /* NSDictionary+NullReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = A049E32F18D27FA80040E051 /* NSDictionary+NullReplacement.m */; };
+		A053521A18F6077400BF9578 /* RedeemCodeFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */; };
 		A05AC44B18D0F5B000445063 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05AC44A18D0F5B000445063 /* MessageUI.framework */; };
 		A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C447D1899BE7400E72135 /* libOoyalaSDK.a */; };
 		A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */; };
@@ -601,6 +602,8 @@
 		A049E32B18D270B20040E051 /* ServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunicator.m; sourceTree = "<group>"; };
 		A049E32E18D27FA80040E051 /* NSDictionary+NullReplacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NullReplacement.h"; path = "Categories/NSDictionary+NullReplacement.h"; sourceTree = "<group>"; };
 		A049E32F18D27FA80040E051 /* NSDictionary+NullReplacement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+NullReplacement.m"; path = "Categories/NSDictionary+NullReplacement.m"; sourceTree = "<group>"; };
+		A053521818F6077400BF9578 /* RedeemCodeFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedeemCodeFormViewController.h; sourceTree = "<group>"; };
+		A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedeemCodeFormViewController.m; sourceTree = "<group>"; };
 		A05AC44A18D0F5B000445063 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A05C447D1899BE7400E72135 /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AlertViewBackground@2x.png"; path = "Resources/Images/AlertViewBackground@2x.png"; sourceTree = "<group>"; };
@@ -1300,6 +1303,8 @@
 				8B67769B1896DB7C006E2241 /* SuscriptionFormViewController.m */,
 				8BC2C3E018DC9B1300DB7219 /* RentContentFormViewController.h */,
 				8BC2C3E118DC9B1300DB7219 /* RentContentFormViewController.m */,
+				A053521818F6077400BF9578 /* RedeemCodeFormViewController.h */,
+				A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */,
 			);
 			name = "Loading & Login ";
 			sourceTree = "<group>";
@@ -1841,6 +1846,7 @@
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
 				8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */,
 				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,
+				A053521A18F6077400BF9578 /* RedeemCodeFormViewController.m in Sources */,
 				8B52252718F44A18004ADD20 /* UserInfo.m in Sources */,
 				8B164B7818A96EEC001803A9 /* Product.m in Sources */,
 				8B33681E18B66AE7000DD1B5 /* MBCheckMarkView.m in Sources */,
