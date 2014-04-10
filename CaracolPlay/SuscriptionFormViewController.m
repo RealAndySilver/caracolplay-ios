@@ -15,8 +15,11 @@
 #import "MBHUDView.h"
 #import "IngresarViewController.h"
 #import "TermsAndConditionsViewController.h"
+#import "iAmCoder.h"
+#import "ServerCommunicator.h"
+#import "UserInfo.h"
 
-@interface SuscriptionFormViewController ()
+@interface SuscriptionFormViewController () <ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -31,7 +34,7 @@
 @property (strong, nonatomic) CheckmarkView *checkmarkView1;
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) UIButton *nextButton;
-
+@property (strong, nonatomic) NSString *transactionID;
 @end
 
 @implementation SuscriptionFormViewController
@@ -64,6 +67,7 @@
     self.confirmPasswordTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     self.emailTextfield.delegate = self;
+    self.aliasTextfield.delegate = self;
     self.nameTextfield.tag = 1;
     self.lastNameTextfield.tag = 2;
     self.emailTextfield.tag = 3;
@@ -77,7 +81,7 @@
     [self.nextButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nextButton addTarget:self action:@selector(goToSuscriptionConfirmationVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.nextButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
@@ -120,9 +124,21 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
--(void)goToSuscriptionConfirmationVC {
+-(void)startSubscriptionProcess {
+    //Save info in user info object
+    [UserInfo sharedInstance].userName = self.aliasTextfield.text;
+    [UserInfo sharedInstance].password = self.passwordTextfield.text;
+    
     if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
-        [self suscribeUserInServer];
+        [self validateUser];
+    } else {
+        //The terms and conditions were not accepted, so show an alert.
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [self showErrorsInTermAndPoliticsConditions];
+    }
+    
+    //[self suscribeUserInServerWithTransactionID:@"1"];
+    /*if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -135,10 +151,6 @@
                         break;
                     }
                 }
-                //Request succeded - Buy the product
-                //IAPProduct *product = [products firstObject];
-                //[[CPIAPHelper sharedInstance] buyProduct:product];
-            
             }
         }];
         
@@ -146,7 +158,40 @@
         //The terms and conditions were not accepted, so show an alert.
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             [self showErrorsInTermAndPoliticsConditions];
+    }*/
+}
+
+-(void)goToSubscriptionConfirm {
+    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+    
+    if (self.controllerWasPresentFromInitialScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
+        suscriptionConfirmationVC.userWasAlreadyLoggedin = NO;
+        
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
     }
+    
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+}
+
+-(void)purchaseProduct {
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    //Request products from Apple Servers
+    [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+        [MBHUDView dismissCurrentHUD];
+        if (success) {
+            NSLog(@"apareció el mensajito de itunes");
+            for (IAPProduct *product in products) {
+                if ([product.productIdentifier isEqualToString:@"net.icck.CaracolPlay.Colombia.subscription"]) {
+                    [[CPIAPHelper sharedInstance] buyProduct:product];
+                    break;
+                }
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo a los productos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }];
 }
 
 #pragma mark - Notification Handlers
@@ -158,11 +203,16 @@
 }
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
-    NSLog(@"me llegó la notficación de que el usuario compró la suscripción");
+    NSDictionary *userInfo = [notification userInfo];
+    NSString *transactionID = userInfo[@"TransactionID"];
+    NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     
+    [self suscribeUserInServerWithTransactionID:transactionID];
+    
+    //[self suscribeUserInServerWithTransactionID:@"11111"];
     //Test purposes only. If the terms are accepted, validate the suscription.
     //Save a key locally indicating that the user is log in.
-    FileSaver *fileSaver = [[FileSaver alloc] init];
+    /*FileSaver *fileSaver = [[FileSaver alloc] init];
     [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
      
     //Go to the suscription confirmation view controller.
@@ -174,25 +224,69 @@
     } else if (self.controllerWasPresentedFromProductionScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
     }
-    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
-    //[self suscribeUserInServer];
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];*/
 }
 
 #pragma mark - Server Stuff
 
--(void)suscribeUserInServer {
-    //Create JSON string with user info
-    NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
-                                  @"lastname" : self.lastNameTextfield.text,
-                                  @"email" : self.emailTextfield.text,
-                                  @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.aliasTextfield.text};
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog(@"Json String: %@", jsonString);
+-(void)validateUser {
+    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:@"ValidateUser" andParameter:parameter httpMethod:@"POST"];
+}
+
+-(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString * encodedUserInfo = [self generateEncodedUserInfoString];
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", encodedUserInfo];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", transactionID] andParameter:parameter
+                                      httpMethod:@"POST"];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"SubscribeUser/18"]) {
+        if (dictionary) {
+            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
+                                       } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
+            
+            //Go to Suscription confirmation VC
+            [self goToSubscriptionConfirm];
+        }
+    
+    } else if ([methodName isEqualToString:@"ValidateUser"]) {
+        if (dictionary) {
+            NSLog(@"respuesta del validate: %@", dictionary);
+            if ([dictionary[@"response"] boolValue]) {
+                NSLog(@"validacion correcta");
+                //[self purchaseProduct];
+                [self suscribeUserInServerWithTransactionID:@"18"];
+            } else {
+                NSLog(@"validacion incorrecta");
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
+        } else {
+            //Error en la respuesta
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Actions 
@@ -218,6 +312,23 @@
 }
 
 #pragma mark - Custom Methods
+
+-(NSString *)generateEncodedUserInfoString {
+    //Create JSON string with user info
+    NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
+                                  @"lastname" : self.lastNameTextfield.text,
+                                  @"email" : self.emailTextfield.text,
+                                  @"password" : self.passwordTextfield.text,
+                                  @"alias" : self.aliasTextfield.text};
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"Json String: %@", jsonString);
+    NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    return encodedJsonString;
+}
 
 -(BOOL)textfieldsInfoIsCorrect {
     BOOL namesAreCorrect = NO;

@@ -9,7 +9,7 @@
 #import "CPIAPHelper.h"
 #import "IAPProduct.h"
 
-@interface CPIAPHelper() <UIAlertViewDelegate>
+@interface CPIAPHelper()
 @property (strong, nonatomic) NSString *productoComprado;
 @end
 
@@ -47,7 +47,7 @@
     return sharedInstance;
 }
 
-- (void)notifyStatusForProduct:(IAPProduct *)product
+/*- (void)notifyStatusForProduct:(IAPProduct *)product
                         string:(NSString *)string {
     NSString * message = [NSString stringWithFormat:@"%@: %@",
                           product.skProduct.localizedTitle, string];
@@ -57,13 +57,14 @@
         self.productoComprado = @"alquiler";
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TypeOfProduct": self.productoComprado}];
-    //[[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-}
-
-/*#pragma mark - UIAlertViewDelegate
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TypeOfProduct": self.productoComprado}];
 }*/
+
+- (void)notifyStatusForProduct:(IAPProduct *)product
+                 transactionID:(NSString *)transactionID
+                        string:(NSString *)string {
+    /*NSString * message = [NSString stringWithFormat:@"%@: %@",
+                          product.skProduct.localizedTitle, string];*/
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UserDidSuscribe" object:nil userInfo:@{@"TransactionID": transactionID}];
+}
 
 @end

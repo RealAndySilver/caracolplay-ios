@@ -111,7 +111,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
     productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+    /*if ([self.productionsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
+        productionCell.isFree = YES;
+    }*/
+    productionCell.isFree = YES;
     return productionCell;
 }
 

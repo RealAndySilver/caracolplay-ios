@@ -209,8 +209,10 @@
             FileSaver *fileSaver = [[FileSaver alloc] init];
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
             
             if (self.controllerWasPresentedFromInitialScreen) {
                 //Go to home screen directly
@@ -231,10 +233,10 @@
             }
             
         } else {
+            NSLog(@"la autenticación no fue exitosa: %@", dictionary);
             [UserInfo sharedInstance].userName = nil;
             [UserInfo sharedInstance].password = nil;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            NSLog(@"la autenticación no fue exitosa: %@", dictionary);
         }
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

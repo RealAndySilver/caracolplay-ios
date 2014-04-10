@@ -55,7 +55,6 @@
     parameter=[parameter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     parameter=[parameter stringByExpandingTildeInPath];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",ENDPOINT,method]];
-    NSLog(@"URL : %@", [url description]);
 	//NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
     NSMutableURLRequest *theRequest = [self getHeaderForUrl:url];
     [theRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -79,6 +78,8 @@
                                                         }
                                                     }];
     [dataTask resume];
+    NSLog(@"URL : %@ \n Body: %@", [url description],[[NSString alloc] initWithData:[theRequest HTTPBody] encoding:NSUTF8StringEncoding]);
+
 }
 //usuario:satinramiro pass: caracol11
 //auth-> doble vez encodeado en base 64 usuario:password:session
@@ -101,12 +102,20 @@
     NSString *privateKey = @"aREwKMVVmjA81aea0mVNFh";
     NSString *time = [IAmCoder dateString];
     //NSString *authString = [NSString stringWithFormat:@"%@:%@", self.user, self.password];
-    NSString *authString = [NSString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
+    NSString *authString = [[NSString alloc] init];
+    if ([[UserInfo sharedInstance].session length] > 0) {
+        authString = [NSString stringWithFormat:@"%@:%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password, [UserInfo sharedInstance].session];
+    } else {
+        authString = [NSString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
+    }
     NSLog(@"authstring: %@", authString);
     NSString *authEncoded = [IAmCoder base64EncodeString:authString];
     NSString *authDoubleEncoded = [IAmCoder base64EncodeString:authEncoded];
     NSString *token = [time stringByAppendingString:privateKey];
     NSString *tokenEncoded = [IAmCoder base64EncodeString:token];
+    NSLog(@"auth: %@", authDoubleEncoded);
+    NSLog(@"TS70: %@", time);
+    NSLog(@"token: %@", tokenEncoded);
     
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
     //[theRequest setValue:@"application/json" forHTTPHeaderField:@"accept"];

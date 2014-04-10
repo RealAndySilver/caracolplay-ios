@@ -151,6 +151,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [shadowView addSubview:secondaryMovieEventImageView];
     
+    //free band image view
+    self.production.free = @"1";
+    if ([self.production.free isEqualToString:@"1"]) {
+        UIImageView *freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, secondaryMovieEventImageView.frame.size.height - 15.0, secondaryMovieEventImageView.frame.size.width, 15.0)];
+        freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+        [secondaryMovieEventImageView addSubview:freeImageView];
+    }
+    
     //Add the play icon to the secondary image view
     UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
     playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
@@ -338,7 +346,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //Check if the user is logged in.
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] && [self.production.free isEqualToString:@"0"]) {
         //The user isn't login.
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];

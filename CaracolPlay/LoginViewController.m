@@ -78,7 +78,7 @@
     [super viewDidLoad];
     //self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Volver" style:UIBarButtonItemStylePlain target:self action:nil];
     [self UISetup];
-    [self authenticateUser];
+    //[self authenticateUser];
 }
 
 -(void)authenticateUser {

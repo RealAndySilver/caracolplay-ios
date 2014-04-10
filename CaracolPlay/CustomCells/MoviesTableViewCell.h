@@ -12,4 +12,5 @@
 @property (strong, nonatomic) UIImageView *movieImageView;
 @property (strong, nonatomic) UILabel *movieTitleLabel;
 @property (nonatomic) int stars;
+@property (assign, nonatomic) BOOL isFree;
 @end

@@ -153,29 +153,32 @@
 }
 
 - (void)notifyStatusForProductIdentifier:
-(NSString *)productIdentifier string:(NSString *)string {
+(NSString *)productIdentifier transactionID:(NSString *)transactionID string:(NSString *)string {
     IAPProduct * product = _products[productIdentifier];
-    [self notifyStatusForProduct:product string:string];
+    [self notifyStatusForProduct:product transactionID:transactionID string:string];
 }
 
 - (void)notifyStatusForProduct:(IAPProduct *)product
+                 transactionID:(NSString *)transactionID
                         string:(NSString *)string {
 }
 
 - (void)provideContentForTransaction:(SKPaymentTransaction *)transaction
                    productIdentifier:(NSString *)productIdentifier {
     [self provideContentForProductIdentifier:productIdentifier
+                               transactionID:transaction.transactionIdentifier
                                       notify:YES];
     [[SKPaymentQueue defaultQueue]
      finishTransaction:transaction];
 }
 
 - (void)provideContentForProductIdentifier:(NSString *)
-productIdentifier notify:(BOOL)notify {
+productIdentifier transactionID:(NSString *)transactionIdentifier notify:(BOOL)notify {
     IAPProduct * product = _products[productIdentifier];
     //[self provideContentForProductIdentifier:productIdentifier];
     if (notify) {
         [self notifyStatusForProductIdentifier:productIdentifier
+                                 transactionID:transactionIdentifier
                                         string:@"Compra realizada con éxito!"];
     }
     product.purchaseInProgress = NO;

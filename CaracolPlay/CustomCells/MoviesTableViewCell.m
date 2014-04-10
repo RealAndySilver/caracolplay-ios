@@ -10,6 +10,7 @@
 
 @interface MoviesTableViewCell()
 @property (strong, nonatomic) UIView *shadowView;
+@property (strong, nonatomic) UIImageView *freeImageView;
 @end
 
 @implementation MoviesTableViewCell
@@ -33,7 +34,7 @@
         self.movieImageView.clipsToBounds = YES;
         self.movieImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.shadowView addSubview:self.movieImageView];
-        
+      
         //2. Create a label to display the movie title.
         self.movieTitleLabel = [[UILabel alloc] init];
         self.movieTitleLabel.textColor = [UIColor whiteColor];
@@ -41,6 +42,12 @@
         [self.contentView addSubview:self.movieTitleLabel];
     }
     return self;
+}
+
+-(void)setIsFree:(BOOL)isFree {
+    self.freeImageView = [[UIImageView alloc] init];
+    self.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+    [self.movieImageView addSubview:self.freeImageView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -57,6 +64,7 @@
     frame = CGRectMake(10.0, 10.0, 80.0, contentRect.size.height - 20.0);
     self.shadowView.frame = frame;
     self.movieImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
+    self.freeImageView.frame = CGRectMake(0.0, self.movieImageView.frame.size.height - 15.0, self.movieImageView.frame.size.width, 15.0);
     
     frame = CGRectMake(self.shadowView.frame.origin.x + self.shadowView.frame.size.width + 10.0,
                        contentRect.size.height/2 - 15.0,

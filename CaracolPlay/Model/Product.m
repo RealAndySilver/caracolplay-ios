@@ -23,6 +23,7 @@
         _detailDescription = dictionary[@"description"];
         _episodes = dictionary[@"episodes"];
         _seasonList = dictionary[@"season_list"];
+        _free = dictionary[@"free"];
     }
     return self;
 }

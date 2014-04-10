@@ -66,6 +66,8 @@
 		8B33682518B68353000DD1B5 /* PlayIconHomeScreenPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B33682318B68353000DD1B5 /* PlayIconHomeScreenPad@2x.png */; };
 		8B33682818B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682718B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m */; };
 		8B33682B18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */; };
+		8B3BB05C18F742F500626720 /* FreeBand.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B3BB05A18F742F500626720 /* FreeBand.png */; };
+		8B3BB05D18F742F500626720 /* FreeBand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B3BB05B18F742F500626720 /* FreeBand@2x.png */; };
 		8B3F104A18EB74BA005FA46D /* TermsAndPrivacy.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */; };
 		8B52252718F44A18004ADD20 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B52252618F44A18004ADD20 /* UserInfo.m */; };
 		8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */; };
@@ -364,6 +366,8 @@
 		8B33682718B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyAccountDetailPadViewController.m; path = iPadVC/MyAccountDetailPadViewController.m; sourceTree = "<group>"; };
 		8B33682918B6ACED000DD1B5 /* TermsAndConditionsPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TermsAndConditionsPadViewController.h; path = iPadVC/TermsAndConditionsPadViewController.h; sourceTree = "<group>"; };
 		8B33682A18B6ACED000DD1B5 /* TermsAndConditionsPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TermsAndConditionsPadViewController.m; path = iPadVC/TermsAndConditionsPadViewController.m; sourceTree = "<group>"; };
+		8B3BB05A18F742F500626720 /* FreeBand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FreeBand.png; path = Resources/Images/FreeBand.png; sourceTree = "<group>"; };
+		8B3BB05B18F742F500626720 /* FreeBand@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FreeBand@2x.png"; path = "Resources/Images/FreeBand@2x.png"; sourceTree = "<group>"; };
 		8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TermsAndPrivacy.plist; path = Plist/TermsAndPrivacy.plist; sourceTree = "<group>"; };
 		8B52252518F44A18004ADD20 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfo.h; path = Model/UserInfo.h; sourceTree = "<group>"; };
 		8B52252618F44A18004ADD20 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfo.m; path = Model/UserInfo.m; sourceTree = "<group>"; };
@@ -1437,6 +1441,8 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8B3BB05A18F742F500626720 /* FreeBand.png */,
+				8B3BB05B18F742F500626720 /* FreeBand@2x.png */,
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
 				8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */,
 				A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */,
@@ -1707,6 +1713,7 @@
 				8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */,
 				8BE7FDF6189829230087A7E2 /* BotonInicio@2x.png in Resources */,
 				A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */,
+				8B3BB05C18F742F500626720 /* FreeBand.png in Resources */,
 				A095A05618B56582004F05BB /* SuscriptionConfirmationBackground@2x.png in Resources */,
 				8BE7A378189AF17500AF8E90 /* ConfigTabBarIcon.png in Resources */,
 				8BD2C5E5189C22BF00C76AA5 /* BotonCerrarSesion.png in Resources */,
@@ -1752,6 +1759,7 @@
 				8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
+				8B3BB05D18F742F500626720 /* FreeBand@2x.png in Resources */,
 				8B0194DF18B3F4CB00380EC7 /* CaracolPlayHeader.png in Resources */,
 				8BE7A368189ADB1000AF8E90 /* HomeTabBarIcon.png in Resources */,
 				8BF16A14188F20FC0021AB03 /* MentirasPerfectas2.jpg in Resources */,
@@ -2035,7 +2043,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (9JA65WT89C)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2167,8 +2175,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: iAm Studio S.A.S. (4U39LJL48R)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: iAm Studio S.A.S. (4U39LJL48R)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,

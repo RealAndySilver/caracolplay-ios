@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSArray *suscriptionInfoTableViewTitles;
 @property (strong, nonatomic) NSMutableArray *suscriptionInfoTableViewSecondaryInfo;
 @property (strong, nonatomic) NSDictionary *personalInfo;
+@property (strong, nonatomic) NSDictionary *suscriptionDic;
 @end
 
 @implementation MyAccountViewController
@@ -55,16 +56,16 @@
     _personalInfo = personalInfo;
     self.personalInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
     [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"nombres"]];
-    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"Apellidos"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"apellidos"]];
     [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"fecha_de_nacimiento"]];
     [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"genero"]];
     [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"alias"]];
     [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"mail"]];
     
     self.suscriptionInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
-    if ([personalInfo[@"is_suscription"] boolValue]) {
+    if ([self.suscriptionDic[@"is_suscription"] boolValue]) {
         [self.suscriptionInfoTableViewSecondaryInfo addObject:@"Normal"];
-        [self.suscriptionInfoTableViewSecondaryInfo addObject:personalInfo[@"suscription_ends"]];
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:self.suscriptionDic[@"time_ends"]];
     } else {
         [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
         [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
@@ -287,7 +288,8 @@
     [MBHUDView dismissCurrentHUD];
     if ([methodName isEqualToString:@"GetUser"] && dictionary) {
         NSLog(@"Peticio GetUser exitosa: %@", dictionary);
-        self.personalInfo = dictionary[@"user"][@"info"][0];
+        self.suscriptionDic = dictionary[@"user"][@"suscription"];
+        self.personalInfo = dictionary[@"user"][@"data"];
         
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

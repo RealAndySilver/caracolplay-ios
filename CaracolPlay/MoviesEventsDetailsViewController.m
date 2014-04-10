@@ -228,6 +228,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [secondaryMovieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     [shadowView addSubview:secondaryMovieEventImageView];
     
+    //free band image view
+    if ([self.production.free isEqualToString:@"1"]) {
+        UIImageView *freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, secondaryMovieEventImageView.frame.size.height - 15.0, secondaryMovieEventImageView.frame.size.width, 15.0)];
+        freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+        [secondaryMovieEventImageView addSubview:freeImageView];
+    }
+    
     //Add the play icon into the secondaty image view
     UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
     playIcon.clipsToBounds = YES;
@@ -405,7 +412,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] && [self.production.free isEqualToString:@"0"]) {
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");
