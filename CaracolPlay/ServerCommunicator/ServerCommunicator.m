@@ -101,13 +101,15 @@
  
     NSString *privateKey = @"aREwKMVVmjA81aea0mVNFh";
     NSString *time = [IAmCoder dateString];
+    NSString *authString = [NSString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
+
     //NSString *authString = [NSString stringWithFormat:@"%@:%@", self.user, self.password];
-    NSString *authString = [[NSString alloc] init];
-    if ([[UserInfo sharedInstance].session length] > 0) {
+
+    /*if ([[UserInfo sharedInstance].session length] > 0) {
         authString = [NSString stringWithFormat:@"%@:%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password, [UserInfo sharedInstance].session];
     } else {
         authString = [NSString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
-    }
+    }*/
     NSLog(@"authstring: %@", authString);
     NSString *authEncoded = [IAmCoder base64EncodeString:authString];
     NSString *authDoubleEncoded = [IAmCoder base64EncodeString:authEncoded];

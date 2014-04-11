@@ -152,7 +152,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [shadowView addSubview:secondaryMovieEventImageView];
     
     //free band image view
-    self.production.free = @"1";
     if ([self.production.free isEqualToString:@"1"]) {
         UIImageView *freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, secondaryMovieEventImageView.frame.size.height - 15.0, secondaryMovieEventImageView.frame.size.width, 15.0)];
         freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];

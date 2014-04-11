@@ -10,6 +10,8 @@
 #import "IngresarViewController.h"
 #import "SuscriptionFormViewController.h"
 #import "FileSaver.h"
+#import "MainTabBarViewController.h"
+#import "FileSaver.h"
 
 @interface RedeemCodeAlertViewController ()
 
@@ -26,6 +28,10 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    if (self.controllerWasPresentedFromProductionScreen) {
+        self.tabBarController.tabBar.hidden = YES;
+    }
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -34,6 +40,10 @@
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;
     self.navigationController.navigationBar.translucent = NO;
+    if (self.controllerWasPresentedFromProductionScreen) {
+        self.tabBarController.tabBar.hidden = NO;
+    }
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 -(void)UISetup {
@@ -54,15 +64,19 @@
     [self.view addSubview:textView];
     
     //2. Set the enter and suscribe button
-    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/1.45, screenFrame.size.width - 60.0, 50.0)];
-    [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, self.view.frame.size.height/1.2, screenFrame.size.width - 60.0, 50.0)];
+    [enterButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
+    if (self.controllerWasPresentedFromInitialScreen) {
+        [enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        [enterButton addTarget:self action:@selector(returnToProduction) forControlEvents:UIControlEventTouchUpInside];
+    }
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:enterButton];
     
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, enterButton.frame.origin.y + enterButton.frame.size.height + 10.0, screenFrame.size.width - 60.0, 50.0)];
+    /*UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, enterButton.frame.origin.y + enterButton.frame.size.height + 10.0, screenFrame.size.width - 60.0, 50.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -76,35 +90,54 @@
     [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:skipButton];
+    [self.view addSubview:skipButton];*/
 }
 
 #pragma mark - Actions
 
--(void)skipAndGoToHomeScreen {
-    //Save a file that indicates that the user skip the login process.
-    //we need to know this to present the suscription alert view controller
-    //when the user tries to watch a production.
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
-    
-    if ([fileSaver getDictionary:@"UserHasLoginDic"]) {
-        NSLog(@"si se guardó el diccionario");
+-(void)returnToProduction {
+    NSArray *viewControllers = [self.navigationController viewControllers];
+    for (int i = [viewControllers count] - 1; i >= 0; i--){
+        id obj = [viewControllers objectAtIndex:i];
+        if ([obj isKindOfClass:[TelenovelSeriesDetailViewController class]] || [obj isKindOfClass:[MoviesEventsDetailsViewController class]]){
+            [self.navigationController popToViewController:obj animated:YES];
+            
+            //Post a notification to tell the production view controller that it needs to display the video inmediatly
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"VideoShouldBeDisplayed" object:nil userInfo:nil];
+            break;
+        }
     }
+    if (self.userWasLogout) {
+        //If the user hasn't logged in with his user, create the aditional tabs
+        NSLog(@"Cree los tabs");
+        [self createAditionalTabsInTabBarController];
+    } else  {
+        NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
+    }
+}
+
+-(void)goToHomeScreen {
+    NSLog(@"iré al home screen");
+    MainTabBarViewController *mainTabBar = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    [self presentViewController:mainTabBar animated:YES completion:nil];
+}
+
+-(void)createAditionalTabsInTabBarController {
+    NSLog(@"crearé los tabs");
+    //4. Fourth view of the TabBar - My Lists
+    MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
+    MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
+    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
     
-    MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
-    mainTabBarVC.userDidSkipRegisterProcess = YES;
-    [self presentViewController:mainTabBarVC animated:YES completion:nil];
-}
-
--(void)goToEnterViewController {
-    IngresarViewController *ingresarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
-    [self.navigationController pushViewController:ingresarViewController animated:YES];
-}
-
--(void)goToSuscribeViewController {
-    SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
-    [self.navigationController pushViewController:suscriptionViewController animated:YES];
+    //5. Fifth view of the TabBar - My Account
+    ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
+    MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
+    [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+    
+    NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
+    [viewControllersArray addObject:myListsNavigationController];
+    [viewControllersArray addObject:myAccountNavigationController];
+    self.tabBarController.viewControllers = viewControllersArray;
 }
 
 #pragma mark - Interface Orientation

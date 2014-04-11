@@ -11,6 +11,7 @@
 #import "MBHUDView.h"
 #import "RentContentConfirmationViewController.h"
 #import "SuscriptionConfirmationViewController.h"
+#import "ServerCommunicator.h"
 
 @interface ContentNotAvailableForUserViewController ()
 

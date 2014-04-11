@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RedeemCodeAlertViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromProductionScreen;
+@property (assign, nonatomic) BOOL userWasLogout;
 @end

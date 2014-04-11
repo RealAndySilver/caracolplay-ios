@@ -175,7 +175,7 @@
     [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
 }
 
--(void)purchaseProduct {
+-(void)purchaseProductWithIdentifier:(NSString *)productID {
     [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -183,7 +183,7 @@
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
-                if ([product.productIdentifier isEqualToString:@"net.icck.CaracolPlay.Colombia.subscription"]) {
+                if ([product.productIdentifier isEqualToString:productID]) {
                     [[CPIAPHelper sharedInstance] buyProduct:product];
                     break;
                 }
@@ -207,7 +207,7 @@
     NSString *transactionID = userInfo[@"TransactionID"];
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     
-    [self suscribeUserInServerWithTransactionID:transactionID];
+    //[self suscribeUserInServerWithTransactionID:transactionID];
     
     //[self suscribeUserInServerWithTransactionID:@"11111"];
     //Test purposes only. If the terms are accepted, validate the suscription.
@@ -271,8 +271,12 @@
             NSLog(@"respuesta del validate: %@", dictionary);
             if ([dictionary[@"response"] boolValue]) {
                 NSLog(@"validacion correcta");
-                //[self purchaseProduct];
-                [self suscribeUserInServerWithTransactionID:@"18"];
+                if ([dictionary[@"region"] intValue] == 0) {
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
+                } else if ([dictionary[@"region"] intValue] == 1) {
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
+                }
+                //[self suscribeUserInServerWithTransactionID:@"18"];
             } else {
                 NSLog(@"validacion incorrecta");
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];

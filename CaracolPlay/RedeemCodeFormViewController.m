@@ -7,12 +7,16 @@
 //
 
 #import "RedeemCodeFormViewController.h"
+#import "RedeemCodeAlertViewController.h"
 #import "CheckmarkView.h"
 #import "MBHUDView.h"
 #import "FileSaver.h"
 #import "TermsAndConditionsViewController.h"
+#import "IAmCoder.h"
+#import "UserInfo.h"
+#import "ServerCommunicator.h"
 
-@interface RedeemCodeFormViewController () <UITextFieldDelegate, CheckmarkViewDelegate>
+@interface RedeemCodeFormViewController () <UITextFieldDelegate, CheckmarkViewDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -67,7 +71,7 @@
     [self.nextButton setTitle:@"Redimir Código" forState:UIControlStateNormal];
     [self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nextButton addTarget:self action:@selector(sendRedeemCodeInfoToServer) forControlEvents:UIControlEventTouchUpInside];
+    [self.nextButton addTarget:self action:@selector(startRedeemCodeProcess) forControlEvents:UIControlEventTouchUpInside];
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
@@ -107,24 +111,21 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
--(void)sendRedeemCodeInfoToServer {
+#pragma mark - Actions
+
+-(void)startRedeemCodeProcess {
+    //Save info in user info object
+    [UserInfo sharedInstance].userName = self.aliasTextfield.text;
+    [UserInfo sharedInstance].password = self.passwordTextfield.text;
+    
     if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
-        //Create JSON string with user info
-        NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
-                                      @"lastname" : self.lastNameTextfield.text,
-                                      @"email" : self.emailTextfield.text,
-                                      @"password" : self.passwordTextfield.text,
-                                      @"alias" : self.aliasTextfield.text};
-        NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
-                                                           options:NSJSONWritingPrettyPrinted
-                                                             error:&error];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"Json String: %@", jsonString);
+        [self validateUser];
+    } else {
+        //The terms and conditions were not accepted, so show an alert.
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [self showErrorsInTermAndPoliticsConditions];
     }
 }
-
-#pragma mark - Actions
 
 -(void)goToTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
@@ -137,6 +138,37 @@
 }
 
 #pragma mark - Custom Methods
+
+-(void)goToRedeemCodeConfirmation {
+    RedeemCodeAlertViewController *redeemCodeConfirmation = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeAlert"];
+    if (self.controllerWasPresentedFromProductionScreen) {
+        redeemCodeConfirmation.userWasLogout = YES;
+    }
+    
+    if (self.controllerWasPresentedFromInitialScreen) {
+        redeemCodeConfirmation.controllerWasPresentedFromInitialScreen = YES;
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        redeemCodeConfirmation.controllerWasPresentedFromProductionScreen = YES;
+    }
+    [self.navigationController pushViewController:redeemCodeConfirmation animated:YES];
+}
+
+-(NSString *)generateEncodedUserInfoString {
+    //Create JSON string with user info
+    NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
+                                  @"lastname" : self.lastNameTextfield.text,
+                                  @"email" : self.emailTextfield.text,
+                                  @"password" : self.passwordTextfield.text,
+                                  @"alias" : self.aliasTextfield.text};
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"Json String: %@", jsonString);
+    NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    return encodedJsonString;
+}
 
 -(BOOL)textfieldsInfoIsCorrect {
     BOOL namesAreCorrect = NO;
@@ -198,6 +230,76 @@
     }
 }
 
+#pragma mark -  Server Stuff
+
+-(void)redeemCodeInServer:(NSString *)code {
+    [MBHUDView hudWithBody:@"Redimiendo" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameter = [NSString stringWithFormat:@"code=%@&user_info=%@", code, [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:@"RedeemCode" andParameter:parameter httpMethod:@"POST"];
+}
+
+-(void)validateUser {
+    [UserInfo sharedInstance].userName = self.aliasTextfield.text;
+    [UserInfo sharedInstance].password = self.passwordTextfield.text;
+    
+    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:@"ValidateUser" andParameter:parameter httpMethod:@"POST"];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"ValidateUser"]) {
+        if (dictionary) {
+            NSLog(@"respuesta del validate: %@", dictionary);
+            if ([dictionary[@"response"] boolValue]) {
+                NSLog(@"validacion correcta");
+                //[self redeemCodeInServer:self.redeemCodeTextfield.text];
+                [self goToRedeemCodeConfirmation];
+            } else {
+                NSLog(@"validacion incorrecta");
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
+        } else {
+            //Error en la respuesta
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    
+    } else if ([methodName isEqualToString:@"RedeemCode"]) {
+        if (dictionary) {
+            NSLog(@"Respuesta del redeem code: %@", dictionary);
+            if ([dictionary[@"response"] boolValue]) {
+                NSLog(@"redencion correcta");
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [self goToRedeemCodeConfirmation];
+                
+            } else {
+                NSLog(@"redencion incorrecta");
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
+        } else {
+            [UserInfo sharedInstance].userName = nil;
+            [UserInfo sharedInstance].password = nil;
+        }
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándo con el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
 #pragma mark - Regex Stuff
 
 -(BOOL)NSStringIsValidEmail:(NSString *)checkString{
@@ -223,16 +325,6 @@
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    /*if (textField.tag == 1) {
-     //Validate name textfield
-     if (![self validateNameAndLastNameWithString:textField.text]) {
-     NSLog(@"El nombre no es válido");
-     textField.textColor = [UIColor redColor];
-     } else {
-     NSLog(@"el nombre si es válido");
-     textField.textColor = [UIColor whiteColor];
-     }
-     }*/
     if (textField.tag == 3) {
         //Validate email textfield
         if (![self NSStringIsValidEmail:textField.text]) {

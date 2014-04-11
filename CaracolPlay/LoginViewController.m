@@ -110,6 +110,7 @@
 
 -(void)goToRedeemCodeViewController {
     RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
+    redeemCodeFormVC.controllerWasPresentedFromInitialScreen = YES;
     [self.navigationController pushViewController:redeemCodeFormVC animated:YES];
 }
 

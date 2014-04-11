@@ -14,8 +14,12 @@
 #import "CPIAPHelper.h"
 #import "RentContentViewController.h"
 #import "TermsAndConditionsViewController.h"
+#import "UserInfo.h"
+#import "ServerCommunicator.h"
+#import "IAmCoder.h"
+#import "IAPProduct.h"
 
-@interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate>
+@interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *servicePoliticsLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTextfield;
@@ -77,7 +81,7 @@
     [self.nextButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nextButton addTarget:self action:@selector(rentContentAndGoToRentConfirmation) forControlEvents:UIControlEventTouchUpInside];
+    [self.nextButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
@@ -132,8 +136,19 @@
     [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
--(void)rentContentAndGoToRentConfirmation {
+-(void)startRentProcess {
+    //Save info in user info object
+    [UserInfo sharedInstance].userName = self.aliasTextfield.text;
+    [UserInfo sharedInstance].password = self.passwordTextfield.text;
+    
     if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
+        [self validateUser];
+    } else {
+        //The terms and conditions were not accepted, so show an alert.
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [self showErrorsInTermAndPoliticsConditions];
+    }
+    /*if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
         [self suscribeUserInServer];
         [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         //Request products from Apple Servers
@@ -151,12 +166,99 @@
         //The terms and conditions were not accepted, so show an alert.
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         [self showErrorsInTermAndPoliticsConditions];
-    }
+    }*/
 }
 
 #pragma mark - Server Stuff
 
--(void)suscribeUserInServer {
+-(void)rentContent {
+    [MBHUDView hudWithBody:@"Comprando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&user_info=%@", @"100", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:@"RentContent/1" andParameter:parameters httpMethod:@"POST"];
+}
+
+-(void)validateUser {
+    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:@"ValidateUser" andParameter:parameter httpMethod:@"POST"];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    if ([methodName isEqualToString:@"ValidateUser"]) {
+        if (dictionary) {
+            NSLog(@"respuesta del validate: %@", dictionary);
+            if ([dictionary[@"response"] boolValue]) {
+                NSLog(@"validacion correcta");
+                if ([dictionary[@"region"] intValue] == 0) {
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent"];
+                } else if ([dictionary[@"region"] intValue] == 1) {
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent"];
+                }
+                //[self suscribeUserInServerWithTransactionID:@"18"];
+            } else {
+                NSLog(@"validacion incorrecta");
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+            }
+        } else {
+            //Error en la respuesta
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    } else if ([methodName isEqualToString:@"RentContent/1"]) {
+        if (dictionary) {
+            NSLog(@"Peticion RentCOntent exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
+                                       } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
+            
+            //Go to Suscription confirmation VC
+            [self goToRentConfirmationVC];
+        }
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Custom Methods
+
+-(void)goToRentConfirmationVC {
+    RentContentConfirmationViewController *rentContentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
+}
+
+-(void)purchaseProductWithIdentifier:(NSString *)productID {
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    //Request products from Apple Servers
+    [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
+        [MBHUDView dismissCurrentHUD];
+        if (success) {
+            NSLog(@"apareció el mensajito de itunes");
+            for (IAPProduct *product in products) {
+                if ([product.productIdentifier isEqualToString:productID]) {
+                    [[CPIAPHelper sharedInstance] buyProduct:product];
+                    break;
+                }
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo a los productos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }];
+}
+
+-(NSString *)generateEncodedUserInfoString {
     //Create JSON string with user info
     NSDictionary *userInfoDic = @{@"name": self.nameTextfield.text,
                                   @"lastname" : self.lastNameTextfield.text,
@@ -169,9 +271,9 @@
                                                          error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSLog(@"Json String: %@", jsonString);
+    NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    return encodedJsonString;
 }
-
-#pragma mark - Custom Methods
 
 -(BOOL)textfieldsInfoIsCorrect {
     BOOL namesAreCorrect = NO;
@@ -254,17 +356,18 @@
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción");
+    [self rentContent];
     
     //Test purposes only. If the terms are accepted, validate the suscription.
     //Save a key locally indicating that the user is log in.
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+    //FileSaver *fileSaver = [[FileSaver alloc] init];
+    //[fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
     
     //Go to the rent confirmation view controller.
-    RentContentConfirmationViewController *rentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    //RentContentConfirmationViewController *rentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
     
     //suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = self.controllerWasPresentFromInitialScreen;
-    [self.navigationController pushViewController:rentConfirmationVC animated:YES];
+    //[self.navigationController pushViewController:rentConfirmationVC animated:YES];
 }
 
 

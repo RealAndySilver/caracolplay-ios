@@ -12,6 +12,7 @@
 #import "SuscriptionFormViewController.h"
 #import "RentContentViewController.h"
 #import "RentContentFormViewController.h"
+#import "RedeemCodeFormViewController.h"
 
 @interface SuscriptionAlertViewController ()
 
@@ -96,7 +97,7 @@
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
     redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
+    [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeFormViewController) forControlEvents:UIControlEventTouchUpInside];
     redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:redeemCodeButton];
@@ -104,9 +105,10 @@
 
 #pragma mark - Actions
 
--(void)goToRedeemCodeViewController {
-    RedeemCodeViewController *redeemCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Redeem"];
-    [self.navigationController pushViewController:redeemCodeVC animated:YES];
+-(void)goToRedeemCodeFormViewController {
+    RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
+    redeemCodeFormVC.controllerWasPresentedFromProductionScreen = YES;
+    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];
 }
 
 -(void)goToEnterViewController {
