@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RedeemCodeViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromInitialScreen;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromProductionScreen;
 @end

@@ -8,6 +8,7 @@
 
 #import "RedeemCodeFormViewController.h"
 #import "RedeemCodeAlertViewController.h"
+#import "RedeemCodeViewController.h"
 #import "CheckmarkView.h"
 #import "MBHUDView.h"
 #import "FileSaver.h"
@@ -93,6 +94,8 @@
     [self.termsAndConditionsButton addTarget:self action:@selector(goToTerms) forControlEvents:UIControlEventTouchUpInside];
     [self.servicePoliticsButton addTarget:self action:@selector(goToPolitics) forControlEvents:UIControlEventTouchUpInside];
     
+    [self.enterHereButton addTarget:self action:@selector(goToEnterAndRedeemCode) forControlEvents:UIControlEventTouchUpInside];
+    
     /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
      self.blurView.blurRadius = 7.0;
      self.blurView.alpha = 0.0;
@@ -113,11 +116,17 @@
 
 #pragma mark - Actions
 
+-(void)goToEnterAndRedeemCode {
+    RedeemCodeViewController *redeemCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Redeem"];
+    if (self.controllerWasPresentedFromInitialScreen) {
+        redeemCodeVC.controllerWasPresentedFromInitialScreen = YES;
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        redeemCodeVC.controllerWasPresentedFromProductionScreen = YES;
+    }
+    [self.navigationController pushViewController:redeemCodeVC animated:YES];
+}
+
 -(void)startRedeemCodeProcess {
-    //Save info in user info object
-    [UserInfo sharedInstance].userName = self.aliasTextfield.text;
-    [UserInfo sharedInstance].password = self.passwordTextfield.text;
-    
     if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
         [self validateUser];
     } else {
@@ -129,11 +138,15 @@
 
 -(void)goToTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showTerms = YES;
+    termsAndConditionsVC.title = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPolitics {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showPrivacy = YES;
+    termsAndConditionsVC.title = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
@@ -236,8 +249,8 @@
     [MBHUDView hudWithBody:@"Redimiendo" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    NSString *parameter = [NSString stringWithFormat:@"code=%@&user_info=%@", code, [self generateEncodedUserInfoString]];
-    [serverCommunicator callServerWithPOSTMethod:@"RedeemCode" andParameter:parameter httpMethod:@"POST"];
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", code] andParameter:parameter httpMethod:@"POST"];
 }
 
 -(void)validateUser {
@@ -253,13 +266,14 @@
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
+    NSLog(@"nombre del metodo que está respondiendo: %@", methodName);
     if ([methodName isEqualToString:@"ValidateUser"]) {
         if (dictionary) {
             NSLog(@"respuesta del validate: %@", dictionary);
             if ([dictionary[@"response"] boolValue]) {
                 NSLog(@"validacion correcta");
-                //[self redeemCodeInServer:self.redeemCodeTextfield.text];
-                [self goToRedeemCodeConfirmation];
+                [self redeemCodeInServer:self.redeemCodeTextfield.text];
+                //[self goToRedeemCodeConfirmation];
             } else {
                 NSLog(@"validacion incorrecta");
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
@@ -269,10 +283,10 @@
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     
-    } else if ([methodName isEqualToString:@"RedeemCode"]) {
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.redeemCodeTextfield.text]]) {
         if (dictionary) {
             NSLog(@"Respuesta del redeem code: %@", dictionary);
-            if ([dictionary[@"response"] boolValue]) {
+            if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"redencion correcta");
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -286,12 +300,17 @@
                 
             } else {
                 NSLog(@"redencion incorrecta");
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
         } else {
             [UserInfo sharedInstance].userName = nil;
             [UserInfo sharedInstance].password = nil;
+            NSLog(@"error en la peticion de redimir: %@", dictionary);
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error redimiendo el código. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
+    } else {
+        NSLog(@"Error en la respuesta");
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

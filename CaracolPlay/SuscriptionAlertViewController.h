@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SuscriptionAlertViewController : UIViewController
-
+@property (strong, nonatomic) NSString *productID;
+@property (strong, nonatomic) NSString *productName;
 @end

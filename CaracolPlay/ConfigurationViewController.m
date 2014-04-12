@@ -75,8 +75,15 @@ NSString *const cellIdentifier = @"CellIdentifier";
         [self showMailVC];
     }
     
-    else if ((indexPath.row == 2) || (indexPath.row == 3)) {
+    else if (indexPath.row == 2) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+        termsAndConditionsVC.showPrivacy = YES;
+        termsAndConditionsVC.title = @"Políticas de Privacidad";
+        [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+    } else if (indexPath.row == 3) {
+        TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+        termsAndConditionsVC.title = @"Términos y Condiciones";
+        termsAndConditionsVC.showTerms = YES;
         [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
     }
 }
@@ -91,7 +98,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
     [mailComposeVC setSubject:@"Reporte de errores CaracolPlay"];
     mailComposeVC.mailComposeDelegate = self;
     if ([MFMailComposeViewController canSendMail]) {
-        [self presentViewController:mailComposeVC animated:YES completion:nil];
+        [self.tabBarController presentViewController:mailComposeVC animated:YES completion:nil];
     } else {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Tu dispositivo no está configurado para enviar correo electrónico" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

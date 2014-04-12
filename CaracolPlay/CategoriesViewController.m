@@ -146,10 +146,11 @@ static NSString *CellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"Recibí una respuesta del server");
-    if ([methodName isEqualToString:@"GetCategories"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetCategories"] && responseDictionary) {
         NSLog(@"la petición fue exitosa. results dic: %@", responseDictionary);
         self.unparsedCategoriesList = responseDictionary[@"categories"];
     } else {
+        NSLog(@"error: %@", responseDictionary);
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Se produjo un error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }

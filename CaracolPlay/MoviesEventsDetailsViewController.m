@@ -368,7 +368,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         /*MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];*/
         
-    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Peliculas"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];
     }
@@ -390,7 +390,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else if (status == ReachableViaWWAN) {
             //The user can't watch the video because the connection is to slow
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            if (video.is3G) {
+                //The user can watch it with 3G
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.productID = self.production.identifier;
+                videoPlayer.progressSec = video.progressSec;
+                [self.navigationController pushViewController:videoPlayer animated:YES];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
             
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
@@ -497,12 +507,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     NSLog(@"Recibí respuesta del servidor");
-    if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
         self.recommendedProductions = responseDictionary[@"recommended_products"];
-        
-        
-        
-    } else if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+
+    } else if ([methodName isEqualToString:@"GetProductWithID"]) {
         //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
         //en este momento.
         if (![responseDictionary[@"products"][@"status"] boolValue]) {

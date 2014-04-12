@@ -20,12 +20,18 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Términos y Condiciones";
+    self.navigationItem.title = self.title;
     self.view.backgroundColor = [UIColor blackColor];
     
+    
+    //[self getTerms];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+    if (self.showTerms) {
+        self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+    } else if (self.showPrivacy) {
+        self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+    }
     self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
     NSLog(@"%@", self.termsAndConditionsString);
     [self setupUI];
@@ -41,6 +47,27 @@
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenFrame.size.width, screenFrame.size.height - 110.0)];
     [webView loadHTMLString:self.termsAndConditionsString baseURL:nil];
     [self.view addSubview:webView];
+}
+
+-(void)getTerms {
+    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetTerms" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    /*if ([methodName isEqualToString:@"GetTerms"]) {
+        if (dictionary) {
+            
+        }
+    }*/
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
 }
 #pragma mark - Interface Orientation
 

@@ -10,4 +10,5 @@
 
 @interface RentContentConfirmationViewController : UIViewController
 @property (nonatomic) BOOL userWasAlreadyLoggedin;
+@property (strong, nonatomic) NSString *rentedProductionName;
 @end

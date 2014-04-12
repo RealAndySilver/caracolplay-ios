@@ -16,11 +16,17 @@
 #import "CPIAPHelper.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
+#import "IAPProduct.h"
+#import "NSDictionary+NullReplacement.h"
+#import "IAmCoder.h"
+
 
 @interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
+@property (strong, nonatomic) NSString *transactionID;
+@property (strong, nonatomic) NSDictionary *userInfoDic;
 @end
 
 @implementation IngresarViewController
@@ -29,10 +35,10 @@
     [super viewDidLoad];
     
     //Register as an observer of the notification -UserDidSuscribe.
-    /*[[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userDidSuscribeNotificationReceived:)
                                                  name:@"UserDidSuscribe"
-                                               object:nil];*/
+                                               object:nil];
     
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -151,14 +157,18 @@
     [self createAditionalTabsInTabBarController];
 }
 
--(void)buySubscription {
+-(void)buySubscriptionWithIdentifier:(NSString *)productIdentifier {
     [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
         [MBHUDView dismissCurrentHUD];
         if (success) {
             if (products) {
-                IAPProduct *product = [products firstObject];
-                [[CPIAPHelper sharedInstance] buyProduct:product];
+                for (IAPProduct *product in products) {
+                    if ([product.productIdentifier isEqualToString:productIdentifier]) {
+                        [[CPIAPHelper sharedInstance] buyProduct:product];
+                        break;
+                    }
+                }
             }
         } else {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Imposible conectarse con iTunes Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
@@ -188,7 +198,47 @@
     self.tabBarController.viewControllers = viewControllersArray;
 }
 
+-(NSString *)generateEncodedUserInfoString {
+    //Create JSON string with user info
+    NSDictionary *userInfoDic = @{@"name": self.userInfoDic[@"nombres"],
+                                  @"lastname" : self.userInfoDic[@"apellidos"],
+                                  @"email" : self.userInfoDic[@"mail"],
+                                  @"password" : self.passwordTextfield.text,
+                                  @"alias" : self.userInfoDic[@"alias"]};
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"Json String: %@", jsonString);
+    NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    return encodedJsonString;
+}
+
+-(void)goToSubscriptionConfirm {
+    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+    
+    if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
+        suscriptionConfirmationVC.userWasAlreadyLoggedin = NO;
+        
+    } else if (self.controllerWasPresentedFromProductionScreen) {
+        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
+    }
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+}
+
 #pragma mark - Server Stuff
+
+-(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString * encodedUserInfo = [self generateEncodedUserInfoString];
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", encodedUserInfo];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", transactionID] andParameter:parameter
+                                      httpMethod:@"POST"];
+}
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
     [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
@@ -196,6 +246,7 @@
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
     [UserInfo sharedInstance].password = password;
+    
     [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
 }
 
@@ -213,6 +264,8 @@
                                        @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
+            self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             
             if (self.controllerWasPresentedFromInitialScreen) {
                 //Go to home screen directly
@@ -224,12 +277,33 @@
                 [self returnToProduction];
             
             } else if (self.controllerWasPresentedFromInitialSuscriptionScreen) {
-                //Request products from Apple
-                [self buySubscription];
+                if (![dictionary[@"user"][@"is_suscription"] boolValue]) {
+                    //Request products from Apple because the user is not suscribe
+                    if ([dictionary[@"region"] intValue] == 0) {
+                        [self buySubscriptionWithIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
+                    } else if ([dictionary[@"region"] intValue] == 1) {
+                        [self buySubscriptionWithIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
+                    }
+                } else {
+                    //the user is suscribe, don't allow him to buy, pass directly to home screen
+                    [self goToHomeScreen];
+                    //[[[UIAlertView alloc] initWithTitle:nil message:@"Tu usuario ya posee una suscripción." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                }
+              
                 
             } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
-                //Request products from Apple
-                [self buySubscription];
+                if (![dictionary[@"user"][@"is_suscription"] boolValue]) {
+                    //Request products from Apple because the user is not suscribe
+                    if ([dictionary[@"region"] intValue] == 0) {
+                        [self buySubscriptionWithIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
+                    } else if ([dictionary[@"region"] intValue] == 1) {
+                        [self buySubscriptionWithIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
+                    }
+                } else {
+                    //the user is suscribe, don't allow him to buy, pass directly to home screen
+                    [self returnToProduction];
+                    //[[[UIAlertView alloc] initWithTitle:nil message:@"Tu usuario ya posee una suscripción." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                }
             }
             
         } else {
@@ -238,7 +312,30 @@
             [UserInfo sharedInstance].password = nil;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
+        
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
+        if (dictionary) {
+            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
+                                       } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
+            
+            //Go to Suscription confirmation VC
+            [self goToSubscriptionConfirm];
+        } else {
+            NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+        }
+        
     } else {
+        NSLog(@"error en la respuesta: %@", dictionary);
+        [UserInfo sharedInstance].userName = nil;
+        [UserInfo sharedInstance].password = nil;
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
@@ -252,16 +349,26 @@
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"recibí la notificación de compra");
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
+    //FileSaver *fileSaver = [[FileSaver alloc] init];
+    //[fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
     
-    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+    NSDictionary *userInfo = [notification userInfo];
+    NSString *transactionID = userInfo[@"TransactionID"];
+    self.transactionID = transactionID;
+    
+    //Save
+    
+    NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
+    [self suscribeUserInServerWithTransactionID:transactionID];
+
+    
+    /*SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
     if (self.controllerWasPresentedFromInitialSuscriptionScreen || self.controllerWasPresentedFromInitialScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
     } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
         suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
     }
-    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];*/
     
     /*RentContentConfirmationViewController *rentContentVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];

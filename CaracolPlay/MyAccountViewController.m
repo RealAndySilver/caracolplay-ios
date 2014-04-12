@@ -16,6 +16,7 @@
 #import "UserInfo.h"
 #import "ServerCommunicator.h"
 #import "MBHUDView.h"
+#import "NSDictionary+NullReplacement.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate,  ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -239,11 +240,15 @@
 
 -(void)goToConditionsTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showTerms = YES;
+    termsAndConditionsVC.title = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPrivacyTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showPrivacy = YES;
+    termsAndConditionsVC.title = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
@@ -288,8 +293,9 @@
     [MBHUDView dismissCurrentHUD];
     if ([methodName isEqualToString:@"GetUser"] && dictionary) {
         NSLog(@"Peticio GetUser exitosa: %@", dictionary);
-        self.suscriptionDic = dictionary[@"user"][@"suscription"];
-        self.personalInfo = dictionary[@"user"][@"data"];
+        NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
+        self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
+        self.personalInfo = dicWithoutNulls[@"user"][@"data"];
         
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

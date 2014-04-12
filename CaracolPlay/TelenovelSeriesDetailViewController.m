@@ -224,7 +224,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:shareButton];
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 20.0, self.view.frame.size.width - 20.0, 70.0)];
+    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -348,6 +348,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] && [self.production.free isEqualToString:@"0"]) {
         //The user isn't login.
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
+        suscriptionAlertVC.productID = self.selectedEpisodeID;
+        suscriptionAlertVC.productName = self.production.name;
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");
         
@@ -422,6 +424,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         } else if (status == ReachableViaWWAN) {
             if (video.is3G) {
                 //The user can watch it with 3G
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
                 videoPlayer.productID = self.selectedEpisodeID;
@@ -429,7 +432,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 [self.navigationController pushViewController:videoPlayer animated:YES];
             } else {
                 //The user can't watch the video because the connection is to slow
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Este contenido no puede verse " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else if (status == ReachableViaWiFi) {
@@ -477,7 +480,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
     
-    if ([methodName isEqualToString:@"GetProductWithID"] && [dictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetProductWithID"] && dictionary) {
         if (![dictionary[@"products"][@"status"] boolValue]) {
             NSLog(@"El producto no está disponible");
             //Hubo algún problema y no se pudo acceder al producto

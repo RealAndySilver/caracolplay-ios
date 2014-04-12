@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TermsAndConditionsViewController : UIViewController
-
+@property (assign, nonatomic) BOOL showTerms;
+@property (assign, nonatomic) BOOL showPrivacy;
+@property (strong, nonatomic) NSString *title;
 @end

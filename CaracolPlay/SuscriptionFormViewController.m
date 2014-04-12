@@ -50,14 +50,11 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
     [self setupUI];
-    
-    //Register as an observer of the notification -UserDidSuscribe.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userDidSuscribeNotificationReceived:)
-                                                 name:@"UserDidSuscribe"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)setupUI {
@@ -122,6 +119,14 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
+    
+    //Register as an observer of the notification -UserDidSuscribe.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
 }
 
 -(void)startSubscriptionProcess {
@@ -205,9 +210,12 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
-    NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
+    self.transactionID = transactionID;
     
-    //[self suscribeUserInServerWithTransactionID:transactionID];
+    //Save
+    
+    NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
+    [self suscribeUserInServerWithTransactionID:transactionID];
     
     //[self suscribeUserInServerWithTransactionID:@"11111"];
     //Test purposes only. If the terms are accepted, validate the suscription.
@@ -249,7 +257,7 @@
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBHUDView dismissCurrentHUD];
-    if ([methodName isEqualToString:@"SubscribeUser/18"]) {
+    if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
             NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
             
@@ -276,7 +284,6 @@
                 } else if ([dictionary[@"region"] intValue] == 1) {
                     [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
                 }
-                //[self suscribeUserInServerWithTransactionID:@"18"];
             } else {
                 NSLog(@"validacion incorrecta");
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
@@ -307,11 +314,15 @@
 
 -(void)goToTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showTerms = YES;
+    termsAndConditionsVC.title = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPolitics {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showPrivacy = YES;
+    termsAndConditionsVC.title = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 

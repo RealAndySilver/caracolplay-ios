@@ -36,7 +36,6 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];*/
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -68,7 +67,7 @@
     
     //3. other textview
     UITextView *productionNameTextview = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 340.0, self.view.bounds.size.width - 40.0, 60.0)];
-    productionNameTextview.text = @"Mentiras Perfectas Mentiras Perfectas Mentiras Perfectas";
+    productionNameTextview.text = self.rentedProductionName;
     productionNameTextview.textAlignment = NSTextAlignmentCenter;
     productionNameTextview.backgroundColor = [UIColor clearColor];
     productionNameTextview.font = [UIFont systemFontOfSize:15.0];

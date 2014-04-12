@@ -119,6 +119,8 @@
 
 -(void)goToRentViewController {
     RentContentFormViewController *rentContentFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentForm"];
+    rentContentFormVC.productID = self.productID;
+    rentContentFormVC.rentedProductName = self.productName;
     [self.navigationController pushViewController:rentContentFormVC animated:YES];
 }
 

@@ -103,18 +103,18 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MoviesTableViewCell *productionCell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!productionCell) {
+    if (productionCell==nil) {
         productionCell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
-    NSURL *productionImageURL = [NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]];
-    [productionCell.movieImageView setImageWithURL:productionImageURL placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    //NSURL *productionImageURL = [NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]];
+    [productionCell.movieImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
-    productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    /*if ([self.productionsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
+    
+    if ([self.productionsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
         productionCell.isFree = YES;
-    }*/
-    productionCell.isFree = YES;
+    }
     return productionCell;
 }
 
@@ -155,7 +155,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [MBHUDView dismissCurrentHUD];
 #warning aquí hay un log de tal cosa
     NSLog(@"Recibí info del servidor");
-    if ([methodName isEqualToString:@"GetListFromCategoryID"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetListFromCategoryID"] && responseDictionary) {
         self.unparsedProductionsArray = responseDictionary[@"products"];
     
     } else {

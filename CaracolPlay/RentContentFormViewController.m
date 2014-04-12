@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsButton;
 @property (weak, nonatomic) IBOutlet UIButton *politicsButton;
+@property (strong , nonatomic) NSString *transactionID;
 
 @end
 
@@ -49,17 +50,6 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = NO;
-    
-    //Register as an observer of the notification -UserDidSuscribe.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userDidSuscribeNotificationReceived:)
-                                                 name:@"UserDidSuscribe"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(transactionFailedNotificationReceived:)
-                                                 name:@"TransactionFailedNotification"
-                                               object:nil];
     
     //Set textfields delegates
     self.nameTextfield.delegate = self;
@@ -104,7 +94,7 @@
     
     //Other buttons setup
     [self.termsButton addTarget:self action:@selector(goToTermsVC) forControlEvents:UIControlEventTouchUpInside];
-    [self.politicsButton addTarget:self action:@selector(goToTermsVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.politicsButton addTarget:self action:@selector(goToPrivacyVC) forControlEvents:UIControlEventTouchUpInside];
     
     /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.bounds];
      self.blurView.blurRadius = 7.0;
@@ -122,17 +112,44 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
+    
+    //Register as an observer of the notification -UserDidSuscribe.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(transactionFailedNotificationReceived:)
+                                                 name:@"TransactionFailedNotification"
+                                               object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Actions 
 
 -(void)goToTermsVC {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showTerms = YES;
+    termsAndConditionsVC.title = @"Términos y Condiciones";
+    [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
+}
+
+-(void)goToPrivacyVC {
+    TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
+    termsAndConditionsVC.showPrivacy = YES;
+    termsAndConditionsVC.title = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToIngresarVC {
     RentContentViewController *rentContentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContent"];
+    rentContentVC.productID = self.productID;
+    rentContentVC.productName = self.rentedProductName;
     [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
@@ -148,25 +165,6 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         [self showErrorsInTermAndPoliticsConditions];
     }
-    /*if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
-        [self suscribeUserInServer];
-        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-        //Request products from Apple Servers
-        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-            [MBHUDView dismissCurrentHUD];
-            if (success) {
-                NSLog(@"apareció el mensajito de itunes");
-                //Request succeded - Buy the product
-                IAPProduct *product = [products lastObject];
-                [[CPIAPHelper sharedInstance] buyProduct:product];
-            }
-        }];
-        
-    } else {
-        //The terms and conditions were not accepted, so show an alert.
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        [self showErrorsInTermAndPoliticsConditions];
-    }*/
 }
 
 #pragma mark - Server Stuff
@@ -175,8 +173,8 @@
     [MBHUDView hudWithBody:@"Comprando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    NSString *parameters = [NSString stringWithFormat:@"product_id=%@&user_info=%@", @"100", [self generateEncodedUserInfoString]];
-    [serverCommunicator callServerWithPOSTMethod:@"RentContent/1" andParameter:parameters httpMethod:@"POST"];
+    NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID] andParameter:parameters httpMethod:@"POST"];
 }
 
 -(void)validateUser {
@@ -195,9 +193,9 @@
             if ([dictionary[@"response"] boolValue]) {
                 NSLog(@"validacion correcta");
                 if ([dictionary[@"region"] intValue] == 0) {
-                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent"];
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
                 } else if ([dictionary[@"region"] intValue] == 1) {
-                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent"];
+                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
                 }
                 //[self suscribeUserInServerWithTransactionID:@"18"];
             } else {
@@ -208,9 +206,9 @@
             //Error en la respuesta
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
-    } else if ([methodName isEqualToString:@"RentContent/1"]) {
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
         if (dictionary) {
-            NSLog(@"Peticion RentCOntent exitosa: %@", dictionary);
+            NSLog(@"Peticion RentContent exitosa: %@", dictionary);
             
             //Save a key localy that indicates that the user is logged in
             FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -223,6 +221,8 @@
             
             //Go to Suscription confirmation VC
             [self goToRentConfirmationVC];
+        } else {
+            NSLog(@"error en la peticion RentContent: %@", dictionary);
         }
     }
 }
@@ -236,6 +236,7 @@
 
 -(void)goToRentConfirmationVC {
     RentContentConfirmationViewController *rentContentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    rentContentConfirmationVC.rentedProductionName = self.rentedProductName;
     [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
 }
 
@@ -356,6 +357,9 @@
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción");
+    NSDictionary *notificationDic = [notification userInfo];
+    NSString *transactionID = notificationDic[@"TransactionID"];
+    self.transactionID = transactionID;
     [self rentContent];
     
     //Test purposes only. If the terms are accepted, validate the suscription.

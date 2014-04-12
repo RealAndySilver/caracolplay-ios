@@ -19,11 +19,11 @@
     //IAPProduct *suscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testsuscription"];
     //IAPProduct *rentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"com.iamstudio.CaracolPlay.testrentedproduction"];
     //NSMutableDictionary *products = [@{suscriptionProduct.productIdentifier : suscriptionProduct, rentedProduct.productIdentifier : rentedProduct} mutableCopy];
-    IAPProduct *colombiaEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.event"];
-    IAPProduct *colombiaRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.rent"];
+    IAPProduct *colombiaEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.event1"];
+    IAPProduct *colombiaRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
     IAPProduct *colombiaSuscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
-    IAPProduct *restOfWorldEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.event"];
-    IAPProduct *restOfWorldRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.rent"];
+    IAPProduct *restOfWorldEventProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.event1"];
+    IAPProduct *restOfWorldRentedProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
     IAPProduct *restOfWorldSuscriptionProduct = [[IAPProduct alloc] initWithProductIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
     NSMutableDictionary *products = [@{colombiaEventProduct.productIdentifier : colombiaEventProduct,
                                        colombiaRentedProduct.productIdentifier : colombiaRentedProduct,
