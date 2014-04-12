@@ -165,9 +165,17 @@
                 self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
                 
                 if ([dictionary[@"region"] intValue] == 0) {
-                    [self rentProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self rentProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.event1"];
+                    } else {
+                        [self rentProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    }
                 } else if ([dictionary[@"region"] intValue] == 1) {
-                    [self rentProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self rentProductWithIdentifier:@"net.icck.CaracolPlay.RM.event1"];
+                    } else {
+                        [self rentProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    }
                 }
                 
             } else {

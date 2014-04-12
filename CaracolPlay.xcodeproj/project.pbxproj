@@ -213,6 +213,7 @@
 		A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44901899CC8100E72135 /* AlertViewBackground.png */; };
 		A05C44951899CEA700E72135 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C44941899CEA700E72135 /* FXBlurView.m */; };
 		A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C44961899CEF000E72135 /* Accelerate.framework */; };
+		A064655518F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */; };
 		A069A74C18EF1472003BF3AD /* RefreshIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74A18EF1472003BF3AD /* RefreshIcon.png */; };
 		A069A74D18EF1472003BF3AD /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */; };
 		A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */; };
@@ -618,6 +619,8 @@
 		A05C44931899CEA700E72135 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		A05C44941899CEA700E72135 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		A05C44961899CEF000E72135 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		A064655318F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedeemCodeFromContentNotAvailbaleViewController.h; sourceTree = "<group>"; };
+		A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedeemCodeFromContentNotAvailbaleViewController.m; sourceTree = "<group>"; };
 		A069A74A18EF1472003BF3AD /* RefreshIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshIcon.png; path = Resources/Images/iPad/RefreshIcon.png; sourceTree = "<group>"; };
 		A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RefreshIcon@2x.png"; path = "Resources/Images/iPad/RefreshIcon@2x.png"; sourceTree = "<group>"; };
 		A069A74E18EF7018003BF3AD /* RentFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentFromInsideViewController.h; path = iPadVC/RentFromInsideViewController.h; sourceTree = "<group>"; };
@@ -1309,6 +1312,8 @@
 				8BC2C3E118DC9B1300DB7219 /* RentContentFormViewController.m */,
 				A053521818F6077400BF9578 /* RedeemCodeFormViewController.h */,
 				A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */,
+				A064655318F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.h */,
+				A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */,
 			);
 			name = "Loading & Login ";
 			sourceTree = "<group>";
@@ -1801,6 +1806,7 @@
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
 				8B1DB00C18F33F0100C06A53 /* NSString+Base64.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
+				A064655518F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m in Sources */,
 				8B164B8118A9723A001803A9 /* Redeemed.m in Sources */,
 				8BED8A8618C62A3F0076EA26 /* IAPHelper.m in Sources */,
 				8BE7FDF2189826C70087A7E2 /* LoginViewController.m in Sources */,

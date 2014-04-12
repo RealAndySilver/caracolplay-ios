@@ -11,4 +11,5 @@
 @interface RentContentFormViewController : UIViewController
 @property (strong, nonatomic) NSString *productID;
 @property (strong, nonatomic) NSString *rentedProductName;
+@property (strong, nonatomic) NSString *productType;
 @end

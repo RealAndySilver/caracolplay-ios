@@ -12,9 +12,19 @@
 #import "RentContentConfirmationViewController.h"
 #import "SuscriptionConfirmationViewController.h"
 #import "ServerCommunicator.h"
+#import "UserInfo.h"
+#import "IAPProduct.h"
+#import "NSDictionary+NullReplacement.h"
+#import "IAmCoder.h"
+#import "FileSaver.h"
+#import "RedeemCodeFromContentNotAvailbaleViewController.h"
 
-@interface ContentNotAvailableForUserViewController ()
-
+@interface ContentNotAvailableForUserViewController () <ServerCommunicatorDelegate>
+@property (strong, nonatomic) NSString *transactionID;
+@property (assign, nonatomic) BOOL userSelectedRentOption;
+@property (assign, nonatomic) BOOL userSelectedSubscribeOption;
+@property (assign, nonatomic) BOOL userSelectedRedeemOption;
+@property (strong, nonatomic) NSDictionary *userInfoDic;
 @end
 
 @implementation ContentNotAvailableForUserViewController
@@ -76,7 +86,7 @@
     UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.7, 200.0, 44.0)];
     [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rentButton addTarget:self action:@selector(rentProduct) forControlEvents:UIControlEventTouchUpInside];
+    [rentButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
     rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.view addSubview:rentButton];
@@ -85,7 +95,7 @@
     UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.44, 200.0, 44.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [suscribeButton addTarget:self action:@selector(suscribe) forControlEvents:UIControlEventTouchUpInside];
+    [suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.view addSubview:suscribeButton];
@@ -97,23 +107,47 @@
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimir.png"] forState:UIControlStateNormal];
     redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    //[redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
+    [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeFromContentNotAvailable) forControlEvents:UIControlEventTouchUpInside];
     redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:redeemCodeButton];
 }
 
 #pragma mark - Actions 
+-(void)startRentProcess {
+    self.userSelectedRentOption = YES;
+    self.userSelectedRedeemOption = NO;
+    self.userSelectedSubscribeOption = NO;
+    [self authenticateUser];
+}
 
--(void)rentProduct {
+-(void)startSubscriptionProcess {
+    self.userSelectedRedeemOption = NO;
+    self.userSelectedSubscribeOption = YES;
+    self.userSelectedRentOption = NO;
+    [self authenticateUser];
+}
+
+-(void)goToRedeemCodeFromContentNotAvailable {
+    RedeemCodeFromContentNotAvailbaleViewController *redeeemCodeFromContentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFromContentNotAvailable"];
+    [self.navigationController pushViewController:redeeemCodeFromContentNotAvailableVC animated:YES];
+}
+
+-(void)buyProductWithIdentifier:(NSString *)productIdentifier {
     [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
         [MBHUDView dismissCurrentHUD];
         if (success) {
             if (products) {
-                IAPProduct *product = [products lastObject];
-                [[CPIAPHelper sharedInstance] buyProduct:product];
+                for (IAPProduct *product in products) {
+                    if ([product.productIdentifier isEqualToString:productIdentifier]) {
+                        [[CPIAPHelper sharedInstance] buyProduct:product];
+                        break;
+                    }
+                }
             }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo al producto. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     }];
 }
@@ -131,6 +165,151 @@
     }];
 }
 
+#pragma mark - Custom Methods
+
+-(NSString *)generateEncodedUserInfoString {
+    //Create JSON string with user info
+    NSDictionary *userInfoDic = @{@"name": self.userInfoDic[@"nombres"],
+                                  @"lastname" : self.userInfoDic[@"apellidos"],
+                                  @"email" : self.userInfoDic[@"mail"],
+                                  @"password" : [UserInfo sharedInstance].password,
+                                  @"alias" : self.userInfoDic[@"alias"]};
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"Json String: %@", jsonString);
+    NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    return encodedJsonString;
+}
+
+-(void)goToRentConfirmationVC {
+    RentContentConfirmationViewController *rentContentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
+    rentContentConfirmationVC.rentedProductionName = self.productName;
+    rentContentConfirmationVC.userWasAlreadyLoggedin = YES;
+    [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
+}
+
+-(void)goToSubscriptionConfirm {
+    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
+    suscriptionConfirmationVC.userWasAlreadyLoggedin = YES;
+    suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
+    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
+}
+
+#pragma mark - Server Stuff
+
+-(void)subscribeUserInServer {
+    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString * encodedUserInfo = [self generateEncodedUserInfoString];
+    NSString *parameter = [NSString stringWithFormat:@"user_info=%@", encodedUserInfo];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID] andParameter:parameter
+                                      httpMethod:@"POST"];
+}
+
+-(void)rentProductInServer {
+    [MBHUDView hudWithBody:@"Comprando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID] andParameter:parameters httpMethod:@"POST"];
+}
+
+-(void)authenticateUser {
+    [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBHUDView dismissCurrentHUD];
+    
+    /////////////////////////////////////////////////////////////////////
+    //AuthenticateUser
+    if ([methodName isEqualToString:@"AuthenticateUser"] && dictionary) {
+        if ([dictionary[@"status"] boolValue]) {
+            NSLog(@"autenticación exitosa: %@", dictionary);
+            NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
+            self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
+            
+            if ([dictionary[@"region"] intValue] == 0) {
+                //Colombia
+                if (self.userSelectedRentOption) {
+                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                } else if (self.userSelectedSubscribeOption) {
+                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
+                }
+            
+            } else if ([dictionary[@"region"] intValue] == 1) {
+                //Rest of the world
+                if (self.userSelectedRentOption) {
+                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                } else if (self.userSelectedSubscribeOption) {
+                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.Subscription"];
+                }
+            }
+        } else {
+            NSLog(@"La autenticación no fue exitosa");
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error intentanto comprar con tu usuario. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
+    /////////////////////////////////////////////////////////////////////////
+    //RentContent
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
+        if (dictionary) {
+            NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
+                                       } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
+            
+            //Go to Suscription confirmation VC
+            [self goToRentConfirmationVC];
+        } else {
+            NSLog(@"error en la respuesta del RentContent: %@", dictionary);
+        }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //SubscribeUser
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
+        if (dictionary) {
+            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+            
+            //Save a key localy that indicates that the user is logged in
+            FileSaver *fileSaver = [[FileSaver alloc] init];
+            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                       @"UserName" : [UserInfo sharedInstance].userName,
+                                       @"Password" : [UserInfo sharedInstance].password,
+                                       @"Session" : dictionary[@"session"]
+                                       } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].session = dictionary[@"session"];
+            
+            //Go to Suscription confirmation VC
+            [self goToSubscriptionConfirm];
+        } else {
+            NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+        }
+
+    ///////////////////////////////////////////////////////////////////////////
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBHUDView dismissCurrentHUD];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
 #pragma mark - Notification Handler 
 
 -(void)transactionFailedNotificationReceived:(NSNotification *)notification {
@@ -145,7 +324,15 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     NSLog(@"recibí la notificación");
     NSDictionary *productInfo = [notification userInfo];
-    NSString *typeOfProduct = productInfo[@"TypeOfProduct"];
+    NSString *transactionID = productInfo[@"TransactionID"];
+    self.transactionID = transactionID;
+    if (self.userSelectedRentOption) {
+        [self rentProductInServer];
+    } else if (self.userSelectedSubscribeOption) {
+        [self subscribeUserInServer];
+    }
+    
+    /*NSString *typeOfProduct = productInfo[@"TypeOfProduct"];
     if ([typeOfProduct isEqualToString:@"suscripcion"]) {
         //Go to suscription confirmation view controller
         SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
@@ -165,7 +352,7 @@
         //need to create the aditional tabs
         rentContentConfirmationVC.userWasAlreadyLoggedin = YES;
         [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
-    }
+    }*/
 }
 
 #pragma mark - Interface Orientation

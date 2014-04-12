@@ -416,6 +416,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         //Content not available for user
         ContentNotAvailableForUserViewController *contentNotAvailableForUser =
         [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        contentNotAvailableForUser.productID = self.production.identifier;
+        contentNotAvailableForUser.productName = self.production.name;
         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }
@@ -424,6 +426,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] && [self.production.free isEqualToString:@"0"]) {
         SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
+        suscriptionAlertVC.productName = self.production.name;
+        suscriptionAlertVC.productID = self.production.identifier;
+        suscriptionAlertVC.productType = self.production.type;
         [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
         NSLog(@"no puedo ver la producción porque no he ingresado");
         return;

@@ -150,6 +150,7 @@
     RentContentViewController *rentContentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContent"];
     rentContentVC.productID = self.productID;
     rentContentVC.productName = self.rentedProductName;
+    rentContentVC.productType = self.productType;
     [self.navigationController pushViewController:rentContentVC animated:YES];
 }
 
@@ -193,9 +194,17 @@
             if ([dictionary[@"response"] boolValue]) {
                 NSLog(@"validacion correcta");
                 if ([dictionary[@"region"] intValue] == 0) {
-                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.event1"];
+                    } else {
+                        [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    }
                 } else if ([dictionary[@"region"] intValue] == 1) {
-                    [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.event1"];
+                    } else {
+                        [self purchaseProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    }
                 }
                 //[self suscribeUserInServerWithTransactionID:@"18"];
             } else {

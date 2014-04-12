@@ -34,12 +34,6 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    //Register as an observer of the notification -UserDidSuscribe.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userDidSuscribeNotificationReceived:)
-                                                 name:@"UserDidSuscribe"
-                                               object:nil];
-    
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     
@@ -84,6 +78,17 @@
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
                                                   forBarMetrics:UIBarMetricsDefault];
+    
+    //Register as an observer of the notification -UserDidSuscribe.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidSuscribeNotificationReceived:)
+                                                 name:@"UserDidSuscribe"
+                                               object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITextfieldDelegate

@@ -449,6 +449,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         //Content not available for user
         ContentNotAvailableForUserViewController *contentNotAvailableForUser =
         [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        contentNotAvailableForUser.productID = self.selectedEpisodeID;
+        contentNotAvailableForUser.productName = self.production.name;
         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }
