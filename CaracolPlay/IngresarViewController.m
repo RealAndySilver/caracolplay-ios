@@ -365,19 +365,6 @@
     
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     [self suscribeUserInServerWithTransactionID:transactionID];
-
-    
-    /*SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
-    if (self.controllerWasPresentedFromInitialSuscriptionScreen || self.controllerWasPresentedFromInitialScreen) {
-        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
-    } else if (self.controllerWasPresentedFromProductionSuscriptionScreen) {
-        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
-    }
-    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];*/
-    
-    /*RentContentConfirmationViewController *rentContentVC =
-        [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
-    [self.navigationController pushViewController:rentContentVC animated:YES];*/
 }
 
 #pragma mark - Interface Orientation

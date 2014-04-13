@@ -141,29 +141,6 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         [self showErrorsInTermAndPoliticsConditions];
     }
-    
-    //[self suscribeUserInServerWithTransactionID:@"1"];
-    /*if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
-        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-        //Request products from Apple Servers
-        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-            [MBHUDView dismissCurrentHUD];
-            if (success) {
-                NSLog(@"apareció el mensajito de itunes");
-                for (IAPProduct *product in products) {
-                    if ([product.productIdentifier isEqualToString:@"net.icck.CaracolPlay.Colombia.subscription"]) {
-                        [[CPIAPHelper sharedInstance] buyProduct:product];
-                        break;
-                    }
-                }
-            }
-        }];
-        
-    } else {
-        //The terms and conditions were not accepted, so show an alert.
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-            [self showErrorsInTermAndPoliticsConditions];
-    }*/
 }
 
 -(void)goToSubscriptionConfirm {
@@ -211,28 +188,8 @@
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;
-    
-    //Save
-    
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     [self suscribeUserInServerWithTransactionID:transactionID];
-    
-    //[self suscribeUserInServerWithTransactionID:@"11111"];
-    //Test purposes only. If the terms are accepted, validate the suscription.
-    //Save a key locally indicating that the user is log in.
-    /*FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
-     
-    //Go to the suscription confirmation view controller.
-    SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
-    
-    if (self.controllerWasPresentFromInitialScreen) {
-        suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
-        suscriptionConfirmationVC.userWasAlreadyLoggedin = NO;
-    } else if (self.controllerWasPresentedFromProductionScreen) {
-        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
-    }
-    [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];*/
 }
 
 #pragma mark - Server Stuff
@@ -443,10 +400,10 @@
         //Validate email textfield
         if (![self NSStringIsValidEmail:textField.text]) {
             NSLog(@"el email no es válido");
-            textField.textColor = [UIColor redColor];
+            //textField.textColor = [UIColor redColor];
         } else {
             NSLog(@"el email es válido");
-            textField.textColor = [UIColor whiteColor];
+            //textField.textColor = [UIColor whiteColor];
         }
     }
     return YES;

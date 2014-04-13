@@ -9,8 +9,8 @@
 #import "LoginPadViewController.h"
 #import "IngresarPadViewController.h"
 #import "SuscribePadViewController.h"
-#import "RedeemCodePadViewController.h"
 #import "MainTabBarPadController.h"
+#import "RedeemCodeFormPadViewController.h"
 
 @interface LoginPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -92,9 +92,9 @@
 }
 
 -(void)showRedeemVC {
-    RedeemCodePadViewController *redeemCodePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCode"];
-    redeemCodePadViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:redeemCodePadViewController animated:YES completion:nil];
+    RedeemCodeFormPadViewController *redeemCodeFormPad = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFormPad"];
+    redeemCodeFormPad.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:redeemCodeFormPad animated:YES completion:nil];
 }
 
 -(void)showIngresarVC {

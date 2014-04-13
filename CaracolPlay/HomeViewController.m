@@ -34,36 +34,6 @@
 
 @implementation HomeViewController
 
-#pragma mark - Lazy Instantiation
-
-/*-(NSArray *)unparsedFeaturedProductionsInfo {
-    if (!_unparsedFeaturedProductionsInfo) {
-        _unparsedFeaturedProductionsInfo = @[@{@"name": @"Mentiras Perfectas", @"type" : @"Series", @"feature_text": @"No te pierdas...", @"id": @"210",
-                                        @"rate" : @3, @"category_id" : @"32224", @"image_url" : @"http://st.elespectador.co/files/imagecache/727x484/1933d136b94594f2db6f9145bbf0f72a.jpg", @"is_campaign" : @YES, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
-                                      
-                                             @{@"name": @"Colombia's Next Top Model", @"type" : @"Series", @"feature_text": @"Las modelos...", @"id": @"211",
-                                        @"rate" : @5, @"category_id" : @"3775", @"image_url" : @"http://esteeselpunto.com/wp-content/uploads/2013/02/Final-Colombia-Next-Top-Model-1024x871.png", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
-                                             
-                                             @{@"name": @"Yo me llamo", @"type" : @"Series", @"feature_text": @"Primer episodio", @"id": @"211",
-                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://www.ecbloguer.com/diablog/wp-content/uploads/2012/01/Yo-me-llamo-DiabloG.jpg", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"},
-                                             
-                                             @{@"name": @"La ronca de oro", @"type" : @"Peliculas", @"feature_text": @"Llega la ronca", @"id": @"211",
-                                               @"rate" : @5, @"category_id" : @"33275", @"image_url" : @"http://2.bp.blogspot.com/-q96yFMADKm8/Urt_ZYchqWI/AAAAAAAADY0/Oe6F-0PQdRc/s1600/caracol%2B-%2Bla%2Bronca%2Bde%2Boro.png", @"is_campaign" : @NO, @"campaign_url" : @"http://www.caracoltv.com/programas/realities-y-concursos/colombia-next-top-model-2014/presentador/carolina-cruz"}];
-    }
-    return _unparsedFeaturedProductionsInfo;
-}*/
-
-/*-(NSMutableArray *)parsedFeaturedProductions {
-    if (!_parsedFeaturedProductions) {
-        _parsedFeaturedProductions = [[NSMutableArray alloc] init];
-        for (int i = 0; i < [self.unparsedFeaturedProductionsInfo count]; i++) {
-            Featured *featuredProduction = [[Featured alloc] initWithDictionary:self.unparsedFeaturedProductionsInfo[i]];
-            [_parsedFeaturedProductions addObject:featuredProduction];
-        }
-    }
-    return _parsedFeaturedProductions;
-}*/
-
 #pragma mark - Setters 
 
 -(void)setUnparsedFeaturedProductionsInfo:(NSArray *)unparsedFeaturedProductionsInfo {
@@ -138,13 +108,6 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    /*[[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        if (success) {
-            NSLog(@"el numero de productos que hay es %d", [products count]);
-        } else {
-            NSLog(@"no hay productos");
-        }
-    }];*/
     self.firstTimeViewAppears = YES;
     
     //Create a bar button item to recall the getFeaturedProductsFromServer

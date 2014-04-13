@@ -45,6 +45,9 @@
     [self.continueButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.continueButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.continueButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    if (self.controllerWasPresentedFromInitialScreen) {
+        [self.continueButton addTarget:self action:@selector(goToHomeViewController) forControlEvents:UIControlEventTouchUpInside];
+    }
     [self.continueButton addTarget:self action:@selector(goToHomeViewController) forControlEvents:UIControlEventTouchUpInside];
     self.continueButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:self.continueButton];

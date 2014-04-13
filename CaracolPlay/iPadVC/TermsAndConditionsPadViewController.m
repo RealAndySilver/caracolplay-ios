@@ -23,7 +23,11 @@
     //Access the terms and conditions string saved in our plist
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+    if (self.showTerms) {
+        self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+    } else if (self.showPrivacy) {
+        self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+    }
     self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
     NSLog(@"%@", self.termsAndConditionsString);
 

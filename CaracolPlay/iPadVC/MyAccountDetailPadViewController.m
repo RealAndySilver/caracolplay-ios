@@ -9,32 +9,38 @@
 #import "MyAccountDetailPadViewController.h"
 #import "TermsAndConditionsPadViewController.h"
 #import "FileSaver.h"
+#import "ServerCommunicator.h"
+#import "NSDictionary+NullReplacement.h"
 
-@interface MyAccountDetailPadViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface MyAccountDetailPadViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSArray *suscriptionInfoTableViewTitles;
-@property (strong, nonatomic) NSArray *suscriptionInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSMutableArray *suscriptionInfoTableViewSecondaryInfo;
 @property (strong, nonatomic) NSArray *personalInfoTableViewTitles;
-@property (strong, nonatomic) NSArray *personalInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSMutableArray *personalInfoTableViewSecondaryInfo;
+@property (strong, nonatomic) NSDictionary *personalInfo;
+@property (strong, nonatomic) NSDictionary *suscriptionDic;
+@property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation MyAccountDetailPadViewController
 
 #pragma mark - Lazy Instantiations
 
+-(UIActivityIndicatorView *)spinner {
+    if (!_spinner) {
+        _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _spinner.frame = CGRectMake(672.0 - 20.0, 384.0 - 20.0, 40.0, 40.0);
+    }
+    return _spinner;
+}
+
 -(NSArray *)suscriptionInfoTableViewTitles {
     if (!_suscriptionInfoTableViewTitles) {
         _suscriptionInfoTableViewTitles = @[@"Tipo de Suscripción", @"Fecha de Vencimiento"];
     }
     return _suscriptionInfoTableViewTitles;
-}
-
--(NSArray *)suscriptionInfoTableViewSecondaryInfo {
-    if (!_suscriptionInfoTableViewSecondaryInfo) {
-        _suscriptionInfoTableViewSecondaryInfo = @[@"Normal", @"15/10/2015"];
-    }
-    return _suscriptionInfoTableViewSecondaryInfo;
 }
 
 -(NSArray *)personalInfoTableViewTitles {
@@ -44,11 +50,26 @@
     return _personalInfoTableViewTitles;
 }
 
--(NSArray *)personalInfoTableViewSecondaryInfo {
-    if (!_personalInfoTableViewSecondaryInfo) {
-        _personalInfoTableViewSecondaryInfo = @[@"Diego Fernando", @"Vidal Illera", @"10/01/1991", @"Masculino", @"Dieluma", @"diefer_91@hotmail.com"];
+-(void)setPersonalInfo:(NSDictionary *)personalInfo {
+    _personalInfo = personalInfo;
+    self.personalInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"nombres"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"apellidos"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"fecha_de_nacimiento"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"genero"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"alias"]];
+    [self.personalInfoTableViewSecondaryInfo addObject:personalInfo[@"mail"]];
+    
+    self.suscriptionInfoTableViewSecondaryInfo = [[NSMutableArray alloc] init];
+    if ([self.suscriptionDic[@"is_suscription"] boolValue]) {
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"Normal"];
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:self.suscriptionDic[@"time_ends"]];
+    } else {
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
+        [self.suscriptionInfoTableViewSecondaryInfo addObject:@"-"];
     }
-    return _personalInfoTableViewSecondaryInfo;
+    
+    [self UISetup];
 }
 
 #pragma mark - View Lifecycle
@@ -56,7 +77,9 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self UISetup];
+    [self.view addSubview:self.spinner];
+    [self getUser];
+    //[self UISetup];
 }
 
 -(void)UISetup {
@@ -229,6 +252,7 @@
 -(void)goToPrivacyTerms {
     TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
     termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    termsAndConditionsVC.showPrivacy = YES;
     termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
     [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
 }
@@ -237,6 +261,7 @@
     TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
     termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
     termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
+    termsAndConditionsVC.showTerms = YES;
     [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
 }
 
@@ -258,6 +283,33 @@
     UINavigationController *navigationController = self.tabBarController.viewControllers[0];
     //HomeViewController *homeViewController = navigationController.viewControllers[0];
     [navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark - Server Stuff
+
+-(void)getUser {
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetUser" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
+    if ([methodName isEqualToString:@"GetUser"] && dictionary) {
+        NSLog(@"Peticio GetUser exitosa: %@", dictionary);
+        NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
+        self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
+        self.personalInfo = dicWithoutNulls[@"user"][@"data"];
+        
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [self.spinner stopAnimating];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - UIBarPositioningDelegate

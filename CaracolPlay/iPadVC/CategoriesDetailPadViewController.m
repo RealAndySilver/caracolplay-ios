@@ -160,7 +160,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
-    if ([methodName isEqualToString:@"GetListFromCategoryID"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetListFromCategoryID"] && responseDictionary) {
         //NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
         self.unparsedProductionsArray = responseDictionary[@"products"];
         

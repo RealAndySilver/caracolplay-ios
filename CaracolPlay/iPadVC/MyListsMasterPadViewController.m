@@ -34,11 +34,13 @@
     NSLog(@"entré al setter");
     _unparsedUserListsArray = unparsedUserListsArray;
     self.parsedUserListsArray = [self parseUserListsArrayWithArray:unparsedUserListsArray];
-    List *list = self.parsedUserListsArray[0];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"FirstUserListNotification" object:nil userInfo:@{@"FirstUserList": list.episodes}];
-    
-    NSLog(@"numero de listas parseadas: %d", [self.parsedUserListsArray count]);
-    [self setupTableView];
+    if ([self.parsedUserListsArray count] > 0) {
+        List *list = self.parsedUserListsArray[0];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"FirstUserListNotification" object:nil userInfo:@{@"FirstUserList": list.episodes}];
+        
+        NSLog(@"numero de listas parseadas: %d", [self.parsedUserListsArray count]);
+        [self setupTableView];
+    }
 }
 
 #pragma mark - Parsing Methods
@@ -95,7 +97,7 @@
     
     UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
     self.navigationBar.items = @[navigationItem];
-    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createList)];
+    /*navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(createList)];*/
     
     //3. Orange title image view
     self.titleImageView = [[UIImageView alloc] init];
@@ -189,6 +191,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
+    [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetUserLists"] && responseDictionary) {
         self.unparsedUserListsArray = responseDictionary[@"user_lists"];
         

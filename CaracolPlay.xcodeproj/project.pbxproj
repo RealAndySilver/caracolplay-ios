@@ -214,6 +214,7 @@
 		A05C44951899CEA700E72135 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A05C44941899CEA700E72135 /* FXBlurView.m */; };
 		A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C44961899CEF000E72135 /* Accelerate.framework */; };
 		A064655518F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */; };
+		A064655B18FA263D001563CE /* RedeemCodeFormPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A064655A18FA263D001563CE /* RedeemCodeFormPadViewController.m */; };
 		A069A74C18EF1472003BF3AD /* RefreshIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74A18EF1472003BF3AD /* RefreshIcon.png */; };
 		A069A74D18EF1472003BF3AD /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */; };
 		A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */; };
@@ -621,6 +622,8 @@
 		A05C44961899CEF000E72135 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A064655318F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedeemCodeFromContentNotAvailbaleViewController.h; sourceTree = "<group>"; };
 		A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedeemCodeFromContentNotAvailbaleViewController.m; sourceTree = "<group>"; };
+		A064655918FA263D001563CE /* RedeemCodeFormPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodeFormPadViewController.h; path = iPadVC/RedeemCodeFormPadViewController.h; sourceTree = "<group>"; };
+		A064655A18FA263D001563CE /* RedeemCodeFormPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedeemCodeFormPadViewController.m; path = iPadVC/RedeemCodeFormPadViewController.m; sourceTree = "<group>"; };
 		A069A74A18EF1472003BF3AD /* RefreshIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshIcon.png; path = Resources/Images/iPad/RefreshIcon.png; sourceTree = "<group>"; };
 		A069A74B18EF1472003BF3AD /* RefreshIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RefreshIcon@2x.png"; path = "Resources/Images/iPad/RefreshIcon@2x.png"; sourceTree = "<group>"; };
 		A069A74E18EF7018003BF3AD /* RentFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentFromInsideViewController.h; path = iPadVC/RentFromInsideViewController.h; sourceTree = "<group>"; };
@@ -1008,6 +1011,8 @@
 				8BA9B27F18A03569003DBBDC /* SuscribePadViewController.m */,
 				8B7000B218A03FFE000B5C7B /* RedeemCodePadViewController.h */,
 				8B7000B318A03FFE000B5C7B /* RedeemCodePadViewController.m */,
+				A064655918FA263D001563CE /* RedeemCodeFormPadViewController.h */,
+				A064655A18FA263D001563CE /* RedeemCodeFormPadViewController.m */,
 			);
 			name = "Loading & Login";
 			sourceTree = "<group>";
@@ -1844,6 +1849,7 @@
 				8B1DAFFF18F2FA0300C06A53 /* SuscribeFromInsideViewController.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
+				A064655B18FA263D001563CE /* RedeemCodeFormPadViewController.m in Sources */,
 				A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */,
 				A0FF73ED18D3AE260062543A /* SeasonsViewController.m in Sources */,
 				8BDB8BCF188EDB860066279A /* ProductionsListViewController.m in Sources */,

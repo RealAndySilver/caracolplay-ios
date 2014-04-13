@@ -150,7 +150,7 @@
     [self.spinner stopAnimating];
     
     NSLog(@"Recibí info del servidor: %@", responseDictionary);
-    if ([methodName isEqualToString:@"GetFeatured"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetFeatured"] && responseDictionary) {
         self.unparsedFeaturedProductionsInfo = responseDictionary[@"featured"];
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a las producciones destacadas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

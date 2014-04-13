@@ -30,6 +30,9 @@
 }
 
 -(void)UISetup {
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SuscriptionAlertBackground.png"]];
+    [self.view addSubview:self.backgroundImageView];
+    
     //1. dismiss buton setup
     self.dismissButton = [[UIButton alloc] init];
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
@@ -84,14 +87,17 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.layer.cornerRadius = 10.0;
+    self.view.layer.masksToBounds = YES;
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
-    self.detailTextView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, 200.0, 300.0, 200.0);
-    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, 300.0, 200.0, 50.0);
-    self.rentButton.frame = CGRectMake(70.0, 370.0, self.view.bounds.size.width/2.0 - 90.0, 50.0);
-    self.suscribeButton.frame = CGRectOffset(self.rentButton.frame, self.rentButton.frame.size.width + 40.0, 0.0);
-    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 450.0, 100.0, 100.0);
+    self.detailTextView.frame = CGRectMake(20.0, self.view.bounds.size.height/2 - 40.0, self.view.bounds.size.width - 40.0, 100.0);
+    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.65, 160.0, 40.0);
+    self.rentButton.frame = CGRectMake(20.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 + 5.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 520.0, 100.0, 100.0);
 }
 
 #pragma mark - Actions 

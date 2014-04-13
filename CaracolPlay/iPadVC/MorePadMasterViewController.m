@@ -104,8 +104,16 @@
             [[[UIAlertView alloc] initWithTitle:nil message:@"Tu dispositivo no está configurado para enviar corre electrónico." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
         
-    }   else if (indexPath.row == 2 || indexPath.row == 3) {
+    }   else if (indexPath.row == 2) {
         TermsAndConditionsPadViewController *termsConditionsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+        termsConditionsPadVC.showTerms = YES;
+        NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.splitViewController.viewControllers];
+        [viewControllersArray replaceObjectAtIndex:1 withObject:termsConditionsPadVC];
+        self.splitViewController.viewControllers = viewControllersArray;
+    
+    } else if (indexPath.row == 3) {
+        TermsAndConditionsPadViewController *termsConditionsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+        termsConditionsPadVC.showPrivacy = YES;
         NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.splitViewController.viewControllers];
         [viewControllersArray replaceObjectAtIndex:1 withObject:termsConditionsPadVC];
         self.splitViewController.viewControllers = viewControllersArray;

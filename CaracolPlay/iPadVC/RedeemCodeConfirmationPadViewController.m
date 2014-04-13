@@ -9,6 +9,7 @@
 #import "RedeemCodeConfirmationPadViewController.h"
 #import "IngresarPadViewController.h"
 #import "SuscribePadViewController.h"
+#import "MainTabBarPadController.h"
 
 @interface RedeemCodeConfirmationPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -42,28 +43,12 @@
     
     //2. Set the enter and suscribe button
     self.enterButton = [[UIButton alloc] init];
-    [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
+    [self.enterButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:self.enterButton];
-    
-    self.suscribeButton = [[UIButton alloc] init];
-    [self.suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
-    [self.suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    self.suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [self.suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.suscribeButton];
-
-    //4. Set the 'Skip' button
-    self.skipButton = [[UIButton alloc] init];
-    [self.skipButton setTitle:@"Saltar ▶︎" forState:UIControlStateNormal];
-    [self.skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    self.skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    [self.skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.skipButton];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -83,22 +68,9 @@
 
 #pragma mark - Actions 
 
--(void)goToEnterViewController {
-    IngresarPadViewController *ingresarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarPad"];
-    ingresarPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    ingresarPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:ingresarPadVC animated:YES completion:nil];
-}
-
--(void)goToSuscribeViewController {
-    SuscribePadViewController *suscribePadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribePad"];
-    suscribePadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    suscribePadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:suscribePadVC animated:YES completion:nil];
-}
-
--(void)skipAndGoToHomeScreen {
-    
+-(void)goToHomeScreen {
+    MainTabBarPadController *mainTabBarPadController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    [self presentViewController:mainTabBarPadController animated:YES completion:nil];
 }
 
 @end

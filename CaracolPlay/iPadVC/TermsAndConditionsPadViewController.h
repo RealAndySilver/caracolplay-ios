@@ -10,4 +10,7 @@
 
 @interface TermsAndConditionsPadViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedInFormSheet;
+@property (assign, nonatomic) BOOL showTerms;
+@property (assign, nonatomic) BOOL showPrivacy;
+@property (strong, nonatomic) NSString *mainTitle;
 @end

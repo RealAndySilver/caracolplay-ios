@@ -138,7 +138,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     NSLog(@"llegó la respuesta del server");
     [self.spinner stopAnimating];
-    if ([methodName isEqualToString:@"GetCategories"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetCategories"] && responseDictionary) {
         self.unparsedCategoriesList = responseDictionary[@"categories"];
         
     } else {

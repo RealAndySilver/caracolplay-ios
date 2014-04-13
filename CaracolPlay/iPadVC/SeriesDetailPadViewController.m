@@ -25,6 +25,7 @@
 #import "Season.h"
 #import "SuscriptionAlertPadViewController.h"
 #import "Video.h"
+#import "NSDictionary+NullReplacement.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -363,7 +364,7 @@
             //If the user isn't logged in, he can't watch the video
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
-            suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
             suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
             [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
             
@@ -441,8 +442,21 @@
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             
         } else if (status == ReachableViaWWAN) {
-            //The user can't watch the video because the connection is to slow
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            if (video.is3G) {
+                //The user can watch it with 3g
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia conéctate a nua red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.isWatchingTrailer = NO;
+                videoPlayer.progressSec = video.progressSec;
+                videoPlayer.productID = self.productID;
+                videoPlayer.episodeID = self.selectedEpisodeID;
+                [self presentViewController:videoPlayer animated:YES completion:nil];
+                
+            } else {
+                //The user can't watch the video because the connection is to slow
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
             
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
@@ -480,14 +494,12 @@
     [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
 }
 
--(void)updateUserFeedbackForProductWithID:(NSString *)productID rate:(NSInteger)rate {
+-(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
-    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.productID, rate];
-    NSLog(@"paramters = %@", parameters);
+    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
     [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
@@ -507,7 +519,7 @@
     
     /////////////////////////////////////////////////////////////////////////////////////////////////
     //Responses: GetProductWithID
-    if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetProductWithID"] && responseDictionary) {
         //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
         //en este momento.
         if (![responseDictionary[@"products"][@"status"] boolValue]) {
@@ -532,12 +544,14 @@
     
     //Response:UpdateUserFeedbackForProduct
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
-        NSLog(@"recibí respuesta exitosa de UpdateUserFeedbackForProduct: %@", responseDictionary);
+        NSLog(@"recibí respuesta de UpdateUserFeedbackForProduct: %@", responseDictionary);
         
     //Response: IsContentAvailableForUser
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]) {
         NSLog(@"info del video: %@", responseDictionary);
-        Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
+        NSDictionary *videoDicWithNulls = responseDictionary[@"video"];
+        NSDictionary *videoDicWithoutNulls = [videoDicWithNulls dictionaryByReplacingNullWithBlanks];
+        Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulls];
         [self checkVideoAvailability:video];
         
     } else {
@@ -602,7 +616,7 @@
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     self.starsView.rate = rate;
-    [self updateUserFeedbackForProductWithID:self.productID rate:rate*20.0];
+    [self updateUserFeedbackForProductWithRate:rate*20];
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {
