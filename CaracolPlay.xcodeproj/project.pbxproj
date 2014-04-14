@@ -232,6 +232,8 @@
 		A095A05518B56582004F05BB /* SuscriptionConfirmationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A095A05318B56582004F05BB /* SuscriptionConfirmationBackground.png */; };
 		A095A05618B56582004F05BB /* SuscriptionConfirmationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */; };
 		A095A05918B565A5004F05BB /* SuscriptionConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A05818B565A5004F05BB /* SuscriptionConfirmationViewController.m */; };
+		A0A367E618FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A367E518FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m */; };
+		A0A367E918FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A367E818FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m */; };
 		A0A9B76518A2E86F00D6D222 /* SeriesDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A9B76418A2E86F00D6D222 /* SeriesDetailPadViewController.m */; };
 		A0A9B76718A2EB6A00D6D222 /* Escobar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B76618A2EB6A00D6D222 /* Escobar.jpg */; };
 		A0A9B76A18A2EE8500D6D222 /* SeriesOpacityPatternPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0A9B76818A2EE8500D6D222 /* SeriesOpacityPatternPad.png */; };
@@ -647,6 +649,10 @@
 		A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SuscriptionConfirmationBackground@2x.png"; path = "Resources/Images/SuscriptionConfirmationBackground@2x.png"; sourceTree = "<group>"; };
 		A095A05718B565A5004F05BB /* SuscriptionConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionConfirmationViewController.h; sourceTree = "<group>"; };
 		A095A05818B565A5004F05BB /* SuscriptionConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuscriptionConfirmationViewController.m; sourceTree = "<group>"; };
+		A0A367E418FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentNotAvailableForUserPadViewController.h; path = iPadVC/ContentNotAvailableForUserPadViewController.h; sourceTree = "<group>"; };
+		A0A367E518FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentNotAvailableForUserPadViewController.m; path = iPadVC/ContentNotAvailableForUserPadViewController.m; sourceTree = "<group>"; };
+		A0A367E718FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodeFromContentNotAvailablePadViewController.h; path = iPadVC/RedeemCodeFromContentNotAvailablePadViewController.h; sourceTree = "<group>"; };
+		A0A367E818FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedeemCodeFromContentNotAvailablePadViewController.m; path = iPadVC/RedeemCodeFromContentNotAvailablePadViewController.m; sourceTree = "<group>"; };
 		A0A9B76318A2E86F00D6D222 /* SeriesDetailPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SeriesDetailPadViewController.h; path = iPadVC/SeriesDetailPadViewController.h; sourceTree = "<group>"; };
 		A0A9B76418A2E86F00D6D222 /* SeriesDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SeriesDetailPadViewController.m; path = iPadVC/SeriesDetailPadViewController.m; sourceTree = "<group>"; };
 		A0A9B76618A2EB6A00D6D222 /* Escobar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Escobar.jpg; path = Resources/TestImages/Escobar.jpg; sourceTree = "<group>"; };
@@ -878,6 +884,8 @@
 				8B223A4B18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m */,
 				8BED8A8F18C679AF0076EA26 /* SuscriptionAlertPadViewController.h */,
 				8BED8A9018C679AF0076EA26 /* SuscriptionAlertPadViewController.m */,
+				A0A367E418FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.h */,
+				A0A367E518FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m */,
 			);
 			name = "Alerts ViewControllers";
 			sourceTree = "<group>";
@@ -1087,6 +1095,8 @@
 				8B1DAFFE18F2FA0300C06A53 /* SuscribeFromInsideViewController.m */,
 				8B1DB00018F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.h */,
 				8B1DB00118F2FE2600C06A53 /* SuscribeConfirmFromInsideViewController.m */,
+				A0A367E718FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.h */,
+				A0A367E818FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m */,
 			);
 			name = "Login&Stuff From Production";
 			sourceTree = "<group>";
@@ -1823,6 +1833,7 @@
 				A0A9B76E18A3005100D6D222 /* EpisodesPadTableViewCell.m in Sources */,
 				8BB5221618AA874C0027CA59 /* CategoriesMasterPadViewController.m in Sources */,
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
+				A0A367E618FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m in Sources */,
 				8BED8A9118C679AF0076EA26 /* SuscriptionAlertPadViewController.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B33681818B66AE7000DD1B5 /* MBAlertViewItem.m in Sources */,
@@ -1881,6 +1892,7 @@
 				8B164B8718A974AD001803A9 /* Featured.m in Sources */,
 				8B164B7518A96DD7001803A9 /* Season.m in Sources */,
 				8B223A4918C0E0B600AC0A33 /* SuscriptionConfirmationPadViewController.m in Sources */,
+				A0A367E918FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m in Sources */,
 				8B33681318B66AE7000DD1B5 /* NSString+Trim.m in Sources */,
 				8B33681F18B66AE7000DD1B5 /* MBHUDView.m in Sources */,
 				8B0194E418B4262300380EC7 /* FileSaver.m in Sources */,

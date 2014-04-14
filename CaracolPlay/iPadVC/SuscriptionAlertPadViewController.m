@@ -10,6 +10,7 @@
 #import "IngresarFromInsideViewController.h"
 #import "RentFromInsideViewController.h"
 #import "SuscribeFromInsideViewController.h"
+#import "RedeemCodeFormPadViewController.h"
 
 @interface SuscriptionAlertPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -81,6 +82,7 @@
     [self.redeemButton setTitle:@"Redimir" forState:UIControlStateNormal];
     [self.redeemButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.redeemButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimirPad.png"] forState:UIControlStateNormal];
+    [self.redeemButton addTarget:self action:@selector(goToRedeemCodeVC) forControlEvents:UIControlEventTouchUpInside];
     self.redeemButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.view addSubview:self.redeemButton];
 }
@@ -97,10 +99,18 @@
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.65, 160.0, 40.0);
     self.rentButton.frame = CGRectMake(20.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
     self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 + 5.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
-    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 520.0, 100.0, 100.0);
+    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 490.0, 100.0, 100.0);
 }
 
 #pragma mark - Actions 
+
+-(void)goToRedeemCodeVC {
+    RedeemCodeFormPadViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFormPad"];
+    redeemCodeFormVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    redeemCodeFormVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    redeemCodeFormVC.controllerWasPresentedFromSuscriptionAlertScreen = YES;
+    [self presentViewController:redeemCodeFormVC animated:YES completion:nil];
+}
 
 -(void)goToIngresarFromInside {
     IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
@@ -114,6 +124,9 @@
     RentFromInsideViewController *rentFromInside = [self.storyboard instantiateViewControllerWithIdentifier:@"RentFromInside"];
     rentFromInside.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     rentFromInside.modalPresentationStyle = UIModalPresentationFormSheet;
+    rentFromInside.productType = self.productType;
+    rentFromInside.productID = self.productID;
+    rentFromInside.productName = self.productName;
     [self presentViewController:rentFromInside animated:YES completion:nil];
 }
 
@@ -121,6 +134,7 @@
     SuscribeFromInsideViewController *suscribeFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeFromInside"];
     suscribeFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribeFromInsideVC.userIsLoggedIn = NO;
     [self presentViewController:suscribeFromInsideVC animated:YES completion:nil];
 }
 

@@ -11,4 +11,6 @@
 @interface SuscribeConfirmFromInsideViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedFromSuscribeFormScreen;
 @property (assign, nonatomic) BOOL controllerWasPresentedFromIngresarScreen;
+@property (assign, nonatomic) BOOL controllerWasPresenteFromContentNotAvailable;
+@property (assign, nonatomic) BOOL userIsLoggedIn;
 @end

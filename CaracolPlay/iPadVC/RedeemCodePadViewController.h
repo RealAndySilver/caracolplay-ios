@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RedeemCodePadViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromSuscriptionAlertScreen;
 @end

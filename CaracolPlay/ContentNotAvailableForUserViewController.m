@@ -239,7 +239,11 @@
             if ([dictionary[@"region"] intValue] == 0) {
                 //Colombia
                 if (self.userSelectedRentOption) {
-                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.event1"];
+                    } else {
+                        [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
+                    }
                 } else if (self.userSelectedSubscribeOption) {
                     [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.subscription"];
                 }
@@ -247,7 +251,11 @@
             } else if ([dictionary[@"region"] intValue] == 1) {
                 //Rest of the world
                 if (self.userSelectedRentOption) {
-                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    if ([self.productType isEqualToString:@"Eventos en vivo"]) {
+                        [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.event1"];
+                    } else {
+                        [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
+                    }
                 } else if (self.userSelectedSubscribeOption) {
                     [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.Subscription"];
                 }
@@ -331,28 +339,6 @@
     } else if (self.userSelectedSubscribeOption) {
         [self subscribeUserInServer];
     }
-    
-    /*NSString *typeOfProduct = productInfo[@"TypeOfProduct"];
-    if ([typeOfProduct isEqualToString:@"suscripcion"]) {
-        //Go to suscription confirmation view controller
-        SuscriptionConfirmationViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmation"];
-        
-        //The user was already logged in, so the suscription confirmation VC doesn't
-        //need to create the aditional tabs
-        suscriptionConfirmationVC.userWasAlreadyLoggedin = YES;
-        
-        suscriptionConfirmationVC.controllerWasPresentedFromProductionScreen = YES;
-        [self.navigationController pushViewController:suscriptionConfirmationVC animated:YES];
-        
-    } else if ([typeOfProduct isEqualToString:@"alquiler"]) {
-        //Go to rent confirmation VC
-        RentContentConfirmationViewController *rentContentConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentConfirmation"];
-        
-        //The user was already logged in, so the rentContentConfirmationVC doesn't
-        //need to create the aditional tabs
-        rentContentConfirmationVC.userWasAlreadyLoggedin = YES;
-        [self.navigationController pushViewController:rentContentConfirmationVC animated:YES];
-    }*/
 }
 
 #pragma mark - Interface Orientation

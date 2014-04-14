@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RedeemCodeConfirmationPadViewController : UIViewController
-
+@property (assign, nonatomic) BOOL controllerWasPresentedFromSuscriptionAlert;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromContentNotAvailable;
 @end

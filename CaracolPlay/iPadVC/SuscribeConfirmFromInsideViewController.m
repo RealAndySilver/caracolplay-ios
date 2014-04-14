@@ -11,6 +11,7 @@
 @interface SuscribeConfirmFromInsideViewController ()
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) UIButton *continueButton;
+@property (strong, nonatomic) UIImageView *backgroundImageView;
 @end
 
 @implementation SuscribeConfirmFromInsideViewController
@@ -22,6 +23,13 @@
 }
 
 -(void)setupUI {
+    //Set the background image
+    self.backgroundImageView = [[UIImageView alloc] init];
+    self.backgroundImageView.image = [UIImage imageNamed:@"SuscriptionConfirmationBackground.png"];
+    self.backgroundImageView.clipsToBounds = YES;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:self.backgroundImageView];
+    
     // 2. Textview
     self.textView = [[UITextView alloc] init];
     self.textView.backgroundColor = [UIColor clearColor];
@@ -44,19 +52,42 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 670., 626.0);
-    self.textView.frame = CGRectMake(80.0, 300.0, self.view.bounds.size.width - 160.0, 100.0);
-    self.continueButton.frame = CGRectMake(80.0, 450.0, self.view.bounds.size.width - 160.0, 60.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.layer.cornerRadius = 10.0;
+    self.view.layer.masksToBounds = YES;
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.textView.frame = CGRectMake(30.0, 300.0, self.view.bounds.size.width - 60.0, 100.0);
+    self.continueButton.frame = CGRectMake(30.0, 450.0, self.view.bounds.size.width - 60.0, 60.0);
+    self.backgroundImageView.frame = self.view.bounds;
 }
 
 #pragma mark - Actions 
 
 -(void)goToProductionDetail {
     if (self.controllerWasPresentedFromSuscribeFormScreen) {
-        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+            if (!self.userIsLoggedIn) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            }
+        }];
     
     } else if (self.controllerWasPresentedFromIngresarScreen) {
-        [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController]dismissViewControllerAnimated:NO completion:nil];
+        NSLog(@"me dismiseareeeeee");
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController]dismissViewControllerAnimated:YES completion:^(){
+            if (!self.userIsLoggedIn) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            }
+        }];
+    
+    } else if (self.controllerWasPresenteFromContentNotAvailable) {
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+            if (!self.userIsLoggedIn) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            }
+        }];
     }
 }
 

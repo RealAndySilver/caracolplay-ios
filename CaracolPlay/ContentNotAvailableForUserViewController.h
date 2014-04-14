@@ -11,4 +11,5 @@
 @interface ContentNotAvailableForUserViewController : UIViewController
 @property (strong, nonatomic) NSString *productID;
 @property (strong, nonatomic) NSString *productName;
+@property (strong, nonatomic) NSString *productType;
 @end

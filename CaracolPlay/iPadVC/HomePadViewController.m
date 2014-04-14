@@ -103,7 +103,7 @@
     [self.view addSubview:self.backgroundImageView];
     
     //Create a reload button
-    UIButton *reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 40.0, 44.0, 44.0)];
+    UIButton *reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 35.0, 44.0, 44.0)];
     [reloadButton setBackgroundImage:[UIImage imageNamed:@"RefreshIcon.png"] forState:UIControlStateNormal];
     [reloadButton addTarget:self action:@selector(getFeaturedFromServer) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:reloadButton];

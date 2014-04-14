@@ -11,4 +11,7 @@
 @interface RentConfirmFromInsideViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedFromIngresarFromInside;
 @property (assign, nonatomic) BOOL controllerWasPresentedFromRentFromInside;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromContentNotAvailable;
+@property (strong, nonatomic) NSString *rentedProductionName;
+@property (assign, nonatomic) BOOL userIsLoggedIn;
 @end

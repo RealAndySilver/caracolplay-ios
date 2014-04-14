@@ -11,6 +11,7 @@
 #import "FileSaver.h"
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
+#import "UserInfo.h"
 
 @interface MyAccountDetailPadViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
@@ -270,8 +271,15 @@
     
     //Change our local key that indicates that the user has closed session
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO} withKey:@"UserHasLoginDic"];
-    //[MBHUDView hudWithBody:@"Salida exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
+    [fileSaver setDictionary:@{@"UserHasLoginKey": @NO,
+                               @"UserName" : @"",
+                               @"Password" : @""
+                               } withKey:@"UserHasLoginDic"];
+    
+    //Erase user data from our user info singleton
+    [UserInfo sharedInstance].userName = @"";
+    [UserInfo sharedInstance].password = @"";
+    [UserInfo sharedInstance].session = @"";
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];

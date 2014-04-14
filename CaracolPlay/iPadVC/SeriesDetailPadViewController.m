@@ -25,6 +25,7 @@
 #import "Season.h"
 #import "SuscriptionAlertPadViewController.h"
 #import "Video.h"
+#import "ContentNotAvailableForUserPadViewController.h"
 #import "NSDictionary+NullReplacement.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
@@ -366,6 +367,9 @@
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
             suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
             suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+            suscriptionAlertPadVC.productID = self.selectedEpisodeID;
+            suscriptionAlertPadVC.productType = self.production.type;
+            suscriptionAlertPadVC.productName = self.production.name;
             [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
             
         } else {
@@ -474,6 +478,13 @@
         //Content not available for user
         //TODO: definir que se hará cuando el video no esté disponible para el usuario
         NSLog(@"el contenido no está disponible para el usuario");
+        ContentNotAvailableForUserPadViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUserPad"];
+        contentNotAvailableVC.productID = self.selectedEpisodeID;
+        contentNotAvailableVC.productName = self.production.name;
+        contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }
 }
 

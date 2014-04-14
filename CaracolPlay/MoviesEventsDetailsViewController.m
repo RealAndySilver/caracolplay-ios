@@ -418,6 +418,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
         contentNotAvailableForUser.productID = self.production.identifier;
         contentNotAvailableForUser.productName = self.production.name;
+        contentNotAvailableForUser.productType = self.production.type;
         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }
@@ -505,7 +506,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)getRecommendedProductionsForProductID:(NSString *)productID {
     ServerCommunicator *serveCommunicator = [[ServerCommunicator alloc] init];
     serveCommunicator.delegate = self;
-    //FIXME: El parámetro debe ser el id de la producción.
     [serveCommunicator callServerWithGETMethod:@"GetRecommendationsWithProductID" andParameter:productID];
 }
 

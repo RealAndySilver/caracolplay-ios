@@ -21,6 +21,9 @@
 #import "ServerCommunicator.h"
 #import "Episode.h"
 #import "Season.h"
+#import "MBHUDView.h"
+#import "Video.h"
+#import "ContentNotAvailableForUserPadViewController.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -59,10 +62,32 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     return _spinner;
 }
 
+-(void)setRecommendedProductions:(NSArray *)recommendedProductions {
+    _recommendedProductions = recommendedProductions;
+    [self setupRecommendedProductionsCollectionView];
+}
+
+-(void)setupRecommendedProductionsCollectionView {
+    //10.0 collecitionView setup
+    self.collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0) collectionViewLayout:self.collectionViewFlowLayout];
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:moviesCellIdentifier];
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
+    [self.view addSubview:self.collectionView];
+
+}
+
 -(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
     _unparsedProductionInfoDic = unparsedProductionInfoDic;
     NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
     self.production = [[Product alloc] initWithDictionary:parsedProductionInfoDic];
+    [self getRecommendedProductionsForProductID:self.production.identifier];
     [self UISetup];
 }
 
@@ -101,7 +126,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     }
     else {
         //The product has no seasons
-        NSLog(@"El producto no tiene temporadas");
+        /*NSLog(@"El producto no tiene temporadas");
         NSArray *unparsedEpisodesArray = [NSArray arrayWithArray:unparsedDic[@"episodes"]];
         NSMutableArray *parsedEpisodesArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < [unparsedEpisodesArray count]; i++) {
@@ -109,6 +134,12 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             [parsedEpisodesArray addObject:episode];
         }
         [newDictionary setObject:parsedEpisodesArray forKey:@"episodes"];
+        return newDictionary;*/
+        
+        //The product has no seasons
+        NSLog(@"El producto no tiene temporadas");
+        NSDictionary *productionVideoDic = unparsedDic[@"episodes"];
+        [newDictionary setObject:productionVideoDic forKey:@"episodes"];
         return newDictionary;
     }
 }
@@ -216,7 +247,8 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionDetailTextView = [[UITextView alloc] init];
     self.productionDetailTextView.text = self.production.detailDescription;
     self.productionDetailTextView.textColor = [UIColor whiteColor];
-    self.productionDetailTextView.userInteractionEnabled = NO;
+    self.productionDetailTextView.selectable = NO;
+    self.productionDetailTextView.editable = NO;
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
     [self.view addSubview:self.productionDetailTextView];
@@ -227,19 +259,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.recommendedProductionsLabel.textColor = [UIColor whiteColor];
     self.recommendedProductionsLabel.font = [UIFont boldSystemFontOfSize:17.0];
     [self.view addSubview:self.recommendedProductionsLabel];
-    
-    //10.0 collecitionView setup
-    self.collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    self.collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.collectionViewFlowLayout];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:moviesCellIdentifier];
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
-    self.collectionView.showsHorizontalScrollIndicator = NO;
-    self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
-    [self.view addSubview:self.collectionView];
 }
 
 -(void)viewDidLoad {
@@ -270,7 +289,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.viewProductionButton.frame = CGRectMake(510.0, 100.0, 130.0, 35.0);
     self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 100.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
-    self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
+    //self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -307,25 +326,67 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Seleccioné el item %d", indexPath.item);
-    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"]) {
+    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
         seriesDetailPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
-    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Peliculas"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
         MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
-        movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:movieDetailsPad animated:YES completion:nil];
     }
 }
 
 #pragma mark - Custom Methods 
 
--(void)goToVideo {
-    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
+-(void)checkVideoAvailability:(Video *)video {
+    if (video.status) {
+        //The video is available to the user, so check the network connection to
+        //decide if the user can watch the video
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        
+        if (status == NotReachable) {
+            //There's no network connection, the user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            //The user can't watch the video because the connection is to slow
+            if (video.is3G) {
+                //The user can watch it with 3G
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.productID = self.production.identifier;
+                videoPlayer.progressSec = video.progressSec;
+                [self.navigationController pushViewController:videoPlayer animated:YES];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = self.production.identifier;
+            [self presentViewController:videoPlayer animated:YES completion:nil];
+        }
+        
+    } else {
+        ContentNotAvailableForUserPadViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUserPad"];
+        contentNotAvailableVC.productID = self.production.identifier;
+        contentNotAvailableVC.productName = self.production.name;
+        contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
+      
+    }
 }
 
 #pragma mark - Actions
@@ -334,23 +395,17 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         SuscriptionAlertPadViewController *suscriptionAlertPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
-        suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        suscriptionAlertPadVC.productID = self.production.identifier;
+        suscriptionAlertPadVC.productName = self.production.name;
+        suscriptionAlertPadVC.productType = self.production.type;
         [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
         /*[[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];*/
         return;
     }
     
-    Reachability *reachability = [Reachability reachabilityForInternetConnection];
-    [reachability startNotifier];
-    NetworkStatus status = [reachability currentReachabilityStatus];
-    if (status == NotReachable) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes estar conectado a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    } else if (status == ReachableViaWWAN) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta. Por favor conéctate a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    } else if (status == ReachableViaWiFi) {
-        [self goToVideo];
-    }
+    [self getIsContentAvailableForUserWithID:self.production.identifier];
 }
 
 -(void)watchTrailer {
@@ -360,7 +415,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     if (status == NotReachable) {
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
-        [self goToVideo];
+        VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerPadVC.embedCode = self.production.trailerURL;
+        [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
     }
 }
 
@@ -390,6 +447,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff
 
+-(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:ProductionID];
+}
+
 -(void)getProductWithID:(NSString *)productID {
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
@@ -398,11 +463,26 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:self.productID];
 }
 
+-(void)getRecommendedProductionsForProductID:(NSString *)productID {
+    ServerCommunicator *serveCommunicator = [[ServerCommunicator alloc] init];
+    serveCommunicator.delegate = self;
+    [serveCommunicator callServerWithGETMethod:@"GetRecommendationsWithProductID" andParameter:productID];
+}
+
+-(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
+    [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
+}
+
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     
     //Responses: GetProductWithID
-    if ([methodName isEqualToString:@"GetProductWithID"] && [responseDictionary[@"status"] boolValue]) {
+    if ([methodName isEqualToString:@"GetProductWithID"] && responseDictionary) {
         //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
         //en este momento.
         if (![responseDictionary[@"products"][@"status"] boolValue]) {
@@ -424,14 +504,24 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             //El producto si está disponible
             self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
         }
+        
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
+        Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
+        [self checkVideoAvailability:video];
+        
+    } else if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
+        self.recommendedProductions = responseDictionary[@"recommended_products"];
+        
+    } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
+        NSLog(@"llegó la info de la calificación: %@", responseDictionary);
+        
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        alert.tag = 1;
-        [alert show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
+    [self.spinner stopAnimating];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     alert.tag = 1;
     [alert show];
@@ -444,6 +534,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     self.starsView.rate = rate;
+    [self updateUserFeedbackForProductWithRate:rate*20];
 }
 
 -(void)cancelButtonWasTappedInRateView:(RateView *)rateView {

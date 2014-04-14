@@ -46,7 +46,11 @@
     [self.enterButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    if (self.controllerWasPresentedFromSuscriptionAlert || self.controllerWasPresentedFromContentNotAvailable) {
+        [self.enterButton addTarget:self action:@selector(returnToProduction) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
+    }
     self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:self.enterButton];
 }
@@ -67,6 +71,15 @@
 }
 
 #pragma mark - Actions 
+
+-(void)returnToProduction {
+    [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+        if (!self.controllerWasPresentedFromContentNotAvailable) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        }
+    }];
+}
 
 -(void)goToHomeScreen {
     MainTabBarPadController *mainTabBarPadController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];

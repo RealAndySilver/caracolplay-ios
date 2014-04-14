@@ -108,6 +108,9 @@
     RedeemCodePadViewController *redeemCodePadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodePad"];
     redeemCodePadVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodePadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
+        redeemCodePadVC.controllerWasPresentedFromSuscriptionAlertScreen = YES;
+    }
     [self presentViewController:redeemCodePadVC animated:YES completion:nil];
 }
 
@@ -209,6 +212,9 @@
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
     redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
+        redeemCodeConfirmationVC.controllerWasPresentedFromSuscriptionAlert = YES;
+    }
     [self presentViewController:redeemCodeConfirmationVC animated:YES completion:nil];
 }
 

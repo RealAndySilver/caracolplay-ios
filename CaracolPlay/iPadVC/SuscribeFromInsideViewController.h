@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SuscribeFromInsideViewController : UIViewController
-
+@property (assign, nonatomic) BOOL userIsLoggedIn;
 @end

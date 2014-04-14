@@ -145,6 +145,8 @@
 }
 
 -(void)goToIngresarVC {
+    [self resignAllTextfieldsAsFirstResponders];
+    
     //Remove as an observer of the notification -userDidSuscribe
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UserDidSuscribe" object:nil];
     
@@ -155,6 +157,15 @@
     ingresarPadVC.viewHeight = 597.0;
     ingresarPadVC.controllerWasPresentedFromInitialSuscriptionScreen = YES;
     [self presentViewController:ingresarPadVC animated:YES completion:nil];
+}
+
+-(void)resignAllTextfieldsAsFirstResponders {
+    [self.nameTextfield resignFirstResponder];
+    [self.aliasTextfield resignFirstResponder];
+    [self.passwordTextfield resignFirstResponder];
+    [self.confirmPasswordTextfield resignFirstResponder];
+    [self.lastNameTextfield resignFirstResponder];
+    [self.emailTextfield resignFirstResponder];
 }
 
 #pragma mark - Server Stuff
@@ -373,6 +384,10 @@
 
 -(void)dismissVC {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
 }
 
 @end
