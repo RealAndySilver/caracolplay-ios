@@ -65,7 +65,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.navigationBar];
     
     //2. Segmented Control
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Nombre"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Todo"]];
     self.segmentedControl.selectedSegmentIndex = 0;
     [self.segmentedControl addTarget:self action:@selector(changeCategoryFilter) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.segmentedControl];

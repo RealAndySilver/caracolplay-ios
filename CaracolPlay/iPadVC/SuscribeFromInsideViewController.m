@@ -19,7 +19,7 @@
 #import "IAmCoder.h"
 #import "IAPProduct.h"
 
-@interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate>
+@interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTextfield;
@@ -61,6 +61,9 @@
 }
 
 -(void)setupUI {
+    //Set delegates
+    self.nameTextfield.delegate = self;
+    
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
@@ -344,6 +347,18 @@
     self.transactionID = transactionID;
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     [self suscribeUserInServerWithTransactionID:transactionID];
+}
+
+#pragma mark - UITextfieldDelegate
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.enterHereButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.enterHereButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
 }
 
 @end

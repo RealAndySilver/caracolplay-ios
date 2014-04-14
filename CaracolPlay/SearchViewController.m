@@ -108,6 +108,9 @@
     [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
     cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0 + 1;
+    if ([self.searchResultsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
+        cell.isFree = YES;
+    }
     return cell;
 }
 

@@ -114,6 +114,7 @@
     //cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
     cell.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
     cell.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+  
     return cell;
 }
 

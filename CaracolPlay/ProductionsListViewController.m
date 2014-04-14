@@ -63,7 +63,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [filterButton addSubview:filterButtonTitleLabel];
     [self.view addSubview:filterButton];*/
     
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo Último", @"+Visto", @"+Votado", @"Nombre"]];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo Último", @"+Visto", @"+Votado", @"Todo"]];
     segmentedControl.frame = CGRectMake(20.0, 10.0, self.view.bounds.size.width - 40.0, 29.0);
     segmentedControl.selectedSegmentIndex = 0;
     segmentedControl.tintColor = [UIColor whiteColor];

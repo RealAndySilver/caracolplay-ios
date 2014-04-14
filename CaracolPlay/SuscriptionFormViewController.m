@@ -366,17 +366,12 @@
 -(BOOL)NSStringIsValidEmail:(NSString *)checkString{
     BOOL stricterFilter = NO;
     NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    //NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *laxString = @"[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\\.[a-zA-Z]{2,4}";
     NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:checkString];
 }
-
-/*-(BOOL)validateNameAndLastNameWithString:(NSString *)checkString {
-    NSString *nameRegexString = @"/^[A-Za-z]+$/";
-    NSPredicate *namePredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", nameRegexString];
-    return [namePredicate evaluateWithObject:checkString];
-}*/
 
 #pragma mark - UITextFieldDelegate
 
@@ -399,16 +394,17 @@
     if (textField.tag == 3) {
         //Validate email textfield
         if (![self NSStringIsValidEmail:textField.text]) {
-            NSLog(@"el email no es válido");
-            //textField.textColor = [UIColor redColor];
+            NSLog(@"el email no es válido %@", textField.text);
+            textField.textColor = [UIColor redColor];
         } else {
-            NSLog(@"el email es válido");
-            //textField.textColor = [UIColor whiteColor];
+            NSLog(@"el email es válido %@", textField.text);
+            textField.textColor = [UIColor whiteColor];
         }
     }
     return YES;
 }
-#pragma mark - CheckmarkViewDelegate 
+
+#pragma mark - CheckmarkViewDelegate
 
 -(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
     checkmarkView.borderColor = [UIColor whiteColor];

@@ -159,11 +159,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
     
     //Add the play icon to the secondary image view
-    UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
+    /*UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.size.width/2 - 25.0, secondaryMovieEventImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
     playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
     playIcon.clipsToBounds = YES;
     playIcon.contentMode = UIViewContentModeScaleAspectFit;
-    [secondaryMovieEventImageView addSubview:playIcon];
+    [secondaryMovieEventImageView addSubview:playIcon];*/
     
     //Create a tap gesture and add it to the secondary image view to allow the user
     //to open the image in bigger size
@@ -314,8 +314,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDataSource 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    Season *season = self.production.seasonList[self.selectedSeason];
     NSLog(@"selected season: %d", self.selectedSeason);
+    NSLog(@"Numero de temporadas en la serie: %d", [self.production.seasonList count]);
+    Season *season = self.production.seasonList[self.selectedSeason];
     return [season.episodes count];
 }
 
@@ -361,10 +362,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Actions 
 
 -(void)showSeasonsList {
-    NSLog(@"Me oprimieron");
     SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
     seasonsVC.numberOfSeasons = [self.production.seasonList count];
     [self presentViewController:seasonsVC animated:YES completion:nil];
+    NSLog(@"Número de temporadas: %d", seasonsVC.numberOfSeasons);
 }
 
 -(void)watchTrailer {
@@ -432,7 +433,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 [self.navigationController pushViewController:videoPlayer animated:YES];
             } else {
                 //The user can't watch the video because the connection is to slow
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Este contenido no puede verse " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Para ver este contenido conéctese a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else if (status == ReachableViaWiFi) {
@@ -634,13 +635,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (buttonIndex == 0) {
         //Facebook
         SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [facebookViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [facebookViewController setInitialText:message];
         [self presentViewController:facebookViewController animated:YES completion:nil];
         
     } else if (buttonIndex == 1) {
         //Twitter
         SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [twitterViewController setInitialText:[NSString stringWithFormat:@"%@: %@", self.production.name, self.production.detailDescription]];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [twitterViewController setInitialText:message];
         [self presentViewController:twitterViewController animated:YES completion:nil];
     }
 }

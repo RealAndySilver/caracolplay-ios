@@ -28,7 +28,9 @@
     UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"Temporadas"];
     navigationBar.items = @[navigationItem];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissVC)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                   target:self
+                                                                                   action:@selector(dismissVC)];
     navigationItem.rightBarButtonItem = barButtonItem;
     
     [self.view addSubview:navigationBar];
@@ -66,10 +68,13 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self dismissVCWithSelectedSeason:indexPath.row];
-  
 }
 
 #pragma mark - Actions
+
+-(void)dismissVC {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 -(void)dismissVCWithSelectedSeason:(NSUInteger)selectedSeason {
     [self dismissViewControllerAnimated:YES completion:^(){
