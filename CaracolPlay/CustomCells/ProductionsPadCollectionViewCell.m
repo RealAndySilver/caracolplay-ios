@@ -10,6 +10,7 @@
 
 @interface ProductionsPadCollectionViewCell()
 @property (strong, nonatomic) UIView *shadowView;
+//@property (strong, nonatomic) UIImageView *freeImageView;
 @end
 
 @implementation ProductionsPadCollectionViewCell
@@ -40,6 +41,7 @@
     CGRect contentRect = self.contentView.bounds;
     self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
+    //self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 15.0, self.productionImageView.frame.size.width, 15.0);
     //self.productionImageView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
     [self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
@@ -48,6 +50,12 @@
     _goldStars = goldStars;
     [self createStarsImageViewsWithGoldStarsNumber:goldStars];
 }
+
+/*-(void)setIsFree:(BOOL)isFree {
+    self.freeImageView = [[UIImageView alloc] init];
+    self.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+    [self.productionImageView addSubview:self.freeImageView];
+}*/
 
 #pragma mark - Custom Methods
 
@@ -58,6 +66,8 @@
         starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         if (goldStars >= i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+        } else {
+            starImageView.tintColor = [UIColor colorWithRed:122.0/255.0 green:122.0/255.0 blue:122.0/255.0 alpha:1.0];
         }
         starImageView.clipsToBounds = YES;
         starImageView.contentMode = UIViewContentModeScaleAspectFill;

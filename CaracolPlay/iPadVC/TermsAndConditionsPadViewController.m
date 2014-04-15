@@ -29,7 +29,7 @@
         self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
     }
     self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    NSLog(@"%@", self.termsAndConditionsString);
+    //NSLog(@"%@", self.termsAndConditionsString);
 
     [self UISetup];
 }

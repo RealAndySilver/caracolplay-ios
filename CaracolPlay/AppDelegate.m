@@ -8,20 +8,21 @@
 
 #import "AppDelegate.h"
 #import "CPIAPHelper.h"
+#import "UserInfo.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [CPIAPHelper sharedInstance];
-    
+    [UserInfo sharedInstance];
     // Override point for customization after application launch.
     [UITabBar appearance].barTintColor = [UIColor blackColor];
     [UITabBar appearance].tintColor = [UIColor orangeColor];
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     [UINavigationBar appearance].titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    [UIView appearance].tintColor = [UIColor whiteColor];
+    //[UIView appearance].tintColor = [UIColor whiteColor];
     return YES;
 }
 							

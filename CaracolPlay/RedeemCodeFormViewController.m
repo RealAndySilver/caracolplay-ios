@@ -10,12 +10,12 @@
 #import "RedeemCodeAlertViewController.h"
 #import "RedeemCodeViewController.h"
 #import "CheckmarkView.h"
-#import "MBHUDView.h"
 #import "FileSaver.h"
 #import "TermsAndConditionsViewController.h"
 #import "IAmCoder.h"
 #import "UserInfo.h"
 #import "ServerCommunicator.h"
+#import "MBProgressHUD.h"
 
 @interface RedeemCodeFormViewController () <UITextFieldDelegate, CheckmarkViewDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -139,14 +139,14 @@
 -(void)goToTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showTerms = YES;
-    termsAndConditionsVC.title = @"Términos y Condiciones";
+    termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPolitics {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showPrivacy = YES;
-    termsAndConditionsVC.title = @"Políticas de Privacidad";
+    termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
@@ -198,6 +198,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {
@@ -246,7 +249,9 @@
 #pragma mark -  Server Stuff
 
 -(void)redeemCodeInServer:(NSString *)code {
-    [MBHUDView hudWithBody:@"Redimiendo" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Redimiendo...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -257,7 +262,9 @@
     [UserInfo sharedInstance].userName = self.aliasTextfield.text;
     [UserInfo sharedInstance].password = self.passwordTextfield.text;
     
-    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -265,7 +272,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"nombre del metodo que está respondiendo: %@", methodName);
     if ([methodName isEqualToString:@"ValidateUser"]) {
         if (dictionary) {
@@ -293,9 +300,11 @@
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                            @"UserName" : [UserInfo sharedInstance].userName,
                                            @"Password" : [UserInfo sharedInstance].password,
+                                           @"UserID" : dictionary[@"uid"],
                                            @"Session" : dictionary[@"session"]
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
                 [self goToRedeemCodeConfirmation];
                 
             } else {
@@ -315,7 +324,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándo con el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -343,19 +352,6 @@
     return YES;
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField.tag == 3) {
-        //Validate email textfield
-        if (![self NSStringIsValidEmail:textField.text]) {
-            NSLog(@"el email no es válido");
-            textField.textColor = [UIColor redColor];
-        } else {
-            NSLog(@"el email es válido");
-            textField.textColor = [UIColor whiteColor];
-        }
-    }
-    return YES;
-}
 #pragma mark - CheckmarkViewDelegate
 
 -(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {

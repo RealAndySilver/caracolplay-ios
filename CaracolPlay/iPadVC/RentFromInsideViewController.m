@@ -11,15 +11,16 @@
 #import "CPIAPHelper.h"
 #import "FileSaver.h"
 #import "RentConfirmFromInsideViewController.h"
-#import "MBHUDView.h"
 #import "IngresarFromInsideViewController.h"
 #import "UserInfo.h"
 #import "ServerCommunicator.h"
 #import "IAmCoder.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAPProduct.h"
+#import "MBProgressHUD.h"
+#import "TermsAndConditionsPadViewController.h"
 
-@interface RentFromInsideViewController () <ServerCommunicatorDelegate>
+@interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) CheckmarkView *checkBox1;
 @property (strong, nonatomic) CheckmarkView *checkBox2;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -59,6 +60,13 @@
 }
 
 -(void)setupUI {
+    self.nameTextfield.delegate = self;
+    self.lastNameTextfield.delegate = self;
+    self.aliasTextfield.delegate = self;
+    self.passwordTextfield.delegate = self;
+    self.confirmPasswordTextfield.delegate = self;
+    self.emailTextfield.delegate = self;
+    
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
@@ -82,6 +90,10 @@
     
     //Enter here button
     [self.enterHereButton addTarget:self action:@selector(enterWithExistingUser) forControlEvents:UIControlEventTouchUpInside];
+    
+    //Terms and politics buttons
+    [self.termsAndConditionsButton addTarget:self action:@selector(goToTerms) forControlEvents:UIControlEventTouchUpInside];
+    [self.servicePoliticsButton addTarget:self action:@selector(goToPolitics) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -108,6 +120,24 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         [self showErrorsInTermAndPoliticsConditions];
     }
+}
+
+-(void)goToTerms {
+    TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+    termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
+    termsAndConditionsVC.showTerms = YES;
+    termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
+    [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
+}
+
+-(void)goToPolitics {
+    TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
+    termsAndConditionsVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    termsAndConditionsVC.controllerWasPresentedInFormSheet = YES;
+    termsAndConditionsVC.showPrivacy = YES;
+    termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
+    [self presentViewController:termsAndConditionsVC animated:YES completion:nil];
 }
 
 -(void)dismissVC {
@@ -141,7 +171,9 @@
 #pragma mark - Server Stuff
 
 -(void)validateUser {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -149,7 +181,9 @@
 }
 
 -(void)rentContent {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -157,7 +191,8 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     if ([methodName isEqualToString:@"ValidateUser"]) {
         if (dictionary) {
             NSLog(@"respuesta del validate: %@", dictionary);
@@ -207,17 +242,20 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento. " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Custom Methods
 
 -(void)purchaseProductWithIdentifier:(NSString *)productID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     //Request products from Appiiikle Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -286,6 +324,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {
@@ -327,6 +368,18 @@
     NSLog(@"Falló la transacción");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - UITextfieldDelegate
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.enterHereButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.enterHereButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
 }
 
 @end

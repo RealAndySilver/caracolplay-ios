@@ -27,6 +27,7 @@
         _progressSec = dictionary[@"progress_sec"];
         _watchedOn = dictionary[@"watched_on"];
         _is3G = [dictionary[@"is_3g"] boolValue];
+        _lastChapter = [dictionary[@"last_chapter"] boolValue];
     }
     return self;
 }

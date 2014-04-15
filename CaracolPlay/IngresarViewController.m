@@ -10,7 +10,6 @@
 #import "MainTabBarViewController.h"
 #import "FXBlurView.h"
 #import "FileSaver.h"
-#import "MBHUDView.h"
 #import "RentContentConfirmationViewController.h"
 #import "SuscriptionConfirmationViewController.h"
 #import "CPIAPHelper.h"
@@ -19,6 +18,7 @@
 #import "IAPProduct.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
+#import "MBProgressHUD.h"
 
 
 @interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
@@ -115,33 +115,6 @@
     }
 }
 
-/*-(void)enterAndReturnToProduction {
-    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
-        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
-        
-    } else {
-         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-}
-
--(void)enterSuscribeAndGoToHomeScreen {
-    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
-        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
-    
-    } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-}
-
--(void)goToHomeScreenDirectly {
-    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length]) {
-        [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
-        
-       } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-}*/
-
 -(void)goToHomeScreen {
     MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
     [self presentViewController:mainTabBarVC animated:YES completion:nil];
@@ -160,12 +133,14 @@
         }
     }
     [self createAditionalTabsInTabBarController];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
 }
 
 -(void)buySubscriptionWithIdentifier:(NSString *)productIdentifier {
-    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -236,7 +211,8 @@
 #pragma mark - Server Stuff
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -246,7 +222,8 @@
 }
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
-    [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
@@ -256,7 +233,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"AuthenticateUser"] && dictionary) {
         if ([dictionary[@"status"] boolValue]) {
             NSLog(@"autenticación exitosa: %@", dictionary);
@@ -266,8 +243,11 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
+                                       @"Session" : dictionary[@"session"],
+                                       @"UserID" : dictionary[@"uid"],
                                        } withKey:@"UserHasLoginDic"];
+            
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
@@ -327,8 +307,11 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
+                                       @"Session" : dictionary[@"session"],
+                                       @"UserID" : dictionary[@"uid"],
+                                       
                                        } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
             
             //Go to Suscription confirmation VC
@@ -346,7 +329,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 

@@ -28,23 +28,23 @@
     //2. spinner setup
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinner];
-    [self.spinner startAnimating];
 }
 
 -(void)viewDidLoad {
     [super viewDidLoad];
     [self UISetup];
-    [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:1.5];
 }
 
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     NSLog(@"Frame After Layout: %@", NSStringFromCGRect(self.view.frame));
     NSLog(@"Bounds After Layout: %@", NSStringFromCGRect(self.view.bounds));
     
     //Set the subviews frame
     self.backgroundImageView.frame = self.view.bounds;
     self.spinner.frame = CGRectMake(self.view.bounds.size.width/2 - 20.0, self.view.bounds.size.height/2 + 50.0, 40.0, 40.0);
+    [self.spinner startAnimating];
 }
 
 #pragma mark - Custom Methods
@@ -53,7 +53,6 @@
     //Stop the spinner
     [self.spinner stopAnimating];
     [self.spinner removeFromSuperview];
-    self.spinner = nil;
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
     NSDictionary *userDic = [fileSaver getDictionary:@"UserHasLoginDic"];
@@ -61,6 +60,7 @@
         [UserInfo sharedInstance].userName = userDic[@"UserName"];
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
+        [UserInfo sharedInstance].userID = userDic[@"UserID"];
         MainTabBarPadController *mainTabBarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarPadVC animated:YES completion:nil];
     

@@ -10,12 +10,12 @@
 #import "FileSaver.h"
 #import "CPIAPHelper.h"
 #import "RentContentConfirmationViewController.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
 #import "IAPProduct.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
+#import "MBProgressHUD.h"
 
 @interface RentContentViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
@@ -65,28 +65,6 @@
     }
 }
 
-/*-(void)rentProduction {
-    if ([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0) {
-        [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-        
-        //Testing purposes only. If the user has entered information in both textfields,
-        //make a succesful login and save a key to know that the user is login.
-        FileSaver *fileSaver = [[FileSaver alloc] init];
-        [fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
-        
-        [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-            if (success) {
-                [MBHUDView dismissCurrentHUD];
-                IAPProduct *product = [products lastObject];
-                [[CPIAPHelper sharedInstance] buyProduct:product];
-            }
-        }];
- 
-    } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor revisa que hayas completado todos los campos correctamente." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-}*/
-
 -(void)dismissKeyboard {
     [self.userTextfield resignFirstResponder];
     [self.passwordTextfield resignFirstResponder];
@@ -112,9 +90,10 @@
 }
 
 -(void)rentProductWithIdentifier:(NSString *)productIdentifier {
-    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -139,7 +118,8 @@
 #pragma mark - Server Stuff
 
 -(void)rentContent {
-    [MBHUDView hudWithBody:@"Comprando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -147,16 +127,18 @@
 }
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Ingresando...";
+    
     [UserInfo sharedInstance].userName = userName;
     [UserInfo sharedInstance].password = password;
-    [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"AuthenticateUser"]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
@@ -194,8 +176,11 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
+                                       @"UserID" : dictionary[@"uid"],
                                        @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
+            
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
             
             //Go to Suscription confirmation VC
@@ -207,7 +192,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 

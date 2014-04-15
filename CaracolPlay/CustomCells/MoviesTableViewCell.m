@@ -86,6 +86,8 @@
         starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         if (goldStars > i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
+        } else {
+            starImageView.tintColor = [UIColor colorWithRed:122.0/255.0 green:122.0/255.0 blue:122.0/255.0 alpha:1.0];
         }
         starImageView.clipsToBounds = YES;
         starImageView.contentMode = UIViewContentModeScaleAspectFill;

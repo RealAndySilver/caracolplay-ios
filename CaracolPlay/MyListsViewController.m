@@ -10,11 +10,11 @@
 #import "MyListsDetailsViewController.h"
 #import "CreateListView.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "Episode.h"
 #import "List.h"
 #import "NSArray+NullReplacement.h"
 #import "NSDictionary+NullReplacement.h"
+#import "MBProgressHUD.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -168,23 +168,25 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff
 
--(void)createListWithName:(NSString *)listName userID:(NSInteger)userID {
+/*-(void)createListWithName:(NSString *)listName userID:(NSInteger)userID {
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [MBHUDView hudWithBody:@"Creando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     NSString *parameter = [NSString stringWithFormat:@"%@/%d", listName, userID];
     [serverCommunicator callServerWithGETMethod:@"CreateList" andParameter:parameter];
-}
+}*/
 
 -(void)getUserLists {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [serverCommunicator callServerWithGETMethod:@"GetUserLists" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"recibí info del server");
     
     if ([methodName isEqualToString:@"GetUserLists"]) {
@@ -207,14 +209,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible conectarse con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark - CreateListViewDelegate
 
--(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
+/*-(void)createButtonPressedInCreateListView:(CreateListView *)createListView withListName:(NSString *)listName {
     [self.opacityView removeFromSuperview];
     self.opacityView = nil;
     NSLog(@"cree la lista");
@@ -230,7 +232,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)hiddeAnimationDidEndInCreateListView:(CreateListView *)createListView {
     [createListView removeFromSuperview];
     createListView = nil;
-}
+}*/
 
 #pragma mark - Interface Orientation
 

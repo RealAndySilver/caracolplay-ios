@@ -8,7 +8,6 @@
 
 #import "IngresarFromInsideViewController.h"
 #import "FileSaver.h"
-#import "MBHUDView.h"
 #import "CPIAPHelper.h"
 #import "RentConfirmFromInsideViewController.h"
 #import "SuscribeConfirmFromInsideViewController.h"
@@ -17,8 +16,9 @@
 #import "NSDictionary+NullReplacement.h"
 #import "IAPProduct.h"
 #import "IAmCoder.h"
+#import "MBProgressHUD.h"
 
-@interface IngresarFromInsideViewController () <ServerCommunicatorDelegate>
+@interface IngresarFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
@@ -62,6 +62,9 @@
 }
 
 -(void)setupUI {
+    self.userTextfield.delegate = self;
+    self.passwordTextfield.delegate = self;
+    
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
@@ -139,10 +142,14 @@
     if (self.controllerWasPresentFromAlertScreen) {
         [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
         }];
     } else if (self.controllerWasPresentedFromSuscriptionScreen || self.controllerWasPresentedFromRentScreen) {
         [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
         }];
     }
 }
@@ -169,7 +176,9 @@
 #pragma mark - Server Stuff
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
@@ -179,7 +188,9 @@
 }
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -189,7 +200,9 @@
 }
 
 -(void)rentContentInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -197,7 +210,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     //////////////////////////////////////////////////////////////////
     //Authenticate User
@@ -310,7 +323,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -334,9 +347,11 @@
 }
 
 -(void)buyProductWithIdentifier:(NSString *)productIdentifier {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -399,5 +414,15 @@
         [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
     }
 }*/
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.enterButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.enterButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
+}
 
 @end

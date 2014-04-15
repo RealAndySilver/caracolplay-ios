@@ -8,7 +8,6 @@
 
 #import "SuscribeFromInsideViewController.h"
 #import "CheckmarkView.h"
-#import "MBHUDView.h"
 #import "CPIAPHelper.h"
 #import "FileSaver.h"
 #import "SuscribeConfirmFromInsideViewController.h"
@@ -18,6 +17,7 @@
 #import "ServerCommunicator.h"
 #import "IAmCoder.h"
 #import "IAPProduct.h"
+#import "MBProgressHUD.h"
 
 @interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -63,6 +63,11 @@
 -(void)setupUI {
     //Set delegates
     self.nameTextfield.delegate = self;
+    self.aliasTextfield.delegate = self;
+    self.lastNameTextfield.delegate = self;
+    self.passwordTextfield.delegate = self;
+    self.confirmPasswordTextfield.delegate = self;
+    self.emailTextfield.delegate = self;
     
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
@@ -173,7 +178,9 @@
 #pragma mark - Server Stuff
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -183,7 +190,9 @@
 }
 
 -(void)validateUser {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -191,7 +200,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"ValidateUser"]) {
         if (dictionary) {
             NSLog(@"respuesta del validate: %@", dictionary);
@@ -230,17 +239,20 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - Custom Methods
 
 -(void)purchaseProductWithIdentifier:(NSString *)productID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -309,6 +321,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {
@@ -350,6 +365,7 @@
 }
 
 #pragma mark - UITextfieldDelegate
+
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");

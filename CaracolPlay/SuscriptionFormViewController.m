@@ -12,12 +12,12 @@
 #import "SuscriptionConfirmationViewController.h"
 #import "CPIAPHelper.h"
 #import "IAPProduct.h"
-#import "MBHUDView.h"
 #import "IngresarViewController.h"
 #import "TermsAndConditionsViewController.h"
 #import "iAmCoder.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
+#import "MBProgressHUD.h"
 
 @interface SuscriptionFormViewController () <ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -158,10 +158,11 @@
 }
 
 -(void)purchaseProductWithIdentifier:(NSString *)productID {
-    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -195,7 +196,9 @@
 #pragma mark - Server Stuff
 
 -(void)validateUser {
-    [MBHUDView hudWithBody:@"Conectando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -203,7 +206,10 @@
 }
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    NSLog(@"suscribiré al usuario en el servidor");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -213,7 +219,8 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    
     if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
             NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
@@ -223,9 +230,11 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
+                                       @"UserID" : dictionary[@"uid"],
                                        @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             
             //Go to Suscription confirmation VC
             [self goToSubscriptionConfirm];
@@ -249,11 +258,14 @@
             //Error en la respuesta
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -272,14 +284,14 @@
 -(void)goToTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showTerms = YES;
-    termsAndConditionsVC.title = @"Términos y Condiciones";
+    termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPolitics {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showPrivacy = YES;
-    termsAndConditionsVC.title = @"Políticas de Privacidad";
+    termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
@@ -317,6 +329,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {
@@ -377,30 +392,6 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    return YES;
-}
-
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    /*if (textField.tag == 1) {
-        //Validate name textfield
-        if (![self validateNameAndLastNameWithString:textField.text]) {
-            NSLog(@"El nombre no es válido");
-            textField.textColor = [UIColor redColor];
-        } else {
-            NSLog(@"el nombre si es válido");
-            textField.textColor = [UIColor whiteColor];
-        }
-    }*/
-    if (textField.tag == 3) {
-        //Validate email textfield
-        if (![self NSStringIsValidEmail:textField.text]) {
-            NSLog(@"el email no es válido %@", textField.text);
-            textField.textColor = [UIColor redColor];
-        } else {
-            NSLog(@"el email es válido %@", textField.text);
-            textField.textColor = [UIColor whiteColor];
-        }
-    }
     return YES;
 }
 

@@ -11,12 +11,12 @@
 #import "MainTabBarPadController.h"
 #import "FileSaver.h"
 #import "CPIAPHelper.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAPProduct.h"
 #import "IAmCoder.h"
+#import "MBProgressHUD.h"
 @import QuartzCore;
 
 @interface IngresarPadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
@@ -124,7 +124,7 @@
     }
 }
 
--(void)enterSuscribeAndGoToHomeScreen {
+/*-(void)enterSuscribeAndGoToHomeScreen {
     if (([self.userTextfield.text length] > 0 && [self.passwordTextfield.text length] > 0)) {
         [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
         [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
@@ -137,7 +137,7 @@
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
-}
+}*/
 
 -(void)goToHomeScreen {
     MainTabBarPadController *mainTabBarPadController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
@@ -151,9 +151,11 @@
 #pragma mark - Custom Methods
 
 -(void)buySubscriptionWithIdentifier:(NSString *)productIdentifier {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -200,7 +202,9 @@
 #pragma mark - Server Stuff
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
@@ -210,7 +214,9 @@
 }
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -220,7 +226,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     ///////////////////////////////////////////////////////////////////////
     //Authenticate user
@@ -290,7 +296,8 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 

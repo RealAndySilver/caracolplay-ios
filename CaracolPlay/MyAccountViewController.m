@@ -8,15 +8,14 @@
 
 #import "MyAccountViewController.h"
 #import "FileSaver.h"
-#import "MBHUDView.h"
 #import "LoginViewController.h"
 #import "MyNavigationController.h"
 #import "HomeViewController.h"
 #import "TermsAndConditionsViewController.h"
 #import "UserInfo.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "NSDictionary+NullReplacement.h"
+#import "MBProgressHUD.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate,  ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -241,32 +240,43 @@
 -(void)goToConditionsTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showTerms = YES;
-    termsAndConditionsVC.title = @"Términos y Condiciones";
+    termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)goToPrivacyTerms {
     TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
     termsAndConditionsVC.showPrivacy = YES;
-    termsAndConditionsVC.title = @"Políticas de Privacidad";
+    termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
     [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
 }
 
 -(void)closeSession {
     NSLog(@"Cerré Sesión");
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Salida Exitosa";
+    hud.mode = MBProgressHUDModeText;
+    [hud hide:YES afterDelay:1.0];
+    
+    //Post a notification to erase the 'Ultimos vistos' tab in 'Categorias'
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"EraseLastSeenCategory"
+                                                        object:nil
+                                                      userInfo:nil];
+    
     //Change our local key that indicates that the user has closed session
     FileSaver *fileSaver = [[FileSaver alloc] init];
     [fileSaver setDictionary:@{@"UserHasLoginKey": @NO,
                                @"UserName" : @"",
-                               @"Password" : @""
+                               @"Password" : @"",
+                               @"UserID" : @"",
                                } withKey:@"UserHasLoginDic"];
-    [MBHUDView hudWithBody:@"Salida exitosa" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
     
     //Erase user data from our user info singleton
     [UserInfo sharedInstance].userName = @"";
     [UserInfo sharedInstance].password = @"";
     [UserInfo sharedInstance].session = @"";
+    [UserInfo sharedInstance].userID = @"";
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
@@ -283,16 +293,18 @@
 #pragma mark - Server Stuff
 
 -(void)getUser {
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"GetUser" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"GetUser"] && dictionary) {
-        NSLog(@"Peticio GetUser exitosa: %@", dictionary);
+        //NSLog(@"Peticio GetUser exitosa: %@", dictionary);
         NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
         self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
         self.personalInfo = dicWithoutNulls[@"user"][@"data"];
@@ -303,7 +315,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 

@@ -8,12 +8,12 @@
 
 #import "RedeemCodePadViewController.h"
 #import "RedeemCodeConfirmationPadViewController.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
 #import "FileSaver.h"
+#import "MBProgressHUD.h"
 
 @interface RedeemCodePadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
@@ -115,7 +115,9 @@
 #pragma mark - Server Stuff 
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
@@ -124,7 +126,9 @@
 }
 
 -(void)redeemCodeInServer:(NSString *)code {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Redimiendo...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -132,8 +136,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
-    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     ///////////////////////////////////////////////////////////////////////////////
     //AuthenticateUser
     if ([methodName isEqualToString:@"AuthenticateUser"]) {
@@ -179,15 +182,21 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 #pragma mark - UITextfieldDelegate 
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.continueButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.continueButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
 }
 
 @end

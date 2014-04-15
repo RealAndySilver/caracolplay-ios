@@ -78,11 +78,11 @@ NSString *const cellIdentifier = @"CellIdentifier";
     else if (indexPath.row == 2) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
         termsAndConditionsVC.showPrivacy = YES;
-        termsAndConditionsVC.title = @"Políticas de Privacidad";
+        termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
         [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
     } else if (indexPath.row == 3) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
-        termsAndConditionsVC.title = @"Términos y Condiciones";
+        termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
         termsAndConditionsVC.showTerms = YES;
         [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
     }

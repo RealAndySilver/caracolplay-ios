@@ -13,11 +13,9 @@
 #import "TelenovelSeriesDetailViewController.h"
 #import "MyUtilities.h"
 #import "FileSaver.h"
-#import "CPIAPHelper.h"
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
-#import "MBHUDView.h"
-//#import "CPIAPHelper.h"
+#import "MBProgressHUD.h"
 
 @interface HomeViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -148,14 +146,15 @@
 -(void)getFeaturedProductsFromServer {
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
     [serverCommunicator callServerWithGETMethod:@"GetFeatured" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"GetFeatured"]) {
-        NSLog(@"Si recibí info del server: %@", dictionary);
+        //NSLog(@"Si recibí info del server: %@", dictionary);
         if (!dictionary) {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         } else {
@@ -165,7 +164,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor revisa que te encuentres conectado a una red Wi-Fi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     NSLog(@"Server error: %@ %@", error, [error localizedDescription]);
 }

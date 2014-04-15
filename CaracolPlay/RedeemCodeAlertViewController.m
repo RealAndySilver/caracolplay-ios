@@ -111,6 +111,8 @@
         //If the user hasn't logged in with his user, create the aditional tabs
         NSLog(@"Cree los tabs");
         [self createAditionalTabsInTabBarController];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+
     } else  {
         NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
     }

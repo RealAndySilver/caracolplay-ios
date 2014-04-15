@@ -15,9 +15,9 @@
 #import "IngresarPadViewController.h"
 #import "UserInfo.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "IAmCoder.h"
 #import "IAPProduct.h"
+#import "MBProgressHUD.h"
 @import QuartzCore;
 
 @interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate>
@@ -171,7 +171,9 @@
 #pragma mark - Server Stuff
 
 -(void)validateUser {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -179,7 +181,9 @@
 }
 
 -(void)suscribeUserInServerWithTransactionID:(NSString *)transactionID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -189,7 +193,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"ValidateUser"]) {
         if (dictionary) {
             NSLog(@"respuesta del validate: %@", dictionary);
@@ -228,7 +232,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -246,10 +250,12 @@
 }
 
 -(void)purchaseProductWithIdentifier:(NSString *)productID {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -318,6 +324,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {

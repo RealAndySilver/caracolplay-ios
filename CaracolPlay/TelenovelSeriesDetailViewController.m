@@ -23,7 +23,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "SuscriptionAlertViewController.h"
 #import "SeasonsListView.h"
 #import "AddToListView.h"
-#import "MBHUDView.h"
 #import "IngresarViewController.h"
 #import "ServerCommunicator.h"
 #import "Season.h"
@@ -33,6 +32,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "ServerCommunicator.h"
 #import "Video.h"
 #import "NSDictionary+NullReplacement.h"
+#import "MBProgressHUD.h"
+#import "UserInfo.h"
 
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
@@ -41,6 +42,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
 @property (strong, nonatomic) NSMutableArray *parsedEpisodesArray; //
 @property (strong, nonatomic) UIButton *seasonsButton;
+@property (strong, nonatomic) UIButton *watchProductionButton;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
@@ -51,12 +53,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 //when the view appears.
 @property (assign, nonatomic) BOOL receivedVideoNotification;
 @property (strong, nonatomic) NSString *selectedEpisodeID;
-
+@property (assign, nonatomic) NSUInteger lastEpisodeSeen;
 @end
 
 @implementation TelenovelSeriesDetailViewController
 
 #pragma mark - Setters
+
+-(NSString *)selectedEpisodeID {
+    if (!_selectedEpisodeID) {
+        Season *firstSeason = self.production.seasonList[0];
+        Episode *firstEpisode = firstSeason.episodes[0];
+        _selectedEpisodeID = firstEpisode.identifier;
+    }
+    return _selectedEpisodeID;
+}
 
 -(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
     _unparsedProductionInfoDic = unparsedProductionInfoDic;
@@ -87,6 +98,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             //Loop through all the season episodes.
             for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
                 Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                if (episode.lastChapter) {
+                    self.lastEpisodeSeen = i;
+                }
                 [parsedEpisodesFromSeason addObject:episode];
             }
             
@@ -137,7 +151,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
                                                                   20.0,
                                                                   90.0,
-                                                                  self.view.frame.size.height/4.0)];
+                                                                  self.view.frame.size.height/3.8)];
     shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowOpacity = 0.9;
@@ -223,6 +237,18 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     [self.view addSubview:shareButton];
     
+    //Create the button to watch the production, only if the user is log out
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
+        [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
+        [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        self.watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+        [self.watchProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.watchProductionButton];
+    }
+    
     //7. Create a text view to display the detail of the event/movie
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
     
@@ -292,15 +318,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+    
+    if (self.receivedVideoNotification) {
+        NSLog(@"iré al video de unaaaa");
+        [self.watchProductionButton removeFromSuperview];
+        [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
+    }
 }
 
--(void)viewDidAppear:(BOOL)animated {
+/*-(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");
         [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
     }
-}
+}*/
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -326,6 +358,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         cell = [[TelenovelSeriesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
+    if (indexPath.row == self.lastEpisodeSeen) {
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
     Season *season = self.production.seasonList[self.selectedSeason];
     Episode *episode = season.episodes[indexPath.row];
     cell.delegate = self;
@@ -348,11 +383,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] && [self.production.free isEqualToString:@"0"]) {
         //The user isn't login.
-        SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
-        suscriptionAlertVC.productID = self.selectedEpisodeID;
-        suscriptionAlertVC.productName = self.production.name;
-        [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
-        NSLog(@"no puedo ver la producción porque no he ingresado");
+        [self goToSuscriptionAlertVCWithEpisodeID:self.selectedEpisodeID productionName:self.production.name];
         
     } else {
         [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
@@ -360,6 +391,18 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Actions 
+
+-(void)goToSuscriptionAlert {
+    [self goToSuscriptionAlertVCWithEpisodeID:self.selectedEpisodeID productionName:self.production.name];
+}
+
+-(void)goToSuscriptionAlertVCWithEpisodeID:(NSString *)episodeID productionName:(NSString *)productionName {
+    SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
+    suscriptionAlertVC.productID = episodeID;
+    suscriptionAlertVC.productName = productionName;
+    [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
+    NSLog(@"no puedo ver la producción porque no he ingresado");
+}
 
 -(void)showSeasonsList {
     SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
@@ -460,29 +503,41 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Server Methods
 
 -(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Calificando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
     [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
 }
 
 -(void)getProductionWithID:(NSString *)productID {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
-}
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+    } else {
+        NSString *userID = [UserInfo sharedInstance].userID;
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+    }}
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     if ([methodName isEqualToString:@"GetProductWithID"] && dictionary) {
         if (![dictionary[@"products"][@"status"] boolValue]) {
@@ -524,7 +579,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     NSLog(@"Server Error: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un error conectándose con el servidor. Por favor comprueba que estés conectado a una red Wi-Fi e intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
@@ -570,7 +626,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)listWasSelectedAtIndex:(NSUInteger)index inAddToListView:(AddToListView *)addToListView {
     NSLog(@"index selected: %d", index);
-    [MBHUDView hudWithBody:@"Agregado a tu lista" type:MBAlertViewHUDTypeCheckmark hidesAfter:2.0 show:YES];
 }
 
 -(void)addToListViewWillDisappear:(AddToListView *)addToListView {

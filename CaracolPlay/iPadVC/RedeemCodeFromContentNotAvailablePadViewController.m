@@ -8,14 +8,13 @@
 
 #import "RedeemCodeFromContentNotAvailablePadViewController.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
 #import "UserInfo.h"
 #import "FileSaver.h"
 #import "RedeemCodeConfirmationPadViewController.h"
-
-@interface RedeemCodeFromContentNotAvailablePadViewController () <ServerCommunicatorDelegate>
+#import "MBProgressHUD.h"
+@interface RedeemCodeFromContentNotAvailablePadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
@@ -32,6 +31,8 @@
 }
 
 -(void)setupUI {
+    self.codeTextfield.delegate = self;
+    
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
@@ -101,7 +102,9 @@
 #pragma mark - Server Stuff 
 
 -(void)redeemCodeInServer:(NSString *)code {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -109,14 +112,17 @@
 }
 
 -(void)authenticateUser {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Ingresando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     if ([methodName isEqualToString:@"AuthenticateUser"] && dictionary) {
         if ([dictionary[@"status"] boolValue]) {
             NSLog(@"autenticación exitosa: %@", dictionary);
@@ -157,8 +163,21 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - UITextfieldDelegate
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.continueButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.continueButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
 }
 
 

@@ -72,8 +72,8 @@
     [self UISetup];
 }
 
--(void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     
     //Set subviews frames
     self.backgroundImageView.frame = self.view.bounds;

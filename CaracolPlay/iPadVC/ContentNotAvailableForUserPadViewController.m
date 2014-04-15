@@ -7,7 +7,6 @@
 //
 
 #import "ContentNotAvailableForUserPadViewController.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAPProduct.h"
@@ -18,6 +17,7 @@
 #import "RentConfirmFromInsideViewController.h"
 #import "SuscribeConfirmFromInsideViewController.h"
 #import "RedeemCodeFromContentNotAvailablePadViewController.h"
+#import "MBProgressHUD.h"
 
 @interface ContentNotAvailableForUserPadViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -146,7 +146,9 @@
 #pragma mark - Server Stuff
 
 -(void)subscribeUserInServer {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString * encodedUserInfo = [self generateEncodedUserInfoString];
@@ -156,7 +158,9 @@
 }
 
 -(void)rentProductInServer {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameters = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -164,14 +168,16 @@
 }
 
 -(void)authenticateUser {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     /////////////////////////////////////////////////////////////////////
     //AuthenticateUser
@@ -259,7 +265,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -285,9 +291,11 @@
 }
 
 -(void)buyProductWithIdentifier:(NSString *)productIdentifier {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Comprando...";
+    
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBHUDView dismissCurrentHUD];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {

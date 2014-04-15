@@ -9,7 +9,6 @@
 #import "IAPHelper.h"
 #import "IAPProduct.h"
 #import <StoreKit/StoreKit.h>
-#import "MBHUDView.h"
 
 @interface IAPHelper () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 @property (strong, nonatomic) SKProductsRequest *productsRequest;
@@ -49,9 +48,9 @@
         return;
     }
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+        //[MBHUDView hudWithBody:@"Comprando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     } else {
-        [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+        //[MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     }
     NSLog(@"Comprando: %@", product.productIdentifier);
     product.purchaseInProgress = YES;
@@ -117,7 +116,7 @@
 }
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
-    [MBHUDView dismissCurrentHUD];
+    //[MBHUDView dismissCurrentHUD];
     NSLog(@"completeTransaction...");
     NSLog(@"Transaction identifier: %@", transaction.transactionIdentifier);
     [self provideContentForTransaction:transaction
@@ -125,7 +124,7 @@
 }
 
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction {
-    [MBHUDView dismissCurrentHUD];
+    //[MBHUDView dismissCurrentHUD];
     NSLog(@"restoreTransaction...");
     [self provideContentForTransaction:transaction
                      productIdentifier:
@@ -133,7 +132,7 @@
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction {
-    [MBHUDView dismissCurrentHUD];
+    //[MBHUDView dismissCurrentHUD];
     NSLog(@"failedTransaction...");
     if (transaction.error.code != SKErrorPaymentCancelled)
     {

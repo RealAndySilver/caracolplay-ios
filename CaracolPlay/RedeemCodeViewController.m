@@ -9,12 +9,12 @@
 #import "RedeemCodeViewController.h"
 #import "MainTabBarViewController.h"
 #import "RedeemCodeAlertViewController.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
 #import "FileSaver.h"
+#import "MBProgressHUD.h"
 
 @interface RedeemCodeViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -124,7 +124,9 @@
 #pragma mark - Server stuff
 
 -(void)redeemCodeInServer:(NSString *)code {
-    [MBHUDView hudWithBody:@"Redimiendo" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Redimiendo...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -132,7 +134,9 @@
 }
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
-    [MBHUDView hudWithBody:@"Ingresando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Ingresando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [UserInfo sharedInstance].userName = userName;
@@ -141,7 +145,8 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
     if ([methodName isEqualToString:@"AuthenticateUser"] && dictionary) {
         if ([dictionary[@"status"] boolValue]) {
             NSLog(@"autenticación exitosa: %@", dictionary);
@@ -163,9 +168,11 @@
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                            @"UserName" : [UserInfo sharedInstance].userName,
                                            @"Password" : [UserInfo sharedInstance].password,
+                                           @"UserID" : dictionary[@"uid"],
                                            @"Session" : dictionary[@"session"]
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
                 [self goToRedeemCodeConfirmation];
                 
             } else {
@@ -182,7 +189,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 

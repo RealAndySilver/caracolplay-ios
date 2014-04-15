@@ -10,7 +10,6 @@
 #import "MyNavigationController.h"
 #import "ConfigurationViewController.h"
 #import "MyListsViewController.h"
-#import "MBHUDView.h"
 #import "TelenovelSeriesDetailViewController.h"
 #import "MoviesEventsDetailsViewController.h"
 
@@ -102,6 +101,8 @@
         //If the user hasn't logged in with his user, create the aditional tabs
         NSLog(@"crearemos los tabs adicionales");
         [self createAditionalTabsInTabBarController];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+
     } else {
         NSLog(@"no crearemos los tabs adicionales");
     }

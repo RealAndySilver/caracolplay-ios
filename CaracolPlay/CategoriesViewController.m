@@ -9,42 +9,21 @@
 #import "CategoriesViewController.h"
 #import "Categoria.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
+#import "MBProgressHUD.h"
+#import "FileSaver.h"
 
 static NSString *CellIdentifier = @"CellIdentifier";
 
 @interface CategoriesViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) NSArray *unparsedCategoriesList;
 @property (strong, nonatomic) NSMutableArray *parsedCategoriesList;
+@property (strong, nonatomic) Categoria *lastSeenCategory;
+@property (strong, nonatomic) UITableView *categoriesTableView;
 @end
 
 @implementation CategoriesViewController
 
-#pragma mark - Lazy Instantiation 
-
-/*-(NSArray *)unparsedCategoriesList {
-    if (!_unparsedCategoriesList) {
-        _unparsedCategoriesList = @[@{@"name": @"Vistos Recientemente", @"id" : @"23556"},
-                                    @{@"name": @"Mis Redimidos", @"id" : @"23532"},
-                                    @{@"name": @"Mis Alquilados", @"id" : @"22133"},
-                                    @{@"name": @"Telenovelas", @"id" : @"64556"},
-                                    @{@"name": @"Películas", @"id" : @"64556"},
-                                    @{@"name": @"Noticias", @"id" : @"23456"},
-                                    @{@"name": @"Eventos en vivo", @"id" : @"63656"}];
-    }
-    return _unparsedCategoriesList;
-}*/
-
-#pragma mark - UISetup & Initialization stuff
-
-/*-(void)parseCategoriesList {
-    self.parsedCategoriesList = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.unparsedCategoriesList count]; i++) {
-        Categoria *category = [[Categoria alloc] initWithDictionary:self.unparsedCategoriesList[i]];
-        [self.parsedCategoriesList addObject:category];
-    }
-    NSLog(@"parse count: %d", [self.parsedCategoriesList count]);
-}*/
+#pragma mark - Setters & Getters
 
 -(void)setUnparsedCategoriesList:(NSArray *)unparsedCategoriesList {
     _unparsedCategoriesList = unparsedCategoriesList;
@@ -53,30 +32,39 @@ static NSString *CellIdentifier = @"CellIdentifier";
 }
 
 -(void)parseCategoriesListFromServer {
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    BOOL userIsLoggedIn = [[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue];
+    
     self.parsedCategoriesList = [[NSMutableArray alloc] init];
     for (int i = 0; i < [self.unparsedCategoriesList count]; i++) {
         Categoria *category = [[Categoria alloc] initWithDictionary:self.unparsedCategoriesList[i]];
         [self.parsedCategoriesList addObject:category];
+        if ([category.identifier isEqualToString:@"1"] && !userIsLoggedIn) {
+            self.lastSeenCategory = category;
+            [self.parsedCategoriesList removeObject:category];
+        }
     }
     NSLog(@"Numero de categorias: %d", [self.parsedCategoriesList count]);
 }
+
+#pragma mark - UISetup
 
 -(void)UISetup {
     
     
     //1. Create a TableView to display the categories
-    UITableView *categoriesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0,
+    self.categoriesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      0.0,
                                                                                      self.view.bounds.size.width,
                                                                                      self.view.bounds.size.height -  44.0)
                                                                     style:UITableViewStylePlain];
-    categoriesTableView.delegate = self;
-    categoriesTableView.dataSource = self;
-    categoriesTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    categoriesTableView.rowHeight = 50.0;
-    categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    categoriesTableView.separatorColor = [UIColor blackColor];
-    [self.view addSubview:categoriesTableView];
+    self.categoriesTableView.delegate = self;
+    self.categoriesTableView.dataSource = self;
+    self.categoriesTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.categoriesTableView.rowHeight = 50.0;
+    self.categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.categoriesTableView.separatorColor = [UIColor blackColor];
+    [self.view addSubview:self.categoriesTableView];
 }
 
 #pragma mark - View Lifecycle
@@ -93,8 +81,15 @@ static NSString *CellIdentifier = @"CellIdentifier";
                                                                                           action:@selector(getCategoriesFromServer)];
     self.navigationItem.rightBarButtonItem = refreshBarButtonItem;
     
-    //[self parseCategoriesList];
-    //[self UISetup];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(createLastSeenCategory)
+                                                 name:@"CreateLastSeenCategory"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eraseLastSeenCategory)
+                                                 name:@"EraseLastSeenCategory"
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -137,14 +132,16 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - Server Stuff
 
 -(void)getCategoriesFromServer {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando" type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [serverCommunicator callServerWithGETMethod:@"GetCategories" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"Recibí una respuesta del server");
     if ([methodName isEqualToString:@"GetCategories"] && responseDictionary) {
         NSLog(@"la petición fue exitosa. results dic: %@", responseDictionary);
@@ -156,8 +153,25 @@ static NSString *CellIdentifier = @"CellIdentifier";
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Se produjo un error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers
+
+-(void)createLastSeenCategory {
+    [self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
+    [self.categoriesTableView reloadData];
+}
+
+-(void)eraseLastSeenCategory {
+    for (Categoria *category in self.parsedCategoriesList) {
+        if ([category.identifier isEqualToString:@"1"]) {
+            [self.parsedCategoriesList removeObject:category];
+            break;
+        }
+    }
+    [self.categoriesTableView reloadData];
 }
 
 - (NSUInteger) supportedInterfaceOrientations{

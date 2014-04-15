@@ -32,7 +32,7 @@
 -(UIActivityIndicatorView *)spinner {
     if (!_spinner) {
         _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        _spinner.frame = CGRectMake(672.0 - 20.0, 384.0 - 20.0, 40.0, 40.0);
+        _spinner.frame = CGRectMake(350 - 20.0, 384.0 - 20.0, 40.0, 40.0);
     }
     return _spinner;
 }
@@ -280,6 +280,11 @@
     [UserInfo sharedInstance].userName = @"";
     [UserInfo sharedInstance].password = @"";
     [UserInfo sharedInstance].session = @"";
+    [UserInfo sharedInstance].userID = @"";
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"EraseLastSeenCategory"
+                                                        object:nil
+                                                      userInfo:nil];
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
@@ -305,7 +310,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetUser"] && dictionary) {
-        NSLog(@"Peticio GetUser exitosa: %@", dictionary);
+        //NSLog(@"Peticio GetUser exitosa: %@", dictionary);
         NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
         self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
         self.personalInfo = dicWithoutNulls[@"user"][@"data"];

@@ -21,9 +21,9 @@
 #import "ServerCommunicator.h"
 #import "Episode.h"
 #import "Season.h"
-#import "MBHUDView.h"
 #import "Video.h"
 #import "ContentNotAvailableForUserPadViewController.h"
+#import "UserInfo.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -153,6 +153,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
     
+    //Free band image view
+    if ([self.production.free isEqualToString:@"1"]) {
+        UIImageView *freeBandImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 118.0, 0.0, 118.0, 86.0)];
+        freeBandImageView.image = [UIImage imageNamed:@"FreeBandPad.png"];
+        [self.view addSubview:freeBandImageView];
+    }
+    
     //3. add a UIView to opaque the background view
     self.opaqueView = [[UIView alloc] init];
     self.opaqueView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
@@ -272,6 +279,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
+    
+    //Add as an oberver of the VideoShoulBeDisplayed notification. when this notification
+    //is received, the video controller should be presented automaticly
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoShouldBeDisplayedReceived)
+                                                 name:@"Video"
+                                               object:nil];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -309,7 +323,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [cell.contentView addSubview:shadowView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10.0, cell.contentView.bounds.size.width - 20.0, cell.contentView.bounds.size.height - 20.0)];
-    [imageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.item][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    [imageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.item][@"product"][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     imageView.clipsToBounds = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [shadowView addSubview:imageView];
@@ -325,17 +339,20 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Seleccioné el item %d", indexPath.item);
-    if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+     NSLog(@"Seleccioné el item %d", indexPath.item);
+    if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"]) {
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
         seriesDetailPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        seriesDetailPad.productID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
-    } else if ([self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"] || [self.recommendedProductions[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"]) {
         MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
         movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        movieDetailsPad.productID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self presentViewController:movieDetailsPad animated:YES completion:nil];
     }
 }
@@ -445,6 +462,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Notification Handlers
+
+-(void)videoShouldBeDisplayedReceived {
+    NSLog(@"llegó la notificación: video");
+    [self.viewProductionButton removeFromSuperview];
+    [self getIsContentAvailableForUserWithID:self.production.identifier];
+}
+
 #pragma mark - Server Stuff
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
@@ -460,7 +485,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:self.productID];
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+    } else {
+        NSString *userID = [UserInfo sharedInstance].userID;
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+    }
 }
 
 -(void)getRecommendedProductionsForProductID:(NSString *)productID {

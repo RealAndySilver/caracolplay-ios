@@ -15,6 +15,9 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #import "JMImageCache.h"
 #import "ServerCommunicator.h"
 #import "NSArray+NullReplacement.h"
+#import "NSDictionary+NullReplacement.h"
+#import "Video.h"
+#import "VideoPlayerPadViewController.h"
 
 @interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
@@ -23,6 +26,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSMutableArray *unparsedProductionsArray;
 @property (strong, nonatomic) NSMutableArray *productionsArray;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
+@property (strong, nonatomic) NSString *selectedEpisodeID;
 @end
 
 @implementation CategoriesDetailPadViewController
@@ -31,8 +35,14 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(void)setCategoryID:(NSString *)categoryID {
     _categoryID = categoryID;
-    [self getListFromCategoryID:categoryID withFilter:1];
-    self.segmentedControl.selectedSegmentIndex = 0;
+    if ([categoryID isEqualToString:@"1"]) {
+        [self getUserRecentlyWatched];
+        self.segmentedControl.hidden = YES;
+    } else {
+        [self getListFromCategoryID:categoryID withFilter:1];
+        self.segmentedControl.hidden = NO;
+        self.segmentedControl.selectedSegmentIndex = 0;
+    }
 }
 
 -(NSMutableArray *)productionsArray {
@@ -67,6 +77,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     //2. Segmented Control
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Todo"]];
     self.segmentedControl.selectedSegmentIndex = 0;
+    self.segmentedControl.tintColor = [UIColor whiteColor];
     [self.segmentedControl addTarget:self action:@selector(changeCategoryFilter) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.segmentedControl];
     
@@ -110,6 +121,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.item][@"image_url"]]
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.goldStars = ([self.productionsArray[indexPath.item][@"rate"] intValue]/20) + 1;
+    /*if ([self.productionsArray[indexPath.item][@"free"] isEqualToString:@"1"]) {
+        UIImageView *freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, cell.contentView.bounds.size.height - 50.0, cell.contentView.bounds.size.width - 20.0, 20.0)];
+        freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+        [cell.contentView addSubview:freeImageView];
+    }*/
     NSLog(@"la celda %d tiene %d estrellas", indexPath.item, cell.goldStars);
     return cell;
 }
@@ -121,16 +137,22 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.categoryID isEqualToString:@"1"]) {
+        [self getIsContentAvailableForUserWithID:self.productionsArray[indexPath.row][@"id"]];
+        self.selectedEpisodeID = self.productionsArray[indexPath.row][@"id"];
+        return;
+    }
+    
     if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-        seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         
     } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
-        movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
         movieDetailsPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
@@ -145,7 +167,74 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [self getListFromCategoryID:self.categoryID withFilter:self.segmentedControl.selectedSegmentIndex+1];
 }
 
+#pragma mark - Custom Methods
+
+-(void)checkVideoAvailability:(Video *)video {
+    if (video.status) {
+        //The video is available for the user, so check the network connection to decide
+        //if the user can pass to watch it or not.
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        if (status == NotReachable) {
+            //The user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            if (video.is3G) {
+                //The user can watch it with 3G
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.productID = self.selectedEpisodeID;
+                videoPlayer.progressSec = video.progressSec;
+                [self presentViewController:videoPlayer animated:YES completion:nil];
+            } else {
+                //The user can't watch the video because the connection is to slow
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Para ver este contenido conéctese a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = self.selectedEpisodeID;
+            [self presentViewController:videoPlayer animated:YES completion:nil];
+        }
+        
+    } else {
+        //The video is not available for the user, so pass to the
+        //Content not available for user
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no se puede acceder al video. Intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        /*ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+         [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+         contentNotAvailableForUser.productID = self.selectedEpisodeID;
+         contentNotAvailableForUser.productName = self.production.name;
+         contentNotAvailableForUser.productType = self.production.type;
+         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];*/
+    }
+}
+
 #pragma mark - Server Stuff
+
+-(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+}
+
+-(void)getUserRecentlyWatched {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetUserRecentlyWatched" andParameter:@""];
+}
 
 -(void)getListFromCategoryID:(NSString *)categoryID withFilter:(NSInteger)filter {
     NSLog(@"llamaré al server");
@@ -164,6 +253,16 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         //NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
         self.unparsedProductionsArray = responseDictionary[@"products"];
         
+    } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"]) {
+        self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
+    
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]) {
+        //La petición fue exitosa
+        NSLog(@"info del video: %@", responseDictionary);
+        NSDictionary *dicWithoutNulls = [responseDictionary dictionaryByReplacingNullWithBlanks];
+        Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
+        [self checkVideoAvailability:video];
+        
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -181,7 +280,13 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     NSString *categoryID = notificationDic[@"CategoryID"];
     self.categoryID = categoryID;
     NSLog(@"recibí la notificación con un id de categoria: %@", categoryID);
-    [self getListFromCategoryID:categoryID withFilter:1];
+    if ([self.categoryID isEqualToString:@"1"]) {
+        [self getUserRecentlyWatched];
+        self.segmentedControl.hidden = YES;
+    } else {
+        [self getListFromCategoryID:categoryID withFilter:1];
+        self.segmentedControl.hidden = NO;
+    }
 }
 
 #pragma mark - UIBarPositioningDelegate

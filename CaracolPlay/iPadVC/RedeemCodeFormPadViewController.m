@@ -9,15 +9,15 @@
 #import "RedeemCodeFormPadViewController.h"
 #import "CheckmarkView.h"
 #import "UserInfo.h"
-#import "MBHUDView.h"
 #import "ServerCommunicator.h"
 #import "IAmCoder.h"
 #import "FileSaver.h"
 #import "RedeemCodeConfirmationPadViewController.h"
 #import "RedeemCodePadViewController.h"
 #import "TermsAndConditionsPadViewController.h"
+#import "MBProgressHUD.h"
 
-@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate>
+@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -45,6 +45,14 @@
 }
 
 -(void)setupUI {
+    self.nameTextfield.delegate = self;
+    self.passwordTextfield.delegate = self;
+    self.aliasTextfield.delegate = self;
+    self.lastNameTextfield.delegate = self;
+    self.confirmPasswordTextfield.delegate = self;
+    self.redeemCodeTextfield.delegate = self;
+    self.emailTextfield.delegate = self;
+    
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
@@ -105,6 +113,8 @@
 }
 
 -(void)enterAndRedeemCode {
+    [self resignAllTextfieldsAsFirstResponders];
+    
     RedeemCodePadViewController *redeemCodePadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodePad"];
     redeemCodePadVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodePadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -112,6 +122,15 @@
         redeemCodePadVC.controllerWasPresentedFromSuscriptionAlertScreen = YES;
     }
     [self presentViewController:redeemCodePadVC animated:YES completion:nil];
+}
+
+-(void)resignAllTextfieldsAsFirstResponders {
+    [self.nameTextfield resignFirstResponder];
+    [self.aliasTextfield resignFirstResponder];
+    [self.passwordTextfield resignFirstResponder];
+    [self.confirmPasswordTextfield resignFirstResponder];
+    [self.lastNameTextfield resignFirstResponder];
+    [self.emailTextfield resignFirstResponder];
 }
 
 -(void)startRedeemCodeProcess {
@@ -131,7 +150,8 @@
 #pragma mark - Server Stuff
 
 -(void)redeemCodeInServer:(NSString *)code {
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Redimiendo...";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -142,7 +162,9 @@
     [UserInfo sharedInstance].userName = self.aliasTextfield.text;
     [UserInfo sharedInstance].password = self.passwordTextfield.text;
     
-    [MBHUDView hudWithBody:nil type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Conectando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameter = [NSString stringWithFormat:@"user_info=%@", [self generateEncodedUserInfoString]];
@@ -150,7 +172,7 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     /////////////////////////////////////////////////////////////////////
     //ValidateUser
@@ -202,7 +224,7 @@
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
@@ -265,6 +287,9 @@
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
+        self.emailTextfield.textColor = [UIColor whiteColor];
+    } else {
+        self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.aliasTextfield.text length] > 0) {
@@ -301,5 +326,14 @@
     return [emailTest evaluateWithObject:checkString];
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"empezé a editarme");
+    self.enterHereButton.userInteractionEnabled = NO;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    self.enterHereButton.userInteractionEnabled = YES;
+    NSLog(@"terminé de editarme");
+}
 
 @end

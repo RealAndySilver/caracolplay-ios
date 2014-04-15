@@ -8,7 +8,6 @@
 
 #import "TermsAndConditionsViewController.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 
 @interface TermsAndConditionsViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) NSString *termsAndConditionsString;
@@ -20,7 +19,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = self.title;
+    self.navigationItem.title = self.mainTitle;
     self.view.backgroundColor = [UIColor blackColor];
     
     
@@ -33,7 +32,7 @@
         self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
     }
     self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    NSLog(@"%@", self.termsAndConditionsString);
+    //NSLog(@"%@", self.termsAndConditionsString);
     [self setupUI];
 }
 
@@ -49,7 +48,7 @@
     [self.view addSubview:webView];
 }
 
--(void)getTerms {
+/*-(void)getTerms {
     [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
@@ -57,18 +56,19 @@
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
-    /*if ([methodName isEqualToString:@"GetTerms"]) {
+    if ([methodName isEqualToString:@"GetTerms"]) {
         if (dictionary) {
             
         }
-    }*/
+    }
 }
 
 -(void)serverError:(NSError *)error {
     [MBHUDView dismissCurrentHUD];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     
-}
+}*/
+
 #pragma mark - Interface Orientation
 
 -(NSUInteger)supportedInterfaceOrientations {

@@ -24,7 +24,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     //self.navigationController.navigationBarHidden = YES;
-    [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(goToLoginViewController) withObject:nil afterDelay:1.5];
     
     //1. Set the background image of the view
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -53,6 +53,7 @@
         [UserInfo sharedInstance].userName = userDic[@"UserName"];
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
+        [UserInfo sharedInstance].userID = userDic[@"UserID"];
         
         //The user is login, so go to the home screen directly
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];

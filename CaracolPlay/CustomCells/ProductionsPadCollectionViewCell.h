@@ -11,4 +11,5 @@
 @interface ProductionsPadCollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) UIImageView *productionImageView;
 @property (nonatomic) int goldStars;
+//@property (assign, nonatomic) BOOL isFree;
 @end

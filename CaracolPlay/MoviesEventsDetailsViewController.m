@@ -19,11 +19,12 @@
 #import "SuscriptionAlertViewController.h"
 #import "ContentNotAvailableForUserViewController.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "Season.h"
 #import "Episode.h"
 #import "NSDictionary+NullReplacement.h"
 #import "Video.h"
+#import "MBProgressHUD.h"
+#import "UserInfo.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -122,7 +123,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.production.type;
     [self getProductWithID:self.productionID];
-    //[self UISetup];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -136,8 +136,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");
         [self getIsContentAvailableForUserWithID:self.productionID];
-        //VideoPlayerViewController *videoPLayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
-        //[self.navigationController pushViewController:videoPLayerVC animated:YES];
     }
 }
 
@@ -359,17 +357,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] ||
         [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"]) {
         
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
-        /*MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
-        [self.navigationController pushViewController:moviesEventDetail animated:YES];*/
         
     } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+        moviesEventDetail.productionID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];
     }
 }
@@ -482,25 +480,38 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Server Stuff 
 
 -(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Calificando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Enviando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     NSString *parameters = [NSString stringWithFormat:@"%@/%@/%d", @"produccion",self.production.identifier, rate];
     [serverCommunicator callServerWithGETMethod:@"UpdateUserFeedbackForProduct" andParameter:parameters];
 }
 
 -(void)getIsContentAvailableForUserWithID:(NSString *)ProductionID {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
     [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:ProductionID];
 }
 
 -(void)getProductWithID:(NSString *)productID {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
-    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+    } else {
+        NSString *userID = [UserInfo sharedInstance].userID;
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+    }
 }
 
 -(void)getRecommendedProductionsForProductID:(NSString *)productID {
@@ -510,7 +521,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"Recibí respuesta del servidor");
     if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
         self.recommendedProductions = responseDictionary[@"recommended_products"];
@@ -542,7 +553,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         }
         
         
-        
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
         Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
         [self checkVideoAvailability:video];
@@ -556,7 +566,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conetándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }

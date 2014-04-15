@@ -10,12 +10,14 @@
 #import "CategoriesDetailPadViewController.h"
 #import "ServerCommunicator.h"
 #import "Categoria.h"
+#import "FileSaver.h"
 
 @interface CategoriesMasterPadViewController () <UITableViewDataSource, UITableViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *unparsedCategoriesList;
 @property (strong, nonatomic) NSMutableArray *parsedCategoriesList;
 @property (strong, nonatomic) CategoriesDetailPadViewController *categoriesDetailVC;
+@property (strong, nonatomic) Categoria *lastSeenCategory;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UIImageView *titleImageView;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -36,10 +38,17 @@
 }
 
 -(void)parseCategoriesListFromServer {
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    BOOL userIsLoggedIn = [[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue];
+    
     self.parsedCategoriesList = [[NSMutableArray alloc] init];
     for (int i = 0; i < [self.unparsedCategoriesList count]; i++) {
         Categoria *category = [[Categoria alloc] initWithDictionary:self.unparsedCategoriesList[i]];
         [self.parsedCategoriesList addObject:category];
+        if ([category.identifier isEqualToString:@"1"] && !userIsLoggedIn) {
+            self.lastSeenCategory = category;
+            [self.parsedCategoriesList removeObject:category];
+        }
     }
     NSLog(@"Numero de categorias: %d", [self.parsedCategoriesList count]);
 }
@@ -89,6 +98,16 @@
     [self.view addSubview:self.spinner];
     [self getCategories];
     [self setupUI];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eraseLastSeenCategory)
+                                                 name:@"EraseLastSeenCategory"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(createLastSeenCategory)
+                                                 name:@"CreateLastSeenCategory"
+                                               object:nil];
 }
 
 -(void)viewWillLayoutSubviews {
@@ -149,6 +168,26 @@
 -(void)serverError:(NSError *)error {
     [self.spinner stopAnimating];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a las categorías. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers
+
+-(void)createLastSeenCategory {
+    [self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
+    [self.tableView reloadData];
+}
+
+-(void)eraseLastSeenCategory {
+    for (Categoria *category in self.parsedCategoriesList) {
+        if ([category.identifier isEqualToString:@"1"]) {
+            [self.parsedCategoriesList removeObject:category];
+            break;
+        }
+    }
+    Categoria *category = self.parsedCategoriesList[0];
+    self.categoriesDetailVC = self.splitViewController.viewControllers[1];
+    self.categoriesDetailVC.categoryID = category.identifier;
+    [self.tableView reloadData];
 }
 
 #pragma mark - UIBarPositioningDelegate

@@ -24,7 +24,8 @@
 @property (strong, nonatomic) NSString *categoryID;
 @property (strong, nonatomic) NSNumber *progressSec;
 @property (strong, nonatomic) NSString *watchedOn;
-@property (nonatomic) BOOL is3G;
+@property (assign, nonatomic) BOOL is3G;
+@property (assign, nonatomic) BOOL lastChapter;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

@@ -149,7 +149,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     
-    NSLog(@"Recibí info del servidor: %@", responseDictionary);
+    //NSLog(@"Recibí info del servidor: %@", responseDictionary);
     if ([methodName isEqualToString:@"GetFeatured"] && responseDictionary) {
         self.unparsedFeaturedProductionsInfo = responseDictionary[@"featured"];
     } else {

@@ -21,12 +21,12 @@
 #import "EpisodesPadTableViewCell.h"
 #import "AddToListView.h"
 #import "ServerCommunicator.h"
-#import "MBHUDView.h"
 #import "Season.h"
 #import "SuscriptionAlertPadViewController.h"
 #import "Video.h"
 #import "ContentNotAvailableForUserPadViewController.h"
 #import "NSDictionary+NullReplacement.h"
+#import "UserInfo.h"
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -36,6 +36,7 @@
 @property (strong, nonatomic) UIButton *watchTrailerButton;
 @property (strong, nonatomic) UIButton *shareButton;
 @property (strong, nonatomic) UIButton *rateButton;
+@property (strong, nonatomic) UIButton *viewProductionButton;
 @property (strong, nonatomic) UITextView *productionDetailTextView;
 @property (strong, nonatomic) UITableView *seasonsTableView;
 @property (strong, nonatomic) UITableView *chaptersTableView;
@@ -52,11 +53,21 @@
 
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) NSString *selectedEpisodeID;
+@property (assign, nonatomic) NSUInteger lastEpisodeSeen;
 @end
 
 @implementation SeriesDetailPadViewController
 
 #pragma mark - Setters & Getters
+
+-(NSString *)selectedEpisodeID {
+    if (!_selectedEpisodeID) {
+        Season *firstSeason = self.production.seasonList[0];
+        Episode *firstEpisode = firstSeason.episodes[0];
+        _selectedEpisodeID = firstEpisode.identifier;
+    }
+    return _selectedEpisodeID;
+}
 
 -(UIActivityIndicatorView *)spinner {
     if (!_spinner) {
@@ -95,6 +106,9 @@
             //Loop through all the season episodes.
             for (int i = 0; i < [unparsedEpisodesFromSeason count]; i++) {
                 Episode *episode = [[Episode alloc] initWithDictionary:unparsedEpisodesFromSeason[i]];
+                if (episode.lastChapter) {
+                    self.lastEpisodeSeen = i;
+                }
                 [parsedEpisodesFromSeason addObject:episode];
             }
             
@@ -130,6 +144,13 @@
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
+    
+    //Free band image view
+    if ([self.production.free isEqualToString:@"1"]) {
+        UIImageView *freeBandImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 118.0, 0.0, 118.0, 86.0)];
+        freeBandImageView.image = [UIImage imageNamed:@"FreeBandPad.png"];
+        [self.view addSubview:freeBandImageView];
+    }
     
     //Set the opacity pattern view
     self.opacityPatternView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -210,6 +231,23 @@
     self.shareButton.layer.shadowRadius = 5.0;
     
     [self.view addSubview:self.shareButton];
+    
+    //View production button (only if the user is log out)
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
+        [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
+        [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        [self.viewProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
+        [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        
+        self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.viewProductionButton.layer.shadowOpacity = 0.8;
+        self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+        self.viewProductionButton.layer.shadowRadius = 5.0;
+        [self.view addSubview:self.viewProductionButton];
+    }
     
     //7. Production detail text view
     self.productionDetailTextView = [[UITextView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
@@ -322,6 +360,10 @@
         }
         cell.delegate = self;
         
+        if (indexPath.row == self.lastEpisodeSeen) {
+            [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        
         if (self.production.hasSeasons) {
             //The product has seasons
             Season *season = self.production.seasonList[self.selectedSeason];
@@ -392,6 +434,17 @@
 }
 
 #pragma mark - Actions
+
+-(void)goToSuscriptionAlert {
+    SuscriptionAlertPadViewController *suscriptionAlertPadVC =
+    [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
+    suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscriptionAlertPadVC.productID = self.selectedEpisodeID;
+    suscriptionAlertPadVC.productType = self.production.type;
+    suscriptionAlertPadVC.productName = self.production.name;
+    [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
+}
 
 -(void)watchTrailer {
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
@@ -492,6 +545,7 @@
 
 -(void)videoShouldBeDisplayedReceived {
     NSLog(@"llegó la notificación: video");
+    [self.viewProductionButton removeFromSuperview];
     [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
 }
 
@@ -521,7 +575,14 @@
     //Communicate with the server
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:productID];
+    
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+    } else {
+        NSString *userID = [UserInfo sharedInstance].userID;
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+    }
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {

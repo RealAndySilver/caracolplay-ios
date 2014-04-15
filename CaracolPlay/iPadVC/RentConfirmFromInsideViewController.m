@@ -78,7 +78,8 @@
         [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             if (!self.userIsLoggedIn) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
             }
         }];
         
@@ -86,7 +87,8 @@
         [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController]dismissViewControllerAnimated:YES completion:^(){
             if (!self.userIsLoggedIn) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
             }
         }];
     
@@ -94,7 +96,8 @@
         [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             if (!self.userIsLoggedIn) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
-                //[[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
             }
         }];
     }
