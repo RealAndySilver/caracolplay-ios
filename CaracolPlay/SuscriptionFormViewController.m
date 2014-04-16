@@ -247,21 +247,25 @@
     
     if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
-            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
-            
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"UserID" : dictionary[@"uid"],
-                                       @"Session" : dictionary[@"session"]
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            [UserInfo sharedInstance].userID = dictionary[@"uid"];
-            
-            //Go to Suscription confirmation VC
-            [self goToSubscriptionConfirm];
+            if ([dictionary[@"status"] boolValue]) {
+                NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+                
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"UserID" : dictionary[@"uid"],
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                [UserInfo sharedInstance].isSubscription = YES;
+                //Go to Suscription confirmation VC
+                [self goToSubscriptionConfirm];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
         } else {
             NSLog(@"error en la compra: %@", dictionary);
             //Error en la compra. Hay que poner alguna forma para que el usuario reintente comprar

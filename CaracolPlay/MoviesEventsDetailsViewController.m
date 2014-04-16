@@ -583,28 +583,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         //Facebook
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-            NSLog(@"Facebook está disponible");
-            SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
-            [facebookViewController setInitialText:message];
-            [self presentViewController:facebookViewController animated:YES completion:nil];
-            
-        } else {
-            NSLog(@"Facebook no está disponible");
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Facebook no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        NSLog(@"Facebook está disponible");
+        SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [facebookViewController setInitialText:message];
+        [self presentViewController:facebookViewController animated:YES completion:nil];
+        
     } else if (buttonIndex == 1) {
         //Twitter
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-            NSLog(@"Twitter está disponible");
-            SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
-            [twitterViewController setInitialText:message];
-            [self presentViewController:twitterViewController animated:YES completion:nil];
-        } else {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        NSLog(@"Twitter está disponible");
+        SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [twitterViewController setInitialText:message];
+        [self presentViewController:twitterViewController animated:YES completion:nil];
     }
 }
 

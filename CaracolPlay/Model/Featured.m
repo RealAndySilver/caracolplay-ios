@@ -19,8 +19,8 @@
         _rate = dictionary[@"rate"];
         _categoryID = dictionary[@"category_id"];
         _imageURL = dictionary[@"image_url"];
-        _isCampaign = [dictionary[@"is_campaign"] boolValue];
-        _campaignURL = dictionary[@"campaign_url"];
+        _isCampaign = [dictionary[@"is_campaing"] boolValue];
+        _campaignURL = dictionary[@"campaing_url"];
     }
     return self;
 }

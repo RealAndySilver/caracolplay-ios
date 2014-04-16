@@ -336,6 +336,7 @@
     [UserInfo sharedInstance].password = @"";
     [UserInfo sharedInstance].session = @"";
     [UserInfo sharedInstance].userID = @"";
+    [UserInfo sharedInstance].isSubscription = NO;
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];

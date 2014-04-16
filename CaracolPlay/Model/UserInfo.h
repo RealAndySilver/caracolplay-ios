@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *session;
 @property (assign, nonatomic) NSUInteger *region;
+@property (assign, nonatomic) BOOL isSubscription;
 +(UserInfo *)sharedInstance;
 @end

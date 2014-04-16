@@ -234,19 +234,23 @@
     
     //View production button (only if the user is log out)
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || !self.production.statusRent) {
-        self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
-        [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
-        [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        [self.viewProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
-        [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-        
-        self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.viewProductionButton.layer.shadowOpacity = 0.8;
-        self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-        self.viewProductionButton.layer.shadowRadius = 5.0;
-        [self.view addSubview:self.viewProductionButton];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        if (![UserInfo sharedInstance].isSubscription) {
+            if (!self.production.statusRent) {
+                self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
+                [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
+                [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+                [self.viewProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
+                [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+                
+                self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
+                self.viewProductionButton.layer.shadowOpacity = 0.8;
+                self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+                self.viewProductionButton.layer.shadowRadius = 5.0;
+                [self.view addSubview:self.viewProductionButton];
+            }
+        }
     }
     
     //7. Production detail text view
@@ -318,6 +322,11 @@
     [super viewWillLayoutSubviews];
     self.view.superview.bounds = CGRectMake(0.0, 0.0, 670.0, 626.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"la vista apreció");
 }
 
 #pragma mark - UITableViewDataSource
@@ -706,25 +715,17 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         //Facebook
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-            SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
-            [facebookViewController setInitialText:message];
-            [self presentViewController:facebookViewController animated:YES completion:nil];
-        } else {
-            //Tell te user that facebook is not configured on the device
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Facebook no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        SLComposeViewController *facebookViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [facebookViewController setInitialText:message];
+        [self presentViewController:facebookViewController animated:YES completion:nil];
+      
     } else if (buttonIndex == 1) {
         //Twitter
-        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-            SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
-            [twitterViewController setInitialText:message];
-            [self presentViewController:twitterViewController animated:YES completion:nil];
-        } else {
-            [[[UIAlertView alloc] initWithTitle:nil message:@"Twitter no está configurado en tu dispositivo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-        }
+        SLComposeViewController *twitterViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        NSString *message = [NSString stringWithFormat:@"Estoy viendo %@ en CaracolPlay %@", self.production.name, @"https://itunes.apple.com/app/id714489424"];
+        [twitterViewController setInitialText:message];
+        [self presentViewController:twitterViewController animated:YES completion:nil];
     }
 }
 

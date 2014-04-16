@@ -224,6 +224,7 @@
 		A095A05518B56582004F05BB /* SuscriptionConfirmationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A095A05318B56582004F05BB /* SuscriptionConfirmationBackground.png */; };
 		A095A05618B56582004F05BB /* SuscriptionConfirmationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */; };
 		A095A05918B565A5004F05BB /* SuscriptionConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A05818B565A5004F05BB /* SuscriptionConfirmationViewController.m */; };
+		A097EB8418FEBCC30040C24D /* ValidateCodePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A097EB8318FEBCC30040C24D /* ValidateCodePadViewController.m */; };
 		A0A367E618FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A367E518FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m */; };
 		A0A367E918FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A367E818FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.m */; };
 		A0A9B76518A2E86F00D6D222 /* SeriesDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A9B76418A2E86F00D6D222 /* SeriesDetailPadViewController.m */; };
@@ -618,6 +619,8 @@
 		A095A05418B56582004F05BB /* SuscriptionConfirmationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SuscriptionConfirmationBackground@2x.png"; path = "Resources/Images/SuscriptionConfirmationBackground@2x.png"; sourceTree = "<group>"; };
 		A095A05718B565A5004F05BB /* SuscriptionConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionConfirmationViewController.h; sourceTree = "<group>"; };
 		A095A05818B565A5004F05BB /* SuscriptionConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuscriptionConfirmationViewController.m; sourceTree = "<group>"; };
+		A097EB8218FEBCC30040C24D /* ValidateCodePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ValidateCodePadViewController.h; path = iPadVC/ValidateCodePadViewController.h; sourceTree = "<group>"; };
+		A097EB8318FEBCC30040C24D /* ValidateCodePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ValidateCodePadViewController.m; path = iPadVC/ValidateCodePadViewController.m; sourceTree = "<group>"; };
 		A0A367E418FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentNotAvailableForUserPadViewController.h; path = iPadVC/ContentNotAvailableForUserPadViewController.h; sourceTree = "<group>"; };
 		A0A367E518FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentNotAvailableForUserPadViewController.m; path = iPadVC/ContentNotAvailableForUserPadViewController.m; sourceTree = "<group>"; };
 		A0A367E718FB6CFD00B3B327 /* RedeemCodeFromContentNotAvailablePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedeemCodeFromContentNotAvailablePadViewController.h; path = iPadVC/RedeemCodeFromContentNotAvailablePadViewController.h; sourceTree = "<group>"; };
@@ -904,6 +907,8 @@
 				8B7000B318A03FFE000B5C7B /* RedeemCodePadViewController.m */,
 				A064655918FA263D001563CE /* RedeemCodeFormPadViewController.h */,
 				A064655A18FA263D001563CE /* RedeemCodeFormPadViewController.m */,
+				A097EB8218FEBCC30040C24D /* ValidateCodePadViewController.h */,
+				A097EB8318FEBCC30040C24D /* ValidateCodePadViewController.m */,
 			);
 			name = "Loading & Login";
 			sourceTree = "<group>";
@@ -1757,6 +1762,7 @@
 				8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */,
 				8BED8A8E18C62DEB0076EA26 /* IAPProduct.m in Sources */,
 				8B1DAFFF18F2FA0300C06A53 /* SuscribeFromInsideViewController.m in Sources */,
+				A097EB8418FEBCC30040C24D /* ValidateCodePadViewController.m in Sources */,
 				8BE8293A189C0309003EE7A6 /* MyAccountViewController.m in Sources */,
 				A0AB21DC18AEB68A00424B42 /* VideoPlayerPadViewController.m in Sources */,
 				A064655B18FA263D001563CE /* RedeemCodeFormPadViewController.m in Sources */,
@@ -2106,7 +2112,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C6D1E511-1853-4E0E-8143-70FB3DF506D4";
+				PROVISIONING_PROFILE = "1ECCA544-1D5E-4D8E-B341-EAC4F723C7F7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;

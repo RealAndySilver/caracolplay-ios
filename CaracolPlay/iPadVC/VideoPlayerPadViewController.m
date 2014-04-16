@@ -63,11 +63,6 @@
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    NSLog(@"la vista aprecerá");
-    [super viewWillAppear:animated];
     [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
 }
 
@@ -82,6 +77,7 @@
     [super viewWillDisappear:animated];
     //self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
+    
 }
 
 #pragma mark - Notification Handlers 

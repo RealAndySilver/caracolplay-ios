@@ -241,7 +241,10 @@
                                        @"Password" : [UserInfo sharedInstance].password,
                                        @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             

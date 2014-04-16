@@ -11,6 +11,6 @@
 @interface MoviesTableViewCell : UITableViewCell
 @property (strong, nonatomic) UIImageView *movieImageView;
 @property (strong, nonatomic) UILabel *movieTitleLabel;
+@property (strong, nonatomic) UIImageView *freeImageView;
 @property (nonatomic) int stars;
-@property (assign, nonatomic) BOOL isFree;
 @end

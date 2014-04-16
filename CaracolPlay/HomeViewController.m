@@ -193,6 +193,7 @@
     Featured *featuredProduction = self.parsedFeaturedProductions[self.pageControl.currentPage];
     
     if (featuredProduction.isCampaign) {
+        NSLog(@"el producto es campaña");
         //If the item is a campaign, we have to open a url externally
         if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:featuredProduction.campaignURL]]) {
             [[[UIAlertView alloc] initWithTitle:nil message:@"No se pudo abrir la URL. por favor intenta de nuevo."

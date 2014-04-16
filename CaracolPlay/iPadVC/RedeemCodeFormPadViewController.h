@@ -10,4 +10,5 @@
 
 @interface RedeemCodeFormPadViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedFromSuscriptionAlertScreen;
+@property (strong, nonatomic) NSString *redeemedCode;
 @end

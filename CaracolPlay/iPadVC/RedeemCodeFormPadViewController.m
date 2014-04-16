@@ -17,11 +17,13 @@
 #import "TermsAndConditionsPadViewController.h"
 #import "MBProgressHUD.h"
 
-@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
+@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
+@property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
+@property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
 @property (weak, nonatomic) IBOutlet UITextField *aliasTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextfield;
@@ -29,11 +31,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameTextfield;
-@property (weak, nonatomic) IBOutlet UITextField *redeemCodeTextfield;
 @property (strong, nonatomic) CheckmarkView *checkmarkView1;
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) IBOutlet UIButton *nextButton;
-
+@property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) UIDatePicker *datePickerView;
+@property (nonatomic) NSTimeInterval birthdayTimeStamp;
 @end
 
 @implementation RedeemCodeFormPadViewController
@@ -50,8 +53,25 @@
     self.aliasTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
     self.confirmPasswordTextfield.delegate = self;
-    self.redeemCodeTextfield.delegate = self;
     self.emailTextfield.delegate = self;
+    self.genreTextfield.delegate  =self;
+    self.birthdayTextfield.delegate = self;
+    
+    //Genre picker view
+    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.pickerView.dataSource = self;
+    self.pickerView.delegate = self;
+    self.pickerView.showsSelectionIndicator = YES;
+    self.pickerView.tag = 1;
+    self.genreTextfield.inputView = self.pickerView;
+    
+    //Date picker view
+    self.datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.datePickerView.tag = 2;
+    self.datePickerView.datePickerMode = UIDatePickerModeDate;
+    [self.datePickerView addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+    self.birthdayTextfield.inputView = self.datePickerView;
+
     
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
@@ -65,14 +85,15 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 473.0, 25.0, 25.0)];
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 495.0, 22.0, 22.0)];
     [self.view addSubview:self.checkmarkView1];
     
-    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 513.0, 25.0, 25.0)];
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 532.0, 22.0, 22.0)];
     [self.view addSubview:self.checkmarkView2];
     
     //4. 'Continuar' button
     [self.nextButton addTarget:self action:@selector(startRedeemCodeProcess) forControlEvents:UIControlEventTouchUpInside];
+    self.nextButton.frame = CGRectOffset(self.nextButton.frame, 0.0, 10.0);
     
     //'Ingresa aquí' button setup
     [self.enterHereButton addTarget:self action:@selector(enterAndRedeemCode) forControlEvents:UIControlEventTouchUpInside];
@@ -118,6 +139,7 @@
     RedeemCodePadViewController *redeemCodePadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodePad"];
     redeemCodePadVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodePadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    redeemCodePadVC.redeemedCode = self.redeemedCode;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
         redeemCodePadVC.controllerWasPresentedFromSuscriptionAlertScreen = YES;
     }
@@ -131,6 +153,16 @@
     [self.confirmPasswordTextfield resignFirstResponder];
     [self.lastNameTextfield resignFirstResponder];
     [self.emailTextfield resignFirstResponder];
+}
+
+-(NSString *)generateRedeemedProductionsStringUsingArrayWithName:(NSArray *)namesArray {
+    NSMutableString *string = [[NSMutableString alloc] init];
+    for (int i = 0; i < [namesArray count]; i++) {
+        [string appendString:namesArray[i]];
+        [string appendString:@", "];
+    }
+    NSLog(@"%@", string);
+    return string;
 }
 
 -(void)startRedeemCodeProcess {
@@ -181,7 +213,7 @@
             NSLog(@"respuesta del validate: %@", dictionary);
             if ([dictionary[@"response"] boolValue]) {
                 NSLog(@"validacion correcta");
-                [self redeemCodeInServer:self.redeemCodeTextfield.text];
+                [self redeemCodeInServer:self.redeemedCode];
                 
             } else {
                 NSLog(@"validacion incorrecta");
@@ -192,7 +224,7 @@
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
 
-    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.redeemCodeTextfield.text]]) {
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.redeemedCode]]) {
         if (dictionary) {
             NSLog(@"Respuesta del redeem code: %@", dictionary);
             if ([dictionary[@"status"] boolValue]) {
@@ -205,8 +237,15 @@
                                            @"Session" : dictionary[@"session"]
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
-                [self goToRedeemCodeConfirmation];
-                
+                if ([dictionary[@"code"][@"type"] isEqualToString:@"me"]) {
+                    NSString *redeemedProductionsString = [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
+                    [self goToRedeemCodeConfirmationWithMessage:redeemedProductionsString];
+                } else if ([dictionary[@"code"][@"type"] isEqualToString:@"s"]) {
+                    NSString *messageString = [@"Suscripción Anual\n" stringByAppendingString:dictionary[@"code"][@"msg"]];
+                    [self goToRedeemCodeConfirmationWithMessage:messageString];
+                } else {
+                    [self goToRedeemCodeConfirmationWithMessage:nil];
+                }
             } else {
                 NSLog(@"redencion incorrecta");
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
@@ -230,8 +269,20 @@
 
 #pragma mark - Custom Methods
 
--(void)goToRedeemCodeConfirmation {
+-(void)dateChanged:(UIDatePicker *)datePicker {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSDate *date = datePicker.date;
+    self.birthdayTimeStamp = [date timeIntervalSince1970];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    NSLog(@"fecha: %@", formattedDateString);
+    self.birthdayTextfield.text = formattedDateString;
+}
+
+-(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
+    redeemCodeConfirmationVC.message = message;
     redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
@@ -246,7 +297,10 @@
                                   @"lastname" : self.lastNameTextfield.text,
                                   @"email" : self.emailTextfield.text,
                                   @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.aliasTextfield.text};
+                                  @"alias" : self.aliasTextfield.text,
+                                  @"genero" : self.genreTextfield.text,
+                                  @"fecha_de_nacimiento" : @(self.birthdayTimeStamp)
+                                  };
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
                                                        options:NSJSONWritingPrettyPrinted
@@ -276,8 +330,7 @@
     BOOL emailIsCorrect = NO;
     BOOL passwordsAreCorrect = NO;
     BOOL aliasIsCorrect = NO;
-    BOOL redeemCode = NO;
-    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0) {
+    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0 && [self.genreTextfield.text length] > 0 && [self.birthdayTextfield.text length] > 0) {
         namesAreCorrect = YES;
     }
     
@@ -295,12 +348,8 @@
     if ([self.aliasTextfield.text length] > 0) {
         aliasIsCorrect = YES;
     }
-    
-    if ([self.redeemCodeTextfield.text length] > 0) {
-        redeemCode = YES;
-    }
-    
-    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect && aliasIsCorrect && redeemCode) {
+ 
+    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect && aliasIsCorrect) {
         return YES;
     } else {
         return  NO;
@@ -312,6 +361,46 @@
         return YES;
     } else {
         return NO;
+    }
+}
+
+#pragma mark - UIPickerViewDataSource
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    if (pickerView.tag == 1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            return @"Masculino";
+        } else {
+            return @"Femenino";
+        }
+    } else {
+        return nil;
+    }
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            self.genreTextfield.text = @"Masculino";
+        } else {
+            self.genreTextfield.text = @"Femenino";
+        }
     }
 }
 

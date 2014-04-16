@@ -10,7 +10,7 @@
 #import "IngresarFromInsideViewController.h"
 #import "RentFromInsideViewController.h"
 #import "SuscribeFromInsideViewController.h"
-#import "RedeemCodeFormPadViewController.h"
+#import "ValidateCodePadViewController.h"
 
 @interface SuscriptionAlertPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -105,11 +105,10 @@
 #pragma mark - Actions 
 
 -(void)goToRedeemCodeVC {
-    RedeemCodeFormPadViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFormPad"];
-    redeemCodeFormVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    redeemCodeFormVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    redeemCodeFormVC.controllerWasPresentedFromSuscriptionAlertScreen = YES;
-    [self presentViewController:redeemCodeFormVC animated:YES completion:nil];
+    ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
+    validateCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    validateCodeVC.controllerWasPresentedFromProductionScreen = YES;
+    [self presentViewController:validateCodeVC animated:YES completion:nil];
 }
 
 -(void)goToIngresarFromInside {

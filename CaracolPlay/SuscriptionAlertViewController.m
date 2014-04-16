@@ -107,9 +107,6 @@
 #pragma mark - Actions
 
 -(void)goToRedeemCodeFormViewController {
-    /*RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
-    redeemCodeFormVC.controllerWasPresentedFromProductionScreen = YES;
-    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];*/
     ValidateCodeViewController *validateCode = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCode"];
     validateCode.controllerWasPresentedFromProductionScreen = YES;
     [self.navigationController pushViewController:validateCode animated:YES];

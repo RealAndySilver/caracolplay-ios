@@ -65,8 +65,6 @@
 }
 
 -(void)setupUI {
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTextfields)];
-    [self.view addGestureRecognizer:tapGesture];
     
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
@@ -74,6 +72,8 @@
     self.passwordTextfield.delegate = self;
     self.confirmPasswordTextfield.delegate = self;
     self.emailTextfield.delegate = self;
+    self.birthdayTextfield.delegate = self;
+    self.genreTextfield.delegate = self;
     
     //Genre picker view
     self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
@@ -130,12 +130,6 @@
 }
 
 #pragma mark - Actions 
-
--(void)dismissTextfields {
-    NSLog(@"me tocaron");
-    [self.genreTextfield resignFirstResponder];
-    [self.birthdayTextfield resignFirstResponder];
-}
 
 -(void)dateChanged:(UIDatePicker *)datePicker {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

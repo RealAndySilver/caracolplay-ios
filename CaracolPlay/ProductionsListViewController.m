@@ -118,7 +118,9 @@ static NSString *cellIdentifier = @"CellIdentifier";
         productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
         
         if ([self.productionsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
-            productionCell.isFree = YES;
+            productionCell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+        } else {
+            productionCell.freeImageView.image = nil;
         }
         return productionCell;
     }

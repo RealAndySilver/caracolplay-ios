@@ -239,14 +239,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //Create the button to watch the production, only if the user is log out
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || !self.production.statusRent) {
-        self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
-        [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
-        [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-        self.watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        [self.watchProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:self.watchProductionButton];
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        if (![UserInfo sharedInstance].isSubscription) {
+            if (!self.production.statusRent) {
+                
+                self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
+                [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
+                [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+                self.watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+                [self.watchProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:self.watchProductionButton];
+            }
+        }
     }
     
     //7. Create a text view to display the detail of the event/movie
@@ -324,17 +329,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");
         [self.watchProductionButton removeFromSuperview];
-        [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
+        //[self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
     }
 }
 
-/*-(void)viewDidAppear:(BOOL)animated {
+-(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");
         [self getIsContentAvailableForUserWithID:self.selectedEpisodeID];
     }
-}*/
+}
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -362,7 +367,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         cell.selectedBackgroundView = selectedView;
     }
-    NSLog(@"last episode seen: %d", self.lastEpisodeSeen);
     if (indexPath.row == self.lastEpisodeSeen) {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
@@ -601,7 +605,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSDictionary *info = [notification userInfo];
     self.selectedSeason = [info[@"SeasonSelected"] intValue];
     NSLog(@"se selecciono la temporada %d", self.selectedSeason);
-    [self.seasonsButton setTitle:[NSString stringWithFormat:@"Temporada %d ►", self.selectedSeason + 1] forState:UIControlStateNormal];
+    [self.seasonsButton setTitle:[NSString stringWithFormat:@"Temporada %d ▼", self.selectedSeason + 1] forState:UIControlStateNormal];
     [self.tableView reloadData];
 }
 

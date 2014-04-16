@@ -11,4 +11,6 @@
 @interface RedeemCodeConfirmationPadViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedFromSuscriptionAlert;
 @property (assign, nonatomic) BOOL controllerWasPresentedFromContentNotAvailable;
+@property (assign, nonatomic) BOOL controllerWasPresentedFromInsideRedeemWithExistingUser;
+@property (strong, nonatomic) NSString *message;
 @end

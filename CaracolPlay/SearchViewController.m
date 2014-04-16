@@ -109,7 +109,9 @@
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
     cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0 + 1;
     if ([self.searchResultsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
-        cell.isFree = YES;
+        cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+    } else {
+        cell.freeImageView.image = nil;
     }
     return cell;
 }

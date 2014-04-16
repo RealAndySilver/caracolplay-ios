@@ -225,13 +225,13 @@
 }
 
 -(void)authenticateUserWithUserName:(NSString *)userName andPassword:(NSString *)password {
+    [UserInfo sharedInstance].userName = userName;
+    [UserInfo sharedInstance].password = password;
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Conectando...";
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [UserInfo sharedInstance].userName = userName;
-    [UserInfo sharedInstance].password = password;
-    
     [serverCommunicator callServerWithGETMethod:@"AuthenticateUser" andParameter:@""];
 }
 
@@ -252,6 +252,8 @@
             
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            NSLog(@"is_suscription: %hhd", [UserInfo sharedInstance].isSubscription);
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             
@@ -304,23 +306,28 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
             NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+            if ([dictionary[@"status"] boolValue]) {
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"Session" : dictionary[@"session"],
+                                           @"UserID" : dictionary[@"uid"],
+                                           
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].isSubscription = YES;
+                //Go to Suscription confirmation VC
+                [self goToSubscriptionConfirm];
+
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
             
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"],
-                                       @"UserID" : dictionary[@"uid"],
-                                       
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].userID = dictionary[@"uid"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            
-            //Go to Suscription confirmation VC
-            [self goToSubscriptionConfirm];
         } else {
-            NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+        NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
         }
         
     } else {

@@ -87,6 +87,16 @@
     [self.passwordTextfield resignFirstResponder];
 }
 
+-(NSString *)generateRedeemedProductionsStringUsingArrayWithName:(NSArray *)namesArray {
+    NSMutableString *string = [[NSMutableString alloc] init];
+    for (int i = 0; i < [namesArray count]; i++) {
+        [string appendString:namesArray[i]];
+        [string appendString:@", "];
+    }
+    NSLog(@"%@", string);
+    return string;
+}
+
 -(NSString *)generateEncodedUserInfoString {
     //Create JSON string with user info
     NSDictionary *userInfoDic = @{@"name": self.userInfoDic[@"nombres"],
@@ -107,12 +117,12 @@
     return encodedJsonString;
 }
 
--(void)goToRedeemCodeConfirmation {
+-(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeAlertViewController *redeemCodeConfirmation = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeAlert"];
+    redeemCodeConfirmation.redeemedProductions = message;
     if (self.controllerWasPresentedFromProductionScreen) {
         redeemCodeConfirmation.userWasLogout = YES;
     }
-    
     if (self.controllerWasPresentedFromInitialScreen) {
         redeemCodeConfirmation.controllerWasPresentedFromInitialScreen = YES;
     } else if (self.controllerWasPresentedFromProductionScreen) {
@@ -173,7 +183,16 @@
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
                 [UserInfo sharedInstance].userID = dictionary[@"uid"];
-                [self goToRedeemCodeConfirmation];
+
+                if ([dictionary[@"code"][@"type"] isEqualToString:@"me"]) {
+                    NSString *redeemedProductionsString = [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
+                    [self goToRedeemCodeConfirmationWithMessage:redeemedProductionsString];
+                } else if ([dictionary[@"code"][@"type"] isEqualToString:@"s"]) {
+                    NSString *messageString = [@"Suscripción Anual\n" stringByAppendingString:dictionary[@"code"][@"msg"]];
+                    [self goToRedeemCodeConfirmationWithMessage:messageString];
+                } else {
+                    [self goToRedeemCodeConfirmationWithMessage:nil];
+                }
                 
             } else {
                 NSLog(@"redencion incorrecta");

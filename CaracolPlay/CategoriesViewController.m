@@ -160,8 +160,8 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - Notification Handlers
 
 -(void)createLastSeenCategory {
-    [self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
-    [self.categoriesTableView reloadData];
+    //[self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
+    //[self.categoriesTableView reloadData];
 }
 
 -(void)eraseLastSeenCategory {

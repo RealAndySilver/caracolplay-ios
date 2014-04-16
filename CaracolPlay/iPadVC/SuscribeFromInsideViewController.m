@@ -88,6 +88,8 @@
     self.passwordTextfield.delegate = self;
     self.confirmPasswordTextfield.delegate = self;
     self.emailTextfield.delegate = self;
+    self.genreTextfield.delegate = self;
+    self.birthdayTextfield.delegate = self;
     
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
@@ -101,10 +103,10 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 457.0, 25.0, 25.0)];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 493.0, 22.0, 22.0)];
     [self.view addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 497.0, 25.0, 25.0)];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 528.0, 22.0, 22.0)];
     [self.view addSubview:self.checkBox2];
     
     //Enter here button
@@ -252,19 +254,22 @@
         }
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
-            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
-            
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            
-            //Go to Suscription confirmation VC
-            [self goToSubscriptionConfirm];
+            if ([dictionary[@"status"] boolValue]) {
+                NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+                
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                [UserInfo sharedInstance].isSubscription = YES;
+                //Go to Suscription confirmation VC
+                [self goToSubscriptionConfirm];
+            }
         }
     }
 }
@@ -448,10 +453,12 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");
     self.enterHereButton.userInteractionEnabled = NO;
+    self.suscribeButton.userInteractionEnabled = NO;
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     self.enterHereButton.userInteractionEnabled = YES;
+    self.suscribeButton.userInteractionEnabled = YES;
     NSLog(@"terminé de editarme");
 }
 

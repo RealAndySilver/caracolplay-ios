@@ -173,8 +173,8 @@
 #pragma mark - Notification Handlers
 
 -(void)createLastSeenCategory {
-    [self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
-    [self.tableView reloadData];
+    //[self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
+    //[self.tableView reloadData];
 }
 
 -(void)eraseLastSeenCategory {

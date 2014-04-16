@@ -39,27 +39,29 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     
     //Attach the Oooyala view controller to the view
     //self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width/2, self.view.frame.size.height/2);
-    NSLog(@"width: %f", self.view.frame.size.width);
     self.ooyalaPlayerViewController.view.backgroundColor = [UIColor blackColor];
     [self addChildViewController:self.ooyalaPlayerViewController];
     [self.view addSubview:self.ooyalaPlayerViewController.view];
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
+    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    NSLog(@"la vista aprecerá");
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.alpha = 0.0;
+    //[self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
+
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    NSLog(@"me layoueee: width: %f", self.view.frame.size.width);
     self.ooyalaPlayerViewController.view.frame = self.view.bounds;
-    //[self.ooyalaPlayerViewController.player play];
-    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -70,6 +72,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     }
     self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
+    //[self.ooyalaPlayerViewController removeFromParentViewController];
     NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 

@@ -225,7 +225,10 @@
                                        @"Password" : [UserInfo sharedInstance].password,
                                        @"Session" : dictionary[@"session"]
                                        } withKey:@"UserHasLoginDic"];
+            [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             if (self.controllerWasPresentFromAlertScreen) {
@@ -279,19 +282,23 @@
     //SubscribeUser
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
-            NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
-            
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            
-            //Go to Suscription confirmation VC
-            [self goToSubscriptionConfirm];
+            if ([dictionary[@"status"] boolValue]){
+                NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+                
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].isSubscription = YES;
+                //Go to Suscription confirmation VC
+                [self goToSubscriptionConfirm];
+            }
+        
         } else {
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
         }

@@ -16,7 +16,7 @@
 #import "IAmCoder.h"
 #import "RentConfirmFromInsideViewController.h"
 #import "SuscribeConfirmFromInsideViewController.h"
-#import "RedeemCodeFromContentNotAvailablePadViewController.h"
+#import "ValidateCodePadViewController.h"
 #import "MBProgressHUD.h"
 
 @interface ContentNotAvailableForUserPadViewController () <ServerCommunicatorDelegate>
@@ -133,10 +133,10 @@
 }
 
 -(void)goToRedeemCodeFromContentNotAvailable {
-    RedeemCodeFromContentNotAvailablePadViewController *redeemCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFromContentNotAvailablePad"];
-    redeemCodeVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    redeemCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:redeemCodeVC animated:YES completion:nil];
+    ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
+    validateCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    validateCodeVC.controllerWasPresentedFromContentNotAvailable = YES;
+    [self presentViewController:validateCodeVC animated:YES completion:nil];
 }
 
 -(void)dismissVC {

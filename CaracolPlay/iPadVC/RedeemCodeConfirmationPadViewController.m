@@ -34,7 +34,7 @@
     // 2. Textview
     self.textView = [[UITextView alloc] init];
     self.textView.backgroundColor = [UIColor clearColor];
-    self.textView.text = @"Tu código ha sido aceptado. Ahora puedes disfrutar del siguiente contenido: \n\nEvento en Vivo: Colombia vs Grecia\nJunio 14, 9:00 AM";
+    self.textView.text = [@"Tu código ha sido aceptado. Ahora puedes disfrutar del siguiente contenido: \n\n" stringByAppendingString:self.message];
     self.textView.userInteractionEnabled = NO;
     self.textView.textAlignment = NSTextAlignmentCenter;
     self.textView.font = [UIFont systemFontOfSize:15.0];
@@ -46,7 +46,7 @@
     [self.enterButton setTitle:@"Continuar" forState:UIControlStateNormal];
     [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    if (self.controllerWasPresentedFromSuscriptionAlert || self.controllerWasPresentedFromContentNotAvailable) {
+    if (self.controllerWasPresentedFromSuscriptionAlert || self.controllerWasPresentedFromContentNotAvailable || self.controllerWasPresentedFromInsideRedeemWithExistingUser) {
         [self.enterButton addTarget:self action:@selector(returnToProduction) forControlEvents:UIControlEventTouchUpInside];
     } else {
         [self.enterButton addTarget:self action:@selector(goToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
@@ -73,13 +73,24 @@
 #pragma mark - Actions 
 
 -(void)returnToProduction {
-    [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
-        if (!self.controllerWasPresentedFromContentNotAvailable) {
+    if (self.controllerWasPresentedFromSuscriptionAlert) {
+        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+            if (!self.controllerWasPresentedFromContentNotAvailable) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+            }
+        }];
+    } else if (self.controllerWasPresentedFromInsideRedeemWithExistingUser) {
+        [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
-        }
-    }];
+        }];
+    
+    } else if (self.controllerWasPresentedFromContentNotAvailable) {
+        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 -(void)goToHomeScreen {

@@ -16,7 +16,6 @@
 #import "MBProgressHUD.h"
 
 @interface RedeemCodePadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -31,7 +30,6 @@
     
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
-    self.codeTextfield.delegate = self;
     
     //1. Background image setup
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
@@ -71,7 +69,7 @@
 #pragma mark - Actions
 
 -(void)startRedeemProcess {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0 && [self.codeTextfield.text length] > 0) {
+    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
@@ -85,14 +83,25 @@
 
 #pragma mark - Custom Methods
 
--(void)goToRedeemCodeConfirmation {
+-(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
     redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    redeemCodeConfirmationVC.message = message;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
-        redeemCodeConfirmationVC.controllerWasPresentedFromSuscriptionAlert = YES;
+        redeemCodeConfirmationVC.controllerWasPresentedFromInsideRedeemWithExistingUser = YES;
     }
     [self presentViewController:redeemCodeConfirmationVC animated:YES completion:nil];
+}
+
+-(NSString *)generateRedeemedProductionsStringUsingArrayWithName:(NSArray *)namesArray {
+    NSMutableString *string = [[NSMutableString alloc] init];
+    for (int i = 0; i < [namesArray count]; i++) {
+        [string appendString:namesArray[i]];
+        [string appendString:@", "];
+    }
+    NSLog(@"%@", string);
+    return string;
 }
 
 -(NSString *)generateEncodedUserInfoString {
@@ -101,7 +110,9 @@
                                   @"lastname" : self.userInfoDic[@"apellidos"],
                                   @"email" : self.userInfoDic[@"mail"],
                                   @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.userInfoDic[@"alias"]};
+                                  @"alias" : self.userInfoDic[@"alias"],
+                                  @"genero" : self.userInfoDic[@"genero"],
+                                  @"fecha_de_nacimiento" : self.userInfoDic[@"fecha_de_nacimiento"]};
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
                                                        options:NSJSONWritingPrettyPrinted
@@ -144,7 +155,7 @@
             NSLog(@"autenticación exitosa: %@", dictionary);
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
-            [self redeemCodeInServer:self.codeTextfield.text];
+            [self redeemCodeInServer:self.redeemedCode];
         } else {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Los datos ingresados no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"la autenticación no fue exitosa");
@@ -152,7 +163,7 @@
     
     ///////////////////////////////////////////////////////////////////////////////
     //RedeemCode
-    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.codeTextfield.text]]) {
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.redeemedCode]]) {
         if (dictionary) {
             NSLog(@"Respuesta del redeem code: %@", dictionary);
             if ([dictionary[@"status"] boolValue]) {
@@ -162,10 +173,20 @@
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                            @"UserName" : [UserInfo sharedInstance].userName,
                                            @"Password" : [UserInfo sharedInstance].password,
+                                           @"UserID" : dictionary[@"uid"],
                                            @"Session" : dictionary[@"session"]
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
-                [self goToRedeemCodeConfirmation];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                if ([dictionary[@"code"][@"type"] isEqualToString:@"me"]) {
+                    NSString *redeemedProductionsString = [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
+                    [self goToRedeemCodeConfirmationWithMessage:redeemedProductionsString];
+                } else if ([dictionary[@"code"][@"type"] isEqualToString:@"s"]) {
+                    NSString *messageString = [@"Suscripción Anual\n" stringByAppendingString:dictionary[@"code"][@"msg"]];
+                    [self goToRedeemCodeConfirmationWithMessage:messageString];
+                } else {
+                    [self goToRedeemCodeConfirmationWithMessage:nil];
+                }
                 
             } else {
                 NSLog(@"redencion incorrecta");

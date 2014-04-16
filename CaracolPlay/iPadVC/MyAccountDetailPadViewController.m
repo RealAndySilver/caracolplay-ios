@@ -336,7 +336,8 @@
     FileSaver *fileSaver = [[FileSaver alloc] init];
     [fileSaver setDictionary:@{@"UserHasLoginKey": @NO,
                                @"UserName" : @"",
-                               @"Password" : @""
+                               @"Password" : @"",
+                               @"UserID" : @"",
                                } withKey:@"UserHasLoginDic"];
     
     //Erase user data from our user info singleton
@@ -344,6 +345,7 @@
     [UserInfo sharedInstance].password = @"";
     [UserInfo sharedInstance].session = @"";
     [UserInfo sharedInstance].userID = @"";
+    [UserInfo sharedInstance].isSubscription = NO;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EraseLastSeenCategory"
                                                         object:nil
