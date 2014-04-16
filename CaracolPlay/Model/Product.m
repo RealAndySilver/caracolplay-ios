@@ -24,6 +24,7 @@
         _episodes = dictionary[@"episodes"];
         _seasonList = dictionary[@"season_list"];
         _free = dictionary[@"free"];
+        _statusRent = [dictionary[@"status_rent"] boolValue];
     }
     return self;
 }

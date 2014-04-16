@@ -7,8 +7,10 @@
 //
 
 #import "TermsAndConditionsPadViewController.h"
+#import "ServerCommunicator.h"
+#import "MBProgressHUD.h"
 
-@interface TermsAndConditionsPadViewController () <UIBarPositioningDelegate>
+@interface TermsAndConditionsPadViewController () <UIBarPositioningDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSString *termsAndConditionsString;
 @property (strong, nonatomic) UIWebView *webView;
@@ -18,20 +20,19 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.view.backgroundColor = [UIColor blackColor];
     
     //Access the terms and conditions string saved in our plist
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (self.showTerms) {
-        self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+        [self getTerms];
     } else if (self.showPrivacy) {
         self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+        self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        [self UISetup];
     }
-    self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    //NSLog(@"%@", self.termsAndConditionsString);
-
-    [self UISetup];
+  
 }
 
 -(void)viewWillLayoutSubviews {
@@ -64,6 +65,32 @@
     
     UIBarButtonItem *dismissBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissVC)];
     navigationItem.rightBarButtonItem = dismissBarButtonItem;
+}
+
+
+-(void)getTerms {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"GetTerms" andParameter:@""];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    if ([methodName isEqualToString:@"GetTerms"]) {
+        if (dictionary) {
+            self.termsAndConditionsString = dictionary[@"text"];
+            [self UISetup];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo a los términos y condiciones. Por favor intenta nuevamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
 }
 
 #pragma mark - Actions 

@@ -20,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
-@property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
 
 @end
@@ -30,7 +29,6 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    self.codeTextfield.delegate = self;
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     
@@ -73,7 +71,7 @@
     }
 }
 
--(void)goToHomeScreen {
+/*-(void)goToHomeScreen {
     if ([self.codeTextfield.text length] > 0) {
         //Test purposes only. If the user wrote something in the textfield, pass to the redeem code confirmation.
         RedeemCodeAlertViewController *redeemCodeAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeAlert"];
@@ -82,10 +80,9 @@
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El código no existe o no se puede canjear." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
-}
+}*/
 
 -(void)tap {
-    [self.codeTextfield resignFirstResponder];
     [self.userTextfield resignFirstResponder];
     [self.passwordTextfield resignFirstResponder];
 }
@@ -96,7 +93,10 @@
                                   @"lastname" : self.userInfoDic[@"apellidos"],
                                   @"email" : self.userInfoDic[@"mail"],
                                   @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.userInfoDic[@"alias"]};
+                                  @"alias" : self.userInfoDic[@"alias"],
+                                  @"genero" : self.userInfoDic[@"genero"],
+                                  @"fecha_de_nacimiento" : self.userInfoDic[@"fecha_de_nacimiento"]
+                                  };
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
                                                        options:NSJSONWritingPrettyPrinted
@@ -152,13 +152,13 @@
             NSLog(@"autenticación exitosa: %@", dictionary);
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
-            [self redeemCodeInServer:self.codeTextfield.text];
+            [self redeemCodeInServer:self.redeemedCode];
         } else {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Los datos ingresados no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"la autenticación no fue exitosa");
         }
         
-    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.codeTextfield.text]]) {
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"RedeemCode", self.redeemedCode]]) {
         if (dictionary) {
             NSLog(@"Respuesta del redeem code: %@", dictionary);
             if ([dictionary[@"status"] boolValue]) {
@@ -177,7 +177,7 @@
                 
             } else {
                 NSLog(@"redencion incorrecta");
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El código es invalido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"code"][@"msg"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
         } else {
             [UserInfo sharedInstance].userName = nil;

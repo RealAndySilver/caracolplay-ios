@@ -121,11 +121,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.item][@"image_url"]]
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.goldStars = ([self.productionsArray[indexPath.item][@"rate"] intValue]/20) + 1;
-    /*if ([self.productionsArray[indexPath.item][@"free"] isEqualToString:@"1"]) {
-        UIImageView *freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, cell.contentView.bounds.size.height - 50.0, cell.contentView.bounds.size.width - 20.0, 20.0)];
-        freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
-        [cell.contentView addSubview:freeImageView];
-    }*/
+    if ([self.productionsArray[indexPath.item][@"free"] isEqualToString:@"1"]) {
+        cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
+    } else {
+        cell.freeImageView.image = nil;
+    }
     NSLog(@"la celda %d tiene %d estrellas", indexPath.item, cell.goldStars);
     return cell;
 }

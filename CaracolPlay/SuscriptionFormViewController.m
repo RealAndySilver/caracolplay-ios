@@ -19,7 +19,9 @@
 #import "UserInfo.h"
 #import "MBProgressHUD.h"
 
-@interface SuscriptionFormViewController () <ServerCommunicatorDelegate>
+@interface SuscriptionFormViewController () <ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
 @property (weak, nonatomic) IBOutlet UIButton *termsAndConditionsButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -35,6 +37,9 @@
 @property (strong, nonatomic) CheckmarkView *checkmarkView2;
 @property (strong, nonatomic) UIButton *nextButton;
 @property (strong, nonatomic) NSString *transactionID;
+@property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) UIDatePicker *datePickerView;
+@property (nonatomic) NSTimeInterval birthdayTimeStamp;
 @end
 
 @implementation SuscriptionFormViewController
@@ -65,9 +70,26 @@
     self.passwordTextfield.delegate = self;
     self.emailTextfield.delegate = self;
     self.aliasTextfield.delegate = self;
+    self.genreTextfield.delegate = self;
+    self.birthdayTextfield.delegate = self;
     self.nameTextfield.tag = 1;
     self.lastNameTextfield.tag = 2;
     self.emailTextfield.tag = 3;
+    
+    //Genre picker view
+    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.pickerView.dataSource = self;
+    self.pickerView.delegate = self;
+    self.pickerView.showsSelectionIndicator = YES;
+    self.pickerView.tag = 1;
+    self.genreTextfield.inputView = self.pickerView;
+    
+    //Date picker view
+    self.datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.datePickerView.tag = 2;
+    self.datePickerView.datePickerMode = UIDatePickerModeDate;
+    [self.datePickerView addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+    self.birthdayTextfield.inputView = self.datePickerView;
     
     //Create a tap gesture recognizer to dismiss the keyboard tapping on the view
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
@@ -82,11 +104,11 @@
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     //Create the two checkbox
-    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 440.0, 20.0, 20.0)];
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 505.0, 20.0, 20.0)];
     self.checkmarkView1.cornerRadius = 3.0;
     self.checkmarkView1.tag = 1;
     self.checkmarkView1.delegate = self;
-    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 480.0, 20.0, 20.0)];
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(40.0, 545.0, 20.0, 20.0)];
     self.checkmarkView2.cornerRadius = 3.0;
     self.checkmarkView2.tag = 2;
     self.checkmarkView2.delegate = self;
@@ -162,7 +184,7 @@
     hud.labelText = @"Comprando...";
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -180,12 +202,14 @@
 #pragma mark - Notification Handlers
 
 -(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"Me llegó la notificacion de que falló la transaccion");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;
@@ -238,6 +262,9 @@
             
             //Go to Suscription confirmation VC
             [self goToSubscriptionConfirm];
+        } else {
+            NSLog(@"error en la compra: %@", dictionary);
+            //Error en la compra. Hay que poner alguna forma para que el usuario reintente comprar
         }
     
     } else if ([methodName isEqualToString:@"ValidateUser"]) {
@@ -255,6 +282,7 @@
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"error"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
         } else {
+            NSLog(@"error: %@", dictionary);
             //Error en la respuesta
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
@@ -270,6 +298,17 @@
 }
 
 #pragma mark - Actions 
+
+-(void)dateChanged:(UIDatePicker *)datePicker {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSDate *date = datePicker.date;
+    self.birthdayTimeStamp = [date timeIntervalSince1970];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    NSLog(@"fecha: %@", formattedDateString);
+    self.birthdayTextfield.text = formattedDateString;
+}
 
 -(void)goToIngresarVC {
     IngresarViewController *ingresarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Ingresar"];
@@ -303,7 +342,9 @@
                                   @"lastname" : self.lastNameTextfield.text,
                                   @"email" : self.emailTextfield.text,
                                   @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.aliasTextfield.text};
+                                  @"alias" : self.aliasTextfield.text,
+                                  @"genero" : self.genreTextfield.text,
+                                  @"fecha_de_nacimiento" : @(self.birthdayTimeStamp)};
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
                                                        options:NSJSONWritingPrettyPrinted
@@ -319,7 +360,7 @@
     BOOL emailIsCorrect = NO;
     BOOL passwordsAreCorrect = NO;
     BOOL aliasIsCorrect = NO;
-    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0) {
+    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0 && [self.genreTextfield.text length] > 0 && [self.birthdayTextfield.text length] > 0) {
         namesAreCorrect = YES;
     }
     
@@ -334,7 +375,7 @@
         self.emailTextfield.textColor = [UIColor redColor];
     }
     
-    if ([self.aliasTextfield.text length] > 0) {
+    if ([self.aliasTextfield.text length]) {
         aliasIsCorrect = YES;
     }
     
@@ -366,6 +407,8 @@
     [self.passwordTextfield resignFirstResponder];
     [self.emailTextfield resignFirstResponder];
     [self.aliasTextfield resignFirstResponder];
+    [self.genreTextfield resignFirstResponder];
+    [self.birthdayTextfield resignFirstResponder];
 }
 
 -(BOOL)areTermsAndPoliticsConditionsAccepted {
@@ -403,6 +446,46 @@
 }
 
 -(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+}
+
+#pragma mark - UIPickerViewDataSource 
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    if (pickerView.tag == 1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            return @"Masculino";
+        } else {
+            return @"Femenino";
+        }
+    } else {
+        return nil;
+    }
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            self.genreTextfield.text = @"Masculino";
+        } else {
+            self.genreTextfield.text = @"Femenino";
+        }
+    }
 }
 
 #pragma mark - Interface Orientation 

@@ -110,10 +110,13 @@
         authString = [NSMutableString stringWithFormat:@"%@:%@", [UserInfo sharedInstance].userName, [UserInfo sharedInstance].password];
     }*/
     NSLog(@"authstring: %@", authString);
-    NSString *authEncoded = [IAmCoder base64EncodeString:authString];
-    NSString *authDoubleEncoded = [IAmCoder base64EncodeString:authEncoded];
+    //NSString *authEncoded = [IAmCoder base64EncodeString:authString];
+    NSString *authEncoded = [[authString dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+    //NSString *authDoubleEncoded = [IAmCoder base64EncodeString:authEncoded];
+    NSString *authDoubleEncoded = [[authEncoded dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
     NSString *token = [time stringByAppendingString:privateKey];
-    NSString *tokenEncoded = [IAmCoder base64EncodeString:token];
+    //NSString *tokenEncoded = [IAmCoder base64EncodeString:token];
+    NSString *tokenEncoded = [[token dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
     NSLog(@"auth: %@", authDoubleEncoded);
     NSLog(@"TS70: %@", time);
     NSLog(@"token: %@", tokenEncoded);

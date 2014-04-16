@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSArray *episodes; //Of Episode (Only if there are no seasons)
 @property (strong, nonatomic) NSArray *seasonList; //Of Season
 @property (strong, nonatomic) NSString *free;
+@property (assign, nonatomic) BOOL statusRent;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

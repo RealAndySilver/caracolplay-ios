@@ -234,7 +234,7 @@
     
     //View production button (only if the user is log out)
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || !self.production.statusRent) {
         self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
         [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
         [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -346,6 +346,7 @@
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
         }
+     
         cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
@@ -357,6 +358,9 @@
         EpisodesPadTableViewCell *cell = (EpisodesPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
         if (!cell) {
             cell = [[EpisodesPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+            selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+            cell.selectedBackgroundView = selectedView;
         }
         cell.delegate = self;
         

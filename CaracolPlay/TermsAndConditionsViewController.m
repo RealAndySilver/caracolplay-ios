@@ -8,6 +8,7 @@
 
 #import "TermsAndConditionsViewController.h"
 #import "ServerCommunicator.h"
+#import "MBProgressHUD.h"
 
 @interface TermsAndConditionsViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) NSString *termsAndConditionsString;
@@ -27,13 +28,13 @@
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (self.showTerms) {
-        self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
+        [self getTerms];
+        //self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
     } else if (self.showPrivacy) {
         self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+        self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        [self setupUI];
     }
-    self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    //NSLog(@"%@", self.termsAndConditionsString);
-    [self setupUI];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -48,26 +49,30 @@
     [self.view addSubview:webView];
 }
 
-/*-(void)getTerms {
-    [MBHUDView hudWithBody:@"Cargando..." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:100 show:YES];
+-(void)getTerms {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     [serverCommunicator callServerWithGETMethod:@"GetTerms" andParameter:@""];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     if ([methodName isEqualToString:@"GetTerms"]) {
         if (dictionary) {
-            
+            self.termsAndConditionsString = dictionary[@"text"];
+            [self setupUI];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo a los términos y condiciones. Por favor intenta nuevamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     }
 }
 
 -(void)serverError:(NSError *)error {
-    [MBHUDView dismissCurrentHUD];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     
-}*/
+}
 
 #pragma mark - Interface Orientation
 

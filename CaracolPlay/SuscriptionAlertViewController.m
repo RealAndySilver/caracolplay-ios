@@ -13,6 +13,7 @@
 #import "RentContentViewController.h"
 #import "RentContentFormViewController.h"
 #import "RedeemCodeFormViewController.h"
+#import "ValidateCodeViewController.h"
 
 @interface SuscriptionAlertViewController ()
 
@@ -106,9 +107,12 @@
 #pragma mark - Actions
 
 -(void)goToRedeemCodeFormViewController {
-    RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
+    /*RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
     redeemCodeFormVC.controllerWasPresentedFromProductionScreen = YES;
-    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];
+    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];*/
+    ValidateCodeViewController *validateCode = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCode"];
+    validateCode.controllerWasPresentedFromProductionScreen = YES;
+    [self.navigationController pushViewController:validateCode animated:YES];
 }
 
 -(void)goToEnterViewController {

@@ -11,4 +11,5 @@
 @interface RedeemCodeViewController : UIViewController
 @property (assign, nonatomic) BOOL controllerWasPresentedFromInitialScreen;
 @property (assign, nonatomic) BOOL controllerWasPresentedFromProductionScreen;
+@property (strong, nonatomic) NSString *redeemedCode;
 @end

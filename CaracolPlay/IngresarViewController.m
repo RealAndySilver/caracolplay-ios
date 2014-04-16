@@ -84,6 +84,8 @@
                                              selector:@selector(userDidSuscribeNotificationReceived:)
                                                  name:@"UserDidSuscribe"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -140,7 +142,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Conectando...";
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -192,6 +194,7 @@
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSLog(@"Json String: %@", jsonString);
     NSString *encodedJsonString = [IAmCoder base64EncodeString:jsonString];
+    //NSString *encodedJsonString = [[jsonString dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
     return encodedJsonString;
 }
 
@@ -335,7 +338,15 @@
 
 #pragma mark - Notification Handlers
 
+-(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    NSLog(@"Me llegó la notificacion de que falló la transaccion");
+    NSDictionary *notificationInfo = [notification userInfo];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"recibí la notificación de compra");
     //FileSaver *fileSaver = [[FileSaver alloc] init];
     //[fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];

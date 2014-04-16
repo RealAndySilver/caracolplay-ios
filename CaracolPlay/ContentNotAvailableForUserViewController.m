@@ -18,6 +18,7 @@
 #import "FileSaver.h"
 #import "RedeemCodeFromContentNotAvailbaleViewController.h"
 #import "MBProgressHUD.h"
+#import "ValidateCodeViewController.h"
 
 @interface ContentNotAvailableForUserViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) NSString *transactionID;
@@ -129,8 +130,9 @@
 }
 
 -(void)goToRedeemCodeFromContentNotAvailable {
-    RedeemCodeFromContentNotAvailbaleViewController *redeeemCodeFromContentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeFromContentNotAvailable"];
-    [self.navigationController pushViewController:redeeemCodeFromContentNotAvailableVC animated:YES];
+    ValidateCodeViewController *validateCode = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCode"];
+    validateCode.controllerWasPresentedFromContentNotAvailable = YES;
+    [self.navigationController pushViewController:validateCode animated:YES];
 }
 
 -(void)buyProductWithIdentifier:(NSString *)productIdentifier {

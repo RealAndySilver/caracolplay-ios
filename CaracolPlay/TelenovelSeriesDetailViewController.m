@@ -239,7 +239,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //Create the button to watch the production, only if the user is log out
     FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || !self.production.statusRent) {
         self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
         [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
         [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -263,10 +263,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //'Temporadas' button setup
-        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, detailTextView.frame.origin.y + detailTextView.frame.size.height, self.view.frame.size.width - 20.0, 44.0)];
-        [self.seasonsButton setTitle:@"Temporada 1 ►" forState:UIControlStateNormal];
+        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(-5.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, 150.0, 30.0)];
+        [self.seasonsButton setTitle:@"Temporada 1 ▼" forState:UIControlStateNormal];
+        self.seasonsButton.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        self.seasonsButton.layer.cornerRadius = 4.0;
         self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         [self.seasonsButton addTarget:self action:@selector(showSeasonsList) forControlEvents:UIControlEventTouchUpInside];
         [self.seasonsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.view addSubview:self.seasonsButton];
@@ -274,7 +276,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     CGFloat tableViewOriginY;
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
-        tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height;
+        tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height + 10.0;
     } else {
         tableViewOriginY = detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0;
     }
@@ -353,11 +355,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TelenovelSeriesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    TelenovelSeriesTableViewCell *cell = (TelenovelSeriesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[TelenovelSeriesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
     }
-    
+    NSLog(@"last episode seen: %d", self.lastEpisodeSeen);
     if (indexPath.row == self.lastEpisodeSeen) {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }

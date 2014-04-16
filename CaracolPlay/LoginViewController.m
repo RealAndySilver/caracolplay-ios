@@ -13,7 +13,7 @@
 #import "MainTabBarViewController.h"
 #import "FileSaver.h"
 #import "ServerCommunicator.h"
-#import "RedeemCodeFormViewController.h"
+#import "ValidateCodeViewController.h"
 
 @interface LoginViewController () <ServerCommunicatorDelegate>
 @end
@@ -29,7 +29,7 @@
     [self.view addSubview:backgroundImageView];
     
     //2. Set the enter and suscribe button
-    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.7, 240.0, 45.0)];
+    UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.8, 240.0, 45.0)];
     [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -37,7 +37,8 @@
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.view addSubview:enterButton];
     
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.4, 240.0, 45.0)];
+    //Suscribe
+    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.52, 240.0, 45.0)];
     [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -45,8 +46,14 @@
     [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:suscribeButton];
     
+    //Tigo Button
+    UIButton *tigoButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 105, screenFrame.size.height/1.32, 210.0, 30.0)];
+    [tigoButton setBackgroundImage:[UIImage imageNamed:@"BotonTigo.png"] forState:UIControlStateNormal];
+    [tigoButton addTarget:self action:@selector(goToTigo) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:tigoButton];
+    
     //3. Set the 'redeem code' button
-    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, screenFrame.size.height - 80.0, 100.0, 100.0)];
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, screenFrame.size.height - 80.0, 100.0, 80.0)];
     [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -104,14 +111,16 @@
 
 #pragma mark - Button Actions 
 
--(void)showAlert {
-    [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión es muy lenta. Conéctate a una red Wi-Fi para poder acceder al contenido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+-(void)goToTigo {
+    if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.caracolplay.com?partner=tigo"]]) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible abrir la URL en este momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 -(void)goToRedeemCodeViewController {
-    RedeemCodeFormViewController *redeemCodeFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemForm"];
-    redeemCodeFormVC.controllerWasPresentedFromInitialScreen = YES;
-    [self.navigationController pushViewController:redeemCodeFormVC animated:YES];
+    ValidateCodeViewController *validateCode = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCode"];
+    validateCode.controllerWasPresenteFromInitiaScreen = YES;
+    [self.navigationController pushViewController:validateCode animated:YES];
 }
 
 -(void)goToEnterViewController {

@@ -187,6 +187,11 @@
 		8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F6118918E3200A88C8C /* SearchViewController.m */; };
 		8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F641891906900A88C8C /* MyListsViewController.m */; };
 		8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */; };
+		A0321BDC18FDE75600F5F0E9 /* BotonTigo.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDA18FDE75600F5F0E9 /* BotonTigo.png */; };
+		A0321BDD18FDE75600F5F0E9 /* BotonTigo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDB18FDE75600F5F0E9 /* BotonTigo@2x.png */; };
+		A0321BE018FDED6700F5F0E9 /* BotonTigoPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDE18FDED6700F5F0E9 /* BotonTigoPad.png */; };
+		A0321BE118FDED6700F5F0E9 /* BotonTigoPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDF18FDED6700F5F0E9 /* BotonTigoPad@2x.png */; };
+		A0321BE418FDF0D400F5F0E9 /* ValidateCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0321BE318FDF0D400F5F0E9 /* ValidateCodeViewController.m */; };
 		A049E32C18D270B20040E051 /* ServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = A049E32B18D270B20040E051 /* ServerCommunicator.m */; };
 		A049E33018D27FA80040E051 /* NSDictionary+NullReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = A049E32F18D27FA80040E051 /* NSDictionary+NullReplacement.m */; };
 		A053521A18F6077400BF9578 /* RedeemCodeFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */; };
@@ -562,6 +567,12 @@
 		8BFD4F641891906900A88C8C /* MyListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsViewController.m; sourceTree = "<group>"; };
 		8BFD4F661891BB0200A88C8C /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
 		8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
+		A0321BDA18FDE75600F5F0E9 /* BotonTigo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonTigo.png; path = Resources/Images/BotonTigo.png; sourceTree = "<group>"; };
+		A0321BDB18FDE75600F5F0E9 /* BotonTigo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonTigo@2x.png"; path = "Resources/Images/BotonTigo@2x.png"; sourceTree = "<group>"; };
+		A0321BDE18FDED6700F5F0E9 /* BotonTigoPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonTigoPad.png; path = Resources/Images/iPad/BotonTigoPad.png; sourceTree = "<group>"; };
+		A0321BDF18FDED6700F5F0E9 /* BotonTigoPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonTigoPad@2x.png"; path = "Resources/Images/iPad/BotonTigoPad@2x.png"; sourceTree = "<group>"; };
+		A0321BE218FDF0D400F5F0E9 /* ValidateCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidateCodeViewController.h; sourceTree = "<group>"; };
+		A0321BE318FDF0D400F5F0E9 /* ValidateCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidateCodeViewController.m; sourceTree = "<group>"; };
 		A049E32A18D270B20040E051 /* ServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunicator.h; sourceTree = "<group>"; };
 		A049E32B18D270B20040E051 /* ServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunicator.m; sourceTree = "<group>"; };
 		A049E32E18D27FA80040E051 /* NSDictionary+NullReplacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+NullReplacement.h"; path = "Categories/NSDictionary+NullReplacement.h"; sourceTree = "<group>"; };
@@ -1202,6 +1213,8 @@
 				A053521918F6077400BF9578 /* RedeemCodeFormViewController.m */,
 				A064655318F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.h */,
 				A064655418F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m */,
+				A0321BE218FDF0D400F5F0E9 /* ValidateCodeViewController.h */,
+				A0321BE318FDF0D400F5F0E9 /* ValidateCodeViewController.m */,
 			);
 			name = "Loading & Login ";
 			sourceTree = "<group>";
@@ -1333,6 +1346,10 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A0321BDE18FDED6700F5F0E9 /* BotonTigoPad.png */,
+				A0321BDF18FDED6700F5F0E9 /* BotonTigoPad@2x.png */,
+				A0321BDA18FDE75600F5F0E9 /* BotonTigo.png */,
+				A0321BDB18FDE75600F5F0E9 /* BotonTigo@2x.png */,
 				8B3BB05A18F742F500626720 /* FreeBand.png */,
 				8B3BB05B18F742F500626720 /* FreeBand@2x.png */,
 				8BA9B25C189FF6F7003DBBDC /* iPad */,
@@ -1599,8 +1616,10 @@
 				8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */,
 				8B0194E018B3F4CB00380EC7 /* CaracolPlayHeader@2x.png in Resources */,
 				755DB16F188DEE2C00E5C636 /* Main_iPad.storyboard in Resources */,
+				A0321BE018FDED6700F5F0E9 /* BotonTigoPad.png in Resources */,
 				8B67769E1896F822006E2241 /* Checkmark.png in Resources */,
 				8B33682418B68353000DD1B5 /* PlayIconHomeScreenPad.png in Resources */,
+				A0321BDC18FDE75600F5F0E9 /* BotonTigo.png in Resources */,
 				8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */,
 				8B64F7FC18BBFEDE007E3C06 /* AddToListIcon.png in Resources */,
 				A0A9B76B18A2EE8500D6D222 /* SeriesOpacityPatternPad@2x.png in Resources */,
@@ -1650,6 +1669,7 @@
 				8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */,
 				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
 				A095A04B18B54B11004F05BB /* SuscriptionAlertBackground@2x.png in Resources */,
+				A0321BDD18FDE75600F5F0E9 /* BotonTigo@2x.png in Resources */,
 				8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */,
 				8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */,
 				8BB5222518AAA2E00027CA59 /* SplitNavBarDetail.png in Resources */,
@@ -1658,6 +1678,7 @@
 				A095A05518B56582004F05BB /* SuscriptionConfirmationBackground.png in Resources */,
 				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
+				A0321BE118FDED6700F5F0E9 /* BotonTigoPad@2x.png in Resources */,
 				8B164B8E18A97E75001803A9 /* SearchBarBackground@2x.png in Resources */,
 				8BF16A0F188F16A80021AB03 /* Estrella@2x.png in Resources */,
 				8BE7FDF918982C6F0087A7E2 /* BotonRedimir.png in Resources */,
@@ -1790,6 +1811,7 @@
 				8B223A4C18C0EA6500AC0A33 /* RedeemCodeConfirmationPadViewController.m in Sources */,
 				A095A05218B55A72004F05BB /* RedeemCodeAlertViewController.m in Sources */,
 				8BED8A8B18C62BE00076EA26 /* CPIAPHelper.m in Sources */,
+				A0321BE418FDF0D400F5F0E9 /* ValidateCodeViewController.m in Sources */,
 				8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */,
 				A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,

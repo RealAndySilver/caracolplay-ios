@@ -12,4 +12,5 @@
 @property (strong, nonatomic) NSString *embedCode;
 @property (assign, nonatomic) int progressSec;
 @property (strong, nonatomic) NSString *productID;
+@property (assign, nonatomic) BOOL controllerWasPresenteFromRedeemCode;
 @end

@@ -16,6 +16,8 @@
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
 #import "MBProgressHUD.h"
+#import "TelenovelSeriesDetailViewController.h"
+#import "MoviesEventsDetailsViewController.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate,  ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -25,6 +27,7 @@
 @property (strong, nonatomic) NSMutableArray *suscriptionInfoTableViewSecondaryInfo;
 @property (strong, nonatomic) NSDictionary *personalInfo;
 @property (strong, nonatomic) NSDictionary *suscriptionDic;
+@property (strong, nonatomic) NSArray *rentedProductions;
 @end
 
 @implementation MyAccountViewController
@@ -120,16 +123,32 @@
     [informativeString setAttributes:firstAttributes range:NSMakeRange(90, 61)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 68)];
     
-    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(10.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width-20, 80.0)];
+    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(10.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width-20, 64.0)];
     informativeTextLabel.attributedText = informativeString;
     informativeTextLabel.backgroundColor = [UIColor blackColor];
-    informativeTextLabel.editable = NO;
-    informativeTextLabel.selectable = NO;
+    informativeTextLabel.userInteractionEnabled = NO;
     informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
     [self.scrollView addSubview:informativeTextLabel];
     
+    //'Mis Alquilados'
+    UILabel *rentedLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, informativeTextLabel.frame.origin.y + informativeTextLabel.frame.size.height + 20.0, 200.0, 30.0)];
+    rentedLabel.text = @"MIS ALQUILADOS";
+    rentedLabel.font = [UIFont systemFontOfSize:13.0];
+    rentedLabel.textColor = [UIColor lightGrayColor];
+    [self.scrollView addSubview:rentedLabel];
+    
+    //4. 'Mis alquilados' table view
+    UITableView *rentedTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, informativeTextLabel.frame.origin.y + informativeTextLabel.frame.size.height + 50.0, self.view.frame.size.width, 160.0) style:UITableViewStylePlain];
+    rentedTableView.delegate = self;
+    rentedTableView.dataSource = self;
+    rentedTableView.tag = 3;
+    rentedTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    rentedTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.scrollView addSubview:rentedTableView];
+    
     //5. Suscription label
-    UILabel *suscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, informativeTextLabel.frame.origin.y + informativeTextLabel.frame.size.height + 10.0, 100.0, 30.0)];
+    UILabel *suscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, rentedTableView.frame.origin.y + rentedTableView.frame.size.height + 10.0, 100.0, 30.0)];
     suscriptionLabel.text = @"SUSCRIPCIÓN:";
     suscriptionLabel.textColor = [UIColor lightGrayColor];
     suscriptionLabel.font = [UIFont systemFontOfSize:13.0];
@@ -187,8 +206,10 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView.tag == 1) {
         return 6;
-    } else {
+    } else if (tableView.tag == 2) {
         return 2;
+    } else {
+        return [self.rentedProductions count];
     }
 }
 
@@ -213,7 +234,7 @@
         
         return cell;
         
-    } else {
+    } else if (tableView.tag == 2) {
         NSString *const suscriptionInfoCellIdentifier = @"CellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:suscriptionInfoCellIdentifier];
         if (!cell) {
@@ -232,6 +253,44 @@
         [cell.contentView addSubview:secondaryLabel];
         
         return cell;
+        
+    } else {
+        NSString *const suscriptionInfoCellIdentifier = @"CellIdentifier";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:suscriptionInfoCellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:suscriptionInfoCellIdentifier];
+            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
+            selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+            cell.selectedBackgroundView = selectedView;
+        }
+        NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
+        cell.textLabel.text = rentedProductionInfo[@"name"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
+
+        return cell;
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView.tag == 3) {
+        NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
+        NSString *productID = rentedProductionInfo[@"id"];
+        
+        if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"]) {
+            //The production is a serie
+            TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+            telenovelSeriesDetailVC.serieID = productID;
+            [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
+            
+        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
+            //The production is a movie, news or live event
+            MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+            movieEventDetailsVC.productionID = productID;
+            [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
+        }
     }
 }
 
@@ -308,6 +367,7 @@
         NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
         self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
         self.personalInfo = dicWithoutNulls[@"user"][@"data"];
+        self.rentedProductions = dicWithoutNulls[@"user"][@"rented"];
         
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

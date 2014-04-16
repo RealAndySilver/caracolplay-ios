@@ -20,7 +20,9 @@
 #import "MBProgressHUD.h"
 @import QuartzCore;
 
-@interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate>
+@interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -36,11 +38,32 @@
 @property (strong, nonatomic) CheckmarkView *checkBox1;
 @property (strong, nonatomic) CheckmarkView *checkBox2;
 @property (strong, nonatomic) NSString *transactionID;
+@property (nonatomic) NSTimeInterval birthdayTimeStamp;
+@property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) UIDatePicker *datePickerView;
 @end
 
 @implementation SuscribePadViewController
 
 -(void)UISetup {
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTextfields)];
+    [self.view addGestureRecognizer:tapGesture];
+    
+    //Genre picker view
+    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.pickerView.dataSource = self;
+    self.pickerView.delegate = self;
+    self.pickerView.showsSelectionIndicator = YES;
+    self.pickerView.tag = 1;
+    self.genreTextfield.inputView = self.pickerView;
+    
+    //Date picker view
+    self.datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
+    self.datePickerView.tag = 2;
+    self.datePickerView.datePickerMode = UIDatePickerModeDate;
+    [self.datePickerView addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+    self.birthdayTextfield.inputView = self.datePickerView;
+
     
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
@@ -54,10 +77,10 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 468.0, 25.0, 25.0)];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 488.0, 25.0, 25.0)];
     [self.view addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 508.0, 25.0, 25.0)];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 528.0, 25.0, 25.0)];
     [self.view addSubview:self.checkBox2];
     
     //4. 'Continuar' button
@@ -111,6 +134,24 @@
 }
 
 #pragma mark - Actions 
+
+-(void)dismissTextfields {
+    NSLog(@"me tocaron");
+    [self.genreTextfield resignFirstResponder];
+    [self.birthdayTextfield resignFirstResponder];
+}
+
+-(void)dateChanged:(UIDatePicker *)datePicker {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSDate *date = datePicker.date;
+    self.birthdayTimeStamp = [date timeIntervalSince1970];
+    NSString *formattedDateString = [dateFormatter stringFromDate:date];
+    NSLog(@"fecha: %@", formattedDateString);
+    self.birthdayTextfield.text = formattedDateString;
+}
+
 
 -(void)goToTerms {
     TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];
@@ -255,7 +296,7 @@
     
     //Request products from Apple Servers
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             NSLog(@"apareció el mensajito de itunes");
             for (IAPProduct *product in products) {
@@ -276,7 +317,10 @@
                                   @"lastname" : self.lastNameTextfield.text,
                                   @"email" : self.emailTextfield.text,
                                   @"password" : self.passwordTextfield.text,
-                                  @"alias" : self.aliasTextfield.text};
+                                  @"alias" : self.aliasTextfield.text,
+                                  @"genero" : self.genreTextfield.text,
+                                  @"fecha_de_nacimiento" : @(self.birthdayTimeStamp)
+                                  };
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoDic
                                                        options:NSJSONWritingPrettyPrinted
@@ -314,7 +358,7 @@
     BOOL emailIsCorrect = NO;
     BOOL passwordsAreCorrect = NO;
     BOOL aliasIsCorrect = NO;
-    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0) {
+    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0 && [self.genreTextfield.text length] > 0 && [self.birthdayTextfield.text length] > 0) {
         namesAreCorrect = YES;
     }
     
@@ -365,12 +409,14 @@
 #pragma mark - Notification Handlers
 
 -(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"Me llegó la notificacion de que falló la transaccion");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;
@@ -389,7 +435,45 @@
     return [emailTest evaluateWithObject:checkString];
 }
 
-#pragma mark - Actions
+#pragma mark - UIPickerViewDataSource
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    if (pickerView.tag == 1) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            return @"Masculino";
+        } else {
+            return @"Femenino";
+        }
+    } else {
+        return nil;
+    }
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (pickerView.tag == 1) {
+        if (row == 0) {
+            self.genreTextfield.text = @"Masculino";
+        } else {
+            self.genreTextfield.text = @"Femenino";
+        }
+    }
+}
 
 -(void)dismissVC {
     [self dismissViewControllerAnimated:YES completion:nil];

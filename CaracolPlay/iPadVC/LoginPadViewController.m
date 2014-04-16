@@ -18,6 +18,7 @@
 @property (strong, nonatomic) UIButton *enterButton;
 @property (strong, nonatomic) UIButton *redeemButton;
 @property (strong, nonatomic) UIButton *skipButton;
+@property (strong, nonatomic) UIButton *tigoButton;
 @end
 
 @implementation LoginPadViewController
@@ -44,6 +45,12 @@
     self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.enterButton addTarget:self action:@selector(showIngresarVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.enterButton];
+    
+    //Tigo button
+    self.tigoButton = [[UIButton alloc] init];
+    [self.tigoButton setBackgroundImage:[UIImage imageNamed:@"BotonTigoPad.png"] forState:UIControlStateNormal];
+    [self.tigoButton addTarget:self action:@selector(goToTigo) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.tigoButton];
     
     //4. 'Redimir' button setup
     self.redeemButton = [[UIButton alloc] init];
@@ -77,13 +84,20 @@
     
     //Set subviews frames
     self.backgroundImageView.frame = self.view.bounds;
-    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/2 + 160.0, 300.0, 50.0);
-    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/2 + 80.0, 300.0, 50.0);
+    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 173.0, self.view.bounds.size.height/2 + 90.0, 163, 45.0);
+    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 + 10.0, self.view.bounds.size.height/2 + 90.0, 163, 45.0);
+    self.tigoButton.frame = CGRectMake(self.view.bounds.size.width/2 - 173.0, self.view.bounds.size.height/2 + 160.0, 346.0, 45.0);
     self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2 - 60.0, self.view.bounds.size.height/2 + 230.0, 120.0, 120.0);
     self.skipButton.frame = CGRectMake(920.0, 30.0, 100.0, 28.0);
 }
 
 #pragma mark - Custom Methods
+
+-(void)goToTigo {
+    if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.caracolplay.com?partner=tigo"]]) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible abrir la URL en este momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
 
 -(void)skipAndGoToHomeScreen {
     MainTabBarPadController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];

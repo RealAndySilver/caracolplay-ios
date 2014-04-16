@@ -12,4 +12,5 @@
 @property (assign, nonatomic) BOOL controllerWasPresentedFromInitialScreen;
 @property (assign, nonatomic) BOOL controllerWasPresentedFromProductionScreen;
 @property (assign, nonatomic) BOOL userWasLogout;
+@property (strong, nonatomic) NSString *redeemedProductions;
 @end

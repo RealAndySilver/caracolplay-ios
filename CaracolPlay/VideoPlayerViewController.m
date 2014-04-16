@@ -28,7 +28,10 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.sendProgressSecToServer = NO;
-    [self sendPlayVideoPetitionToServer];
+    
+    if (!self.controllerWasPresenteFromRedeemCode) {
+        [self sendPlayVideoPetitionToServer];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
     
     //Create the Ooyala ViewController
@@ -61,7 +64,10 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self postProgressSecToServer];
+    
+    if (!self.controllerWasPresenteFromRedeemCode) {
+        [self postProgressSecToServer];
+    }
     self.tabBarController.tabBar.alpha = 1.0;
     [self.ooyalaPlayerViewController.player pause];
     NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);

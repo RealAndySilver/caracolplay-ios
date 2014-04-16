@@ -56,7 +56,7 @@
     // 2. Textview
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(30.0, screenFrame.size.height/2 - 30.0, screenFrame.size.width - 60.0, 150.0)];
     textView.backgroundColor = [UIColor clearColor];
-    textView.text = @"Tu código ha sido aceptado. Ahora puedes disfrutar del siguiente contenido: \n\nEvento en Vivo: Colombia vs Grecia\nJunio 14, 9:00 AM";
+    textView.text = [@"Tu código ha sido aceptado. Ahora puedes disfrutar del siguiente contenido:\n\n" stringByAppendingString:self.redeemedProductions];
     textView.userInteractionEnabled = NO;
     textView.textAlignment = NSTextAlignmentCenter;
     textView.font = [UIFont systemFontOfSize:15.0];

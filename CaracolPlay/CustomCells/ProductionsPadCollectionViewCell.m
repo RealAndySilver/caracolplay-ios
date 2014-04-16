@@ -32,6 +32,12 @@
         self.productionImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.productionImageView.clipsToBounds = YES;
         [self.shadowView addSubview:self.productionImageView];
+        
+        self.freeImageView = [[UIImageView alloc] init];
+        self.freeImageView.backgroundColor = [UIColor clearColor];
+        self.freeImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.freeImageView.clipsToBounds = YES;
+        [self.productionImageView addSubview:self.freeImageView];
     }
     return self;
 }
@@ -41,8 +47,7 @@
     CGRect contentRect = self.contentView.bounds;
     self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
-    //self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 15.0, self.productionImageView.frame.size.width, 15.0);
-    //self.productionImageView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
+    self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
     [self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
 
