@@ -21,6 +21,7 @@
 @import QuartzCore;
 
 @interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -46,6 +47,9 @@
 @implementation SuscribePadViewController
 
 -(void)UISetup {
+    self.scrollView.alwaysBounceVertical = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTextfields)];
     [self.view addGestureRecognizer:tapGesture];
     
@@ -77,11 +81,11 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 488.0, 25.0, 25.0)];
-    [self.view addSubview:self.checkBox1];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(5.0, 418.0, 25.0, 25.0)];
+    [self.scrollView addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 528.0, 25.0, 25.0)];
-    [self.view addSubview:self.checkBox2];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(5.0, 452.0, 25.0, 25.0)];
+    [self.scrollView addSubview:self.checkBox2];
     
     //4. 'Continuar' button
     [self.continueButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
@@ -131,6 +135,11 @@
     
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.continueButton.frame.origin.y + self.continueButton.frame.size.height + 270.0);
 }
 
 #pragma mark - Actions 

@@ -148,7 +148,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     
     if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
-        seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        seriesDetailPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
@@ -156,7 +156,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        movieDetailsPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         movieDetailsPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
     }

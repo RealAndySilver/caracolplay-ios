@@ -21,6 +21,7 @@
 #import "TermsAndConditionsPadViewController.h"
 
 @interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) CheckmarkView *checkBox1;
 @property (strong, nonatomic) CheckmarkView *checkBox2;
 @property (weak, nonatomic) IBOutlet UIButton *enterHereButton;
@@ -65,6 +66,8 @@
 }
 
 -(void)setupUI {
+    self.scrollView.alwaysBounceVertical = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
     
     self.nameTextfield.delegate = self;
     self.lastNameTextfield.delegate = self;
@@ -102,11 +105,11 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(34.0, 492.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkBox1];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 412.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(34.0, 530.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkBox2];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 445.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkBox2];
     
     //Rent button
     [self.rentButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
@@ -127,6 +130,11 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.rentButton.frame.origin.y + self.rentButton.frame.size.height + 270.0);
 }
 
 #pragma mark - Actions 

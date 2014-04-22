@@ -158,6 +158,7 @@
         if (!dictionary) {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         } else {
+            //NSLog(@"info de getFeatured: %@", dictionary);
             self.unparsedFeaturedProductionsInfo = dictionary[@"featured"];
         }
     }

@@ -657,7 +657,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.selectedSeason = [info[@"SeasonSelected"] intValue];
     NSLog(@"se selecciono la temporada %d", self.selectedSeason);
     NSLog(@"numeor de temporadas: %d", [self.production.seasonList count]);
-    if ([self.production.seasonList count] > 0) {
+    if (self.selectedSeason < [self.production.seasonList count]) {
+        NSLog(@"entré porque si hay temporadas");
         if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
             NSString *buttonTitle = [NSString stringWithFormat:@"Temporada %d", self.selectedSeason + 1];
             [self.seasonsButton setTitle:buttonTitle forState:UIControlStateNormal];

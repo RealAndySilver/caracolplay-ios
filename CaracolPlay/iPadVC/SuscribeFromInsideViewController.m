@@ -20,6 +20,7 @@
 #import "MBProgressHUD.h"
 
 @interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -66,6 +67,9 @@
 }
 
 -(void)setupUI {
+    self.scrollView.alwaysBounceVertical = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    
     //Genre picker view
     self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 50.0, 100.0, 50.0)];
     self.pickerView.dataSource = self;
@@ -103,11 +107,11 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 493.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkBox1];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 421.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(30.0, 528.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkBox2];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 448.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkBox2];
     
     //Enter here button
     [self.enterHereButton addTarget:self action:@selector(enterWithExistingUser) forControlEvents:UIControlEventTouchUpInside];
@@ -128,6 +132,11 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.suscribeButton.frame.origin.y + self.suscribeButton.frame.size.height + 270.0);
 }
 
 #pragma mark - Actions

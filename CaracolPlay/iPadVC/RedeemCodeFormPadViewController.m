@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 
 @interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UIButton *servicePoliticsButton;
@@ -48,6 +49,9 @@
 }
 
 -(void)setupUI {
+    self.scrollView.alwaysBounceVertical = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     self.aliasTextfield.delegate = self;
@@ -85,11 +89,11 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 495.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkmarkView1];
+    self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(9.0, 421.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkmarkView1];
     
-    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(35.0, 532.0, 22.0, 22.0)];
-    [self.view addSubview:self.checkmarkView2];
+    self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(9.0, 451.0, 22.0, 22.0)];
+    [self.scrollView addSubview:self.checkmarkView2];
     
     //4. 'Continuar' button
     [self.nextButton addTarget:self action:@selector(startRedeemCodeProcess) forControlEvents:UIControlEventTouchUpInside];
@@ -111,6 +115,11 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.nextButton.frame.origin.y + self.nextButton.frame.size.height + 270.0);
 }
 
 #pragma mark - Actions 

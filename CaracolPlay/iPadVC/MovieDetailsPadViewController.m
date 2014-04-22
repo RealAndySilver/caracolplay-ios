@@ -423,7 +423,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         SuscriptionAlertPadViewController *suscriptionAlertPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         suscriptionAlertPadVC.productID = self.production.identifier;
         suscriptionAlertPadVC.productName = self.production.name;
         suscriptionAlertPadVC.productType = self.production.type;

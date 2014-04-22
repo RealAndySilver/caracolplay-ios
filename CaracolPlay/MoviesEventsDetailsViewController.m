@@ -565,7 +565,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         
         
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
-        Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
+        NSDictionary *videoDicWithNulls = responseDictionary[@"video"];
+        NSDictionary *videoDicWithoutNulss = [videoDicWithNulls dictionaryByReplacingNullWithBlanks];
+        Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulss];
         [self checkVideoAvailability:video];
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {
