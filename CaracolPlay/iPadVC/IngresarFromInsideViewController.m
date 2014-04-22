@@ -223,7 +223,8 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
+                                       @"Session" : dictionary[@"session"],
+                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue])
                                        } withKey:@"UserHasLoginDic"];
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
@@ -290,7 +291,8 @@
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                            @"UserName" : [UserInfo sharedInstance].userName,
                                            @"Password" : [UserInfo sharedInstance].password,
-                                           @"Session" : dictionary[@"session"]
+                                           @"Session" : dictionary[@"session"],
+                                           @"IsSuscription" : @YES
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].userID = dictionary[@"uid"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];

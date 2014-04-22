@@ -38,6 +38,14 @@
         self.freeImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.freeImageView.clipsToBounds = YES;
         [self.productionImageView addSubview:self.freeImageView];
+        
+        self.titleLabel = [[UILabel alloc] init];
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        self.titleLabel.textColor = [UIColor whiteColor];
+        self.titleLabel.textAlignment = NSTextAlignmentLeft;
+        self.titleLabel.numberOfLines = 2;
+        self.titleLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        [self.productionImageView addSubview:self.titleLabel];
     }
     return self;
 }
@@ -48,6 +56,7 @@
     self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
     self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
+    self.titleLabel.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 40.0, self.productionImageView.frame.size.width, 40.0);
     [self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
 

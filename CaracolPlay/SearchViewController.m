@@ -121,12 +121,12 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Elegí uno de los resultados");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"]) {
+    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     
-    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];

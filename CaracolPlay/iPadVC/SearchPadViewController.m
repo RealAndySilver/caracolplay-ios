@@ -121,7 +121,7 @@
 #pragma mark - UICollectionViewDelegate 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
+    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -129,7 +129,7 @@
         [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
         NSLog(@"peliculas");
         
-    } else if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
+    } else if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;

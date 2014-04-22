@@ -204,13 +204,13 @@
         return;
     }
     
-    if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"]) {
+    if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"] || [featuredProduction.type isEqualToString:@"Noticias"]) {
         //The production is a serie
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesDetailVC.serieID = featuredProduction.identifier;
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
         
-    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"] || [featuredProduction.type isEqualToString:@"Noticias"]) {
+    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"]) {
         //The production is a movie, news or live event
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = featuredProduction.identifier;

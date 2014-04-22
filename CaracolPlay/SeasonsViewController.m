@@ -58,7 +58,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
     }
     cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
+    cell.textLabel.text = self.seasonNamesArray[indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont boldSystemFontOfSize:13.0];
     return cell;

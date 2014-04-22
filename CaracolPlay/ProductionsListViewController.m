@@ -136,12 +136,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
     }
-    else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"]) {
+    else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.productionsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];

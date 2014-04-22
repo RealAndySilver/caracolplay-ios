@@ -24,6 +24,8 @@
 #import "Video.h"
 #import "ContentNotAvailableForUserPadViewController.h"
 #import "UserInfo.h"
+#import "NSDictionary+NullReplacement.h"
+#import "NSArray+NullReplacement.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -41,6 +43,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UILabel *recommendedProductionsLabel;
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (strong, nonatomic) UIWebView *webView;
 
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) NSArray *recommendedProductions;
@@ -251,14 +254,21 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     
     //7. Productiond etail textview setup
-    self.productionDetailTextView = [[UITextView alloc] init];
+    /*self.productionDetailTextView = [[UITextView alloc] init];
     self.productionDetailTextView.text = self.production.detailDescription;
     self.productionDetailTextView.textColor = [UIColor whiteColor];
     self.productionDetailTextView.selectable = NO;
     self.productionDetailTextView.editable = NO;
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
-    [self.view addSubview:self.productionDetailTextView];
+    [self.view addSubview:self.productionDetailTextView];*/
+    
+    self.webView = [[UIWebView alloc] init];
+    self.webView.opaque=NO;
+    [self.webView setBackgroundColor:[UIColor clearColor]];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    [self.webView loadHTMLString:str baseURL:nil];
+    [self.view addSubview:self.webView];
     
     //9. Recommended productions label setup
     self.recommendedProductionsLabel = [[UILabel alloc] init];
@@ -301,7 +311,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.watchTrailerButton.frame = CGRectMake(210.0, 100.0, 130.0, 35.0);
     self.shareButton.frame = CGRectMake(360.0, 100.0, 130.0, 35.0);
     self.viewProductionButton.frame = CGRectMake(510.0, 100.0, 130.0, 35.0);
-    self.productionDetailTextView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 100.0);
+    self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 130.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     //self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
 }
@@ -534,7 +544,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             }
         } else {
             //El producto si está disponible
-            self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
+            NSDictionary *productionDic = responseDictionary[@"products"][@"0"][0];
+            NSDictionary *productionDicWithoutNulls = [productionDic dictionaryByReplacingNullWithBlanks];
+            self.unparsedProductionInfoDic = productionDicWithoutNulls;
         }
         
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
@@ -542,7 +554,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         [self checkVideoAvailability:video];
         
     } else if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
-        self.recommendedProductions = responseDictionary[@"recommended_products"];
+        NSArray *responseArray = responseDictionary[@"recommended_products"];
+        NSArray *arrayWithoutNulls = [responseArray arrayByReplacingNullsWithBlanks];
+        self.recommendedProductions = arrayWithoutNulls;
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
         NSLog(@"llegó la info de la calificación: %@", responseDictionary);

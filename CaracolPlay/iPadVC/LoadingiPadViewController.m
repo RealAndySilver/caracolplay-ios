@@ -61,6 +61,7 @@
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
         [UserInfo sharedInstance].userID = userDic[@"UserID"];
+        [UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
         MainTabBarPadController *mainTabBarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarPadVC animated:YES completion:nil];
     

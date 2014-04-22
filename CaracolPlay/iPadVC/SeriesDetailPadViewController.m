@@ -233,9 +233,9 @@
     [self.view addSubview:self.shareButton];
     
     //View production button (only if the user is log out)
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        if (![UserInfo sharedInstance].isSubscription) {
+    if ([self.production.free isEqualToString:@"0"]) {
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
                 self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
                 [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
@@ -243,7 +243,7 @@
                 self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
                 [self.viewProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
                 [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-                
+                    
                 self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
                 self.viewProductionButton.layer.shadowOpacity = 0.8;
                 self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
@@ -254,16 +254,22 @@
     }
     
     //7. Production detail text view
-    self.productionDetailTextView = [[UITextView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
+    /*self.productionDetailTextView = [[UITextView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
     self.productionDetailTextView.text = self.production.detailDescription;
-    /*self.productionDetailTextView.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel neque interdum quam auctor ultricies. Donec eget scelerisque leo, sed commodo nibh. Suspendisse potenti. Morbi vitae est ac ipsum mollis vulputate eget commodo elit. Donec magna justo, semper sit amet libero eget, tempus condimentum ipsum. Aenean lobortis eget justo sed mattis. Suspendisse eget libero eget est imperdiet dignissim vel quis erat.";*/
     self.productionDetailTextView.userInteractionEnabled = NO;
     self.productionDetailTextView.textColor = [UIColor whiteColor];
     self.productionDetailTextView.backgroundColor = [UIColor clearColor];
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
-    [self.view addSubview:self.productionDetailTextView];
+    [self.view addSubview:self.productionDetailTextView];*/
     
-    if (self.production.hasSeasons) {
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
+    webView.opaque=NO;
+    [webView setBackgroundColor:[UIColor clearColor]];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    [webView loadHTMLString:str baseURL:nil];
+    [self.view addSubview:webView];
+    
+    if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //8. Seasons table view setup
         self.seasonsTableView = [[UITableView alloc] initWithFrame:CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 280.0) style:UITableViewStylePlain];
         self.seasonsTableView.delegate = self;
@@ -354,9 +360,17 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+            selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+            cell.selectedBackgroundView = selectedView;
         }
-     
-        cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
+        
+        if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
+            cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
+        } else {
+            Season *season = self.production.seasonList[indexPath.row];
+            cell.textLabel.text = season.seasonName;
+        }
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.font = [UIFont systemFontOfSize:13.0];
@@ -449,14 +463,26 @@
 #pragma mark - Actions
 
 -(void)goToSuscriptionAlert {
-    SuscriptionAlertPadViewController *suscriptionAlertPadVC =
-    [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
-    suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
-    suscriptionAlertPadVC.productID = self.selectedEpisodeID;
-    suscriptionAlertPadVC.productType = self.production.type;
-    suscriptionAlertPadVC.productName = self.production.name;
-    [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        ContentNotAvailableForUserPadViewController *contentNotAvailableVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUserPad"];
+        contentNotAvailableVC.productID = self.selectedEpisodeID;
+        contentNotAvailableVC.productName = self.production.name;
+        contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
+        
+    } else {
+        SuscriptionAlertPadViewController *suscriptionAlertPadVC =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
+        suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        suscriptionAlertPadVC.productID = self.selectedEpisodeID;
+        suscriptionAlertPadVC.productType = self.production.type;
+        suscriptionAlertPadVC.productName = self.production.name;
+        [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
+    }
 }
 
 -(void)watchTrailer {
@@ -624,6 +650,7 @@
             }
         } else {
             //El producto si está disponible
+            NSLog(@"info del producto: %@", responseDictionary);
             self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
         }
     

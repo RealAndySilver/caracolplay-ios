@@ -263,6 +263,7 @@
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
             cell.selectedBackgroundView = selectedView;
         }
+        
         NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
         cell.textLabel.text = rentedProductionInfo[@"name"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -279,13 +280,13 @@
         NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
         NSString *productID = rentedProductionInfo[@"id"];
         
-        if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"]) {
+        if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
             //The production is a serie
             TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
             telenovelSeriesDetailVC.serieID = productID;
             [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
             
-        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
+        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
             //The production is a movie, news or live event
             MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
             movieEventDetailsVC.productionID = productID;
@@ -329,6 +330,7 @@
                                @"UserName" : @"",
                                @"Password" : @"",
                                @"UserID" : @"",
+                               @"IsSuscription" : @NO
                                } withKey:@"UserHasLoginDic"];
     
     //Erase user data from our user info singleton
@@ -363,7 +365,7 @@
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    if ([methodName isEqualToString:@"GetUser"] && dictionary) {
+    if ([methodName isEqualToString:@"GetUser"] && [dictionary[@"status"] boolValue]) {
         //NSLog(@"Peticio GetUser exitosa: %@", dictionary);
         NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
         self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];

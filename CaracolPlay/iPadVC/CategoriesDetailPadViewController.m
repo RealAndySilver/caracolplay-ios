@@ -126,6 +126,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     } else {
         cell.freeImageView.image = nil;
     }
+    cell.titleLabel.text = self.productionsArray[indexPath.item][@"name"];
     NSLog(@"la celda %d tiene %d estrellas", indexPath.item, cell.goldStars);
     return cell;
 }
@@ -143,14 +144,14 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         return;
     }
     
-    if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"]) {
+    if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         
-    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;

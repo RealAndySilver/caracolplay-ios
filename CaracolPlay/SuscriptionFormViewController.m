@@ -160,7 +160,11 @@
         [self validateUser];
     } else {
         //The terms and conditions were not accepted, so show an alert.
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        if (![self.passwordTextfield.text isEqualToString:self.confirmPasswordTextfield.text]) {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Las contraseñas no coinciden." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No has completado algunos campos obligatorios. Revisa e inténtalo de nuevo."delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         [self showErrorsInTermAndPoliticsConditions];
     }
 }
@@ -256,7 +260,8 @@
                                            @"UserName" : [UserInfo sharedInstance].userName,
                                            @"Password" : [UserInfo sharedInstance].password,
                                            @"UserID" : dictionary[@"uid"],
-                                           @"Session" : dictionary[@"session"]
+                                           @"Session" : dictionary[@"session"],
+                                           @"IsSuscription" : @YES
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
                 [UserInfo sharedInstance].userID = dictionary[@"uid"];

@@ -10,4 +10,5 @@
 
 @interface SeasonsViewController : UIViewController
 @property (assign, nonatomic) NSUInteger numberOfSeasons;
+@property (strong, nonatomic) NSArray *seasonNamesArray;
 @end

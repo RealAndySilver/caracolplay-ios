@@ -187,7 +187,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //3. Create the label to display the movie/event name
     UILabel *movieEventNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                             20.0,
+                                                                             self.view.bounds.size.height/28.4,
                                                                              200.0,
                                                                              30.0)];
     movieEventNameLabel.font = [UIFont boldSystemFontOfSize:18.0];
@@ -197,7 +197,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:movieEventNameLabel];
     
     //4. Create the stars images
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(110.0, 50, 100.0, 20.0) rate:[self.production.rate intValue]/20 + 1];
+    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(110.0, self.view.bounds.size.height/11.36, 100.0, 20.0) rate:[self.production.rate intValue]/20 + 1];
     [self.view addSubview:self.starsView];
     
     //Create a tap gesture and add it to the stars view to display the rate view when the user touches the stars.
@@ -206,7 +206,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //5. Create a button to see the movie/event trailer
     UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                              90.0,
+                                                                              self.view.bounds.size.height/6.3,
                                                                               90.0,
                                                                               30.0)];
     [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
@@ -223,7 +223,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, 90.0, 90.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.view.bounds.size.height/6.3, 90.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
@@ -238,11 +238,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:shareButton];
     
     //Create the button to watch the production, only if the user is log out
-    FileSaver *fileSaver = [[FileSaver alloc] init];
-    if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        if (![UserInfo sharedInstance].isSubscription) {
+    if ([self.production.free isEqualToString:@"0"]) {
+        FileSaver *fileSaver = [[FileSaver alloc] init];
+        if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
-                
                 self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
                 [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -255,7 +254,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
+    /*UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -264,26 +263,46 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     detailTextView.selectable = NO;
     detailTextView.textAlignment = NSTextAlignmentJustified;
     detailTextView.font = [UIFont systemFontOfSize:13.0];
-    [self.view addSubview:detailTextView];
+    [self.view addSubview:detailTextView];*/
     
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
+    webView.opaque=NO;
+    [webView setBackgroundColor:[UIColor clearColor]];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    [webView loadHTMLString:str baseURL:nil];
+    [self.view addSubview:webView];
+    
+    
+    NSLog(@"HTML %@", self.production.detailDescription);
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //'Temporadas' button setup
-        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(-5.0, detailTextView.frame.origin.y + detailTextView.frame.size.height + 10.0, 150.0, 30.0)];
-        [self.seasonsButton setTitle:@"Temporada 1 ▼" forState:UIControlStateNormal];
-        self.seasonsButton.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        self.seasonsButton.layer.cornerRadius = 4.0;
-        self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(-5.0, webView.frame.origin.y + webView.frame.size.height + 10.0, self.view.bounds.size.width + 10, 44.0)];
+        if ([self.production.type isEqualToString:@"Noticias"]) {
+            [self.seasonsButton setTitle:((Season *)self.production.seasonList[0]).seasonName forState:UIControlStateNormal];
+        } else {
+            [self.seasonsButton setTitle:@"Temporada 1" forState:UIControlStateNormal];
+        }
+        self.seasonsButton.backgroundColor = [UIColor blackColor];
+        self.seasonsButton.layer.borderWidth = 1.0;
+        self.seasonsButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.seasonsButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        self.seasonsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.seasonsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
         [self.seasonsButton addTarget:self action:@selector(showSeasonsList) forControlEvents:UIControlEventTouchUpInside];
         [self.seasonsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.view addSubview:self.seasonsButton];
+        
+        UILabel *littleiconLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.seasonsButton.frame.size.width - 35.0, self.seasonsButton.frame.size.height/2.0 - 15.0, 30.0, 30.0)];
+        littleiconLabel.text = @"▼";
+        littleiconLabel.textColor = [UIColor whiteColor];
+        [self.seasonsButton addSubview:littleiconLabel];
     }
     
     CGFloat tableViewOriginY;
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
-        tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height + 10.0;
+        tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height;
     } else {
-        tableViewOriginY = detailTextView.frame.origin.y + detailTextView.frame.size.height + 20.0;
+        tableViewOriginY = webView.frame.origin.y + webView.frame.size.height + 20.0;
     }
     //8. Create a TableView to diaply the list of chapters
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - self.tabBarController.tabBar.frame.size.height) style:UITableViewStylePlain];
@@ -402,7 +421,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Actions 
 
 -(void)goToSuscriptionAlert {
-    [self goToSuscriptionAlertVCWithEpisodeID:self.selectedEpisodeID productionName:self.production.name];
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
+        [self goToContentNotAvailableVC];
+    } else {
+        [self goToSuscriptionAlertVCWithEpisodeID:self.selectedEpisodeID productionName:self.production.name];
+    }
+}
+
+-(void)goToContentNotAvailableVC {
+    ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+    [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+    contentNotAvailableForUser.productID = self.selectedEpisodeID;
+    contentNotAvailableForUser.productName = self.production.name;
+    contentNotAvailableForUser.productType = self.production.type;
+    [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
 }
 
 -(void)goToSuscriptionAlertVCWithEpisodeID:(NSString *)episodeID productionName:(NSString *)productionName {
@@ -414,8 +447,26 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)showSeasonsList {
+    NSMutableArray *seasonNamesArray = [[NSMutableArray alloc] init];
+    
+    if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
+        NSArray *seasonsArray = self.production.seasonList;
+        for (int i = 0; i < [seasonsArray count]; i++) {
+            NSString *seasonName = [NSString stringWithFormat:@"Temporada %d", i + 1];
+            [seasonNamesArray addObject:seasonName];
+        }
+        
+    } else {
+        NSArray *seasonsArray = self.production.seasonList;
+        for (int i = 0; i < [seasonsArray count]; i++) {
+            Season *season = seasonsArray[i];
+            [seasonNamesArray addObject:season.seasonName];
+        }
+    }
+    
     SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
     seasonsVC.numberOfSeasons = [self.production.seasonList count];
+    seasonsVC.seasonNamesArray = seasonNamesArray;
     [self presentViewController:seasonsVC animated:YES completion:nil];
     NSLog(@"Número de temporadas: %d", seasonsVC.numberOfSeasons);
 }
@@ -568,7 +619,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else {
             //El status llegó true, entonces no hubo problema accediendo al producto
-            NSLog(@"El producto si está disponible");
+            NSLog(@"El producto si está disponible: %@", dictionary);
             self.unparsedProductionInfoDic = dictionary[@"products"][@"0"][0];
         }
     
@@ -605,7 +656,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSDictionary *info = [notification userInfo];
     self.selectedSeason = [info[@"SeasonSelected"] intValue];
     NSLog(@"se selecciono la temporada %d", self.selectedSeason);
-    [self.seasonsButton setTitle:[NSString stringWithFormat:@"Temporada %d ▼", self.selectedSeason + 1] forState:UIControlStateNormal];
+    
+    if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
+        NSString *buttonTitle = [NSString stringWithFormat:@"Temporada %d", self.selectedSeason + 1];
+        [self.seasonsButton setTitle:buttonTitle forState:UIControlStateNormal];
+        
+    } else {
+        Season *selectedSeason = self.production.seasonList[self.selectedSeason];
+        [self.seasonsButton setTitle:selectedSeason.seasonName forState:UIControlStateNormal];
+    }
+    
     [self.tableView reloadData];
 }
 

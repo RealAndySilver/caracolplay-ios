@@ -25,6 +25,7 @@
 #import "Video.h"
 #import "MBProgressHUD.h"
 #import "UserInfo.h"
+#import "NSArray+NullReplacement.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -32,6 +33,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
+@property (strong, nonatomic) NSArray *recommendedProdWithoutNulls;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
 @property (strong, nonatomic) UIImage *productionImage;
@@ -61,6 +63,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)setRecommendedProductions:(NSArray *)recommendedProductions {
     _recommendedProductions = recommendedProductions;
+    self.recommendedProdWithoutNulls = [recommendedProductions arrayByReplacingNullsWithBlanks];
     [self setupRecommendedProductionsCollectionView];
 }
 
@@ -307,7 +310,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:watchProductionButton];
     
     //7. Create a text view to display the detail of the event/movie
-    UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
+    /*UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
     
     detailTextView.text = self.production.detailDescription;
     detailTextView.backgroundColor = [UIColor clearColor];
@@ -316,7 +319,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     detailTextView.selectable = NO;
     detailTextView.textAlignment = NSTextAlignmentJustified;
     detailTextView.font = [UIFont systemFontOfSize:13.0];
-    [self.view addSubview:detailTextView];
+    [self.view addSubview:detailTextView];*/
+    
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
+    webView.opaque=NO;
+    [webView setBackgroundColor:[UIColor clearColor]];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    [webView loadHTMLString:str baseURL:nil];
+    [self.view addSubview:webView];
     
     
     //Add a blur view to display when the user shares the production but an error was produced.
@@ -340,13 +350,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UICollectionViewDataSource
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self.recommendedProductions count];
+    return [self.recommendedProdWithoutNulls count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecommendedProdCollectionViewCell *cell = (RecommendedProdCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProductions[indexPath.row][@"product"][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    [cell.cellImageView setImageWithURL:[NSURL URLWithString:self.recommendedProdWithoutNulls[indexPath.row][@"product"][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     return cell;
 }
 
@@ -359,13 +369,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] ||
-        [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"]) {
+        [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"] ||
+        [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"]) {
         
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
         
-    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         moviesEventDetail.productionID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];

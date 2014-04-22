@@ -294,14 +294,14 @@
         NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
         NSString *productID = rentedProductionInfo[@"id"];
         
-        if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"]) {
+        if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
             //The production is a serie
             SeriesDetailPadViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
             telenovelSeriesDetailVC.productID = productID;
             telenovelSeriesDetailVC.modalPresentationStyle = UIModalPresentationFormSheet;
             [self presentViewController:telenovelSeriesDetailVC animated:YES completion:nil];
             
-        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
+        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
             //The production is a movie, news or live event
             MovieDetailsPadViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
             movieEventDetailsVC.productID = productID;
@@ -338,6 +338,7 @@
                                @"UserName" : @"",
                                @"Password" : @"",
                                @"UserID" : @"",
+                               @"IsSuscription" : @NO
                                } withKey:@"UserHasLoginDic"];
     
     //Erase user data from our user info singleton

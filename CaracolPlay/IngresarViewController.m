@@ -248,6 +248,7 @@
                                        @"Password" : [UserInfo sharedInstance].password,
                                        @"Session" : dictionary[@"session"],
                                        @"UserID" : dictionary[@"uid"],
+                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue])
                                        } withKey:@"UserHasLoginDic"];
             
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
@@ -314,7 +315,7 @@
                                            @"Password" : [UserInfo sharedInstance].password,
                                            @"Session" : dictionary[@"session"],
                                            @"UserID" : dictionary[@"uid"],
-                                           
+                                           @"IsSuscription" : @YES
                                            } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].userID = dictionary[@"uid"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
