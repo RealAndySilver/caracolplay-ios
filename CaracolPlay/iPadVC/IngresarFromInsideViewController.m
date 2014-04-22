@@ -157,7 +157,7 @@
 -(void)goToSubscriptionConfirm {
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresentedFromIngresarScreen = YES;
-    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeConfirmVC.userIsLoggedIn = NO;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
@@ -166,7 +166,7 @@
 -(void)goToRentConfirmationVC {
     RentConfirmFromInsideViewController *rentConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentConfirmFromInside"];
     rentConfirmVC.controllerWasPresentedFromIngresarFromInside = YES;
-    rentConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    rentConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     rentConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     rentConfirmVC.rentedProductionName = self.productName;
     rentConfirmVC.userIsLoggedIn = NO;
@@ -360,7 +360,7 @@
     hud.labelText = @"Comprando...";
     
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -379,12 +379,14 @@
 #pragma mark - Notification Handlers
 
 -(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"Me llegó la notificacion de que falló la transaccion");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 }
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;
@@ -424,7 +426,7 @@
     }
 }*/
 
--(void)textFieldDidBeginEditing:(UITextField *)textField {
+/*-(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");
     self.enterButton.userInteractionEnabled = NO;
 }
@@ -432,6 +434,6 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     self.enterButton.userInteractionEnabled = YES;
     NSLog(@"terminé de editarme");
-}
+}*/
 
 @end

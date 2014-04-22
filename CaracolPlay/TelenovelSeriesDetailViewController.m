@@ -373,7 +373,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSLog(@"selected season: %d", self.selectedSeason);
-    NSLog(@"Numero de temporadas en la serie: %d", [self.production.seasonList count]);
+    NSLog(@"Numero de temporadas en la serie (number of rows): %d", [self.production.seasonList count]);
     Season *season = self.production.seasonList[self.selectedSeason];
     return [season.episodes count];
 }
@@ -656,17 +656,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSDictionary *info = [notification userInfo];
     self.selectedSeason = [info[@"SeasonSelected"] intValue];
     NSLog(@"se selecciono la temporada %d", self.selectedSeason);
-    
-    if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
-        NSString *buttonTitle = [NSString stringWithFormat:@"Temporada %d", self.selectedSeason + 1];
-        [self.seasonsButton setTitle:buttonTitle forState:UIControlStateNormal];
+    NSLog(@"numeor de temporadas: %d", [self.production.seasonList count]);
+    if ([self.production.seasonList count] > 0) {
+        if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
+            NSString *buttonTitle = [NSString stringWithFormat:@"Temporada %d", self.selectedSeason + 1];
+            [self.seasonsButton setTitle:buttonTitle forState:UIControlStateNormal];
+            
+        } else {
+            Season *selectedSeason = self.production.seasonList[self.selectedSeason];
+            [self.seasonsButton setTitle:selectedSeason.seasonName forState:UIControlStateNormal];
+        }
         
-    } else {
-        Season *selectedSeason = self.production.seasonList[self.selectedSeason];
-        [self.seasonsButton setTitle:selectedSeason.seasonName forState:UIControlStateNormal];
+        [self.tableView reloadData];
     }
-    
-    [self.tableView reloadData];
 }
 
 #pragma mark - TelenovelSeriesTableViewCellDelegate

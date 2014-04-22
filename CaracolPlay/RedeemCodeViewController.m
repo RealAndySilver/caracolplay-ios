@@ -175,19 +175,31 @@
                 NSLog(@"redencion correcta");
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
-                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                           @"UserName" : [UserInfo sharedInstance].userName,
-                                           @"Password" : [UserInfo sharedInstance].password,
-                                           @"UserID" : dictionary[@"uid"],
-                                           @"Session" : dictionary[@"session"]
-                                           } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
                 [UserInfo sharedInstance].userID = dictionary[@"uid"];
 
                 if ([dictionary[@"code"][@"type"] isEqualToString:@"me"]) {
-                    NSString *redeemedProductionsString = [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
+                    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                               @"UserName" : [UserInfo sharedInstance].userName,
+                                               @"Password" : [UserInfo sharedInstance].password,
+                                               @"UserID" : dictionary[@"uid"],
+                                               @"Session" : dictionary[@"session"]
+                                               } withKey:@"UserHasLoginDic"];
+
+                    NSString *redeemedProductionsString =
+                        [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
                     [self goToRedeemCodeConfirmationWithMessage:redeemedProductionsString];
+                    
                 } else if ([dictionary[@"code"][@"type"] isEqualToString:@"s"]) {
+                    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                               @"UserName" : [UserInfo sharedInstance].userName,
+                                               @"Password" : [UserInfo sharedInstance].password,
+                                               @"UserID" : dictionary[@"uid"],
+                                               @"Session" : dictionary[@"session"],
+                                               @"IsSuscription" : @YES
+                                               } withKey:@"UserHasLoginDic"];
+                    [UserInfo sharedInstance].isSubscription = YES;
+                    
                     NSString *messageString = [@"Suscripción Anual\n" stringByAppendingString:dictionary[@"code"][@"msg"]];
                     [self goToRedeemCodeConfirmationWithMessage:messageString];
                 } else {

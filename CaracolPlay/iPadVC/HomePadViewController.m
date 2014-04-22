@@ -305,13 +305,13 @@
     
     if ([selectedProduction.type isEqualToString:@"Series"] || [selectedProduction.type isEqualToString:@"Telenovelas"] || [selectedProduction.type isEqualToString:@"Noticias"]) {
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
-        seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
+        seriesDetailPad.modalPresentationStyle = UIModalPresentationPageSheet;
         seriesDetailPad.productID = selectedProduction.identifier;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
     } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
-        movieDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
+        movieDetailPad.modalPresentationStyle = UIModalPresentationPageSheet;
         movieDetailPad.productID = selectedProduction.identifier;
         [self presentViewController:movieDetailPad animated:YES completion:nil];
     }

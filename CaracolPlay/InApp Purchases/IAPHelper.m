@@ -134,11 +134,12 @@
 - (void)failedTransaction:(SKPaymentTransaction *)transaction {
     //[MBHUDView dismissCurrentHUD];
     NSLog(@"failedTransaction...");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TransactionFailedNotification" object:nil userInfo:@{@"Message": transaction.error.localizedDescription}];
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
         NSLog(@"Transaction error: %@",
               transaction.error.localizedDescription);
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"TransactionFailedNotification" object:nil userInfo:@{@"Message": transaction.error.localizedDescription}];
+        /*[[NSNotificationCenter defaultCenter] postNotificationName:@"TransactionFailedNotification" object:nil userInfo:@{@"Message": transaction.error.localizedDescription}];*/
         //[[[UIAlertView alloc] initWithTitle:@"Error" message:transaction.error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
     IAPProduct * product =

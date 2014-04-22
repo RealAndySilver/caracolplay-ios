@@ -187,7 +187,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
-    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationPageSheet;
     ingresarFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     ingresarFromInsideVC.controllerWasPresentedFromRentScreen = YES;
     ingresarFromInsideVC.productName = self.productName;
@@ -199,7 +199,7 @@
 -(void)goToRentConfirmationVC {
     RentConfirmFromInsideViewController *rentConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentConfirmFromInside"];
     rentConfirmVC.controllerWasPresentedFromRentFromInside = YES;
-    rentConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    rentConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     rentConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     rentConfirmVC.rentedProductionName = self.productName;
     rentConfirmVC.userIsLoggedIn = NO;
@@ -455,7 +455,7 @@
 
 #pragma mark - UITextfieldDelegate
 
--(void)textFieldDidBeginEditing:(UITextField *)textField {
+/*-(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");
     self.enterHereButton.userInteractionEnabled = NO;
 }
@@ -463,6 +463,6 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     self.enterHereButton.userInteractionEnabled = YES;
     NSLog(@"terminé de editarme");
-}
+}*/
 
 @end

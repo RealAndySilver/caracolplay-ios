@@ -184,7 +184,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
-    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationPageSheet;
     ingresarFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     ingresarFromInsideVC.controllerWasPresentedFromSuscriptionScreen = YES;
     [self presentViewController:ingresarFromInsideVC animated:YES completion:nil];
@@ -197,12 +197,14 @@
     [self.confirmPasswordTextfield resignFirstResponder];
     [self.lastNameTextfield resignFirstResponder];
     [self.emailTextfield resignFirstResponder];
+    [self.genreTextfield resignFirstResponder];
+    [self.birthdayTextfield resignFirstResponder];
 }
 
 -(void)goToSubscriptionConfirm {
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresentedFromSuscribeFormScreen = YES;
-    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeConfirmVC.userIsLoggedIn = self.userIsLoggedIn;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
@@ -455,7 +457,7 @@
 #pragma mark - UITextfieldDelegate
 
 
--(void)textFieldDidBeginEditing:(UITextField *)textField {
+/*-(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");
     self.enterHereButton.userInteractionEnabled = NO;
     self.suscribeButton.userInteractionEnabled = NO;
@@ -465,6 +467,6 @@
     self.enterHereButton.userInteractionEnabled = YES;
     self.suscribeButton.userInteractionEnabled = YES;
     NSLog(@"terminé de editarme");
-}
+}*/
 
 @end

@@ -81,6 +81,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="597"/>
                     <connections>
                         <outlet property="codeTextfield" destination="rsm-9j-Nfv" id="0GL-fc-ona"/>
                         <outlet property="continueButton" destination="uQx-jk-QNN" id="zxT-Ta-JUk"/>
@@ -1498,7 +1499,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k0n-lY-yjm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1352" y="-1953"/>
+            <point key="canvasLocation" x="-1855" y="-880"/>
         </scene>
         <!--Redeem Code Form Pad View Controller-->
         <scene sceneID="HVh-ww-w4L">

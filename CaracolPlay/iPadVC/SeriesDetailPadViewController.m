@@ -435,7 +435,7 @@
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
             suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
             suscriptionAlertPadVC.productID = self.selectedEpisodeID;
             suscriptionAlertPadVC.productType = self.production.type;
             suscriptionAlertPadVC.productName = self.production.name;
@@ -469,7 +469,7 @@
         contentNotAvailableVC.productID = self.selectedEpisodeID;
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
-        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
         
@@ -477,7 +477,7 @@
         SuscriptionAlertPadViewController *suscriptionAlertPadVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         suscriptionAlertPadVC.productID = self.selectedEpisodeID;
         suscriptionAlertPadVC.productType = self.production.type;
         suscriptionAlertPadVC.productName = self.production.name;
@@ -574,7 +574,7 @@
         contentNotAvailableVC.productID = self.selectedEpisodeID;
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
-        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }

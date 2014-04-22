@@ -134,7 +134,7 @@
 
 -(void)goToRedeemCodeFromContentNotAvailable {
     ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
-    validateCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    validateCodeVC.modalPresentationStyle = UIModalPresentationPageSheet;
     validateCodeVC.controllerWasPresentedFromContentNotAvailable = YES;
     [self presentViewController:validateCodeVC animated:YES completion:nil];
 }
@@ -274,7 +274,7 @@
 -(void)goToRentConfirmationVC {
     RentConfirmFromInsideViewController *rentConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentConfirmFromInside"];
     rentConfirmVC.controllerWasPresentedFromContentNotAvailable = YES;
-    rentConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    rentConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     rentConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     rentConfirmVC.rentedProductionName = self.productName;
     rentConfirmVC.userIsLoggedIn = YES;
@@ -284,7 +284,7 @@
 -(void)goToSubscriptionConfirm {
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresenteFromContentNotAvailable = YES;
-    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeConfirmVC.userIsLoggedIn = YES;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
@@ -295,7 +295,7 @@
     hud.labelText = @"Comprando...";
     
     [[CPIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products){
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
         if (success) {
             if (products) {
                 for (IAPProduct *product in products) {
@@ -331,6 +331,7 @@
 #pragma mark - Notification Handler
 
 -(void)transactionFailedNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"Falló la notificación");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error"
@@ -340,6 +341,7 @@
 }
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"recibí la notificación");
     NSDictionary *productInfo = [notification userInfo];
     NSString *transactionID = productInfo[@"TransactionID"];

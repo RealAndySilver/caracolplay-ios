@@ -57,19 +57,13 @@
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
     self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
     self.titleLabel.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 40.0, self.productionImageView.frame.size.width, 40.0);
-    [self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
+    //[self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
 
 -(void)setGoldStars:(int)goldStars {
     _goldStars = goldStars;
     [self createStarsImageViewsWithGoldStarsNumber:goldStars];
 }
-
-/*-(void)setIsFree:(BOOL)isFree {
-    self.freeImageView = [[UIImageView alloc] init];
-    self.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
-    [self.productionImageView addSubview:self.freeImageView];
-}*/
 
 #pragma mark - Custom Methods
 

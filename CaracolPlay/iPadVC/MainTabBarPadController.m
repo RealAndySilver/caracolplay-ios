@@ -60,8 +60,4 @@
     }
     self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController];
 }
-
-/*-(BOOL)disablesAutomaticKeyboardDismissal {
-    return NO;
-}*/
 @end

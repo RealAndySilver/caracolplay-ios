@@ -107,14 +107,14 @@
 
 -(void)showRedeemVC {
     ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
-    validateCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    validateCodeVC.modalPresentationStyle = UIModalPresentationPageSheet;
     validateCodeVC.controllerWasPresentedFromInitialScreen = YES;
     [self presentViewController:validateCodeVC animated:YES completion:nil];
 }
 
 -(void)showIngresarVC {
     IngresarPadViewController *ingresarPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarPad"];
-    ingresarPadViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarPadViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     ingresarPadViewController.viewWidth = 320.0;
     ingresarPadViewController.viewHeight = 386.0;
     ingresarPadViewController.controllerWasPresentedFromInitialScreen = YES;
@@ -123,7 +123,7 @@
 
 -(void)showSuscribeVC {
     SuscribePadViewController *suscribePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribePad"];
-    suscribePadViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribePadViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self presentViewController:suscribePadViewController animated:YES completion:nil];
 }
 

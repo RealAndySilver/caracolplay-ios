@@ -137,7 +137,7 @@
     [self resignAllTextfieldsAsFirstResponders];
     
     RedeemCodePadViewController *redeemCodePadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodePad"];
-    redeemCodePadVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    redeemCodePadVC.modalPresentationStyle = UIModalPresentationPageSheet;
     redeemCodePadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     redeemCodePadVC.redeemedCode = self.redeemedCode;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
@@ -235,16 +235,26 @@
                 NSLog(@"redencion correcta");
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
-                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                           @"UserName" : [UserInfo sharedInstance].userName,
-                                           @"Password" : [UserInfo sharedInstance].password,
-                                           @"Session" : dictionary[@"session"]
-                                           } withKey:@"UserHasLoginDic"];
                 [UserInfo sharedInstance].session = dictionary[@"session"];
+                
                 if ([dictionary[@"code"][@"type"] isEqualToString:@"me"]) {
-                    NSString *redeemedProductionsString = [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
+                    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                               @"UserName" : [UserInfo sharedInstance].userName,
+                                               @"Password" : [UserInfo sharedInstance].password,
+                                               @"Session" : dictionary[@"session"]
+                                               } withKey:@"UserHasLoginDic"];
+                    NSString *redeemedProductionsString =
+                        [self generateRedeemedProductionsStringUsingArrayWithName:dictionary[@"code"][@"items"]];
                     [self goToRedeemCodeConfirmationWithMessage:redeemedProductionsString];
+                    
                 } else if ([dictionary[@"code"][@"type"] isEqualToString:@"s"]) {
+                    [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                               @"UserName" : [UserInfo sharedInstance].userName,
+                                               @"Password" : [UserInfo sharedInstance].password,
+                                               @"Session" : dictionary[@"session"],
+                                               @"IsSuscription" : @YES
+                                               } withKey:@"UserHasLoginDic"];
+                    [UserInfo sharedInstance].isSubscription = YES;
                     NSString *messageString = [@"Suscripción Anual\n" stringByAppendingString:dictionary[@"code"][@"msg"]];
                     [self goToRedeemCodeConfirmationWithMessage:messageString];
                 } else {
@@ -287,7 +297,7 @@
 -(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
     redeemCodeConfirmationVC.message = message;
-    redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationPageSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
         redeemCodeConfirmationVC.controllerWasPresentedFromSuscriptionAlert = YES;
@@ -419,7 +429,7 @@
     return [emailTest evaluateWithObject:checkString];
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)textField {
+/*-(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"empezé a editarme");
     self.enterHereButton.userInteractionEnabled = NO;
 }
@@ -427,6 +437,6 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     self.enterHereButton.userInteractionEnabled = YES;
     NSLog(@"terminé de editarme");
-}
+}*/
 
 @end

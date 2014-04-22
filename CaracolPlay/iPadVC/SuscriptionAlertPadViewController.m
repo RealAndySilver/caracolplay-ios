@@ -106,7 +106,7 @@
 
 -(void)goToRedeemCodeVC {
     ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
-    validateCodeVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    validateCodeVC.modalPresentationStyle = UIModalPresentationPageSheet;
     validateCodeVC.controllerWasPresentedFromProductionScreen = YES;
     [self presentViewController:validateCodeVC animated:YES completion:nil];
 }
@@ -114,7 +114,7 @@
 -(void)goToIngresarFromInside {
     IngresarFromInsideViewController *ingresarFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarFromInside"];
     ingresarFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    ingresarFromInsideVC.modalPresentationStyle = UIModalPresentationPageSheet;
     ingresarFromInsideVC.controllerWasPresentFromAlertScreen = YES;
     [self presentViewController:ingresarFromInsideVC animated:YES completion:nil];
 }
@@ -122,7 +122,7 @@
 -(void)goToRentFromInside {
     RentFromInsideViewController *rentFromInside = [self.storyboard instantiateViewControllerWithIdentifier:@"RentFromInside"];
     rentFromInside.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    rentFromInside.modalPresentationStyle = UIModalPresentationFormSheet;
+    rentFromInside.modalPresentationStyle = UIModalPresentationPageSheet;
     rentFromInside.productType = self.productType;
     rentFromInside.productID = self.productID;
     rentFromInside.productName = self.productName;
@@ -132,7 +132,7 @@
 -(void)goToSuscriptionVC {
     SuscribeFromInsideViewController *suscribeFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeFromInside"];
     suscribeFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    suscribeFromInsideVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    suscribeFromInsideVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeFromInsideVC.userIsLoggedIn = NO;
     [self presentViewController:suscribeFromInsideVC animated:YES completion:nil];
 }
