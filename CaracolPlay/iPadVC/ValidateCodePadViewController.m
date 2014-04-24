@@ -183,7 +183,7 @@
                     NSLog(@"El código es válido, es de los normalitos");
                 }
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El código no es válido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else {
@@ -244,6 +244,7 @@
                 
             } else {
                 NSLog(@"redencion incorrecta");
+                //[[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"code"][@"msg"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil] show];
             }
         } else {

@@ -25,6 +25,7 @@
         _seasonList = dictionary[@"season_list"];
         _free = dictionary[@"free"];
         _statusRent = [dictionary[@"status_rent"] boolValue];
+        _viewType = [dictionary[@"type_view"] intValue];
     }
     return self;
 }

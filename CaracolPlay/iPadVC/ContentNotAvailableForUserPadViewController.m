@@ -62,8 +62,14 @@
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.detailTextView.frame = CGRectMake(20.0, self.view.bounds.size.height/2 - 40.0, self.view.bounds.size.width - 40.0, 100.0);
     self.redeemCodeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 50.0, self.view.bounds.size.height - 130.0, 100.0, 100.0);
-    self.rentButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, self.view.bounds.size.height/1.7, 200.0, 44.0);
-    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, self.view.bounds.size.height/1.44, 200.0, 44.0);
+    
+    if (self.viewType == 1 || self.viewType == 3) {
+        self.rentButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, self.view.bounds.size.height/1.7, 200.0, 44.0);
+    }
+    
+    if (self.viewType == 2 || self.viewType == 3) {
+        self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 100.0, self.view.bounds.size.height/1.44, 200.0, 44.0);
+    }
 }
 
 -(void)UISetup {

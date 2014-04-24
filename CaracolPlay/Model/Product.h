@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSArray *seasonList; //Of Season
 @property (strong, nonatomic) NSString *free;
 @property (assign, nonatomic) BOOL statusRent;
+@property (assign, nonatomic) NSUInteger viewType;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

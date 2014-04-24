@@ -182,13 +182,47 @@
     playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
     [smallProductionImageView addSubview:playIcon];*/
     
-    // Add the stars to the view
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.rate intValue]/20.0 + 1];
-    [self.view addSubview:self.starsView];
+    //6. Share button setup
+    self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(190.0, 100.0, 140.0, 35.0)];
+    [self.shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
+    [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
+    self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.shareButton.layer.shadowOpacity = 0.8;
+    self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    self.shareButton.layer.shadowRadius = 5.0;
+    [self.view addSubview:self.shareButton];
+
     
-    //Add a tap gesture to the star view. when the user touches the stars, show the rate view
-    UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
-    [self.starsView addGestureRecognizer:starsTapGesture];
+    if (![self.production.type isEqualToString:@"Noticias"]) {
+        //Change 'compartir' button frame
+        self.shareButton.frame = CGRectMake(340.0, 100.0, 140.0, 35.0);
+        
+        // Add the stars to the view
+        self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(180.0, 65.0, 100.0, 20.0) rate:[self.production.rate intValue]/20.0 + 1];
+        [self.view addSubview:self.starsView];
+        
+        //Add a tap gesture to the star view. when the user touches the stars, show the rate view
+        UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
+        [self.starsView addGestureRecognizer:starsTapGesture];
+        
+        //5. Watch Trailer button setup
+        self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
+        [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.watchTrailerButton.layer.shadowOpacity = 0.8;
+        self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+        self.watchTrailerButton.layer.shadowRadius = 5.0;
+        
+        [self.view addSubview:self.watchTrailerButton];
+    }
     
     //Create a tap gesture and add it to the small image view, to display
     //a larger image when the user taps on it.
@@ -202,42 +236,12 @@
     self.productionNameLabel.font = [UIFont boldSystemFontOfSize:20.0];
     [self.view addSubview:self.productionNameLabel];
     
-    //5. Watch Trailer button setup
-    self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
-    [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
-    [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.watchTrailerButton.layer.shadowOpacity = 0.8;
-    self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    self.watchTrailerButton.layer.shadowRadius = 5.0;
-    
-    [self.view addSubview:self.watchTrailerButton];
-    
-    //6. Share button setup
-    self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(340.0, 100.0, 140.0, 35.0)];
-    [self.shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
-    [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.shareButton.layer.shadowOpacity = 0.8;
-    self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    self.shareButton.layer.shadowRadius = 5.0;
-    
-    [self.view addSubview:self.shareButton];
-    
     //View production button (only if the user is log out)
     if ([self.production.free isEqualToString:@"0"]) {
         FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
-                self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(500.0, 100.0, 140.0, 35.0)];
+                self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 140.0, 35.0)];
                 [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
                 [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -439,6 +443,7 @@
             suscriptionAlertPadVC.productID = self.selectedEpisodeID;
             suscriptionAlertPadVC.productType = self.production.type;
             suscriptionAlertPadVC.productName = self.production.name;
+            suscriptionAlertPadVC.viewType = self.production.viewType;
             [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
             
         } else {
@@ -469,6 +474,7 @@
         contentNotAvailableVC.productID = self.selectedEpisodeID;
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
@@ -480,6 +486,7 @@
         suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         suscriptionAlertPadVC.productID = self.selectedEpisodeID;
         suscriptionAlertPadVC.productType = self.production.type;
+        suscriptionAlertPadVC.viewType = self.production.viewType;
         suscriptionAlertPadVC.productName = self.production.name;
         [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
     }
@@ -574,6 +581,7 @@
         contentNotAvailableVC.productID = self.selectedEpisodeID;
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];

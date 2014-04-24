@@ -196,34 +196,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     movieEventNameLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:movieEventNameLabel];
     
-    //4. Create the stars images
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(110.0, self.view.bounds.size.height/11.36, 100.0, 20.0) rate:[self.production.rate intValue]/20 + 1];
-    [self.view addSubview:self.starsView];
-    
-    //Create a tap gesture and add it to the stars view to display the rate view when the user touches the stars.
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
-    [self.starsView addGestureRecognizer:tapGesture];
-    
-    //5. Create a button to see the movie/event trailer
-    UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
-                                                                              self.view.bounds.size.height/6.3,
-                                                                              90.0,
-                                                                              30.0)];
-    [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
-    [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
-    watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-    
-    watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    watchTrailerButton.layer.shadowOpacity = 0.8;
-    watchTrailerButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-    watchTrailerButton.layer.shadowRadius = 5.0;
-    
-    [self.view addSubview:watchTrailerButton];
     
     //6. Create a button to share the movie/event
-    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.view.bounds.size.height/6.3, 90.0, 30.0)];
+    UIButton *shareButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, self.view.bounds.size.height/6.3, 190.0, 30.0)];
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
@@ -237,12 +212,42 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     [self.view addSubview:shareButton];
     
+    if (![self.production.type isEqualToString:@"Noticias"]) {
+        shareButton.frame = CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 120.0, self.view.bounds.size.height/6.3, 90.0, 30.0);
+        
+        //4. Create the stars images
+        self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(110.0, self.view.bounds.size.height/11.36, 100.0, 20.0) rate:[self.production.rate intValue]/20 + 1];
+        [self.view addSubview:self.starsView];
+        
+        //Create a tap gesture and add it to the stars view to display the rate view when the user touches the stars.
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
+        [self.starsView addGestureRecognizer:tapGesture];
+        
+        //5. Create a button to see the movie/event trailer
+        UIButton *watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0,
+                                                                                  self.view.bounds.size.height/6.3,
+                                                                                  90.0,
+                                                                                  30.0)];
+        [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
+        watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+        
+        watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        watchTrailerButton.layer.shadowOpacity = 0.8;
+        watchTrailerButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+        watchTrailerButton.layer.shadowRadius = 5.0;
+        
+        [self.view addSubview:watchTrailerButton];
+    }
+  
     //Create the button to watch the production, only if the user is log out
     if ([self.production.free isEqualToString:@"0"]) {
         FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
-                self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(watchTrailerButton.frame.origin.x, watchTrailerButton.frame.origin.y + watchTrailerButton.frame.size.height + 10.0, 190.0, 30.0)];
+                self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0)];
                 [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
@@ -253,22 +258,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         }
     }
     
-    //7. Create a text view to display the detail of the event/movie
-    /*UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
-    
-    detailTextView.text = self.production.detailDescription;
-    detailTextView.backgroundColor = [UIColor clearColor];
-    detailTextView.textColor = [UIColor whiteColor];
-    detailTextView.editable = NO;
-    detailTextView.selectable = NO;
-    detailTextView.textAlignment = NSTextAlignmentJustified;
-    detailTextView.font = [UIFont systemFontOfSize:13.0];
-    [self.view addSubview:detailTextView];*/
-    
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
     
@@ -394,7 +387,6 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     cell.delegate = self;
     cell.chapterNumberLabel.text = [episode.episodeNumber description];
     cell.chapterNameLabel.text = episode.episodeName;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -418,7 +410,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
 }
 
-#pragma mark - Actions 
+#pragma mark - Actions
 
 -(void)goToSuscriptionAlert {
     FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -435,6 +427,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     contentNotAvailableForUser.productID = self.selectedEpisodeID;
     contentNotAvailableForUser.productName = self.production.name;
     contentNotAvailableForUser.productType = self.production.type;
+    contentNotAvailableForUser.viewType = self.production.viewType;
     [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
 }
 
@@ -442,6 +435,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     SuscriptionAlertViewController *suscriptionAlertVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlert"];
     suscriptionAlertVC.productID = episodeID;
     suscriptionAlertVC.productName = productionName;
+    suscriptionAlertVC.viewType = self.production.viewType;
     [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
     NSLog(@"no puedo ver la producción porque no he ingresado");
 }
@@ -556,6 +550,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         contentNotAvailableForUser.productID = self.selectedEpisodeID;
         contentNotAvailableForUser.productName = self.production.name;
         contentNotAvailableForUser.productType = self.production.type;
+        contentNotAvailableForUser.viewType = self.production.viewType;
         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }
@@ -623,12 +618,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             self.unparsedProductionInfoDic = dictionary[@"products"][@"0"][0];
         }
     
-    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [dictionary[@"status"] boolValue]) {
-        //La petición fue exitosa
-        NSLog(@"info del video: %@", dictionary);
-        NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
-        Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
-        [self checkVideoAvailability:video];
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && dictionary) {
+        if ([dictionary[@"status"] boolValue]) {
+            //La petición fue exitosa
+            NSLog(@"info del video: %@", dictionary);
+            NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
+            Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
+            [self checkVideoAvailability:video];
+        } else {
+            NSLog(@"error en el is content: %@", dictionary);
+        }
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && dictionary){
         NSLog(@"llegó la info de la caloficación: %@", dictionary);

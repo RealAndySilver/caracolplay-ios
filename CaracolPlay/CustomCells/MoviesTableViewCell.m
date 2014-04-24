@@ -7,6 +7,7 @@
 //
 
 #import "MoviesTableViewCell.h"
+#import "StarsView.h"
 
 @interface MoviesTableViewCell()
 @property (strong, nonatomic) UIView *shadowView;
@@ -44,6 +45,7 @@
         self.movieTitleLabel.textColor = [UIColor whiteColor];
         self.movieTitleLabel.font = [UIFont boldSystemFontOfSize:16.0];
         [self.contentView addSubview:self.movieTitleLabel];
+        
     }
     return self;
 }
@@ -63,7 +65,9 @@
                        30.0);
     self.movieTitleLabel.frame = frame;
     
-    [self createStarsImageViewsWithGoldStarsNumber:self.stars];
+    if (self.showStars) {
+        [self createStarsImageViewsWithGoldStarsNumber:self.stars];
+    }
 }
 
 #pragma mark - Custom Methods

@@ -70,7 +70,7 @@
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:screenFrame];
     backgroundImageView.image = [UIImage imageNamed:@"SuscriptionAlertBackground.png"];
     backgroundImageView.clipsToBounds = YES;
-    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backgroundImageView.contentMode = UIViewContentModeScaleToFill;
     [self.view addSubview:backgroundImageView];
     
     // 2. textview setup
@@ -84,22 +84,26 @@
     [self.view addSubview:detailTextView];
     
     //'Alquilar' button setup
-    UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.7, 200.0, 44.0)];
-    [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
-    [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rentButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
-    rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.view addSubview:rentButton];
+    if (self.viewType == 1 || self.viewType == 3) {
+        UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.7, 200.0, 44.0)];
+        [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
+        [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [rentButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
+        rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [self.view addSubview:rentButton];
+    }
     
-    // 'Suscribete' button setup
-    UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.44, 200.0, 44.0)];
-    [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
-    [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
-    [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.view addSubview:suscribeButton];
+    if (self.viewType == 2 || self.viewType == 3) {
+        // 'Suscribete' button setup
+        UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.44, 200.0, 44.0)];
+        [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+        [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
+        [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        [self.view addSubview:suscribeButton];
+    }
     
     // 'Redimir código' button setup
     CGFloat buttonHeight = screenFrame.size.height/8.11;

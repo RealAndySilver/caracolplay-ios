@@ -158,7 +158,8 @@
                     NSLog(@"El código es válido, es de los normalitos");
                 }
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El código no es válido." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                NSLog(@"%@", dictionary);
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else {

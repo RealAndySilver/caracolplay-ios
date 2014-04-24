@@ -121,6 +121,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.item][@"image_url"]]
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    
+   
     cell.goldStars = ([self.productionsArray[indexPath.item][@"rate"] intValue]/20) + 1;
     
     if ([self.productionsArray[indexPath.item][@"free"] isEqualToString:@"1"]) {

@@ -52,6 +52,9 @@
     MyListsPadTableViewCell *cell = (MyListsPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor blackColor];
+        cell.selectedBackgroundView = selectedView;
     }
     Episode *episode = self.episodes[indexPath.row];
     cell.productionNameLabel.text = episode.productName;

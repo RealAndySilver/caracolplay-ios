@@ -128,6 +128,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
     }
     Categoria *category = self.parsedCategoriesList[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];

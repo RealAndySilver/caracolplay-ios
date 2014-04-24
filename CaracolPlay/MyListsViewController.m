@@ -122,6 +122,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor blackColor];
+        cell.selectedBackgroundView = selectedView;
     }
     List *list = self.parsedUserListsArray[indexPath.row];
     cell.textLabel.text = list.listName;

@@ -107,6 +107,9 @@ static NSString *CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor blackColor];
+        cell.selectedBackgroundView = selectedView;
     }
     
     Categoria *category = self.parsedCategoriesList[indexPath.row];
@@ -126,7 +129,6 @@ static NSString *CellIdentifier = @"CellIdentifier";
     productionListVC.categoryID = category.identifier;
     productionListVC.navigationBarTitle = category.name;
     [self.navigationController pushViewController:productionListVC animated:YES];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Server Stuff

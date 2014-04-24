@@ -12,4 +12,5 @@
 @property (strong, nonatomic) NSString *productID;
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *productType;
+@property (assign, nonatomic) NSUInteger viewType;
 @end

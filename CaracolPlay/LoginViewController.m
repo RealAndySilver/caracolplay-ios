@@ -47,7 +47,7 @@
     [self.view addSubview:suscribeButton];
     
     //Tigo Button
-    UIButton *tigoButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 105, screenFrame.size.height/1.32, 210.0, 30.0)];
+    UIButton *tigoButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120, screenFrame.size.height/1.32, 240.0, 35.0)];
     [tigoButton setBackgroundImage:[UIImage imageNamed:@"BotonTigo.png"] forState:UIControlStateNormal];
     [tigoButton addTarget:self action:@selector(goToTigo) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tigoButton];

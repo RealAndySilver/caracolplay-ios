@@ -13,6 +13,7 @@
 @interface TelenovelSeriesTableViewCell()
 @property (strong, nonatomic) UILabel *capLabel;
 @property (strong, nonatomic) UIButton *addToListButton;
+@property (strong, nonatomic) UIImageView *playIcon;
 @end
 
 @implementation TelenovelSeriesTableViewCell
@@ -42,6 +43,11 @@
         self.chapterNameLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [self.contentView addSubview:self.chapterNameLabel];
         
+        self.playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayIcon.png"]];
+        self.playIcon.contentMode = UIViewContentModeScaleAspectFit;
+        self.playIcon.clipsToBounds = YES;
+        [self.contentView addSubview:self.playIcon];
+        
         /*self.addToListButton = [[UIButton alloc] init];
         UIImage *resizedButtonImage = [MyUtilities imageWithName:[UIImage imageNamed:@"AddToListIcon.png"] ScaleToSize:CGSizeMake(25.0, 25.0)];
         [self.addToListButton setImage:resizedButtonImage forState:UIControlStateNormal];
@@ -56,7 +62,8 @@
     CGRect contentRect = self.contentView.bounds;
     self.capLabel.frame = CGRectMake(12.0, 5.0, 50.0, 20.0);
     self.chapterNumberLabel.frame = CGRectMake(5.0, 20.0, 40.0, 30.0);
-    self.chapterNameLabel.frame = CGRectMake(50.0, contentRect.size.height/2 - 15.0, contentRect.size.width - 50, 30.0);
+    self.chapterNameLabel.frame = CGRectMake(50.0, contentRect.size.height/2 - 15.0, contentRect.size.width - 90, 30.0);
+    self.playIcon.frame = CGRectMake(contentRect.size.width - 30.0, contentRect.size.height/2.0 - 10.0, 20.0, 20.0);
     self.addToListButton.frame = CGRectMake(contentRect.size.width - 45.0, contentRect.size.height/2.0 - 22.0, 44.0, 44.0);
 }
 

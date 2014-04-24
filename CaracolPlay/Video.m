@@ -20,6 +20,7 @@
         _embedHD = dictionary[@"embed_hd"];
         _trailer = dictionary[@"trailer"];
         _is3G = [dictionary[@"is_3g"] boolValue];
+        _typeView = [dictionary[@"type_view"] intValue];
     }
     return self;
 }

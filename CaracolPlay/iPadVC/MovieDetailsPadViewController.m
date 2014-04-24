@@ -44,9 +44,11 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 @property (strong, nonatomic) UIWebView *webView;
+@property (strong, nonatomic) UIImageView *smallProductionImageView;
+@property (strong, nonatomic) UIImageView *freeBandImageView;
 
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
-@property (strong, nonatomic) NSArray *recommendedProductions;
+@property (strong, nonatomic) NSMutableArray *recommendedProductions;
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
@@ -65,7 +67,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     return _spinner;
 }
 
--(void)setRecommendedProductions:(NSArray *)recommendedProductions {
+-(void)setRecommendedProductions:(NSMutableArray *)recommendedProductions {
     _recommendedProductions = recommendedProductions;
     [self setupRecommendedProductionsCollectionView];
 }
@@ -83,7 +85,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
     [self.view addSubview:self.collectionView];
-
 }
 
 -(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
@@ -158,9 +159,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     //Free band image view
     if ([self.production.free isEqualToString:@"1"]) {
-        UIImageView *freeBandImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 118.0, 0.0, 118.0, 86.0)];
-        freeBandImageView.image = [UIImage imageNamed:@"FreeBandPad.png"];
-        [self.view addSubview:freeBandImageView];
+        self.freeBandImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 118.0, 0.0, 118.0, 86.0)];
+        self.freeBandImageView.image = [UIImage imageNamed:@"FreeBandPad.png"];
+        [self.view addSubview:self.freeBandImageView];
     }
     
     //3. add a UIView to opaque the background view
@@ -176,13 +177,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     shadowView.layer.shadowOpacity = 0.8;
     [self.view addSubview:shadowView];
     
-    UIImageView *smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
-    [smallProductionImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
+    self.smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
+    [self.smallProductionImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL]
                                        placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    smallProductionImageView.clipsToBounds = YES;
-    smallProductionImageView.userInteractionEnabled = YES;
-    smallProductionImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [shadowView addSubview:smallProductionImageView];
+    self.smallProductionImageView.clipsToBounds = YES;
+    self.smallProductionImageView.userInteractionEnabled = YES;
+    self.smallProductionImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [shadowView addSubview:self.smallProductionImageView];
     
     //Add the play icon into the secondaty image view
     /*UIImageView *playIcon = [[UIImageView alloc] initWithFrame:CGRectMake(smallProductionImageView.frame.size.width/2 - 25.0, smallProductionImageView.frame.size.height/2 - 25.0, 50.0, 50.0)];
@@ -191,16 +192,34 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     playIcon.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
     [smallProductionImageView addSubview:playIcon];*/
     
-    //Stars view
-    self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.rate intValue]];
-    [self.view addSubview:self.starsView];
-    UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
-    [self.starsView addGestureRecognizer:starsTapGesture];
+    if (![self.production.type isEqualToString:@"Eventos en vivo"]) {
+        //Stars view
+        self.starsView = [[StarsView alloc] initWithFrame:CGRectMake(210.0, 55.0, 100.0, 50.0) rate:[self.production.rate intValue]/20.0 + 1];
+        [self.view addSubview:self.starsView];
+        UITapGestureRecognizer *starsTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showRateView)];
+        [self.starsView addGestureRecognizer:starsTapGesture];
+        
+        //5. Watch Trailer button setup
+        self.watchTrailerButton = [[UIButton alloc] init];
+        [self.watchTrailerButton setTitle:@"▶︎ Ver Trailer" forState:UIControlStateNormal];
+        [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.watchTrailerButton.layer.shadowOpacity = 0.8;
+        self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+        self.watchTrailerButton.layer.shadowRadius = 5.0;
+        
+        [self.view addSubview:self.watchTrailerButton];
+    }
+  
     
     //Create a tap gesture and add it to the small image view, so when the user touches the image,
     //a larger image will be displayed
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    [smallProductionImageView addGestureRecognizer:tapGesture];
+    [self.smallProductionImageView addGestureRecognizer:tapGesture];
     
     //4. Production name label setup
     self.productionNameLabel = [[UILabel alloc] init];
@@ -209,20 +228,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionNameLabel.font = [UIFont boldSystemFontOfSize:25.0];
     [self.view addSubview:self.productionNameLabel];
     
-    //5. Watch Trailer button setup
-    self.watchTrailerButton = [[UIButton alloc] init];
-    [self.watchTrailerButton setTitle:@"▶︎ Ver Trailer" forState:UIControlStateNormal];
-    [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.watchTrailerButton.layer.shadowOpacity = 0.8;
-    self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    self.watchTrailerButton.layer.shadowRadius = 5.0;
-    
-    [self.view addSubview:self.watchTrailerButton];
     
     //6. Share button
     self.shareButton = [[UIButton alloc] init];
@@ -278,6 +283,21 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.recommendedProductionsLabel];
 }
 
+-(void)removeUI {
+    NSLog(@"entré a quitar estas vainas");
+    [self.backgroundImageView removeFromSuperview];
+    [self.productionDetailTextView removeFromSuperview];
+    [self.productionNameLabel removeFromSuperview];
+    [self.recommendedProductionsLabel removeFromSuperview];
+    [self.webView removeFromSuperview];
+    [self.starsView removeFromSuperview];
+    [self.shareButton removeFromSuperview];
+    [self.watchTrailerButton removeFromSuperview];
+    [self.viewProductionButton removeFromSuperview];
+    [self.smallProductionImageView removeFromSuperview];
+    [self.freeBandImageView removeFromSuperview];
+}
+
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -309,8 +329,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionNameLabel.frame = CGRectMake(210.0, 25.0, self.view.bounds.size.width - 180.0, 30.0);
     self.rateButton.frame = CGRectMake(370.0, 60.0, 140.0, 35.0);
     self.watchTrailerButton.frame = CGRectMake(210.0, 100.0, 130.0, 35.0);
-    self.shareButton.frame = CGRectMake(360.0, 100.0, 130.0, 35.0);
-    self.viewProductionButton.frame = CGRectMake(510.0, 100.0, 130.0, 35.0);
+    
+    if ([self.production.type isEqualToString:@"Eventos en vivo"]) {
+        self.shareButton.frame = CGRectMake(210.0, 100.0, 130.0, 35.0);
+    } else {
+        self.shareButton.frame = CGRectMake(360.0, 100.0, 130.0, 35.0);
+    }
+    self.viewProductionButton.frame = CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 130.0, 35.0);
     self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 130.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     //self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
@@ -351,19 +376,24 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
      NSLog(@"Seleccioné el item %d", indexPath.item);
-    if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"]) {
-        SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+    if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Series"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Telenovelas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"]) {
+        /*SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPad.modalPresentationStyle = UIModalPresentationFormSheet;
         seriesDetailPad.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         seriesDetailPad.productID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
-        [self presentViewController:seriesDetailPad animated:YES completion:nil];
+        [self presentViewController:seriesDetailPad animated:YES completion:nil];*/
         
-    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Noticias"]) {
-        MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
+        /*MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
         movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         movieDetailsPad.productID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
-        [self presentViewController:movieDetailsPad animated:YES completion:nil];
+        [self presentViewController:movieDetailsPad animated:YES completion:nil];*/
+        NSString *selectedProductID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
+        [self.recommendedProductions removeAllObjects];
+        [self removeUI];
+        [self.collectionView reloadData];
+        [self getProductWithID:selectedProductID];
     }
 }
 
@@ -388,8 +418,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
                 [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
-                videoPlayer.productID = self.production.identifier;
+                videoPlayer.episodeID = self.production.identifier;
                 videoPlayer.progressSec = video.progressSec;
+                videoPlayer.productID = self.production.identifier;
                 [self.navigationController pushViewController:videoPlayer animated:YES];
             } else {
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
@@ -400,6 +431,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.embedCode = video.embedHD;
             videoPlayer.progressSec = video.progressSec;
+            videoPlayer.episodeID = self.production.identifier;
             videoPlayer.productID = self.production.identifier;
             [self presentViewController:videoPlayer animated:YES completion:nil];
         }
@@ -409,10 +441,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         contentNotAvailableVC.productID = self.production.identifier;
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
+        contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
-      
     }
 }
 
@@ -427,6 +459,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         suscriptionAlertPadVC.productID = self.production.identifier;
         suscriptionAlertPadVC.productName = self.production.name;
         suscriptionAlertPadVC.productType = self.production.type;
+        suscriptionAlertPadVC.viewType = self.production.viewType;
         [self presentViewController:suscriptionAlertPadVC animated:YES completion:nil];
         /*[[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver la producción debes ingresar con tu usuario." delegate:self cancelButtonTitle:@"Cancelar" otherButtonTitles:@"Ingresar", nil] show];*/
         return;
@@ -556,7 +589,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     } else if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
         NSArray *responseArray = responseDictionary[@"recommended_products"];
         NSArray *arrayWithoutNulls = [responseArray arrayByReplacingNullsWithBlanks];
-        self.recommendedProductions = arrayWithoutNulls;
+        self.recommendedProductions = [arrayWithoutNulls mutableCopy];
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
         NSLog(@"llegó la info de la calificación: %@", responseDictionary);

@@ -97,8 +97,27 @@
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.detailTextView.frame = CGRectMake(20.0, self.view.bounds.size.height/2 - 40.0, self.view.bounds.size.width - 40.0, 100.0);
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.65, 160.0, 40.0);
-    self.rentButton.frame = CGRectMake(20.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
-    self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 + 5.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+    
+    if (self.viewType == 1 || self.viewType == 3) {
+        CGRect rentButtonFrame;
+        if (self.viewType != 3) {
+            rentButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.44, 160.0, 40.0);
+        } else {
+            rentButtonFrame = CGRectMake(20.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+        }
+        self.rentButton.frame = rentButtonFrame;
+    }
+    
+    if (self.viewType == 2 || self.viewType == 3) {
+        CGRect suscribeButtonFrame;
+        if (self.viewType != 3) {
+            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.44, 160.0, 40.0);
+        } else {
+            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 + 5.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+        }
+        self.suscribeButton.frame = suscribeButtonFrame;
+    }
+    
     self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 490.0, 100.0, 100.0);
 }
 

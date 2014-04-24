@@ -104,6 +104,9 @@
     MoviesTableViewCell *cell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
     }
     [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
@@ -113,6 +116,12 @@
     } else {
         cell.freeImageView.image = nil;
     }
+    
+    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+        cell.showStars = NO;
+    } else {
+        cell.showStars = YES;
+    }
     return cell;
 }
 
@@ -120,7 +129,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Elegí uno de los resultados");
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];

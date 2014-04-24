@@ -42,7 +42,7 @@
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         self.titleLabel.textColor = [UIColor whiteColor];
-        self.titleLabel.textAlignment = NSTextAlignmentLeft;
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.numberOfLines = 2;
         self.titleLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
         [self.productionImageView addSubview:self.titleLabel];

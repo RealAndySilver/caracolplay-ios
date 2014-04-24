@@ -109,7 +109,7 @@
     [self.scrollView addSubview:personalInfoLabel];
     
     //3. Personal info table view
-    UITableView *personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 264.0)
+    UITableView *personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 262.0)
                                                                       style:UITableViewStylePlain];
     personalInfoTableView.delegate = self;
     personalInfoTableView.dataSource  = self;
@@ -192,7 +192,7 @@
     
     //9. 'Politicas del servicio' button
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.scrollView.frame.size.width - 100.0, 30.0)];
-    [serviceTermsButton setTitle:@"Politicas del Servicio" forState:UIControlStateNormal];
+    [serviceTermsButton setTitle:@"Politicas de privacidad" forState:UIControlStateNormal];
     [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
@@ -240,7 +240,7 @@
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         
-        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(330.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
+        UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(300.0, cell.contentView.frame.size.height/2 - 15.0, 220.0, 30.0)];
         secondaryLabel.text = self.personalInfoTableViewSecondaryInfo[indexPath.row];
         secondaryLabel.textAlignment = NSTextAlignmentRight;
         secondaryLabel.textColor = [UIColor lightGrayColor];
@@ -375,7 +375,7 @@
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
-    if ([methodName isEqualToString:@"GetUser"] && dictionary) {
+    if ([methodName isEqualToString:@"GetUser"] && [dictionary[@"status"] boolValue]) {
         //NSLog(@"Peticio GetUser exitosa: %@", dictionary);
         NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
         self.suscriptionDic = dicWithoutNulls[@"user"][@"suscription"];
@@ -383,7 +383,7 @@
         self.rentedProductions = dicWithoutNulls[@"user"][@"rented"];
 
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error accediendo a tu información personal. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

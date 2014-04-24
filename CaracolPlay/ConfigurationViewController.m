@@ -35,7 +35,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = @"Más";
-    self.menuItemsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Políticas de privacidad", @"Términos y condiciones"];
+    self.menuItemsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Términos y condiciones", @"Políticas de privacidad"];
     [self UISetup];
 }
 
@@ -75,12 +75,12 @@ NSString *const cellIdentifier = @"CellIdentifier";
         [self showMailVC];
     }
     
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 3) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
         termsAndConditionsVC.showPrivacy = YES;
         termsAndConditionsVC.mainTitle = @"Políticas de Privacidad";
         [self.navigationController pushViewController:termsAndConditionsVC animated:YES];
-    } else if (indexPath.row == 3) {
+    } else if (indexPath.row == 2) {
         TermsAndConditionsViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditions"];
         termsAndConditionsVC.mainTitle = @"Términos y Condiciones";
         termsAndConditionsVC.showTerms = YES;

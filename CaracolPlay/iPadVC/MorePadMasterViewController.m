@@ -23,7 +23,7 @@
 
 -(NSArray *)menuOptionsArray {
     if (!_menuOptionsArray) {
-        _menuOptionsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Terminos y condiciones", @"Politicas del servicio"];
+        _menuOptionsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Terminos y condiciones", @"Politicas de privacidad"];
     }
     return _menuOptionsArray;
 }
@@ -71,6 +71,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
+
     }
     cell.textLabel.text = self.menuOptionsArray[indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
@@ -82,7 +86,6 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 0) {
         //Mi cuenta

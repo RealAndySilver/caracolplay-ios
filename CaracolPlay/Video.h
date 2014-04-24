@@ -17,5 +17,6 @@
 @property (strong, nonatomic) NSString *embedSD;
 @property (strong, nonatomic) NSString *embedHD;
 @property (strong, nonatomic) NSString *trailer;
+@property (assign, nonatomic) int typeView;
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @end

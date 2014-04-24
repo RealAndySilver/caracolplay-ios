@@ -99,6 +99,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
         if (!cell) {
             cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+            selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+            cell.selectedBackgroundView = selectedView;
+
         }
         cell.productionNameLabel.text = self.productionsArray[indexPath.row][@"product_name"];
         cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", self.productionsArray[indexPath.row][@"episode_number"], self.productionsArray[indexPath.row][@"episode_name"]];
@@ -106,13 +110,22 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"] ] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
         return cell;
         
+        
     } else {
         MoviesTableViewCell *productionCell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (productionCell==nil) {
             productionCell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, productionCell.contentView.bounds.size.width, productionCell.contentView.bounds.size.height)];
+            selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+            productionCell.selectedBackgroundView = selectedView;
         }
         
+        if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+            productionCell.showStars = NO;
+        } else {
+            productionCell.showStars = YES;
+        }
         productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
         [productionCell.movieImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
         productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
@@ -135,7 +148,6 @@ static NSString *cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
