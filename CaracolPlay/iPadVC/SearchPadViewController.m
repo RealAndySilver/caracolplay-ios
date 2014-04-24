@@ -115,6 +115,7 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SearchPadCollectionViewCell *cell = (SearchPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+
     NSDictionary *productInfo = self.searchResultsArray[indexPath.item];
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:productInfo[@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.productionNameLabel.text = productInfo[@"name"];

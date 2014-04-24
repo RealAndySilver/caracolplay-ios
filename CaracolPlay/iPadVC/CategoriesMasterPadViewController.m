@@ -33,7 +33,7 @@
     //Post a notification with the first category ID and send this info to the CategoriesDetailController
     Categoria *firstCategory = self.parsedCategoriesList[0];
     NSLog(@"first category id: %@", firstCategory.identifier);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryIDNotification" object:nil userInfo:@{@"CategoryID": firstCategory.identifier}];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryIDNotification" object:nil userInfo:@{@"CategoryID": firstCategory.identifier}];
     [self setupTableView];
 }
 
@@ -76,7 +76,7 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     self.tableView.backgroundColor = [UIColor blackColor];
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    //[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
     [self.view addSubview:self.tableView];
 }
 
@@ -195,9 +195,9 @@
             break;
         }
     }
-    Categoria *category = self.parsedCategoriesList[0];
-    self.categoriesDetailVC = self.splitViewController.viewControllers[1];
-    self.categoriesDetailVC.categoryID = category.identifier;
+    //Categoria *category = self.parsedCategoriesList[0];
+    //self.categoriesDetailVC = self.splitViewController.viewControllers[1];
+    //self.categoriesDetailVC.categoryID = category.identifier;
     [self.tableView reloadData];
 }
 

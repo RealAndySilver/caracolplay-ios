@@ -125,6 +125,7 @@
         cell.showStars = YES;
         cell.stars = [productInfo[@"rate"] intValue]/20.0 + 1;
     }
+    
     return cell;
 }
 

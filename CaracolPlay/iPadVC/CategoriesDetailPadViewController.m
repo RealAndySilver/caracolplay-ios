@@ -36,6 +36,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #pragma mark - Lazy Instantiation
 
 -(void)setCategoryID:(NSString *)categoryID {
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+    
     _categoryID = categoryID;
     if ([categoryID isEqualToString:@"1"]) {
         [self getUserRecentlyWatched];
@@ -111,6 +115,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(categoryIDNotificationReceived:)
                                                  name:@"CategoryIDNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eraseLastSeenCategory)
+                                                 name:@"EraseLastSeenCategory"
                                                object:nil];
     //[self getListFromCategoryID:self.categoryID withFilter:0];
     [self UISetup];
@@ -253,6 +262,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)getUserRecentlyWatched {
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+    
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
     
@@ -305,6 +318,13 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Notification Handlers 
+
+-(void)eraseLastSeenCategory {
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+    [self.collectionView removeFromSuperview];
+}
 
 -(void)categoryIDNotificationReceived:(NSNotification *)notification {
     [self.unparsedProductionsArray removeAllObjects];
