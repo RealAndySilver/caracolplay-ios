@@ -37,11 +37,18 @@
     [self setupTableView];
 }
 
+-(NSMutableArray *)parsedCategoriesList {
+    if (!_parsedCategoriesList) {
+        _parsedCategoriesList = [NSMutableArray array];
+    }
+    return _parsedCategoriesList;
+}
+
 -(void)parseCategoriesListFromServer {
     FileSaver *fileSaver = [[FileSaver alloc] init];
     BOOL userIsLoggedIn = [[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue];
     
-    self.parsedCategoriesList = [[NSMutableArray alloc] init];
+    self.parsedCategoriesList = [NSMutableArray array];
     for (int i = 0; i < [self.unparsedCategoriesList count]; i++) {
         Categoria *category = [[Categoria alloc] initWithDictionary:self.unparsedCategoriesList[i]];
         [self.parsedCategoriesList addObject:category];
@@ -181,7 +188,8 @@
 }
 
 -(void)eraseLastSeenCategory {
-    for (Categoria *category in self.parsedCategoriesList) {
+    for (int i = 0; i < [self.parsedCategoriesList count]; i++) {
+        Categoria *category = self.parsedCategoriesList[i];
         if ([category.identifier isEqualToString:@"1"]) {
             [self.parsedCategoriesList removeObject:category];
             break;

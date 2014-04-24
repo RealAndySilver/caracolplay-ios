@@ -97,7 +97,6 @@
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.detailTextView.frame = CGRectMake(20.0, self.view.bounds.size.height/2 - 40.0, self.view.bounds.size.width - 40.0, 100.0);
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.65, 160.0, 40.0);
-    
     if (self.viewType == 1 || self.viewType == 3) {
         CGRect rentButtonFrame;
         if (self.viewType != 3) {

@@ -31,6 +31,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 @implementation CategoriesDetailPadViewController
 
+@synthesize unparsedProductionsArray = _unparsedProductionsArray;
+
 #pragma mark - Lazy Instantiation
 
 -(void)setCategoryID:(NSString *)categoryID {
@@ -47,15 +49,24 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(NSMutableArray *)productionsArray {
     if (!_productionsArray) {
-        _productionsArray = [[NSMutableArray alloc] init];
+        _productionsArray = [NSMutableArray array];
     }
     return _productionsArray;
 }
 
+-(NSMutableArray *)unparsedProductionsArray {
+    if (!_unparsedProductionsArray) {
+        _unparsedProductionsArray = [NSMutableArray array];
+    }
+    return _unparsedProductionsArray;
+}
+
 -(void)setUnparsedProductionsArray:(NSMutableArray *)unparsedProductionsArray {
     _unparsedProductionsArray = unparsedProductionsArray;
-    self.productionsArray = [[_unparsedProductionsArray arrayByReplacingNullsWithBlanks] mutableCopy];
-    [self.collectionView reloadData];
+    self.productionsArray = [NSMutableArray arrayWithArray:[unparsedProductionsArray arrayByReplacingNullsWithBlanks]];
+    //self.productionsArray = [[_unparsedProductionsArray arrayByReplacingNullsWithBlanks] mutableCopy];
+    [self setupCollectionView];
+    //[self.collectionView reloadData];
 }
 
 -(UIActivityIndicatorView *)spinner {
@@ -64,6 +75,17 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         _spinner.frame = CGRectMake(320.0 - 20.0, 384 - 20.0, 40.0, 40.0);
     }
     return _spinner;
+}
+
+-(void)setupCollectionView {
+    //3. CollectionView
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    [self.collectionView registerClass:[ProductionsPadCollectionViewCell class] forCellWithReuseIdentifier:splitCollectionViewCellIdentifier];
+    self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.dataSource = self;
+    [self.view addSubview:self.collectionView];
 }
 
 -(void)UISetup {
@@ -80,15 +102,6 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     self.segmentedControl.tintColor = [UIColor whiteColor];
     [self.segmentedControl addTarget:self action:@selector(changeCategoryFilter) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.segmentedControl];
-    
-    //3. CollectionView
-    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
-    [self.collectionView registerClass:[ProductionsPadCollectionViewCell class] forCellWithReuseIdentifier:splitCollectionViewCellIdentifier];
-    self.collectionView.delegate = self;
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    self.collectionView.dataSource = self;
-    [self.view addSubview:self.collectionView];
 }
 
 -(void)viewDidLoad {
@@ -119,19 +132,26 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductionsPadCollectionViewCell *cell = (ProductionsPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:splitCollectionViewCellIdentifier forIndexPath:indexPath];
     
-    [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.item][@"image_url"]]
+    NSDictionary *producDic = self.productionsArray[indexPath.item];
+    [cell.productionImageView setImageWithURL:[NSURL URLWithString:producDic[@"image_url"]]
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     
-   
-    cell.goldStars = ([self.productionsArray[indexPath.item][@"rate"] intValue]/20) + 1;
+    if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"]) {
+        NSLog(@"los productos si tienen estrellas");
+        cell.goldStars = ([producDic[@"rate"] intValue]/20) + 1;
+    } 
     
-    if ([self.productionsArray[indexPath.item][@"free"] isEqualToString:@"1"]) {
+    if ([producDic[@"free"] isEqualToString:@"1"]) {
         cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
     } else {
         cell.freeImageView.image = nil;
     }
     
-    cell.titleLabel.text = self.productionsArray[indexPath.item][@"name"];
+    if ([self.categoryID isEqualToString:@"1"]) {
+        cell.titleLabel.text = self.productionsArray[indexPath.item][@"product_name"];
+    } else {
+        cell.titleLabel.text = self.productionsArray[indexPath.item][@"name"];
+    }
     return cell;
 }
 
@@ -242,6 +262,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 -(void)getListFromCategoryID:(NSString *)categoryID withFilter:(NSInteger)filter {
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+    
     NSLog(@"llamaré al server");
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
@@ -255,11 +279,13 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromCategoryID"] && responseDictionary) {
-        //NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
-        self.unparsedProductionsArray = responseDictionary[@"products"];
+        NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
+        self.unparsedProductionsArray = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
         
     } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"]) {
-        self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
+        NSLog(@"info de los recently watched: %@", responseDictionary);
+        self.unparsedProductionsArray = [NSMutableArray arrayWithArray:(NSArray *)responseDictionary];
+        //self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
     
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]) {
         //La petición fue exitosa
@@ -281,6 +307,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #pragma mark - Notification Handlers 
 
 -(void)categoryIDNotificationReceived:(NSNotification *)notification {
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+    [self.collectionView removeFromSuperview];
+    
     NSDictionary *notificationDic = [notification userInfo];
     NSString *categoryID = notificationDic[@"CategoryID"];
     self.categoryID = categoryID;

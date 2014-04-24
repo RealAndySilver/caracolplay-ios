@@ -52,7 +52,9 @@
     [self.view addSubview:self.navigationBar];
     
     self.webView = [[UIWebView alloc] init];
-    [self.webView loadHTMLString:self.termsAndConditionsString baseURL:nil];
+    self.webView.backgroundColor = [UIColor blackColor];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: black; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.termsAndConditionsString];
+    [self.webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:self.webView];
 }
 

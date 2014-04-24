@@ -34,6 +34,7 @@
     NSMutableURLRequest *theRequest = [self getHeaderForUrl:url];
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    defaultConfigObject.timeoutIntervalForRequest = 60.0;
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject
                                                                  delegate:nil
                                                             delegateQueue:[NSOperationQueue mainQueue]];
@@ -62,6 +63,7 @@
     NSData *data=[NSData dataWithBytes:[parameter UTF8String] length:[parameter length]];
     [theRequest setHTTPBody: data];
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    defaultConfigObject.timeoutIntervalForRequest = 60.0;
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:defaultConfigObject
                                                                  delegate:nil
                                                             delegateQueue:[NSOperationQueue mainQueue]];

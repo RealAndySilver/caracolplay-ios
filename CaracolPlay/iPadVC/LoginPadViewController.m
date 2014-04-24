@@ -114,7 +114,7 @@
 
 -(void)showIngresarVC {
     IngresarPadViewController *ingresarPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"IngresarPad"];
-    ingresarPadViewController.modalPresentationStyle = UIModalPresentationPageSheet;
+    ingresarPadViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     ingresarPadViewController.viewWidth = 320.0;
     ingresarPadViewController.viewHeight = 386.0;
     ingresarPadViewController.controllerWasPresentedFromInitialScreen = YES;

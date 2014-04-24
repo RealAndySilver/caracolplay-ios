@@ -13,5 +13,6 @@
 @property (strong, nonatomic) UIImageView *productionImageView;
 @property (strong, nonatomic) UILabel *productionNameLabel;
 @property (assign, nonatomic) int rate;
+@property (assign, nonatomic) BOOL showStars;
 //@property (strong, nonatomic) StarsView *productionStarsView;
 @end

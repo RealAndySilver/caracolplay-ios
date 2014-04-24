@@ -275,11 +275,11 @@
     
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //8. Seasons table view setup
-        self.seasonsTableView = [[UITableView alloc] initWithFrame:CGRectMake(30.0, 280.0, 128.0, self.view.bounds.size.height - 280.0) style:UITableViewStylePlain];
+        self.seasonsTableView = [[UITableView alloc] initWithFrame:CGRectMake(20.0, 280.0, 148.0, self.view.bounds.size.height - 280.0) style:UITableViewStylePlain];
         self.seasonsTableView.delegate = self;
         self.seasonsTableView.dataSource = self;
-        self.seasonsTableView.tag = 1;
         self.seasonsTableView.backgroundColor = [UIColor clearColor];
+        self.seasonsTableView.tag = 1;
         self.seasonsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         self.seasonsTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.2];
         [self.view addSubview:self.seasonsTableView];

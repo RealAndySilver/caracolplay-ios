@@ -39,8 +39,10 @@
 
 -(void)setSearchResultsArrayWithNulls:(NSMutableArray *)searchResultsArrayWithNulls {
     _searchResultsArrayWithNulls = searchResultsArrayWithNulls;
-    self.searchResultsArray = [[_searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks] mutableCopy];
-    [self.collectionView reloadData];
+    self.searchResultsArray = [NSMutableArray arrayWithArray:[searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks]];
+    [self setupCollectionVIew];
+    //self.searchResultsArray = [[_searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks] mutableCopy];
+    //[self.collectionView reloadData];
 }
 
 -(UIActivityIndicatorView *)spinner {
@@ -49,6 +51,22 @@
         _spinner.frame = CGRectMake(0.0, 0.0, 40.0, 40.0);
     }
     return _spinner;
+}
+
+-(void)setupCollectionVIew {
+    CGRect screenFrame = CGRectMake(0.0, 0.0, 1024.0, 768.0);
+
+    //3. Collection view
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewFlowLayout.itemSize = CGSizeMake(320.0, 130.0);
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 130.0, screenFrame.size.width, screenFrame.size.height - 190.0) collectionViewLayout:collectionViewFlowLayout];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    self.collectionView.showsVerticalScrollIndicator = NO;
+    self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
+    [self.collectionView registerClass:[SearchPadCollectionViewCell class] forCellWithReuseIdentifier:@"CellIdentifier"];
+    self.collectionView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.collectionView];
 }
 
 -(void)UISetup {
@@ -75,18 +93,6 @@
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     [self.view addSubview:self.mySearchBar];
-    
-    //3. Collection view
-    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    collectionViewFlowLayout.itemSize = CGSizeMake(320.0, 130.0);
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 130.0, screenFrame.size.width, screenFrame.size.height - 100.0) collectionViewLayout:collectionViewFlowLayout];
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    self.collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
-    [self.collectionView registerClass:[SearchPadCollectionViewCell class] forCellWithReuseIdentifier:@"CellIdentifier"];
-    self.collectionView.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.collectionView];
 }
 
 -(void)viewDidLoad {
@@ -109,12 +115,18 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SearchPadCollectionViewCell *cell = (SearchPadCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-    [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.item][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    cell.productionNameLabel.text = self.searchResultsArray[indexPath.item][@"name"];
+    NSDictionary *productInfo = self.searchResultsArray[indexPath.item];
+    [cell.productionImageView setImageWithURL:[NSURL URLWithString:productInfo[@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    cell.productionNameLabel.text = productInfo[@"name"];
     //cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
-    cell.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
+    
+    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"] || [productInfo[@"type"] isEqualToString:@"Series"]) {
+        cell.showStars = YES;
+        cell.rate = [productInfo[@"rate"] intValue]/20 + 1;
+    } else {
+        cell.showStars = NO;
+    }
     cell.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-  
     return cell;
 }
 
@@ -148,6 +160,10 @@
 #pragma mark - Server Stuff
 
 -(void)getSearchResultsFromServer {
+    [self.searchResultsArray removeAllObjects];
+    [self.searchResultsArrayWithNulls removeAllObjects];
+    [self.collectionView reloadData];
+    
     NSLog(@"llamé al server");
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
@@ -157,8 +173,9 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
-        NSLog(@"La petición fue exitosa");
-        self.searchResultsArrayWithNulls = [responseDictionary[@"products"] mutableCopy];
+        NSLog(@"La petición fue exitosa: %@", responseDictionary);
+        self.searchResultsArrayWithNulls = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
+        
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -179,6 +196,7 @@
         [self.spinner startAnimating];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSearchResultsFromServer) userInfo:nil repeats:NO];
     } else {
+        [self.searchResultsArrayWithNulls removeAllObjects];
         [self.searchResultsArray removeAllObjects];
         [self.spinner stopAnimating];
         [self.collectionView reloadData];

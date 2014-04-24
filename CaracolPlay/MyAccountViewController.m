@@ -104,7 +104,7 @@
     [self.scrollView addSubview:personalInfoLabel];
     
     //3. Personal info table view
-    UITableView *personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 264.0)
+    UITableView *personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 262.0)
                                                                       style:UITableViewStylePlain];
     personalInfoTableView.delegate = self;
     personalInfoTableView.dataSource  = self;
@@ -155,7 +155,7 @@
     [self.scrollView addSubview:suscriptionLabel];
     
     //6. SuscriptionInfo table view
-    UITableView *suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, suscriptionLabel.frame.origin.y + suscriptionLabel.frame.size.height, self.view.frame.size.width, 88.0) style:UITableViewStylePlain];
+    UITableView *suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, suscriptionLabel.frame.origin.y + suscriptionLabel.frame.size.height, self.view.frame.size.width, 86.0) style:UITableViewStylePlain];
     suscriptionInfoTableView.delegate = self;
     suscriptionInfoTableView.dataSource = self;
     suscriptionInfoTableView.tag = 2;

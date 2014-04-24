@@ -46,8 +46,19 @@
 
 -(void)setSearchResultsArrayWithNulls:(NSMutableArray *)searchResultsArrayWithNulls {
     _searchResultsArrayWithNulls = searchResultsArrayWithNulls;
-    self.searchResultsArray = [[_searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks] mutableCopy];
-    [self.tableView reloadData];
+    self.searchResultsArray = [NSMutableArray arrayWithArray:[searchResultsArrayWithNulls arrayByReplacingNullsWithBlanks]];
+    [self setupTableView];
+}
+
+-(void)setupTableView {
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 50.0 - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0)) style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 130.0;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.separatorColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    [self.view addSubview:self.tableView];
 }
 
 -(void)UISetup {
@@ -60,15 +71,6 @@
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarBackground.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     [self.view addSubview:self.searchBar];
-    
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 112.0 - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0)) style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.rowHeight = 130.0;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableView.separatorColor = [UIColor blackColor];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    [self.view addSubview:self.tableView];
 }
 
 -(void)createTapGesture {
@@ -108,19 +110,20 @@
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         cell.selectedBackgroundView = selectedView;
     }
-    [cell.movieImageView setImageWithURL:[NSURL URLWithString:self.searchResultsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    cell.movieTitleLabel.text = self.searchResultsArray[indexPath.row][@"name"];
-    cell.stars = [self.searchResultsArray[indexPath.row][@"rate"] intValue]/20.0 + 1;
-    if ([self.searchResultsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
+    
+    NSDictionary *productInfo = self.searchResultsArray[indexPath.row];
+    
+    [cell.movieImageView setImageWithURL:[NSURL URLWithString:productInfo[@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
+    cell.movieTitleLabel.text = productInfo[@"name"];
+    if ([productInfo[@"free"] isEqualToString:@"1"]) {
         cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
     } else {
         cell.freeImageView.image = nil;
     }
     
-    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
-        cell.showStars = NO;
-    } else {
+    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Series"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"]) {
         cell.showStars = YES;
+        cell.stars = [productInfo[@"rate"] intValue]/20.0 + 1;
     }
     return cell;
 }
@@ -150,6 +153,10 @@
 #pragma mark - Server Stuff
 
 -(void)getSearchResultsFromServer {
+    [self.searchResultsArrayWithNulls removeAllObjects];
+    [self.searchResultsArray removeAllObjects];
+    [self.tableView reloadData];
+    
     NSLog(@"llamé al server");
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
@@ -160,8 +167,8 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
-        NSLog(@"La petición fue exitosa");
-        self.searchResultsArrayWithNulls = [responseDictionary[@"products"] mutableCopy];
+        NSLog(@"La petición fue exitosa: %@", responseDictionary);
+        self.searchResultsArrayWithNulls = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }

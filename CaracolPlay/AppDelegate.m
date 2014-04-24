@@ -22,6 +22,7 @@
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     [UINavigationBar appearance].titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14.0]} forState:UIControlStateNormal];
     //[UIView appearance].tintColor = [UIColor whiteColor];
     return YES;
 }

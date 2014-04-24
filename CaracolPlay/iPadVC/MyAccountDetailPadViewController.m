@@ -163,7 +163,7 @@
     [self.scrollView addSubview:suscriptionLabel];
     
     //6. SuscriptionInfo table view
-    UITableView *suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, suscriptionLabel.frame.origin.y + suscriptionLabel.frame.size.height, self.view.frame.size.width, 88.0) style:UITableViewStylePlain];
+    UITableView *suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, suscriptionLabel.frame.origin.y + suscriptionLabel.frame.size.height, self.view.frame.size.width, 86.0) style:UITableViewStylePlain];
     suscriptionInfoTableView.delegate = self;
     suscriptionInfoTableView.dataSource = self;
     suscriptionInfoTableView.tag = 2;

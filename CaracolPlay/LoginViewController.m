@@ -53,7 +53,7 @@
     [self.view addSubview:tigoButton];
     
     //3. Set the 'redeem code' button
-    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, screenFrame.size.height - 80.0, 100.0, 80.0)];
+    UIButton *redeemCodeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 50.0, screenFrame.size.height - 70.0, 100.0, 70.0)];
     [redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeViewController) forControlEvents:UIControlEventTouchUpInside];
