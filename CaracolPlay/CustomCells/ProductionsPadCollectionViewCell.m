@@ -55,7 +55,7 @@
     CGRect contentRect = self.contentView.bounds;
     self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
-    self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
+    self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 60.0, self.productionImageView.frame.size.width, 20.0);
     self.titleLabel.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 40.0, self.productionImageView.frame.size.width, 40.0);
     //[self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }

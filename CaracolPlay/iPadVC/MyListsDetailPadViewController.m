@@ -81,7 +81,12 @@
     MyListsPadTableViewCell *cell = (MyListsPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
     }
+    cell.backgroundColor=[UIColor clearColor];
+
     Episode *episode = self.episodes[indexPath.row];
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:episode.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.productionNameLabel.text = episode.productName;
@@ -93,7 +98,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    Episode *episode = self.episodes[indexPath.row];
     //We have to check the network status to allow the user to watch the video.
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
@@ -104,24 +109,29 @@
     } else if (status == ReachableViaWWAN) {
         // 3G connection. If the video can be watched using 3g, the user can pass, otherwise we show an alert
         if ([self.episodes[indexPath.row][@"is_3g"] boolValue]) {
-            [self watchEpisode];
+            [self watchEpisode:episode];
         } else {
             [[[UIAlertView alloc] initWithTitle:nil message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
     } else if (status == ReachableViaWiFi) {
         // Wi-Fi Connection. The user can watch the video.
-        [self watchEpisode];
+        [self watchEpisode:episode];
     }
 }
 
 #pragma mark - Custom Methods
 
--(void)watchEpisode {
+-(void)watchEpisode:(Episode*)episode {
+//    VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+//    [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
     VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+    videoPlayerPadVC.progressSec = [episode.progressSec intValue];
+    videoPlayerPadVC.productID = episode.identifier;
+    videoPlayerPadVC.embedCode = episode.url;
     [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
 }
 
-#pragma mark - Notification Handlers 
+#pragma mark - Notification Handlers
 
 -(void)userListInfoReceived:(NSNotification *)notification {
     NSLog(@"recibí la info de las listas");

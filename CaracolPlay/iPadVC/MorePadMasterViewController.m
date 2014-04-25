@@ -23,7 +23,7 @@
 
 -(NSArray *)menuOptionsArray {
     if (!_menuOptionsArray) {
-        _menuOptionsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Términos y condiciones", @"Politicas de privacidad"];
+        _menuOptionsArray = @[@"Mi Cuenta", @"Reporte de errores", @"Términos y condiciones", @"Políticas de privacidad"];
     }
     return _menuOptionsArray;
 }

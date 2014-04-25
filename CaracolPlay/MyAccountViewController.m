@@ -183,7 +183,7 @@
     
     //9. 'Politicas del servicio' button
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.view.frame.size.width - 100.0, 30.0)];
-    [serviceTermsButton setTitle:@"Politicas de privacidad" forState:UIControlStateNormal];
+    [serviceTermsButton setTitle:@"Políticas de privacidad" forState:UIControlStateNormal];
     [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];

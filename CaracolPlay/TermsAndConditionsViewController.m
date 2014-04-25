@@ -25,13 +25,15 @@
     
     
     //[self getTerms];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    //NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
+    NSString *privacyPath = [[NSBundle mainBundle] pathForResource:@"privacy" ofType:@"html"];
+    //NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (self.showTerms) {
         [self getTerms];
         //self.termsAndConditionsString = dictionary[@"TermsAndConditions"];
     } else if (self.showPrivacy) {
-        self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+        //self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+        self.termsAndConditionsString = [NSString stringWithContentsOfFile:privacyPath encoding:NSUTF8StringEncoding error:nil];
         self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
         [self setupUI];
     }
@@ -45,7 +47,10 @@
 -(void)setupUI {
     CGRect screenFrame = [UIScreen mainScreen].bounds;
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenFrame.size.width, screenFrame.size.height - 110.0)];
-    [webView loadHTMLString:self.termsAndConditionsString baseURL:nil];
+    webView.opaque=NO;
+    [webView setBackgroundColor:[UIColor clearColor]];
+    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:black;color:white !important;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
+    [webView loadHTMLString:formattedHtml baseURL:nil];
     [self.view addSubview:webView];
 }
 

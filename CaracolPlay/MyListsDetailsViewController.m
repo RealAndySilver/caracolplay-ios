@@ -93,5 +93,10 @@
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
     }
 }
+#pragma mark - Interface Orientation
+
+-(NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 @end

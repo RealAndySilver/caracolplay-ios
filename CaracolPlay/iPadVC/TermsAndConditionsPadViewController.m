@@ -23,13 +23,15 @@
     self.view.backgroundColor = [UIColor blackColor];
     
     //Access the terms and conditions string saved in our plist
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
-    NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    //NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
+    NSString *privacyPath = [[NSBundle mainBundle] pathForResource:@"privacy" ofType:@"html"];
+    //NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (self.showTerms) {
         [self getTerms];
     } else if (self.showPrivacy) {
-        self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
-        self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        //self.termsAndConditionsString = dictionary[@"PrivacyPolicy"];
+        self.termsAndConditionsString = [NSString stringWithContentsOfFile:privacyPath encoding:NSUTF8StringEncoding error:nil];
+        //self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
         [self UISetup];
     }
   
@@ -52,9 +54,10 @@
     [self.view addSubview:self.navigationBar];
     
     self.webView = [[UIWebView alloc] init];
-    self.webView.backgroundColor = [UIColor blackColor];
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: black; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.termsAndConditionsString];
-    [self.webView loadHTMLString:str baseURL:nil];
+    self.webView.opaque=NO;
+    [self.webView setBackgroundColor:[UIColor clearColor]];
+    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:black;color:white;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
+    [self.webView loadHTMLString:formattedHtml baseURL:nil];
     [self.view addSubview:self.webView];
 }
 

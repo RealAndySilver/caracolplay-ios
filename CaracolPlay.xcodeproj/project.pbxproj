@@ -75,6 +75,7 @@
 		8B892B2C18B2AF4C0066926C /* MoreTabBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B892B2A18B2AF4C0066926C /* MoreTabBarIcon@2x.png */; };
 		8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B892B2F18B2B0460066926C /* MorePadMasterViewController.m */; };
 		8B8A215C18E6270A004C262D /* IngresarFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A215B18E6270A004C262D /* IngresarFromInsideViewController.m */; };
+		8B8D8A20190B082A00FCEE60 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 8B8D8A1F190B082A00FCEE60 /* privacy.html */; };
 		8B98669B18AE911900AEA77A /* StarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B98669A18AE911900AEA77A /* StarsView.m */; };
 		8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25D189FF715003DBBDC /* LoadingiPad.png */; };
 		8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */; };
@@ -370,6 +371,7 @@
 		8B892B2F18B2B0460066926C /* MorePadMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MorePadMasterViewController.m; path = iPadVC/MorePadMasterViewController.m; sourceTree = "<group>"; };
 		8B8A215A18E6270A004C262D /* IngresarFromInsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IngresarFromInsideViewController.h; path = iPadVC/IngresarFromInsideViewController.h; sourceTree = "<group>"; };
 		8B8A215B18E6270A004C262D /* IngresarFromInsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IngresarFromInsideViewController.m; path = iPadVC/IngresarFromInsideViewController.m; sourceTree = "<group>"; };
+		8B8D8A1F190B082A00FCEE60 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy.html; path = Plist/privacy.html; sourceTree = "<group>"; };
 		8B98669918AE911900AEA77A /* StarsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StarsView.h; path = "Custom Views/StarsView.h"; sourceTree = "<group>"; };
 		8B98669A18AE911900AEA77A /* StarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StarsView.m; path = "Custom Views/StarsView.m"; sourceTree = "<group>"; };
 		8BA9B25D189FF715003DBBDC /* LoadingiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingiPad.png; path = Resources/Images/iPad/LoadingiPad.png; sourceTree = "<group>"; };
@@ -865,6 +867,7 @@
 		8B3F104818EB7484005FA46D /* Plist */ = {
 			isa = PBXGroup;
 			children = (
+				8B8D8A1F190B082A00FCEE60 /* privacy.html */,
 				8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */,
 			);
 			name = Plist;
@@ -1700,6 +1703,7 @@
 				8B892B2B18B2AF4C0066926C /* MoreTabBarIcon.png in Resources */,
 				A056722018FCFCF400D4B04A /* FreeBandPad.png in Resources */,
 				8BA9B27C18A034AA003DBBDC /* BackgroundFormularioPad.png in Resources */,
+				8B8D8A20190B082A00FCEE60 /* privacy.html in Resources */,
 				A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
