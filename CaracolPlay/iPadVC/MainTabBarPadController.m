@@ -27,18 +27,24 @@
     
     //1. Homescreen view
     HomePadViewController *homePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Home"];
-    [homePadViewController.tabBarItem initWithTitle:@"Inicio" image:[UIImage imageNamed:@"HomeTabBarIcon.png"] tag:1];
+    homePadViewController.tabBarItem.title = @"Inicio";
+    homePadViewController.tabBarItem.image = [UIImage imageNamed:@"HomeTabBarIcon.png"];
+    homePadViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"HomeTabBarIconSelected.png"];
     
     //2. Categories view
     UISplitViewController *splitViewController = [[UISplitViewController alloc] init];
     CategoriesMasterPadViewController *categoriesMasterPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Root"];
     CategoriesDetailPadViewController *detailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Detail"];
     splitViewController.viewControllers = @[categoriesMasterPadViewController, detailVC];
-    [splitViewController.tabBarItem initWithTitle:@"Categorías" image:[UIImage imageNamed:@"CategoriesTabBarIcon.png"] tag:4];
+    splitViewController.tabBarItem.title = @"Categorías";
+    splitViewController.tabBarItem.image = [UIImage imageNamed:@"CategoriesTabBarIcon.png"];
+    splitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"CategoriesTabBarIconSelected.png"];
     
     //3. Search View
     SearchPadViewController *searchPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchPad"];
-    [searchPadViewController.tabBarItem initWithTitle:@"Buscar" image:[UIImage imageNamed:@"SearchTabBarIcon.png"] tag:3];
+    searchPadViewController.tabBarItem.title = @"Buscar";
+    searchPadViewController.tabBarItem.image = [UIImage imageNamed:@"SearchTabBarIcon.png"];
+    searchPadViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"SearchTabBarIconSelected.png"];
     
     if (!self.userDidSkipRegisterProcess) {
         //4. MyLists View
@@ -46,14 +52,18 @@
         MyListsMasterPadViewController *myListsMasterVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsMaster"];
         MyListsDetailPadViewController *myListsDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
         myListsSplitViewController.viewControllers = @[myListsMasterVC, myListsDetailVC];
-        [myListsSplitViewController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+        myListsSplitViewController.tabBarItem.title = @"Mis Listas";
+        myListsSplitViewController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
+        myListsSplitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
         
         //5 'Mas' splitview controller
         UISplitViewController *moreSplitViewController = [[UISplitViewController alloc] init];
         MorePadMasterViewController *morePadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MorePadMaster"];
         MyAccountDetailPadViewController *myAccountDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccountDetailPad"];
         moreSplitViewController.viewControllers = @[morePadViewController, myAccountDetailPadVC];
-        [moreSplitViewController.tabBarItem initWithTitle:@"Más" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+        moreSplitViewController.tabBarItem.title = @"Más";
+        moreSplitViewController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
+        moreSplitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
         
         self.viewControllers = @[homePadViewController, splitViewController, searchPadViewController, myListsSplitViewController, moreSplitViewController];
         return;

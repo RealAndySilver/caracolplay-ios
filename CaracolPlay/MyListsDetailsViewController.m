@@ -11,8 +11,13 @@
 #import "JMImageCache.h"
 #import "VideoPlayerViewController.h"
 #import "Episode.h"
+#import "MBProgressHUD.h"
+#import "ServerCommunicator.h"
+#import "NSDictionary+NullReplacement.h"
+#import "Video.h"
+#import "ContentNotAvailableForUserViewController.h"
 
-@interface MyListsDetailsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MyListsDetailsViewController () <UITableViewDataSource, UITableViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @end
 
@@ -67,7 +72,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Episode *episode = self.episodes[indexPath.row];
-    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [self isContentAvailableForUserWithID:episode.identifier];
+    
+    /*Reachability *reachability = [Reachability reachabilityForInternetConnection];
     [reachability startNotifier];
     NetworkStatus status = [reachability currentReachabilityStatus];
     
@@ -91,8 +98,91 @@
         videoPlayerVC.productID = episode.identifier;
         videoPlayerVC.embedCode = episode.url;
         [self.navigationController pushViewController:videoPlayerVC animated:YES];
+    }*/
+}
+
+-(void)checkVideoAvailability:(Video *)video {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    Episode *episode = self.episodes[indexPath.row];
+    
+    if (video.status) {
+        //The video is available for the user, so check the network connection to decide
+        //if the user can pass to watch it or not.
+        Reachability *reachability = [Reachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        NetworkStatus status = [reachability currentReachabilityStatus];
+        if (status == NotReachable) {
+            //The user can't watch the video
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No te encuentras conectado a internet. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            
+        } else if (status == ReachableViaWWAN) {
+            if (video.is3G) {
+                //The user can watch it with 3G
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.embedCode = video.embedHD;
+                videoPlayer.productID = episode.identifier;
+                videoPlayer.progressSec = video.progressSec;
+                [self.navigationController pushViewController:videoPlayer animated:YES];
+            } else {
+                //The user can't watch the video because the connection is to slow
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Para ver este contenido conéctese a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.embedCode = video.embedHD;
+            videoPlayer.progressSec = video.progressSec;
+            videoPlayer.productID = episode.identifier;
+            [self.navigationController pushViewController:videoPlayer animated:YES];
+        }
+        
+    } else {
+        //The video is not available for the user, so pass to the
+        //Content not available for user
+        ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
+        contentNotAvailableForUser.productID = episode.identifier;
+        contentNotAvailableForUser.productName = episode.productName;
+       // contentNotAvailableForUser.productType = self.production.type;
+        contentNotAvailableForUser.viewType = video.typeView;
+        [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }
+
+-(void)isContentAvailableForUserWithID:(NSString *)episodeID {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+}
+
+-(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    if ([methodName isEqualToString:@"IsContentAvailableForUser"] && dictionary) {
+        if ([dictionary[@"status"] boolValue]) {
+            //La petición fue exitosa
+            NSLog(@"info del video: %@", dictionary);
+            NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
+            Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
+            [self checkVideoAvailability:video];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            NSLog(@"error en el is content: %@", dictionary);
+        }
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
+}
+
+-(void)serverError:(NSError *)error {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
 #pragma mark - Interface Orientation
 
 -(NSUInteger)supportedInterfaceOrientations {

@@ -46,6 +46,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) UIImageView *smallProductionImageView;
 @property (strong, nonatomic) UIImageView *freeBandImageView;
+@property (strong, nonatomic) UIView *grayView;
 
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) NSMutableArray *recommendedProductions;
@@ -149,13 +150,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 }
 
 -(void)UISetup {
-    //2. Background image view
+    /*//2. Background image view
     self.backgroundImageView = [[UIImageView alloc] init];
     [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:nil completionBlock:nil failureBlock:nil];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.clipsToBounds = YES;
     [self.view addSubview:self.backgroundImageView];
-    [self.view sendSubviewToBack:self.backgroundImageView];
+    [self.view sendSubviewToBack:self.backgroundImageView];*/
     
     //Free band image view
     if ([self.production.free isEqualToString:@"1"]) {
@@ -165,9 +166,9 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     }
     
     //3. add a UIView to opaque the background view
-    self.opaqueView = [[UIView alloc] init];
+    /*self.opaqueView = [[UIView alloc] init];
     self.opaqueView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    [self.backgroundImageView addSubview:self.opaqueView];
+    [self.backgroundImageView addSubview:self.opaqueView];*/
     
     //3. small production image view
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(30.0, 30.0, 160.0, 260.0)];
@@ -201,9 +202,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         
         //5. Watch Trailer button setup
         self.watchTrailerButton = [[UIButton alloc] init];
-        [self.watchTrailerButton setTitle:@"▶︎ Ver Trailer" forState:UIControlStateNormal];
+        [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
+        self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         
@@ -235,8 +237,8 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    
+    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"ShareButton.png"] forState:UIControlStateNormal];
+    self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
     self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
     self.shareButton.layer.shadowOpacity = 0.8;
     self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
@@ -245,11 +247,11 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     //View production button
     self.viewProductionButton = [[UIButton alloc] init];
-    [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
+    [self.viewProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
     [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.viewProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
-    [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     
     self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
     self.viewProductionButton.layer.shadowOpacity = 0.8;
@@ -274,6 +276,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
     [self.webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:self.webView];
+    
+    ////////////////////////////////////////////////
+    //gray view
+    self.grayView = [[UIView alloc] init];
+    self.grayView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    [self.view addSubview:self.grayView];
+    
     
     //9. Recommended productions label setup
     self.recommendedProductionsLabel = [[UILabel alloc] init];
@@ -337,6 +346,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     }
     self.viewProductionButton.frame = CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 130.0, 35.0);
     self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 130.0);
+    self.grayView.frame = CGRectMake(0.0, 350.0, self.view.bounds.size.width, self.view.bounds.size.height - 350.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     //self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
 }
@@ -455,7 +465,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         SuscriptionAlertPadViewController *suscriptionAlertPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         suscriptionAlertPadVC.productID = self.production.identifier;
         suscriptionAlertPadVC.productName = self.production.name;
         suscriptionAlertPadVC.productType = self.production.type;

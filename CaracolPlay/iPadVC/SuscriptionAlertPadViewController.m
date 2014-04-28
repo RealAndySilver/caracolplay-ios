@@ -31,7 +31,7 @@
 }
 
 -(void)UISetup {
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SuscriptionAlertBackground.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SuscriptionAlertFullScreenBackground.png"]];
     [self.view addSubview:self.backgroundImageView];
     
     //1. dismiss buton setup
@@ -89,20 +89,20 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    /*self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);*/
     self.backgroundImageView.frame = self.view.bounds;
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
-    self.detailTextView.frame = CGRectMake(20.0, self.view.bounds.size.height/2 - 40.0, self.view.bounds.size.width - 40.0, 100.0);
-    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.65, 160.0, 40.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -10.0, 88.0, 88.0);
+    self.detailTextView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, self.view.bounds.size.height/2 - 40.0, 340.0, 100.0);
+    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/1.65, 300.0, 45.0);
     if (self.viewType == 1 || self.viewType == 3) {
         CGRect rentButtonFrame;
         if (self.viewType != 3) {
-            rentButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.44, 160.0, 40.0);
+            rentButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/1.44, 300.0, 45.0);
         } else {
-            rentButtonFrame = CGRectMake(20.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+            rentButtonFrame = CGRectMake(self.view.bounds.size.width/2.0 - 10.0 - 300.0, self.view.bounds.size.height/1.44, 300.0, 45.0);
         }
         self.rentButton.frame = rentButtonFrame;
     }
@@ -110,14 +110,14 @@
     if (self.viewType == 2 || self.viewType == 3) {
         CGRect suscribeButtonFrame;
         if (self.viewType != 3) {
-            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 80.0, self.view.bounds.size.height/1.44, 160.0, 40.0);
+            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/1.44, 300.0, 45.0);
         } else {
-            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 + 5.0, self.view.bounds.size.height/1.44, self.view.bounds.size.width/2.0 - 25.0, 40.0);
+            suscribeButtonFrame = CGRectMake(self.view.bounds.size.width/2 + 10.0, self.view.bounds.size.height/1.44, 300.0, 45.0);
         }
         self.suscribeButton.frame = suscribeButtonFrame;
     }
     
-    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 50.0, 490.0, 100.0, 100.0);
+    self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 55.0, 600.0, 110.0, 110.0);
 }
 
 #pragma mark - Actions 
@@ -125,6 +125,7 @@
 -(void)goToRedeemCodeVC {
     ValidateCodePadViewController *validateCodeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ValidateCodePad"];
     validateCodeVC.modalPresentationStyle = UIModalPresentationPageSheet;
+    validateCodeVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     validateCodeVC.controllerWasPresentedFromProductionScreen = YES;
     [self presentViewController:validateCodeVC animated:YES completion:nil];
 }

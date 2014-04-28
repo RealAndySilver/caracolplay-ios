@@ -626,6 +626,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
             [self checkVideoAvailability:video];
         } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"error en el is content: %@", dictionary);
         }
         

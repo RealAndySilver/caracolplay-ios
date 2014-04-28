@@ -138,12 +138,12 @@
 
 -(void)UISetup {
     //2. background image view setup
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    /*self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     self.backgroundImageView.clipsToBounds = YES;
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.backgroundImageView];
-    [self.view sendSubviewToBack:self.backgroundImageView];
+    [self.view sendSubviewToBack:self.backgroundImageView];*/
     
     //Free band image view
     if ([self.production.free isEqualToString:@"1"]) {
@@ -153,12 +153,12 @@
     }
     
     //Set the opacity pattern view
-    self.opacityPatternView = [[UIView alloc] initWithFrame:self.view.frame];
+    /*self.opacityPatternView = [[UIView alloc] initWithFrame:self.view.frame];
     UIImage *opacityPatternImage = [UIImage imageNamed:@"SeriesOpacityPatternPad.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, 626.0)];
     self.opacityPatternView.clipsToBounds = YES;
     self.opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
-    [self.backgroundImageView addSubview:self.opacityPatternView];
+    [self.backgroundImageView addSubview:self.opacityPatternView];*/
     
     //3. Small production image view setup
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(30.0, 30.0, 128.0, 194.0)];
@@ -187,7 +187,9 @@
     [self.shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+    self.shareButton.clipsToBounds = YES;
+    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"ShareButton.png"] forState:UIControlStateNormal];
     [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
     self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
     self.shareButton.layer.shadowOpacity = 0.8;
@@ -212,10 +214,10 @@
         self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
         [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
-        
+        self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
         self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
         self.watchTrailerButton.layer.shadowOpacity = 0.8;
         self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
@@ -242,12 +244,12 @@
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
                 self.viewProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 140.0, 35.0)];
-                [self.viewProductionButton setTitle:@"▶︎ Ver Producción" forState:UIControlStateNormal];
+                [self.viewProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
                 [self.viewProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
-                [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-                    
+                [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+                self.viewProductionButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
                 self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
                 self.viewProductionButton.layer.shadowOpacity = 0.8;
                 self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
@@ -439,7 +441,6 @@
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
             suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
             suscriptionAlertPadVC.productID = self.selectedEpisodeID;
             suscriptionAlertPadVC.productType = self.production.type;
             suscriptionAlertPadVC.productName = self.production.name;

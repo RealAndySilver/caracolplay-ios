@@ -26,7 +26,7 @@
 
 -(void)setupUI {
     //1. Set background image
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RentContentAlertBackground.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RentConfirmFullScreenBackground.png"]];
     [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
 
@@ -60,14 +60,14 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    /*self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);*/
     self.backgroundImageView.frame = self.view.bounds;
-    self.textView.frame = CGRectMake(20.0, 250.0, self.view.bounds.size.width - 40.0, 80.0);
-    self.productionNameTextview.frame = CGRectMake(20.0, 340.0, self.view.bounds.size.width - 40.0, 60.0);
-    self.continueButton.frame = CGRectMake(30.0, self.productionNameTextview.frame.origin.y + self.productionNameTextview.frame.size.height + 20.0, self.view.bounds.size.width - 60.0, 50.0);
+    self.textView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, 400, 340.0, 80.0);
+    self.productionNameTextview.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, 480.0, 340.0, 60.0);
+    self.continueButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, self.productionNameTextview.frame.origin.y + self.productionNameTextview.frame.size.height + 20.0, 300.0, 50.0);
 }
 
 #pragma mark - Actions 

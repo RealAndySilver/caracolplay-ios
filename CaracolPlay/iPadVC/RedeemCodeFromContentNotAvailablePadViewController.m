@@ -49,10 +49,10 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
@@ -93,7 +93,6 @@
 
 -(void)goToRedeemCodeConfirmation {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
-    redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     redeemCodeConfirmationVC.controllerWasPresentedFromContentNotAvailable = YES;
     [self presentViewController:redeemCodeConfirmationVC animated:YES completion:nil];

@@ -26,7 +26,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.backgroundImageView = [[UIImageView alloc] init];
-    self.backgroundImageView.image = [UIImage imageNamed:@"RedeemCodeAlertBackground.png"];
+    self.backgroundImageView.image = [UIImage imageNamed:@"RedeemCodeConfirmFullScreenBackground.png"];
     self.backgroundImageView.clipsToBounds = YES;
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.backgroundImageView];
@@ -58,23 +58,23 @@
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    /*self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);*/
     
     self.backgroundImageView.frame = self.view.bounds;
-    self.textView.frame = CGRectMake(30.0, self.view.bounds.size.height/2 - 30.0, self.view.bounds.size.width - 60.0, 150.0);
-    self.enterButton.frame = CGRectMake(30.0, self.view.bounds.size.height/2 + 150.0, self.view.bounds.size.width - 60.0, 50.0);
-    self.suscribeButton.frame = CGRectMake(30.0, self.view.bounds.size.height/2 + 220.0, self.view.bounds.size.width - 60.0, 50.0);
-    self.skipButton.frame = CGRectMake(self.view.bounds.size.width - 100.0, 22.0, 100.0, 30.0);
+    self.textView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, 400.0, 340.0, 150.0);
+    self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2.0 - 150.0, 600.0, 300.0, 50.0);
+    //self.suscribeButton.frame = CGRectMake(30.0, self.view.bounds.size.height/2 + 220.0, self.view.bounds.size.width - 60.0, 50.0);
+    //self.skipButton.frame = CGRectMake(self.view.bounds.size.width - 100.0, 22.0, 100.0, 30.0);
 }
 
 #pragma mark - Actions 
 
 -(void)returnToProduction {
     if (self.controllerWasPresentedFromSuscriptionAlert) {
-        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+        [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController]dismissViewControllerAnimated:YES completion:^(){
             if (!self.controllerWasPresentedFromContentNotAvailable) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
@@ -82,14 +82,14 @@
             }
         }];
     } else if (self.controllerWasPresentedFromInsideRedeemWithExistingUser) {
-        [[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+        [[[[[[self presentingViewController] presentingViewController] presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateAditionalTabsNotification" object:nil userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
         }];
     
     } else if (self.controllerWasPresentedFromContentNotAvailable) {
-        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

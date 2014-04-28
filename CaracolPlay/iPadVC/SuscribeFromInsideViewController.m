@@ -20,6 +20,17 @@
 #import "MBProgressHUD.h"
 
 @interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongEmailImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongAliasImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongGenreImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPasswordImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongConfirmPassImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongTermsImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPoliticsImageView;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *birthdayTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *genreTextfield;
@@ -67,6 +78,9 @@
 }
 
 -(void)setupUI {
+    //Set the wrong image views invinsible
+    [self setAllWrongImageViewsInvisible];
+    
     self.scrollView.alwaysBounceVertical = YES;
     self.scrollView.showsVerticalScrollIndicator = NO;
     
@@ -107,10 +121,10 @@
     [self.view addSubview:self.dismissButton];
     
     //3. Checkboxes
-    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 421.0, 22.0, 22.0)];
+    self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 418.0, 22.0, 22.0)];
     [self.scrollView addSubview:self.checkBox1];
     
-    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(10.0, 448.0, 22.0, 22.0)];
+    self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 448.0, 22.0, 22.0)];
     [self.scrollView addSubview:self.checkBox2];
     
     //Enter here button
@@ -126,17 +140,17 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
 
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.suscribeButton.frame.origin.y + self.suscribeButton.frame.size.height + 270.0);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.suscribeButton.frame.origin.y + self.suscribeButton.frame.size.height + 290.0);
 }
 
 #pragma mark - Actions
@@ -175,7 +189,11 @@
     [UserInfo sharedInstance].userName = self.aliasTextfield.text;
     [UserInfo sharedInstance].password = self.passwordTextfield.text;
     
-    if ([self areTermsAndPoliticsConditionsAccepted] && [self textfieldsInfoIsCorrect]) {
+    [self setAllWrongImageViewsInvisible];
+    
+    BOOL termsAreAccepted = [self areTermsAndPoliticsConditionsAccepted];
+    BOOL textfieldInfoIsCorrect = [self textfieldsInfoIsCorrect];
+    if (termsAreAccepted && textfieldInfoIsCorrect) {
         [self validateUser];
     } else {
         //The terms and conditions were not accepted, so show an alert.
@@ -213,7 +231,6 @@
 -(void)goToSubscriptionConfirm {
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresentedFromSuscribeFormScreen = YES;
-    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeConfirmVC.userIsLoggedIn = self.userIsLoggedIn;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
@@ -298,6 +315,19 @@
 
 #pragma mark - Custom Methods
 
+-(void)setAllWrongImageViewsInvisible {
+    self.wrongNameImageView.alpha = 0.0;
+    self.wrongLastNameImageView.alpha = 0.0;
+    self.wrongAliasImageView.alpha = 0.0;
+    self.wrongEmailImageView.alpha = 0.0;
+    self.wrongGenreImageView.alpha = 0.0;
+    self.wrongBirthdayImageView.alpha = 0.0;
+    self.wrongPasswordImageView.alpha = 0.0;
+    self.wrongConfirmPassImageView.alpha = 0.0;
+    self.wrongPoliticsImageView.alpha = 0.0;
+    self.wrongTermsImageView.alpha = 0.0;
+}
+
 -(void)purchaseProductWithIdentifier:(NSString *)productID {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Comprando...";
@@ -344,12 +374,14 @@
 -(void)showErrorsInTermAndPoliticsConditions {
     if (![self.checkBox1 viewIsChecked]) {
         NSLog(@"chekmark 1 no chuleado");
+        self.wrongTermsImageView.alpha = 1.0;
         self.checkBox1.borderWidth = 3.0;
         self.checkBox1.borderColor = [UIColor redColor];
     }
     
     if (![self.checkBox2 viewIsChecked]) {
         NSLog(@"checkmark 2 no chuleado");
+        self.wrongPoliticsImageView.alpha = 1.0;
         self.checkBox2.borderWidth = 3.0;
         self.checkBox2.borderColor = [UIColor redColor];
     }
@@ -364,30 +396,74 @@
 }
 
 -(BOOL)textfieldsInfoIsCorrect {
-    BOOL namesAreCorrect = NO;
+    BOOL nameIsCorrect = NO;
+    BOOL lastNameIsCorrect = NO;
     BOOL emailIsCorrect = NO;
-    BOOL passwordsAreCorrect = NO;
+    BOOL passwordIsCorrect = NO;
+    BOOL confirmPasswordIsCorrect = NO;
+    BOOL bothPasswordsAreCorrect = NO;
+    BOOL genreIsCorrect = NO;
+    BOOL birthdayIsCorrect = NO;
     BOOL aliasIsCorrect = NO;
-    if ([self.nameTextfield.text length] > 0 && [self.lastNameTextfield.text length] > 0 && [self.genreTextfield.text length] > 0 && [self.birthdayTextfield.text length] > 0) {
-        namesAreCorrect = YES;
+    
+    if ([self.nameTextfield.text length] > 0) {
+        nameIsCorrect = YES;
+    } else {
+        self.wrongNameImageView.alpha = 1.0;
     }
     
-    if ([self.passwordTextfield.text isEqualToString:self.confirmPasswordTextfield.text]) {
-        passwordsAreCorrect = YES;
+    if ([self.lastNameTextfield.text length] > 0) {
+        lastNameIsCorrect = YES;
+    } else {
+        self.wrongLastNameImageView.alpha = 1.0;
+    }
+    
+    if ([self.aliasTextfield.text length] > 0) {
+        aliasIsCorrect = YES;
+    } else {
+        self.wrongAliasImageView.alpha = 1.0;
     }
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
         self.emailTextfield.textColor = [UIColor whiteColor];
     } else {
+        self.wrongEmailImageView.alpha = 1.0;
         self.emailTextfield.textColor = [UIColor redColor];
     }
     
-    if ([self.aliasTextfield.text length] > 0) {
-        aliasIsCorrect = YES;
+    if ([self.genreTextfield.text length] > 0) {
+        genreIsCorrect = YES;
+    } else {
+        self.wrongGenreImageView.alpha = 1.0;
     }
     
-    if (namesAreCorrect && passwordsAreCorrect && emailIsCorrect && aliasIsCorrect) {
+    if ([self.birthdayTextfield.text length] > 0) {
+        birthdayIsCorrect = YES;
+    } else {
+        self.wrongBirthdayImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0) {
+        passwordIsCorrect = YES;
+    } else {
+        self.wrongPasswordImageView.alpha = 1.0;
+    }
+    
+    if ([self.confirmPasswordTextfield.text length] > 0) {
+        confirmPasswordIsCorrect = YES;
+    } else {
+        self.wrongConfirmPassImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text isEqualToString:self.confirmPasswordTextfield.text]) {
+        bothPasswordsAreCorrect = YES;
+    } else {
+        self.wrongPasswordImageView.alpha = 1.0;
+        self.wrongConfirmPassImageView.alpha = 1.0;
+    }
+    
+    if (nameIsCorrect && lastNameIsCorrect && aliasIsCorrect && emailIsCorrect && genreIsCorrect && birthdayIsCorrect && passwordIsCorrect && confirmPasswordIsCorrect && bothPasswordsAreCorrect) {
         return YES;
     } else {
         return  NO;

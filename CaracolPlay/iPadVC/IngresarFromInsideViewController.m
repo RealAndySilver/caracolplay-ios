@@ -19,6 +19,8 @@
 #import "MBProgressHUD.h"
 
 @interface IngresarFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
@@ -53,15 +55,17 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
 }
 
 -(void)setupUI {
+    [self clearAllWrongImageViews];
+    
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     
@@ -129,7 +133,23 @@
 }*/
 
 -(void)enter {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    [self clearAllWrongImageViews];
+    
+    BOOL userIsCorrect = NO;
+    BOOL passwordIsCorrect = NO;
+    if ([self.userTextfield.text length] > 0) {
+        userIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0) {
+        passwordIsCorrect = YES;
+    } else {
+        self.wrongPassImageView.alpha = 1.0;
+    }
+    
+    if (userIsCorrect && passwordIsCorrect) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
@@ -157,7 +177,6 @@
 -(void)goToSubscriptionConfirm {
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresentedFromIngresarScreen = YES;
-    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeConfirmVC.userIsLoggedIn = NO;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
@@ -166,7 +185,6 @@
 -(void)goToRentConfirmationVC {
     RentConfirmFromInsideViewController *rentConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentConfirmFromInside"];
     rentConfirmVC.controllerWasPresentedFromIngresarFromInside = YES;
-    rentConfirmVC.modalPresentationStyle = UIModalPresentationPageSheet;
     rentConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     rentConfirmVC.rentedProductionName = self.productName;
     rentConfirmVC.userIsLoggedIn = NO;
@@ -273,6 +291,9 @@
             }
             
         } else {
+            self.wrongUserImageView.alpha = 1.0;
+            self.wrongPassImageView.alpha = 1.0;
+            
             NSLog(@"la autenticación no fue exitosa: %@", dictionary);
             [UserInfo sharedInstance].userName = nil;
             [UserInfo sharedInstance].password = nil;
@@ -337,6 +358,11 @@
 }
 
 #pragma mark - Custom Methods
+
+-(void)clearAllWrongImageViews {
+    self.wrongUserImageView.alpha = 0.0;
+    self.wrongPassImageView.alpha = 0.0;
+}
 
 -(NSString *)generateEncodedUserInfoString {
     //Create JSON string with user info

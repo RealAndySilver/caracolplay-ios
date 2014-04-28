@@ -20,6 +20,8 @@
 @import QuartzCore;
 
 @interface IngresarPadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPasswordImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
@@ -35,6 +37,8 @@
 #pragma mark - View Lifecycle
 
 -(void)UISetup {
+    [self clearAllWrongImageViews];
+    
     if (self.controllerWasPresentedFromInitialScreen) {
         [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
         [self.enterButton addTarget:self action:@selector(enter) forControlEvents:UIControlEventTouchUpInside];
@@ -116,7 +120,22 @@
 #pragma mark - Actions
 
 -(void)enter {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    [self clearAllWrongImageViews];
+    BOOL userNameIsCorrect = NO;
+    BOOL passwordIsCorrect = NO;
+    if ([self.userTextfield.text length] > 0) {
+        userNameIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0) {
+        passwordIsCorrect = YES;
+    } else {
+        self.wrongPasswordImageView.alpha = 1.0;
+    }
+    
+    if (userNameIsCorrect && passwordIsCorrect) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
@@ -149,6 +168,11 @@
 }
 
 #pragma mark - Custom Methods
+
+-(void)clearAllWrongImageViews {
+    self.wrongUserImageView.alpha = 0.0;
+    self.wrongPasswordImageView.alpha = 0.0;
+}
 
 -(void)buySubscriptionWithIdentifier:(NSString *)productIdentifier {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -195,7 +219,6 @@
     SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
     suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
     suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }
 
@@ -268,6 +291,8 @@
             }
             
         } else {
+            self.wrongUserImageView.alpha = 1.0;
+            self.wrongPasswordImageView.alpha = 1.0;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
         

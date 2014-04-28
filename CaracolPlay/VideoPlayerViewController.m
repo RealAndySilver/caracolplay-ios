@@ -27,6 +27,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"embed code: %@", self.embedCode);
     self.sendProgressSecToServer = NO;
     
     if (!self.controllerWasPresenteFromRedeemCode) {

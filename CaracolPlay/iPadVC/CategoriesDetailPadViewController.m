@@ -69,8 +69,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     _unparsedProductionsArray = unparsedProductionsArray;
     self.productionsArray = [NSMutableArray arrayWithArray:[unparsedProductionsArray arrayByReplacingNullsWithBlanks]];
     //self.productionsArray = [[_unparsedProductionsArray arrayByReplacingNullsWithBlanks] mutableCopy];
-    [self setupCollectionView];
-    //[self.collectionView reloadData];
+    //[self setupCollectionView];
+    [self.collectionView reloadData];
 }
 
 -(UIActivityIndicatorView *)spinner {
@@ -81,16 +81,9 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     return _spinner;
 }
 
--(void)setupCollectionView {
-    //3. CollectionView
-    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
-    [self.collectionView registerClass:[ProductionsPadCollectionViewCell class] forCellWithReuseIdentifier:splitCollectionViewCellIdentifier];
-    self.collectionView.delegate = self;
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    self.collectionView.dataSource = self;
-    [self.view addSubview:self.collectionView];
-}
+/*-(void)setupCollectionView {
+
+}*/
 
 -(void)UISetup {
     
@@ -106,6 +99,15 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     self.segmentedControl.tintColor = [UIColor whiteColor];
     [self.segmentedControl addTarget:self action:@selector(changeCategoryFilter) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.segmentedControl];
+    
+    //3. CollectionView
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    [self.collectionView registerClass:[ProductionsPadCollectionViewCell class] forCellWithReuseIdentifier:splitCollectionViewCellIdentifier];
+    self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.dataSource = self;
+    [self.view addSubview:self.collectionView];
 }
 
 -(void)viewDidLoad {
@@ -120,6 +122,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eraseLastSeenCategory)
                                                  name:@"EraseLastSeenCategory"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(getCategoriesNotificationReceived)
+                                                 name:@"GetCategoriesNotification"
                                                object:nil];
     //[self getListFromCategoryID:self.categoryID withFilter:0];
     [self UISetup];
@@ -292,17 +299,17 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromCategoryID"] && responseDictionary) {
-        NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
+        //NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
         
     } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"]) {
-        NSLog(@"info de los recently watched: %@", responseDictionary);
+        //NSLog(@"info de los recently watched: %@", responseDictionary);
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:(NSArray *)responseDictionary];
         //self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
     
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]) {
         //La petición fue exitosa
-        NSLog(@"info del video: %@", responseDictionary);
+        //NSLog(@"info del video: %@", responseDictionary);
         NSDictionary *dicWithoutNulls = [responseDictionary dictionaryByReplacingNullWithBlanks];
         Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
         [self checkVideoAvailability:video];
@@ -319,18 +326,25 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 #pragma mark - Notification Handlers 
 
+-(void)getCategoriesNotificationReceived {
+    NSLog(@"recibí la notification");
+    [self.unparsedProductionsArray removeAllObjects];
+    [self.productionsArray removeAllObjects];
+    [self.collectionView reloadData];
+}
+
 -(void)eraseLastSeenCategory {
     [self.unparsedProductionsArray removeAllObjects];
     [self.productionsArray removeAllObjects];
     [self.collectionView reloadData];
-    [self.collectionView removeFromSuperview];
+    //[self.collectionView removeFromSuperview];
 }
 
 -(void)categoryIDNotificationReceived:(NSNotification *)notification {
     [self.unparsedProductionsArray removeAllObjects];
     [self.productionsArray removeAllObjects];
     [self.collectionView reloadData];
-    [self.collectionView removeFromSuperview];
+    //[self.collectionView removeFromSuperview];
     
     NSDictionary *notificationDic = [notification userInfo];
     NSString *categoryID = notificationDic[@"CategoryID"];

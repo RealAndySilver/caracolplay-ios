@@ -558,11 +558,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         }
         
         
-    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && [responseDictionary[@"status"] boolValue]){
-        NSDictionary *videoDicWithNulls = responseDictionary[@"video"];
-        NSDictionary *videoDicWithoutNulss = [videoDicWithNulls dictionaryByReplacingNullWithBlanks];
-        Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulss];
-        [self checkVideoAvailability:video];
+    } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && responseDictionary){
+        if ([responseDictionary[@"status"] boolValue]) {
+            NSDictionary *videoDicWithNulls = responseDictionary[@"video"];
+            NSDictionary *videoDicWithoutNulss = [videoDicWithNulls dictionaryByReplacingNullWithBlanks];
+            Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulss];
+            [self checkVideoAvailability:video];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {
         NSLog(@"llegó la info de la calificación: %@", responseDictionary);

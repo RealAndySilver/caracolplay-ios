@@ -16,6 +16,8 @@
 #import "MBProgressHUD.h"
 
 @interface RedeemCodePadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -27,6 +29,7 @@
 @implementation RedeemCodePadViewController
 
 -(void)UISetup {
+    [self clearAllWrongImageViews];
     
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -57,10 +60,10 @@
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
@@ -69,7 +72,23 @@
 #pragma mark - Actions
 
 -(void)startRedeemProcess {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    [self clearAllWrongImageViews];
+    BOOL userIsCorrect = NO;
+    BOOL passIsCorrect = NO;
+    
+    if ([self.userTextfield.text length] > 0) {
+        userIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0) {
+        passIsCorrect = YES;
+    } else {
+        self.wrongPassImageView.alpha = 1.0;
+    }
+    
+    if (userIsCorrect && passIsCorrect) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
@@ -83,9 +102,13 @@
 
 #pragma mark - Custom Methods
 
+-(void)clearAllWrongImageViews {
+    self.wrongPassImageView.alpha = 0.0;
+    self.wrongUserImageView.alpha = 0.0;
+}
+
 -(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
-    redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationPageSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     redeemCodeConfirmationVC.message = message;
     if (self.controllerWasPresentedFromSuscriptionAlertScreen) {
@@ -157,6 +180,8 @@
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             [self redeemCodeInServer:self.redeemedCode];
         } else {
+            self.wrongPassImageView.alpha = 1.0;
+            self.wrongUserImageView.alpha = 1.0;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Los datos ingresados no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"la autenticación no fue exitosa");
         }

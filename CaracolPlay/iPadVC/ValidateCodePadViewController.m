@@ -17,6 +17,7 @@
 #import "RedeemCodeConfirmationPadViewController.h"
 
 @interface ValidateCodePadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongCodeImageView;
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -33,6 +34,8 @@
 }
 
 -(void)setupUI {
+    self.wrongCodeImageView.alpha = 0.0;
+    
     //1. Set background image
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
@@ -49,10 +52,10 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 597.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 597.0 + 20.0);
+    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
@@ -63,7 +66,6 @@
 -(void)goToRedeemCodeConfirmationWithMessage:(NSString *)message {
     RedeemCodeConfirmationPadViewController *redeemCodeConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RedeemCodeConfirmationPad"];
     redeemCodeConfirmationVC.message = message;
-    redeemCodeConfirmationVC.modalPresentationStyle = UIModalPresentationPageSheet;
     redeemCodeConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     if (self.controllerWasPresentedFromContentNotAvailable) {
         redeemCodeConfirmationVC.controllerWasPresentedFromContentNotAvailable = YES;
@@ -94,9 +96,12 @@
 }
 
 -(void)validateCode {
+    self.wrongCodeImageView.alpha = 0.0;
+    
     if ([self.codeTextfield.text length] > 0) {
         [self validateCodeInServer];
     } else {
+        self.wrongCodeImageView.alpha = 1.0;
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor escribe un código" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
@@ -183,10 +188,12 @@
                     NSLog(@"El código es válido, es de los normalitos");
                 }
             } else {
+                self.wrongCodeImageView.alpha = 1.0;
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else {
+            self.wrongCodeImageView.alpha = 1.0;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error validando el código. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
         
