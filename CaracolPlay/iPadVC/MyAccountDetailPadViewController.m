@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSDictionary *suscriptionDic;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) NSArray *rentedProductions;
+@property (strong, nonatomic) UIImageView *opacityView;
 @end
 
 @implementation MyAccountDetailPadViewController
@@ -80,7 +81,11 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeOpacityView)
+                                                 name:@"RemoveOpacityView"
+                                               object:nil];
     [self.view addSubview:self.spinner];
     [self getUser];
     //[self UISetup];
@@ -97,8 +102,9 @@
     
     //1. Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(80.0, 64.0, screenFrame.size.width - 160.0, screenFrame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
-    self.scrollView.backgroundColor = [UIColor blackColor];
+    self.scrollView.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
     self.scrollView.alwaysBounceVertical = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:self.scrollView];
     
     //2. label 'Datos Personales'
@@ -116,8 +122,8 @@
     personalInfoTableView.userInteractionEnabled = NO;
     personalInfoTableView.tag = 1;
     personalInfoTableView.showsVerticalScrollIndicator = NO;
-    personalInfoTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    personalInfoTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    personalInfoTableView.backgroundColor = [UIColor blackColor];
+    personalInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     personalInfoTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.scrollView addSubview:personalInfoTableView];
     
@@ -131,7 +137,7 @@
     
     UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(0.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.scrollView.frame.size.width, 40.0)];
     informativeTextLabel.attributedText = informativeString;
-    informativeTextLabel.backgroundColor = [UIColor blackColor];
+    informativeTextLabel.backgroundColor = [UIColor clearColor];
     informativeTextLabel.textAlignment = NSTextAlignmentJustified;
     informativeTextLabel.userInteractionEnabled = NO;
     informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
@@ -149,8 +155,8 @@
     rentedTableView.delegate = self;
     rentedTableView.dataSource = self;
     rentedTableView.tag = 3;
-    rentedTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    rentedTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    rentedTableView.backgroundColor = [UIColor blackColor];
+    rentedTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.scrollView addSubview:rentedTableView];
 
@@ -169,8 +175,8 @@
     suscriptionInfoTableView.tag = 2;
     suscriptionInfoTableView.showsVerticalScrollIndicator = NO;
     suscriptionInfoTableView.userInteractionEnabled = NO;
-    suscriptionInfoTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-    suscriptionInfoTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    suscriptionInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    suscriptionInfoTableView.backgroundColor = [UIColor blackColor];
     [self.scrollView addSubview:suscriptionInfoTableView];
     
     //7. 'Cerrar Sesión' button
@@ -295,6 +301,8 @@
         NSString *productID = rentedProductionInfo[@"id"];
         
         if ([rentedProductionInfo[@"type"] isEqualToString:@"Series"] || [rentedProductionInfo[@"type"] isEqualToString:@"Telenovelas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Noticias"]) {
+            [self showOpacityView];
+            
             //The production is a serie
             SeriesDetailPadViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
             telenovelSeriesDetailVC.productID = productID;
@@ -302,6 +310,8 @@
             [self presentViewController:telenovelSeriesDetailVC animated:YES completion:nil];
             
         } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
+            [self showOpacityView];
+            
             //The production is a movie, news or live event
             MovieDetailsPadViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
             movieEventDetailsVC.productID = productID;
@@ -312,6 +322,17 @@
 }
 
 #pragma mark - Actions 
+
+-(void)removeOpacityView {
+    [self.opacityView removeFromSuperview];
+}
+
+-(void)showOpacityView {
+    self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
+    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+}
 
 -(void)goToPrivacyTerms {
     TermsAndConditionsPadViewController *termsAndConditionsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsPad"];

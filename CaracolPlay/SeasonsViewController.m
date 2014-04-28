@@ -25,7 +25,7 @@
     UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0)];
     navigationBar.delegate = self;
     [navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
-    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"Temporadas"];
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:self.mainTitle];
     navigationBar.items = @[navigationItem];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone

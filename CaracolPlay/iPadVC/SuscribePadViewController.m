@@ -95,9 +95,11 @@
     
     //3. Checkboxes
     self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 421.0, 22.0, 22.0)];
+    self.checkBox1.delegate = self;
     [self.scrollView addSubview:self.checkBox1];
     
     self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 452.0, 22.0, 22.0)];
+    self.checkBox2.delegate = self;
     [self.scrollView addSubview:self.checkBox2];
     
     //4. 'Continuar' button
@@ -525,6 +527,17 @@
     NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:checkString];
+}
+
+#pragma mark - CheckmarkViewDelegate
+
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
+    checkmarkView.borderColor = [UIColor whiteColor];
+    checkmarkView.borderWidth = 1.0;
+}
+
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+    
 }
 
 #pragma mark - UIPickerViewDataSource

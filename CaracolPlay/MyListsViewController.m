@@ -82,7 +82,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //2. Create a table view to display the user's lists
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 44.0) style:UITableViewStylePlain];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 50.0;

@@ -14,6 +14,7 @@
 @interface MorePadMasterViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 @property (strong, nonatomic) NSArray *menuOptionsArray;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
+@property (strong, nonatomic) UIImageView *headerImageView;
 @property (strong, nonatomic) UITableView *tableView;
 @end
 
@@ -39,7 +40,8 @@
     [super viewWillLayoutSubviews];
     // Set subviews frame
     self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
-    self.tableView.frame = CGRectMake(0.0, 64.0, self.view.bounds.size.width, self.view.bounds.size.height - 64.0);
+    self.headerImageView.frame = CGRectMake(0.0, 64.0, self.view.bounds.size.width, 75.0);
+    self.tableView.frame = CGRectMake(0.0, self.headerImageView.frame.origin.y + self.headerImageView.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height - (self.headerImageView.frame.origin.y + self.headerImageView.frame.size.height));
 }
 
 #pragma mark - UISetup & Initialization stuff
@@ -51,6 +53,11 @@
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
     
+    //Header image
+    self.headerImageView = [[UIImageView alloc] init];
+    self.headerImageView.image = [UIImage imageNamed:@"MoreSectionHeader.png"];
+    [self.view addSubview:self.headerImageView];
+    
     // 2. Table view setup
     self.tableView = [[UITableView alloc] init];
     self.tableView.delegate = self;
@@ -58,6 +65,7 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
     [self.view addSubview:self.tableView];
 }
 
@@ -72,7 +80,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
         UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
-        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
         cell.selectedBackgroundView = selectedView;
 
     }

@@ -17,7 +17,7 @@
 #import "TermsAndConditionsPadViewController.h"
 #import "MBProgressHUD.h"
 
-@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface RedeemCodeFormPadViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, CheckmarkViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -104,9 +104,11 @@
     
     //3. Checkboxes
     self.checkmarkView1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(32.0, 421.0, 22.0, 22.0)];
+    self.checkmarkView1.delegate = self;
     [self.scrollView addSubview:self.checkmarkView1];
     
     self.checkmarkView2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(32.0, 451.0, 22.0, 22.0)];
+    self.checkmarkView2.delegate = self;
     [self.scrollView addSubview:self.checkmarkView2];
     
     //4. 'Continuar' button
@@ -461,6 +463,17 @@
     } else {
         return NO;
     }
+}
+
+#pragma mark - CheckmarkViewDelegate
+
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
+    checkmarkView.borderColor = [UIColor whiteColor];
+    checkmarkView.borderWidth = 1.0;
+}
+
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+    
 }
 
 #pragma mark - UIPickerViewDataSource

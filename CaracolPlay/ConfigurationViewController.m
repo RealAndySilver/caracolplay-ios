@@ -23,8 +23,8 @@ NSString *const cellIdentifier = @"CellIdentifier";
 -(void)UISetup {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
     self.tableView.delegate = self;
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    self.tableView.separatorColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor blackColor];
+    self.tableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 50.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

@@ -13,7 +13,8 @@
 //@property (strong, nonatomic) UIImageView *freeImageView;
 @end
 
-@implementation ProductionsPadCollectionViewCell
+@implementation ProductionsPadCollectionViewCell{
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -44,8 +45,10 @@
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.numberOfLines = 2;
-        self.titleLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-        [self.productionImageView addSubview:self.titleLabel];
+        [self.contentView addSubview:self.titleLabel];
+        
+        self.starsView = [[UIView alloc] init];
+        [self.contentView addSubview:self.starsView];
     }
     return self;
 }
@@ -53,10 +56,11 @@
 -(void)layoutSubviews {
     [super layoutSubviews];
     CGRect contentRect = self.contentView.bounds;
-    self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, contentRect.size.height - 60.0);
+    self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, 200.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
-    self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 60.0, self.productionImageView.frame.size.width, 20.0);
-    self.titleLabel.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 40.0, self.productionImageView.frame.size.width, 40.0);
+    self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
+    self.titleLabel.frame = CGRectMake(13.0, self.productionImageView.frame.size.height + 20, self.productionImageView.frame.size.width, 40.0);
+    self.starsView.frame = CGRectMake(6.0, self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height, 120.0, 20.0);
     //[self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
 
@@ -68,9 +72,9 @@
 #pragma mark - Custom Methods
 
 -(void)createStarsImageViewsWithGoldStarsNumber:(int)goldStars {
-    
     for (int i = 1; i < 6; i++) {
-        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0*i, 210.0, 20.0, 20.0)];
+        //UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(5.0 + 20.0*i, 264.0, 20.0, 20.0)];
+        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20.0*i, 0.0, 20.0, 20.0)];
         starImageView.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         if (goldStars >= i) {
             starImageView.tintColor = [UIColor colorWithRed:255.0/255.0 green:192.0/255.0 blue:0.0 alpha:1.0];
@@ -79,7 +83,7 @@
         }
         starImageView.clipsToBounds = YES;
         starImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.contentView addSubview:starImageView];
+        [self.starsView addSubview:starImageView];
     }
 }
 

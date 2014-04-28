@@ -17,6 +17,7 @@
 #import "FileSaver.h"
 
 @interface ValidateCodeViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongCodeImageView;
 @property (weak, nonatomic) IBOutlet UITextField *codeTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
@@ -30,6 +31,7 @@
 }
 
 -(void)setupUI {
+    self.wrongCodeImageView.alpha = 0.0;
     self.codeTextfield.delegate = self;
     [self.continueButton addTarget:self action:@selector(validateCode) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -72,9 +74,12 @@
 }
 
 -(void)validateCode {
+    self.wrongCodeImageView.alpha = 0.0;
+    
     if ([self.codeTextfield.text length] > 0) {
         [self validateCodeInServer];
     } else {
+        self.wrongCodeImageView.alpha = 1.0;
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor escribe un código" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
@@ -159,6 +164,7 @@
                 }
             } else {
                 NSLog(@"%@", dictionary);
+                self.wrongCodeImageView.alpha = 1.0;
                 [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             

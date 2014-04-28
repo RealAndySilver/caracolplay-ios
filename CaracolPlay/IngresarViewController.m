@@ -22,6 +22,8 @@
 
 
 @interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -33,6 +35,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    [self clearAllWrongImageViews];
     
     self.nameTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -102,6 +105,11 @@
 
 #pragma mark - Custom Methods
 
+-(void)clearAllWrongImageViews {
+    self.wrongPassImageView.alpha = 0.0;
+    self.wrongUserImageView.alpha = 0.0;
+}
+
 -(void)tap {
     //Used to dismiss the keyboard when the user taps outside of it.
     [self.nameTextfield resignFirstResponder];
@@ -109,11 +117,28 @@
 }
 
 -(void)enter {
-    if (([self.nameTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    [self clearAllWrongImageViews];
+    
+    BOOL userIsCorrect = NO;
+    BOOL passIsCorrect = NO;
+    
+    if ([self.nameTextfield.text length] > 0) {
+        userIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0 ){
+        passIsCorrect = YES;
+    } else {
+        self.wrongPassImageView.alpha = 1.0;
+    }
+    
+    if (userIsCorrect && passIsCorrect) {
         [self authenticateUserWithUserName:self.nameTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor completa todos los campos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -167,12 +192,16 @@
     //4. Fourth view of the TabBar - MyLists
     MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
-    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+    myListsNavigationController.tabBarItem.title = @"Mis Listas";
+    myListsNavigationController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
+    myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
     
     //5. Fifth view of the TabBar - My Account
     ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
     MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
-    [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+    myAccountNavigationController.tabBarItem.title = @"Más";
+    myAccountNavigationController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
+    myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
     
     NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
     [viewControllersArray addObject:myListsNavigationController];
@@ -299,6 +328,8 @@
             
         } else {
             NSLog(@"la autenticación no fue exitosa: %@", dictionary);
+            self.wrongPassImageView.alpha = 1.0;
+            self.wrongUserImageView.alpha = 1.0;
             [UserInfo sharedInstance].userName = nil;
             [UserInfo sharedInstance].password = nil;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

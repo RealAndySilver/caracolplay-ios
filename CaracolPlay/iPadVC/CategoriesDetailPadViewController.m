@@ -27,6 +27,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSMutableArray *productionsArray;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) NSString *selectedEpisodeID;
+@property (strong, nonatomic) UIImageView *opacityView;
 @end
 
 @implementation CategoriesDetailPadViewController
@@ -36,11 +37,9 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #pragma mark - Lazy Instantiation
 
 -(void)setCategoryID:(NSString *)categoryID {
-    [self.unparsedProductionsArray removeAllObjects];
-    [self.productionsArray removeAllObjects];
-    [self.collectionView reloadData];
-    
+    NSLog(@"me settearon");
     _categoryID = categoryID;
+    
     if ([categoryID isEqualToString:@"1"]) {
         [self getUserRecentlyWatched];
         self.segmentedControl.hidden = YES;
@@ -80,10 +79,6 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     }
     return _spinner;
 }
-
-/*-(void)setupCollectionView {
-
-}*/
 
 -(void)UISetup {
     
@@ -128,6 +123,12 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
                                              selector:@selector(getCategoriesNotificationReceived)
                                                  name:@"GetCategoriesNotification"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeOpacityView)
+                                                 name:@"RemoveOpacityView"
+                                               object:nil];
+    
     //[self getListFromCategoryID:self.categoryID withFilter:0];
     [self UISetup];
 }
@@ -152,11 +153,16 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:producDic[@"image_url"]]
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     
+    
     if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"]) {
         NSLog(@"los productos si tienen estrellas");
+        cell.starsView.alpha = 1.0;
         cell.goldStars = ([producDic[@"rate"] intValue]/20) + 1;
-    } 
-    
+    } else {
+        cell.starsView.alpha = 0.0;
+        cell.goldStars = 0;
+    }
+  
     if ([producDic[@"free"] isEqualToString:@"1"]) {
         cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
     } else {
@@ -164,7 +170,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     }
     
     if ([self.categoryID isEqualToString:@"1"]) {
-        cell.titleLabel.text = self.productionsArray[indexPath.item][@"product_name"];
+        cell.titleLabel.text = self.productionsArray[indexPath.item][@"episode_name"];
     } else {
         cell.titleLabel.text = self.productionsArray[indexPath.item][@"name"];
     }
@@ -174,10 +180,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(150.0, 250.0);
+    return CGSizeMake(150.0, 300.0);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     if ([self.categoryID isEqualToString:@"1"]) {
         [self getIsContentAvailableForUserWithID:self.productionsArray[indexPath.row][@"id"]];
         self.selectedEpisodeID = self.productionsArray[indexPath.row][@"id"];
@@ -185,6 +192,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     }
     
     if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
+        [self addOpacityView];
+        
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -192,6 +201,8 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         
     } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+        [self addOpacityView];
+        
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
@@ -209,6 +220,13 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Custom Methods
+
+-(void)addOpacityView {
+    self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
+    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+}
 
 -(void)checkVideoAvailability:(Video *)video {
     if (video.status) {
@@ -302,8 +320,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         //NSLog(@"la peticion del listado de categorías fue exitosa: %@", responseDictionary);
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
         
-    } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"]) {
-        //NSLog(@"info de los recently watched: %@", responseDictionary);
+    } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"] && responseDictionary) {
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:(NSArray *)responseDictionary];
         //self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
     
@@ -325,6 +342,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Notification Handlers 
+
+-(void)removeOpacityView {
+    [self.opacityView removeFromSuperview];
+}
 
 -(void)getCategoriesNotificationReceived {
     NSLog(@"recibí la notification");

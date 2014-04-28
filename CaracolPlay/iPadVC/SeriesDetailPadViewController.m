@@ -27,6 +27,7 @@
 #import "ContentNotAvailableForUserPadViewController.h"
 #import "NSDictionary+NullReplacement.h"
 #import "UserInfo.h"
+@import QuartzCore;
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -137,6 +138,7 @@
 #pragma mark - UISetup & Initialization stuff
 
 -(void)UISetup {
+  
     //2. background image view setup
     /*self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     [self.backgroundImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
@@ -344,6 +346,7 @@
 #pragma mark - UITableViewDataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSLog(@"reload table viewwwww");
     if (tableView.tag == 1) {
         //Seasons table view
         return [self.production.seasonList count];
@@ -369,6 +372,12 @@
             UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
             cell.selectedBackgroundView = selectedView;
+        }
+        
+        if (self.selectedSeason == indexPath.row) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
         
         if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
@@ -417,8 +426,26 @@
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    static int prev = 0;
     if (tableView.tag == 1) {
         //Seasons table view
+        //self.selectedSeason = indexPath.row;
+        //UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UITableViewCell *cell =[tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cell.accessoryType==UITableViewCellAccessoryNone)
+        {
+            cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+            if (prev!=indexPath.row) {
+                cell=[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prev inSection:0]];
+                cell.accessoryType=UITableViewCellAccessoryNone;
+                prev=indexPath.row;
+            }
+        }
+        else{
+            cell.accessoryType=UITableViewCellAccessoryNone;
+        }
         self.selectedSeason = indexPath.row;
         [self.chaptersTableView reloadData];
     }
@@ -529,6 +556,7 @@
 }
 
 -(void)dismissVC {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveOpacityView" object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -659,7 +687,7 @@
             }
         } else {
             //El producto si está disponible
-            NSLog(@"info del producto: %@", responseDictionary);
+            //NSLog(@"info del producto: %@", responseDictionary);
             self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
         }
     

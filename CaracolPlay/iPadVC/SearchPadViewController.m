@@ -24,6 +24,7 @@
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) NSMutableArray *searchResultsArray;
 @property (strong, nonatomic) NSMutableArray *searchResultsArrayWithNulls;
+@property (strong, nonatomic) UIImageView *opacityView;
 @end
 
 @implementation SearchPadViewController
@@ -85,8 +86,13 @@
     UIBarButtonItem *spinnerBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.spinner];
     navigationItem.rightBarButtonItem = spinnerBarButtonItem;
     
+    //Search bar background bar image
+    UIImageView *searchBarBackgroundBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 1.0, screenFrame.size.width, 42.0)];
+    searchBarBackgroundBarImage.image = [UIImage imageNamed:@"SearchBarBackgroundBar.png"];
+    [self.view addSubview:searchBarBackgroundBarImage];
+    
     //2. SearchBar setup
-    self.mySearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, screenFrame.size.width, 30.0)];
+    self.mySearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 200.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, 400.0, 28.0)];
     self.mySearchBar.translucent = YES;
     self.mySearchBar.delegate = self;
     self.mySearchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
@@ -97,6 +103,9 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeOpacityView)
+                                                 name:@"RemoveOpacityView"
+                                               object:nil];
     self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
     [self createTapGesture];
@@ -134,6 +143,11 @@
 #pragma mark - UICollectionViewDelegate 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
+    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
+    
     if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -186,6 +200,12 @@
     [self.spinner stopAnimating];
     NSLog(@"server error: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers
+
+-(void)removeOpacityView {
+    [self.opacityView removeFromSuperview];
 }
 
 #pragma mark - UISearchBarDelegate

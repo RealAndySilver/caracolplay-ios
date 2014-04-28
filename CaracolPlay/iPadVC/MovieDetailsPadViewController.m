@@ -511,6 +511,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 }
 
 -(void)dismissVC {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveOpacityView" object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

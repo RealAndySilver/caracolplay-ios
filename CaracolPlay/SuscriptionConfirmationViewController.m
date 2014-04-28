@@ -87,7 +87,6 @@
     } else  {
         NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
     }
-
 }
 
 -(void)goToHomeViewController {
@@ -99,12 +98,16 @@
     //4. Fourth view of the TabBar - My Lists
     MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
-    [myListsNavigationController.tabBarItem initWithTitle:@"Mis Listas" image:[UIImage imageNamed:@"MyListsTabBarIcon.png"] tag:4];
+    myListsNavigationController.tabBarItem.title = @"Mis Listas";
+    myListsNavigationController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
+    myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
     
     //5. Fifth view of the TabBar - My Account
     ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
-    MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
-    [myAccountNavigationController.tabBarItem initWithTitle:@"Mas" image:[UIImage imageNamed:@"MoreTabBarIcon.png"] tag:5];
+    MyNavigationController *myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
+    myAccountNavigationController.tabBarItem.title = @"Más";
+    myAccountNavigationController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
+    myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
     
     NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
     [viewControllersArray addObject:myListsNavigationController];

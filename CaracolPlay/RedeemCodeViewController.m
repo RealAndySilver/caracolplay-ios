@@ -17,6 +17,8 @@
 #import "MBProgressHUD.h"
 
 @interface RedeemCodeViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
@@ -28,6 +30,10 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Hide the red image views
+    self.wrongUserImageView.alpha = 0.0;
+    self.wrongPassImageView.alpha = 0.0;
     
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -63,11 +69,29 @@
 #pragma mark - Custom Methods
 
 -(void)startRedeemProcess {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    self.wrongPassImageView.alpha = 0.0;
+    self.wrongUserImageView.alpha = 0.0;
+    
+    BOOL userIsCorrect = NO;
+    BOOL passIsCorrect = NO;
+    
+    if ([self.userTextfield.text length] > 0) {
+        userIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0){
+        passIsCorrect = YES;
+    } else {
+        self.wrongPassImageView.alpha = 1.0;
+    }
+    
+    if (userIsCorrect && passIsCorrect) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor completa todos los campos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -164,6 +188,8 @@
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             [self redeemCodeInServer:self.redeemedCode];
         } else {
+            self.wrongPassImageView.alpha = 1.0;
+            self.wrongUserImageView.alpha = 1.0;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Los datos ingresados no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"la autenticación no fue exitosa");
         }

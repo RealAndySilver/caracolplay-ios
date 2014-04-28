@@ -202,7 +202,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    [shareButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [shareButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
     shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -229,7 +229,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                   90.0,
                                                                                   30.0)];
         [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
-        [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
@@ -250,7 +250,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0)];
                 [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+                [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
                 self.watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
                 [self.watchProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
                 [self.view addSubview:self.watchProductionButton];
@@ -461,6 +461,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     SeasonsViewController *seasonsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Seasons"];
     seasonsVC.numberOfSeasons = [self.production.seasonList count];
     seasonsVC.seasonNamesArray = seasonNamesArray;
+    if ([self.production.type isEqualToString:@"Noticias"]) {
+        seasonsVC.mainTitle = @"Emisiones";
+    } else {
+        seasonsVC.mainTitle = @"Temporadas";
+    }
     [self presentViewController:seasonsVC animated:YES completion:nil];
     NSLog(@"Número de temporadas: %d", seasonsVC.numberOfSeasons);
 }

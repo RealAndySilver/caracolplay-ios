@@ -175,6 +175,12 @@
 		8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */; };
 		8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */; };
 		8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */; };
+		8BFA6431190E919B0065EC5F /* MoreSectionHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA642F190E919B0065EC5F /* MoreSectionHeader.png */; };
+		8BFA6432190E919B0065EC5F /* MoreSectionHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6430190E919B0065EC5F /* MoreSectionHeader@2x.png */; };
+		8BFA6435190E96FD0065EC5F /* SearchBarBackgroundBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */; };
+		8BFA6436190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6434190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png */; };
+		8BFA6439190EEA0B0065EC5F /* OpacityBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6437190EEA0B0065EC5F /* OpacityBackground.png */; };
+		8BFA643A190EEA0B0065EC5F /* OpacityBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6438190EEA0B0065EC5F /* OpacityBackground@2x.png */; };
 		8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */; };
 		8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F581891653A00A88C8C /* WatchedRecentlyTableViewCell.m */; };
 		8BFD4F5C189175D800A88C8C /* TelenovelSeriesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F5B189175D800A88C8C /* TelenovelSeriesDetailViewController.m */; };
@@ -576,6 +582,12 @@
 		8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecommendedProdCollectionViewCell.m; path = CustomCells/RecommendedProdCollectionViewCell.m; sourceTree = "<group>"; };
 		8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpacityPattern.png; path = Resources/Images/OpacityPattern.png; sourceTree = "<group>"; };
 		8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenPattern.png; path = Resources/Images/HomeScreenPattern.png; sourceTree = "<group>"; };
+		8BFA642F190E919B0065EC5F /* MoreSectionHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoreSectionHeader.png; path = Resources/Images/iPad/MoreSectionHeader.png; sourceTree = "<group>"; };
+		8BFA6430190E919B0065EC5F /* MoreSectionHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoreSectionHeader@2x.png"; path = "Resources/Images/iPad/MoreSectionHeader@2x.png"; sourceTree = "<group>"; };
+		8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarBackgroundBar.png; path = Resources/Images/iPad/SearchBarBackgroundBar.png; sourceTree = "<group>"; };
+		8BFA6434190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchBarBackgroundBar@2x.png"; path = "Resources/Images/iPad/SearchBarBackgroundBar@2x.png"; sourceTree = "<group>"; };
+		8BFA6437190EEA0B0065EC5F /* OpacityBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpacityBackground.png; path = Resources/Images/iPad/OpacityBackground.png; sourceTree = "<group>"; };
+		8BFA6438190EEA0B0065EC5F /* OpacityBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OpacityBackground@2x.png"; path = "Resources/Images/iPad/OpacityBackground@2x.png"; sourceTree = "<group>"; };
 		8BFD4F5418915F6B00A88C8C /* WatchedRecentlyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchedRecentlyViewController.h; sourceTree = "<group>"; };
 		8BFD4F5518915F6B00A88C8C /* WatchedRecentlyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchedRecentlyViewController.m; sourceTree = "<group>"; };
 		8BFD4F571891653A00A88C8C /* WatchedRecentlyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WatchedRecentlyTableViewCell.h; path = CustomCells/WatchedRecentlyTableViewCell.h; sourceTree = "<group>"; };
@@ -1046,6 +1058,12 @@
 		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				8BFA6437190EEA0B0065EC5F /* OpacityBackground.png */,
+				8BFA6438190EEA0B0065EC5F /* OpacityBackground@2x.png */,
+				8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */,
+				8BFA6434190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png */,
+				8BFA642F190E919B0065EC5F /* MoreSectionHeader.png */,
+				8BFA6430190E919B0065EC5F /* MoreSectionHeader@2x.png */,
 				A058B2D2190E12D300AAFCB7 /* RentConfirmFullScreenBackground.png */,
 				A058B2D3190E12D300AAFCB7 /* RentConfirmFullScreenBackground@2x.png */,
 				A058B2CE190E0EC200AAFCB7 /* RedeemCodeConfirmFullScreenBackground.png */,
@@ -1766,6 +1784,7 @@
 				8BF16A1A188F28800021AB03 /* OpacityPattern@2x.png in Resources */,
 				8BA9B266189FFFD1003DBBDC /* InicioiPad.png in Resources */,
 				A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */,
+				8BFA6435190E96FD0065EC5F /* SearchBarBackgroundBar.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
 				8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */,
@@ -1779,6 +1798,7 @@
 				A058B2BD190DFB3B00AAFCB7 /* ShareButton@2x.png in Resources */,
 				A058B2B9190DF28200AAFCB7 /* MoreTabBarIconSelected@2x.png in Resources */,
 				A095A04E18B558F6004F05BB /* RedeemCodeAlertBackground.png in Resources */,
+				8BFA6439190EEA0B0065EC5F /* OpacityBackground.png in Resources */,
 				8BB5222218AA9BC60027CA59 /* CategoriesOrangeTitle@2x.png in Resources */,
 				A058B2C4190DFE2B00AAFCB7 /* WatchTrailerButton.png in Resources */,
 				8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */,
@@ -1800,13 +1820,16 @@
 				A0321BDD18FDE75600F5F0E9 /* BotonTigo@2x.png in Resources */,
 				8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */,
 				8BE7FDFD189835830087A7E2 /* CaracolPlayHeaderWithLogo.png in Resources */,
+				8BFA6431190E919B0065EC5F /* MoreSectionHeader.png in Resources */,
 				A058B2D5190E12D300AAFCB7 /* RentConfirmFullScreenBackground@2x.png in Resources */,
 				A058B2B8190DF28200AAFCB7 /* MoreTabBarIconSelected.png in Resources */,
 				8BB5222518AAA2E00027CA59 /* SplitNavBarDetail.png in Resources */,
+				8BFA643A190EEA0B0065EC5F /* OpacityBackground@2x.png in Resources */,
 				A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */,
 				A058B2AB190DEE2900AAFCB7 /* SearchTabBarIconSelected.png in Resources */,
 				A095A04A18B54B11004F05BB /* SuscriptionAlertBackground.png in Resources */,
 				A095A05518B56582004F05BB /* SuscriptionConfirmationBackground.png in Resources */,
+				8BFA6432190E919B0065EC5F /* MoreSectionHeader@2x.png in Resources */,
 				8BE7FDEE189823950087A7E2 /* Loading.png in Resources */,
 				A058B2C5190DFE2B00AAFCB7 /* WatchTrailerButton@2x.png in Resources */,
 				755DB163188DEE2C00E5C636 /* InfoPlist.strings in Resources */,
@@ -1824,6 +1847,7 @@
 				A058B2C0190DFD3700AAFCB7 /* OrangeButton.png in Resources */,
 				8BB5221D18AA9AC60027CA59 /* SplitNavBarMaster.png in Resources */,
 				8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */,
+				8BFA6436190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png in Resources */,
 				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
 				A058B2C8190E05E000AAFCB7 /* SuscriptionAlertFullScreenBackground in Resources */,
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,

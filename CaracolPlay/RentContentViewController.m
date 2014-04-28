@@ -18,6 +18,8 @@
 #import "MBProgressHUD.h"
 
 @interface RentContentViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
 @property (weak, nonatomic) IBOutlet UIButton *rentButton;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -37,6 +39,10 @@
                                                object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transactionFailedNotificationReceived:) name:@"TransactionFailedNotification" object:nil];
 
+    
+    //Hide the red image views
+    self.wrongUserImageView.alpha = 0.0;
+    self.wrongPassImageView.alpha = 0.0;
     
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
@@ -58,11 +64,29 @@
 #pragma mark - Actions
 
 -(void)startRentProcess {
-    if (([self.userTextfield.text length] > 0) && [self.passwordTextfield.text length] > 0) {
+    self.wrongPassImageView.alpha = 0.0;
+    self.wrongUserImageView.alpha = 0.0;
+    
+    BOOL userIsCorrect = NO;
+    BOOL passIsCorrect = NO;
+    
+    if ([self.userTextfield.text length] > 0) {
+        userIsCorrect = YES;
+    } else {
+        self.wrongUserImageView.alpha = 1.0;
+    }
+    
+    if ([self.passwordTextfield.text length] > 0) {
+        passIsCorrect = YES;
+    } else {
+        self.wrongPassImageView.alpha = 1.0;
+    }
+    
+    if (userIsCorrect && passIsCorrect) {
         [self authenticateUserWithUserName:self.userTextfield.text andPassword:self.passwordTextfield.text];
         
     } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor completa todos los campos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
@@ -162,6 +186,9 @@
                 }
                 
             } else {
+                self.wrongPassImageView.alpha = 1.0;
+                self.wrongUserImageView.alpha = 1.0;
+                
                 NSLog(@"la autenticación no fue exitosa: %@", dictionary);
                 [UserInfo sharedInstance].userName = nil;
                 [UserInfo sharedInstance].password = nil;

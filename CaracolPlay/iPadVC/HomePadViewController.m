@@ -29,6 +29,7 @@
 @property (strong, nonatomic) NSTimer *carouselScrollingTimer;
 @property (strong, nonatomic) iCarousel *carousel;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
+@property (strong, nonatomic) UIImageView *opacityView;
 @end
 
 @implementation HomePadViewController
@@ -95,6 +96,11 @@
     //the aditional tabs of the tab bar controller when neccesaty
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createAditionalTabs)
                                                  name:@"CreateAditionalTabsNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeOpacityView)
+                                                 name:@"RemoveOpacityView"
                                                object:nil];
     
     //1. background image setup
@@ -165,6 +171,10 @@
 }
 
 #pragma mark - Notification Handlers 
+
+-(void)removeOpacityView {
+    [self.opacityView removeFromSuperview];
+}
 
 -(void)createAditionalTabs {
     NSLog(@"crearé los tabs adicionale");
@@ -294,6 +304,10 @@
 }
 
 -(void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
+    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.alpha = 0.7;
+    [self.tabBarController.view addSubview:self.opacityView];
     
     //Stop the automatic scrolling of the carousel
     [self.carouselScrollingTimer invalidate];

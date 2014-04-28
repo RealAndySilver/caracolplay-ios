@@ -20,7 +20,7 @@
 #import "MBProgressHUD.h"
 #import "TermsAndConditionsPadViewController.h"
 
-@interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, CheckmarkViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -120,9 +120,11 @@
     
     //3. Checkboxes
     self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(32.0, 414.0, 22.0, 22.0)];
+    self.checkBox1.delegate = self;
     [self.scrollView addSubview:self.checkBox1];
     
     self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(32.0, 445.0, 22.0, 22.0)];
+    self.checkBox2.delegate = self;
     [self.scrollView addSubview:self.checkBox2];
     
     //Rent button
@@ -496,6 +498,17 @@
     NSLog(@"Falló la transacción");
     NSDictionary *notificationInfo = [notification userInfo];
     [[[UIAlertView alloc] initWithTitle:@"Error" message:notificationInfo[@"Message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - CheckmarkViewDelegate
+
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
+    checkmarkView.borderColor = [UIColor whiteColor];
+    checkmarkView.borderWidth = 1.0;
+}
+
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+    
 }
 
 #pragma mark - UIPickerViewDataSource

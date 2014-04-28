@@ -19,7 +19,7 @@
 #import "IAPProduct.h"
 #import "MBProgressHUD.h"
 
-@interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface SuscribeFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, CheckmarkViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -122,9 +122,11 @@
     
     //3. Checkboxes
     self.checkBox1 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 418.0, 22.0, 22.0)];
+    self.checkBox1.delegate = self;
     [self.scrollView addSubview:self.checkBox1];
     
     self.checkBox2 = [[CheckmarkView alloc] initWithFrame:CGRectMake(36.0, 448.0, 22.0, 22.0)];
+    self.checkBox2.delegate = self;
     [self.scrollView addSubview:self.checkBox2];
     
     //Enter here button
@@ -497,6 +499,17 @@
     self.transactionID = transactionID;
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     [self suscribeUserInServerWithTransactionID:transactionID];
+}
+
+#pragma mark - CheckmarkViewDelegate
+
+-(void)checkmarkViewWasChecked:(CheckmarkView *)checkmarkView {
+    checkmarkView.borderColor = [UIColor whiteColor];
+    checkmarkView.borderWidth = 1.0;
+}
+
+-(void)checkmarkViewWasUnchecked:(CheckmarkView *)checkmarkView {
+    
 }
 
 #pragma mark - UIPickerViewDataSource

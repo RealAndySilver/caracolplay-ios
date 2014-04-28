@@ -60,10 +60,10 @@ static NSString *CellIdentifier = @"CellIdentifier";
                                                                     style:UITableViewStylePlain];
     self.categoriesTableView.delegate = self;
     self.categoriesTableView.dataSource = self;
-    self.categoriesTableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.categoriesTableView.backgroundColor = [UIColor blackColor];
     self.categoriesTableView.rowHeight = 50.0;
     self.categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.categoriesTableView.separatorColor = [UIColor blackColor];
+    self.categoriesTableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     [self.view addSubview:self.categoriesTableView];
 }
 
@@ -108,7 +108,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
-        selectedView.backgroundColor = [UIColor blackColor];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         cell.selectedBackgroundView = selectedView;
     }
     
