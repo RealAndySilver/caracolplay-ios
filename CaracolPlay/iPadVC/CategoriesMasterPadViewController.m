@@ -99,6 +99,10 @@
     navigationItem.rightBarButtonItem = reloadBarButtonItem;
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -185,22 +189,24 @@
 #pragma mark - Notification Handlers
 
 -(void)createLastSeenCategory {
+    [self getCategories];
     //[self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
     //[self.tableView reloadData];
 }
 
 -(void)eraseLastSeenCategory {
-    for (int i = 0; i < [self.parsedCategoriesList count]; i++) {
+    [self getCategories];
+    /*for (int i = 0; i < [self.parsedCategoriesList count]; i++) {
         Categoria *category = self.parsedCategoriesList[i];
         if ([category.identifier isEqualToString:@"1"]) {
             [self.parsedCategoriesList removeObject:category];
             break;
         }
-    }
+    }*/
     //Categoria *category = self.parsedCategoriesList[0];
     //self.categoriesDetailVC = self.splitViewController.viewControllers[1];
     //self.categoriesDetailVC.categoryID = category.identifier;
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 #pragma mark - UIBarPositioningDelegate

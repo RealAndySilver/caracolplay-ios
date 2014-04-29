@@ -89,7 +89,9 @@
         }];
     
     } else if (self.controllerWasPresentedFromContentNotAvailable) {
-        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:^(){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Video" object:nil userInfo:nil];
+        }];
     }
 }
 

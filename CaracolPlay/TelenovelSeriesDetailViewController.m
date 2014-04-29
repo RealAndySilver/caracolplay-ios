@@ -131,21 +131,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)UISetup {
     self.navigationItem.title = self.production.type;
     //1. Create the main image view of the movie/event
-    UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
+    /*UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      0.0,
                                                                                      self.view.frame.size.width,
                                                                                      self.view.frame.size.height/3)];
     movieEventImageView.clipsToBounds = YES;
     movieEventImageView.contentMode = UIViewContentModeScaleAspectFill;
     [movieEventImageView setImageWithURL:[NSURL URLWithString:self.production.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-    [self.view addSubview:movieEventImageView];
+    [self.view addSubview:movieEventImageView];*/
     
     //Create a view with an opacity pattern to apply an opacity to the image
-    UIView *opacityPatternView = [[UIView alloc] initWithFrame:movieEventImageView.frame];
+    /*UIView *opacityPatternView = [[UIView alloc] initWithFrame:movieEventImageView.frame];
     UIImage *opacityPatternImage = [UIImage imageNamed:@"MoviesOpacityPattern.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, movieEventImageView.frame.size.height+5)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
-    [self.view addSubview:opacityPatternView];
+    [self.view addSubview:opacityPatternView];*/
     
     //2. Create the secondary image of the movie/event
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
@@ -228,7 +228,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                   self.view.bounds.size.height/6.3,
                                                                                   90.0,
                                                                                   30.0)];
-        [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
@@ -619,7 +619,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else {
             //El status llegó true, entonces no hubo problema accediendo al producto
-            NSLog(@"El producto si está disponible: %@", dictionary);
+            //NSLog(@"El producto si está disponible: %@", dictionary);
             self.unparsedProductionInfoDic = dictionary[@"products"][@"0"][0];
         }
     

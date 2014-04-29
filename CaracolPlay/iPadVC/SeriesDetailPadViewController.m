@@ -214,7 +214,7 @@
         
         //5. Watch Trailer button setup
         self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
-        [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [self.watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
@@ -374,11 +374,11 @@
             cell.selectedBackgroundView = selectedView;
         }
         
-        if (self.selectedSeason == indexPath.row) {
+        /*if (self.selectedSeason == indexPath.row) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
-        }
+        }*/
         
         if ([self.production.type isEqualToString:@"Series"] || [self.production.type isEqualToString:@"Telenovelas"]) {
             cell.textLabel.text = [NSString stringWithFormat:@"Temporada %d", indexPath.row + 1];
@@ -503,7 +503,6 @@
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
-        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
         
@@ -611,7 +610,6 @@
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
-        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationPageSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }

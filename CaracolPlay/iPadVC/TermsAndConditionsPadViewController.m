@@ -34,7 +34,6 @@
         //self.termsAndConditionsString = [self.termsAndConditionsString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
         [self UISetup];
     }
-  
 }
 
 -(void)viewWillLayoutSubviews {
@@ -50,7 +49,11 @@
     //Navigation bar setup
     self.navigationBar = [[UINavigationBar alloc] init];
     self.navigationBar.delegate = self;
-    [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"SplitNavBarDetail.png"] forBarMetrics:UIBarMetricsDefault];
+    if (self.controllerWasPresentedInFormSheet) {
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"SplitNavBarDetailFormSheet.png"] forBarMetrics:UIBarMetricsDefault];
+    } else {
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"SplitNavBarDetail.png"] forBarMetrics:UIBarMetricsDefault];
+    }
     [self.view addSubview:self.navigationBar];
     
     self.webView = [[UIWebView alloc] init];

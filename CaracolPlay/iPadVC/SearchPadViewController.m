@@ -143,9 +143,10 @@
 #pragma mark - UICollectionViewDelegate 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
-    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.alpha = 0.7;
+    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
     [self.tabBarController.view addSubview:self.opacityView];
     
     if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {

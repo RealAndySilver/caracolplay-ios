@@ -197,7 +197,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //1. Create the main image view of the movie/event
     CGRect screenFrame = [UIScreen mainScreen].bounds;
-    UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
+    /*UIImageView *movieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0,
                                                                                      0.0,
                                                                                      screenFrame.size.width,
                                                                                     screenFrame.size.height/3)];
@@ -211,7 +211,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIImage *opacityPatternImage = [UIImage imageNamed:@"MoviesOpacityPattern.png"];
     opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, movieEventImageView.frame.size.height+5)];
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
-    [self.view addSubview:opacityPatternView];
+    [self.view addSubview:opacityPatternView];*/
     
     //2. Create the secondary image of the movie/event
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
@@ -292,7 +292,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                   screenFrame.size.height/6.3,
                                                                                   90.0,
                                                                                   30.0)];
-        [watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -313,7 +313,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [watchProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:watchProductionButton];
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, movieEventImageView.frame.origin.y + movieEventImageView.frame.size.height, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 40, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
@@ -553,7 +553,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else {
             //El status llegó true, entonces no hubo problema accediendo al producto
-            NSLog(@"El producto si está disponible");
+            //NSLog(@"El producto si está disponible");
             self.unparsedProductionInfo = responseDictionary[@"products"][@"0"][0];
         }
         

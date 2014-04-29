@@ -55,7 +55,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
-        selectedView.backgroundColor = [UIColor blackColor];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
         cell.selectedBackgroundView = selectedView;
     }
     cell.backgroundColor = [UIColor clearColor];
@@ -69,7 +69,6 @@ NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         MyAccountViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyAccount"];
         [self.navigationController pushViewController:myAccountViewController animated:YES];

@@ -240,9 +240,18 @@
     [page addSubview:pageImageView];
     
     //Create a view to add a pattern image to the main image view
-    UIView *opacityPatternView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
-    UIImage *opacityPatternImage = [UIImage imageNamed:@"NewHomeOpacityPattern.png"];
-    opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, self.scrollView.frame.size.height)];
+    UIView *opacityPatternView = [[UIView alloc] init];
+    UIImage *opacityPatternImage = nil;
+    if (self.view.frame.size.height > 480) {
+        opacityPatternView.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+        opacityPatternImage = [UIImage imageNamed:@"NewHomeOpacityPattern.png"];
+        opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, self.scrollView.frame.size.height)];
+
+    } else {
+        opacityPatternView.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+        opacityPatternImage = [UIImage imageNamed:@"iPhone4OpacityPattern.png"];
+        opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, opacityPatternView.frame.size.height)];
+    }
     opacityPatternView.backgroundColor = [UIColor colorWithPatternImage:opacityPatternImage];
     [page addSubview:opacityPatternView];
     

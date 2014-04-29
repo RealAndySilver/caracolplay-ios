@@ -131,11 +131,11 @@
     NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editable en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
     NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
     NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor orangeColor]};
-    [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 20)];
-    [informativeString setAttributes:firstAttributes range:NSMakeRange(90, 61)];
+    [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 19)];
+    [informativeString setAttributes:firstAttributes range:NSMakeRange(89, 61)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 68)];
     
-    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(0.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.scrollView.frame.size.width, 40.0)];
+    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(2.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.scrollView.frame.size.width - 4.0, 40.0)];
     informativeTextLabel.attributedText = informativeString;
     informativeTextLabel.backgroundColor = [UIColor clearColor];
     informativeTextLabel.textAlignment = NSTextAlignmentJustified;
@@ -329,8 +329,9 @@
 
 -(void)showOpacityView {
     self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
-    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.alpha = 0.7;
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
     [self.tabBarController.view addSubview:self.opacityView];
 }
 

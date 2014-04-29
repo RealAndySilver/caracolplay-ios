@@ -16,7 +16,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.view.backgroundColor = [UIColor blackColor];
     [self UISetup];
 }
 
@@ -40,8 +40,8 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.rowHeight = 60;
-    tableView.separatorColor = [UIColor blackColor];
-    tableView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    tableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+    tableView.backgroundColor = [UIColor blackColor];
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:tableView];
 }
@@ -56,6 +56,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        cell.selectedBackgroundView = selectedView;
     }
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.text = self.seasonNamesArray[indexPath.row];

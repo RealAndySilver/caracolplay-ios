@@ -170,9 +170,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     }
     
     if ([self.categoryID isEqualToString:@"1"]) {
-        cell.titleLabel.text = self.productionsArray[indexPath.item][@"episode_name"];
+        NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
+        cell.titleLabel.text = text;
     } else {
-        cell.titleLabel.text = self.productionsArray[indexPath.item][@"name"];
+        cell.titleLabel.text = producDic[@"name"];
     }
     return cell;
 }
@@ -223,8 +224,9 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(void)addOpacityView {
     self.opacityView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 768.0)];
-    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.alpha = 0.7;
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
     [self.tabBarController.view addSubview:self.opacityView];
 }
 
@@ -321,6 +323,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
         
     } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"] && responseDictionary) {
+        NSLog(@"ultimos vistos: %@", responseDictionary);
         self.unparsedProductionsArray = [NSMutableArray arrayWithArray:(NSArray *)responseDictionary];
         //self.unparsedProductionsArray = (NSMutableArray *)responseDictionary;
     

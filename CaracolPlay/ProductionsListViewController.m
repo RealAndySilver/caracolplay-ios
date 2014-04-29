@@ -59,7 +59,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         self.tableView.frame = CGRectMake(0.0,
                                           segmentedControl.frame.origin.y + segmentedControl.frame.size.height + 10.0,
                                           self.view.frame.size.width,
-                                          self.view.frame.size.height - (segmentedControl.frame.origin.y + segmentedControl.frame.size.height) - 44.0 - 64.0 - 20.0);
+                                          self.view.frame.size.height - (segmentedControl.frame.origin.y + segmentedControl.frame.size.height) - 44.0 - 64.0 - 15.0);
     } else {
         self.tableView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - 44.0 - 64.0);
     }
@@ -80,6 +80,11 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [self UISetup];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.navigationBarTitle;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eraseLastSeenCategory)
+                                                 name:@"EraseLastSeenCategory"
+                                               object:nil];
+    
     if ([self.categoryID isEqualToString:@"1"]) {
         [self getUserRecentlyWatchedWithFilter:1];
     } else {
@@ -274,6 +279,12 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     NSLog(@"server errror: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - Notification Handlers 
+
+-(void)eraseLastSeenCategory {
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - Interface Orientation 

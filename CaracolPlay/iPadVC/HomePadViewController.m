@@ -305,8 +305,9 @@
 
 -(void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.alpha = 0.7;
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
     [self.tabBarController.view addSubview:self.opacityView];
     
     //Stop the automatic scrolling of the carousel

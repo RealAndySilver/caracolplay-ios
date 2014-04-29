@@ -162,18 +162,20 @@ static NSString *CellIdentifier = @"CellIdentifier";
 #pragma mark - Notification Handlers
 
 -(void)createLastSeenCategory {
+    [self getCategoriesFromServer];
     //[self.parsedCategoriesList insertObject:self.lastSeenCategory atIndex:0];
     //[self.categoriesTableView reloadData];
 }
 
 -(void)eraseLastSeenCategory {
-    for (Categoria *category in self.parsedCategoriesList) {
+    [self getCategoriesFromServer];
+    /*for (Categoria *category in self.parsedCategoriesList) {
         if ([category.identifier isEqualToString:@"1"]) {
             [self.parsedCategoriesList removeObject:category];
             break;
         }
     }
-    [self.categoriesTableView reloadData];
+    [self.categoriesTableView reloadData];*/
 }
 
 - (NSUInteger) supportedInterfaceOrientations{

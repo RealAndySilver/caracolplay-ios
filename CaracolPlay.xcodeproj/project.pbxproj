@@ -70,11 +70,14 @@
 		8B7001A218A0599F000B5C7B /* HomeScreenBackgroundPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A018A0599F000B5C7B /* HomeScreenBackgroundPad.png */; };
 		8B7001A318A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */; };
 		8B7001A718A05AC3000B5C7B /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7001A618A05AC3000B5C7B /* iCarousel.m */; };
+		8B88EDC819103B5C00DDE28D /* iPhone4OpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B88EDC719103B5C00DDE28D /* iPhone4OpacityPattern.png */; };
 		8B892B2818B27F4A0066926C /* MyListsPadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B892B2718B27F4A0066926C /* MyListsPadTableViewCell.m */; };
 		8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B892B2F18B2B0460066926C /* MorePadMasterViewController.m */; };
 		8B8A215C18E6270A004C262D /* IngresarFromInsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A215B18E6270A004C262D /* IngresarFromInsideViewController.m */; };
 		8B8D8A20190B082A00FCEE60 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 8B8D8A1F190B082A00FCEE60 /* privacy.html */; };
 		8B98669B18AE911900AEA77A /* StarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B98669A18AE911900AEA77A /* StarsView.m */; };
+		8B9EEC47190FE2FF00C45915 /* SplitNavBarDetailFormSheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B9EEC45190FE2FF00C45915 /* SplitNavBarDetailFormSheet.png */; };
+		8B9EEC48190FE2FF00C45915 /* SplitNavBarDetailFormSheet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B9EEC46190FE2FF00C45915 /* SplitNavBarDetailFormSheet@2x.png */; };
 		8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25D189FF715003DBBDC /* LoadingiPad.png */; };
 		8BA9B260189FF715003DBBDC /* LoadingiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */; };
 		8BA9B263189FFB0D003DBBDC /* LoadingiPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA9B262189FFB0D003DBBDC /* LoadingiPadViewController.m */; };
@@ -395,6 +398,7 @@
 		8B7001A118A0599F000B5C7B /* HomeScreenBackgroundPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenBackgroundPad@2x.png"; path = "Resources/Images/iPad/HomeScreenBackgroundPad@2x.png"; sourceTree = "<group>"; };
 		8B7001A518A05AC3000B5C7B /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		8B7001A618A05AC3000B5C7B /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		8B88EDC719103B5C00DDE28D /* iPhone4OpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone4OpacityPattern.png; path = Resources/Images/iPhone4OpacityPattern.png; sourceTree = "<group>"; };
 		8B892B2618B27F4A0066926C /* MyListsPadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsPadTableViewCell.h; path = CustomCells/MyListsPadTableViewCell.h; sourceTree = "<group>"; };
 		8B892B2718B27F4A0066926C /* MyListsPadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsPadTableViewCell.m; path = CustomCells/MyListsPadTableViewCell.m; sourceTree = "<group>"; };
 		8B892B2E18B2B0460066926C /* MorePadMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MorePadMasterViewController.h; path = iPadVC/MorePadMasterViewController.h; sourceTree = "<group>"; };
@@ -404,6 +408,8 @@
 		8B8D8A1F190B082A00FCEE60 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy.html; path = Plist/privacy.html; sourceTree = "<group>"; };
 		8B98669918AE911900AEA77A /* StarsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StarsView.h; path = "Custom Views/StarsView.h"; sourceTree = "<group>"; };
 		8B98669A18AE911900AEA77A /* StarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StarsView.m; path = "Custom Views/StarsView.m"; sourceTree = "<group>"; };
+		8B9EEC45190FE2FF00C45915 /* SplitNavBarDetailFormSheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SplitNavBarDetailFormSheet.png; path = Resources/Images/iPad/SplitNavBarDetailFormSheet.png; sourceTree = "<group>"; };
+		8B9EEC46190FE2FF00C45915 /* SplitNavBarDetailFormSheet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SplitNavBarDetailFormSheet@2x.png"; path = "Resources/Images/iPad/SplitNavBarDetailFormSheet@2x.png"; sourceTree = "<group>"; };
 		8BA9B25D189FF715003DBBDC /* LoadingiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoadingiPad.png; path = Resources/Images/iPad/LoadingiPad.png; sourceTree = "<group>"; };
 		8BA9B25E189FF715003DBBDC /* LoadingiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoadingiPad@2x.png"; path = "Resources/Images/iPad/LoadingiPad@2x.png"; sourceTree = "<group>"; };
 		8BA9B261189FFB0D003DBBDC /* LoadingiPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadingiPadViewController.h; path = iPadVC/LoadingiPadViewController.h; sourceTree = "<group>"; };
@@ -1058,6 +1064,8 @@
 		8BA9B25C189FF6F7003DBBDC /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				8B9EEC45190FE2FF00C45915 /* SplitNavBarDetailFormSheet.png */,
+				8B9EEC46190FE2FF00C45915 /* SplitNavBarDetailFormSheet@2x.png */,
 				8BFA6437190EEA0B0065EC5F /* OpacityBackground.png */,
 				8BFA6438190EEA0B0065EC5F /* OpacityBackground@2x.png */,
 				8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */,
@@ -1426,6 +1434,7 @@
 		8BF16A0D188F16970021AB03 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8B88EDC719103B5C00DDE28D /* iPhone4OpacityPattern.png */,
 				A058B2C2190DFE2B00AAFCB7 /* WatchTrailerButton.png */,
 				A058B2C3190DFE2B00AAFCB7 /* WatchTrailerButton@2x.png */,
 				A058B2BE190DFD3700AAFCB7 /* OrangeButton.png */,
@@ -1722,6 +1731,7 @@
 				A058B2A2190DEC4500AAFCB7 /* CategoriesTabBarIconSelected.png in Resources */,
 				8BE79D2F18A137750049B64B /* CategoriesNavBarImage@2x.png in Resources */,
 				8BE7A375189AEFBD00AF8E90 /* MyListsTabBarIcon@2x.png in Resources */,
+				8B9EEC47190FE2FF00C45915 /* SplitNavBarDetailFormSheet.png in Resources */,
 				8BA9B27518A0107E003DBBDC /* BackgroundIngresarPad@2x.png in Resources */,
 				8BA9B27418A0107E003DBBDC /* BackgroundIngresarPad.png in Resources */,
 				A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */,
@@ -1816,6 +1826,7 @@
 				8BE7FDED189823950087A7E2 /* Inicio@2x.png in Resources */,
 				A058B2A9190DEC4500AAFCB7 /* HomeTabBarIcon@2x.png in Resources */,
 				8BE7FDFA18982C6F0087A7E2 /* BotonRedimir@2x.png in Resources */,
+				8B88EDC819103B5C00DDE28D /* iPhone4OpacityPattern.png in Resources */,
 				A095A04B18B54B11004F05BB /* SuscriptionAlertBackground@2x.png in Resources */,
 				A0321BDD18FDE75600F5F0E9 /* BotonTigo@2x.png in Resources */,
 				8BE7A361189AB64900AF8E90 /* LineaBlanca.png in Resources */,
@@ -1848,6 +1859,7 @@
 				8BB5221D18AA9AC60027CA59 /* SplitNavBarMaster.png in Resources */,
 				8B164B8D18A97E75001803A9 /* SearchBarBackground.png in Resources */,
 				8BFA6436190E96FD0065EC5F /* SearchBarBackgroundBar@2x.png in Resources */,
+				8B9EEC48190FE2FF00C45915 /* SplitNavBarDetailFormSheet@2x.png in Resources */,
 				8BA9B27D18A034AA003DBBDC /* BackgroundFormularioPad@2x.png in Resources */,
 				A058B2C8190E05E000AAFCB7 /* SuscriptionAlertFullScreenBackground in Resources */,
 				8BA9B25F189FF715003DBBDC /* LoadingiPad.png in Resources */,
@@ -2269,7 +2281,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C9F5AFB0-0524-4B91-B248-5B31803DB433";
+				PROVISIONING_PROFILE = "9A9CEDB8-A7EA-45F2-AA0E-5FC506D688A4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;

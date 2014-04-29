@@ -202,7 +202,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         
         //5. Watch Trailer button setup
         self.watchTrailerButton = [[UIButton alloc] init];
-        [self.watchTrailerButton setTitle:@"Ver Trailer" forState:UIControlStateNormal];
+        [self.watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
@@ -280,7 +280,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     ////////////////////////////////////////////////
     //gray view
     self.grayView = [[UIView alloc] init];
-    self.grayView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.grayView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self.view addSubview:self.grayView];
     
     
@@ -452,7 +452,6 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         contentNotAvailableVC.productName = self.production.name;
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
-        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationFormSheet;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }
