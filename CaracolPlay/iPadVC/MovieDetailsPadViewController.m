@@ -204,7 +204,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         self.watchTrailerButton = [[UIButton alloc] init];
         [self.watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
@@ -518,7 +518,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 -(void)videoShouldBeDisplayedReceived {
     NSLog(@"llegó la notificación: video");
-    [self.viewProductionButton removeFromSuperview];
+    //[self.viewProductionButton removeFromSuperview];
     [self getIsContentAvailableForUserWithID:self.production.identifier];
 }
 

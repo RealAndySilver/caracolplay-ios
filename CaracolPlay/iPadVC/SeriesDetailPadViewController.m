@@ -216,7 +216,7 @@
         self.watchTrailerButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 100.0, 140.0, 35.0)];
         [self.watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"WatchTrailerButton.png"] forState:UIControlStateNormal];
+        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
@@ -685,7 +685,7 @@
             }
         } else {
             //El producto si está disponible
-            //NSLog(@"info del producto: %@", responseDictionary);
+            NSLog(@"info del producto: %@", responseDictionary);
             self.unparsedProductionInfoDic = responseDictionary[@"products"][@"0"][0];
         }
     
