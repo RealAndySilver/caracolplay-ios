@@ -100,6 +100,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.categoryID isEqualToString:@"1"]) {
+        NSDictionary *productDic = self.productionsArray[indexPath.row];
         MyListsPadTableViewCell *cell = (MyListsPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (!cell) {
             cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -109,8 +110,18 @@ static NSString *cellIdentifier = @"CellIdentifier";
             cell.selectedBackgroundView = selectedView;
 
         }
-        cell.productionNameLabel.text = self.productionsArray[indexPath.row][@"product_name"];
-        cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", self.productionsArray[indexPath.row][@"episode_number"], self.productionsArray[indexPath.row][@"episode_name"]];
+        cell.productionNameLabel.text = productDic[@"product_name"];
+        if (![productDic[@"type"] isEqualToString:@"Noticias"] && ![productDic[@"type"] isEqualToString:@"Eventos en vivo"] && ![productDic[@"type"] isEqualToString:@"Telenovelas"] && ![productDic[@"type"] isEqualToString:@"Series"] && ![productDic[@"type"] isEqualToString:@"Películas"]) {
+            
+            cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", productDic[@"episode_number"], productDic[@"episode_name"]];
+        } else {
+            if ([productDic[@"type"] isEqualToString:@"Películas"] || [productDic[@"type"] isEqualToString:@"Noticias"] || [productDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+                cell.productionDetailLabel.text = @"";
+            } else {
+                cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", productDic[@"episode_number"], productDic[@"episode_name"]];
+            }
+        }
+        
         
         [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"] ] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
         return cell;

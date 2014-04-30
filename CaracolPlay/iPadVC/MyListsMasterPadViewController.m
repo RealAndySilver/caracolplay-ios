@@ -196,7 +196,11 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetUserLists"] && responseDictionary) {
-        self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+        if ([responseDictionary[@"user_lists"] isKindOfClass:[NSArray class]]) {
+            self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

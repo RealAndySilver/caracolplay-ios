@@ -154,24 +154,55 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
                                   placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     
     
-    if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"]) {
-        NSLog(@"los productos si tienen estrellas");
-        cell.starsView.alpha = 1.0;
-        cell.goldStars = ([producDic[@"rate"] intValue]/20) + 1;
+    //////////////////////////////////////////////////////////
+    //Goldstars
+    if (![self.categoryID isEqualToString:@"1"]) {
+        if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"]) {
+            NSLog(@"los productos si tienen estrellas");
+            cell.starsView.alpha = 1.0;
+            cell.goldStars = ([producDic[@"rate"] intValue]/20) + 1;
+        } else {
+            cell.starsView.alpha = 0.0;
+            cell.goldStars = 0;
+        }
     } else {
         cell.starsView.alpha = 0.0;
         cell.goldStars = 0;
     }
   
+    ////////////////////////////////////////////////////////////
+    //Free band
     if ([producDic[@"free"] isEqualToString:@"1"]) {
         cell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];
     } else {
         cell.freeImageView.image = nil;
     }
     
+    ///////////////////////////////////////////////////////////
+    //Text to display in the cell
     if ([self.categoryID isEqualToString:@"1"]) {
-        NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
-        cell.titleLabel.text = text;
+        /*if ([producDic[@"type"] isEqualToString:@"Películas"] || [producDic[@"type"] isEqualToString:@"Noticias"]) {
+            NSString *text = producDic[@"episode_name"];
+            cell.titleLabel.text = text;
+        } else {
+            NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
+            cell.titleLabel.text = text;
+        }*/
+        if (![producDic[@"type"] isEqualToString:@"Películas"] && ![producDic[@"type"] isEqualToString:@"Noticias"] && ![producDic[@"type"] isEqualToString:@"Telenovelas"] && ![producDic[@"type"] isEqualToString:@"Series"] && ![producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+            
+            NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
+            cell.titleLabel.text = text;
+            
+        } else {
+            if ([producDic[@"type"] isEqualToString:@"Películas"] || [producDic[@"type"] isEqualToString:@"Noticias"] || [producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+                NSString *text = producDic[@"episode_name"];
+                cell.titleLabel.text = text;
+            } else {
+                NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
+                cell.titleLabel.text = text;
+            }
+        }
+       
     } else {
         cell.titleLabel.text = producDic[@"name"];
     }

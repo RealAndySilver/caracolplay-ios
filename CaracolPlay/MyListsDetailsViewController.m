@@ -141,13 +141,14 @@
     } else {
         //The video is not available for the user, so pass to the
         //Content not available for user
-        ContentNotAvailableForUserViewController *contentNotAvailableForUser =
+        /*ContentNotAvailableForUserViewController *contentNotAvailableForUser =
         [self.storyboard instantiateViewControllerWithIdentifier:@"ContentNotAvailableForUser"];
         contentNotAvailableForUser.productID = episode.identifier;
         contentNotAvailableForUser.productName = episode.productName;
-       // contentNotAvailableForUser.productType = self.production.type;
+        contentNotAvailableForUser.productType = self.production.type;
         contentNotAvailableForUser.viewType = video.typeView;
-        [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
+        [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];*/
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Este contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

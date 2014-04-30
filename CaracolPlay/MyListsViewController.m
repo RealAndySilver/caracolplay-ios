@@ -194,9 +194,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     if ([methodName isEqualToString:@"GetUserLists"]) {
         if (!responseDictionary) {
-             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"No fue posible acceder a tus listas. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         } else {
-            self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+            NSLog(@"User lists: %@", responseDictionary);
+            if ([responseDictionary[@"user_lists"] isKindOfClass:[NSArray class]]) {
+                self.unparsedUserListsArray = responseDictionary[@"user_lists"];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"En este momento no es posible acceder a tus listas. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
         }
         
     } else if ([methodName isEqualToString:@"CreateList"]) {
