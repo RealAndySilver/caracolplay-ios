@@ -11,7 +11,9 @@
 //#define ENDPOINT @"http://10.0.1.9:8080"
 //#define ENDPOINT @"http://iamstudio-sweetwater.herokuapp.com/"
 //#define ENDPOINT @"http://sweetwater.jit.su"
-#define ENDPOINT @"http://appsbetadev.caracolplay.com"
+//#define ENDPOINT @"http://appsbetadev.caracolplay.com"
+#define ENDPOINT @"http://apps.caracolplay.com"
+
 #import "IAmCoder.h"
 #import "UserInfo.h"
 
