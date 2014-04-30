@@ -382,4 +382,13 @@ static const short _base64DecodingTable[256] = {
     NSString *strDate = [formatter stringFromDate:selected];
     return strDate;
 }
++(NSString *)sha256:(NSString *)clear{
+    return nil;
+}
++(NSString *)AESDecryptWithMessage:(NSString *)message andPassword:(NSString *)password{
+    return nil;
+}
++(NSString *)AESEncryptWithMessage:(NSString *)message andPassword:(NSString *)password{
+    return nil;
+}
 @end

@@ -214,10 +214,19 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [self.view addSubview:opacityPatternView];*/
     
     //2. Create the secondary image of the movie/event
+    
+    float y_position;
+    if (self.view.frame.size.height>480) {
+        y_position = screenFrame.size.height/4.0;
+    }
+    else{
+        y_position = screenFrame.size.height/3.75;
+    }
+    
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(10.0,
                                                                  20.0,
                                                                  90.0,
-                                                                  screenFrame.size.height/4.0)];
+                                                                  y_position)];
     shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowOpacity = 0.9;
@@ -393,7 +402,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             //The user can't watch the video because the connection is to slow
             if (video.is3G) {
                 //The user can watch it with 3G
-                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una conexión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
                 videoPlayer.productID = self.production.identifier;

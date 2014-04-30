@@ -118,7 +118,7 @@
         } else if (status == ReachableViaWWAN) {
             if (video.is3G) {
                 //The user can watch it with 3G
-                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una conexión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
                 videoPlayer.productID = episode.identifier;

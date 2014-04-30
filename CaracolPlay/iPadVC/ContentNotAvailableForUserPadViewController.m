@@ -103,7 +103,7 @@
     
     // 'Suscribete' button setup
     self.suscribeButton = [[UIButton alloc] init];
-    [self.suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+    [self.suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [self.suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
     [self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];

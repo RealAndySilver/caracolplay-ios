@@ -77,7 +77,7 @@
     [self.view addSubview:enterButton];
     
     /*UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(30.0, enterButton.frame.origin.y + enterButton.frame.size.height + 10.0, screenFrame.size.width - 60.0, 50.0)];
-    [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+    [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];

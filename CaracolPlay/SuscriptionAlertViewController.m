@@ -99,7 +99,7 @@
             suscribeButtonFrame = CGRectMake(screenFrame.size.width/2 + 5.0, screenFrame.size.height/1.44, screenFrame.size.width/2.0 - 25.0, 40.0);
         }
         UIButton *suscribeButton = [[UIButton alloc] initWithFrame:suscribeButtonFrame];
-        [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+        [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
         [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];

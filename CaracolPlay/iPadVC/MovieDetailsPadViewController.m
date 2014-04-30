@@ -425,7 +425,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             //The user can't watch the video because the connection is to slow
             if (video.is3G) {
                 //The user can watch it with 3G
-                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una coenxión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una conexión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
                 videoPlayer.episodeID = self.production.identifier;

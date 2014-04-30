@@ -39,7 +39,7 @@
     
     //Suscribe
     UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.52, 240.0, 45.0)];
-    [suscribeButton setTitle:@"Suscríbete" forState:UIControlStateNormal];
+    [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];

@@ -21,6 +21,7 @@
 		755DB17D188DEE2C00E5C636 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB15C188DEE2C00E5C636 /* UIKit.framework */; };
 		755DB185188DEE2D00E5C636 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755DB183188DEE2D00E5C636 /* InfoPlist.strings */; };
 		755DB187188DEE2D00E5C636 /* CaracolPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */; };
+		75DF237C19105158003DB9ED /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DF237B19105158003DB9ED /* libOoyalaSDK.a */; };
 		8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */; };
 		8B0194DC18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */; };
 		8B0194DF18B3F4CB00380EC7 /* CaracolPlayHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */; };
@@ -235,7 +236,6 @@
 		A058B2D4190E12D300AAFCB7 /* RentConfirmFullScreenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A058B2D2190E12D300AAFCB7 /* RentConfirmFullScreenBackground.png */; };
 		A058B2D5190E12D300AAFCB7 /* RentConfirmFullScreenBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A058B2D3190E12D300AAFCB7 /* RentConfirmFullScreenBackground@2x.png */; };
 		A05AC44B18D0F5B000445063 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05AC44A18D0F5B000445063 /* MessageUI.framework */; };
-		A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C447D1899BE7400E72135 /* libOoyalaSDK.a */; };
 		A05C44891899C7F600E72135 /* AlertViewBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */; };
 		A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C448E1899CA2700E72135 /* QuartzCore.framework */; };
 		A05C44911899CC8100E72135 /* AlertViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A05C44901899CC8100E72135 /* AlertViewBackground.png */; };
@@ -315,6 +315,7 @@
 		755DB182188DEE2C00E5C636 /* CaracolPlayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaracolPlayTests-Info.plist"; sourceTree = "<group>"; };
 		755DB184188DEE2D00E5C636 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaracolPlayTests.m; sourceTree = "<group>"; };
+		75DF237B19105158003DB9ED /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlayIconHomeScreen.png; path = Resources/Images/TabBar/PlayIconHomeScreen.png; sourceTree = "<group>"; };
 		8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlayIconHomeScreen@2x.png"; path = "Resources/Images/TabBar/PlayIconHomeScreen@2x.png"; sourceTree = "<group>"; };
 		8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayHeader.png; path = Resources/Images/CaracolPlayHeader.png; sourceTree = "<group>"; };
@@ -657,7 +658,6 @@
 		A058B2D2190E12D300AAFCB7 /* RentConfirmFullScreenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RentConfirmFullScreenBackground.png; path = Resources/Images/iPad/RentConfirmFullScreenBackground.png; sourceTree = "<group>"; };
 		A058B2D3190E12D300AAFCB7 /* RentConfirmFullScreenBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RentConfirmFullScreenBackground@2x.png"; path = "Resources/Images/iPad/RentConfirmFullScreenBackground@2x.png"; sourceTree = "<group>"; };
 		A05AC44A18D0F5B000445063 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		A05C447D1899BE7400E72135 /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		A05C44881899C7F600E72135 /* AlertViewBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AlertViewBackground@2x.png"; path = "Resources/Images/AlertViewBackground@2x.png"; sourceTree = "<group>"; };
 		A05C448E1899CA2700E72135 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A05C44901899CC8100E72135 /* AlertViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AlertViewBackground.png; path = Resources/Images/AlertViewBackground.png; sourceTree = "<group>"; };
@@ -740,7 +740,6 @@
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
 				8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */,
-				A05C447E1899BE7400E72135 /* libOoyalaSDK.a in Frameworks */,
 				8BD52AD71892AECF00792845 /* CoreText.framework in Frameworks */,
 				8BD52AD51892AEC400792845 /* AVFoundation.framework in Frameworks */,
 				8BD52AD31892AEBC00792845 /* CoreMedia.framework in Frameworks */,
@@ -752,6 +751,7 @@
 				755DB15B188DEE2C00E5C636 /* CoreGraphics.framework in Frameworks */,
 				755DB15D188DEE2C00E5C636 /* UIKit.framework in Frameworks */,
 				755DB159188DEE2C00E5C636 /* Foundation.framework in Frameworks */,
+				75DF237C19105158003DB9ED /* libOoyalaSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,7 +771,7 @@
 		755DB14C188DEE2C00E5C636 = {
 			isa = PBXGroup;
 			children = (
-				A05C447D1899BE7400E72135 /* libOoyalaSDK.a */,
+				75DF237B19105158003DB9ED /* libOoyalaSDK.a */,
 				755DB15E188DEE2C00E5C636 /* CaracolPlay */,
 				755DB180188DEE2C00E5C636 /* CaracolPlayTests */,
 				755DB157188DEE2C00E5C636 /* Frameworks */,
@@ -2132,8 +2132,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andres Abril (59N26GA4R9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Andres Abril (59N26GA4R9)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2145,10 +2145,11 @@
 					"$(inherited)",
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0281B0CC-D463-42CF-80B2-F3B43C47A1C0";
+				PROVISIONING_PROFILE = "79EC0DDC-DE3E-4E5B-96E7-73D4CC61A81B";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2171,6 +2172,7 @@
 					"$(inherited)",
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -2278,10 +2280,11 @@
 					"$(inherited)",
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9A9CEDB8-A7EA-45F2-AA0E-5FC506D688A4";
+				PROVISIONING_PROFILE = "F288473B-02CD-4B50-9EA5-171A7B41B1BE";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;
