@@ -267,6 +267,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     NSLog(@"Recibí info del servidor");
     if ([methodName isEqualToString:@"GetListFromCategoryID"] && responseDictionary) {
+        NSLog(@"category list: %@", responseDictionary);
         self.unparsedProductionsArray = responseDictionary[@"products"];
     
     } else if ([methodName isEqualToString:@"GetUserRecentlyWatched"]) {

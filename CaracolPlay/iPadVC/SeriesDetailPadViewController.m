@@ -510,7 +510,6 @@
         SuscriptionAlertPadViewController *suscriptionAlertPadVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
         suscriptionAlertPadVC.productID = self.selectedEpisodeID;
         suscriptionAlertPadVC.productType = self.production.type;
         suscriptionAlertPadVC.viewType = self.production.viewType;
