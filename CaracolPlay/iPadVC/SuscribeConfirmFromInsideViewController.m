@@ -33,7 +33,7 @@
     // 2. Textview
     self.textView = [[UITextView alloc] init];
     self.textView.backgroundColor = [UIColor clearColor];
-    self.textView.text = @"Tu pago ha sido realizado de forma satisfactoria. Ahora puedes disfrutar ilimitadamente de nuestro contenido durante una año";
+    self.textView.text = @"Tu pago ha sido realizado de forma satisfactoria. Ahora puedes disfrutar ilimitadamente de nuestro contenido durante un año";
     self.textView.textAlignment = NSTextAlignmentCenter;
     self.textView.font = [UIFont systemFontOfSize:15.0];
     self.textView.userInteractionEnabled = NO;

@@ -121,7 +121,7 @@
     NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor orangeColor]};
     [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 20)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(90, 61)];
-    [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 68)];
+    [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 69)];
     
     UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(10.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width-20, 64.0)];
     informativeTextLabel.attributedText = informativeString;
@@ -373,6 +373,7 @@
         self.rentedProductions = dicWithoutNulls[@"user"][@"rented"];
         
     } else {
+        //NSLog(@"Dic %@ ",dictionary);
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
