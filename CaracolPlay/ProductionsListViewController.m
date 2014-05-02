@@ -99,6 +99,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ///////////////////////////////////////////////////////////////////
+    //'Vistos Recientemente'
     if ([self.categoryID isEqualToString:@"1"]) {
         NSDictionary *productDic = self.productionsArray[indexPath.row];
         MyListsPadTableViewCell *cell = (MyListsPadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -126,7 +128,8 @@ static NSString *cellIdentifier = @"CellIdentifier";
         [cell.productionImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"] ] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
         return cell;
         
-        
+    /////////////////////////////////////////////////////////////////////////////////
+    //Other type of categories ('Noticias', 'Telenovelas', etc)
     } else {
         MoviesTableViewCell *productionCell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (productionCell==nil) {
@@ -138,13 +141,14 @@ static NSString *cellIdentifier = @"CellIdentifier";
         }
         
         if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
-            productionCell.showStars = NO;
+            productionCell.starsView.alpha = 0.0;
+            productionCell.stars = 0;
         } else {
-            productionCell.showStars = YES;
+            productionCell.starsView.alpha = 1.0;
+            productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
         }
         productionCell.movieTitleLabel.text = self.productionsArray[indexPath.row][@"name"];
         [productionCell.movieImageView setImageWithURL:[NSURL URLWithString:self.productionsArray[indexPath.row][@"image_url"]] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
-        productionCell.stars = [self.productionsArray[indexPath.row][@"rate"] intValue]/20 + 1;
         
         if ([self.productionsArray[indexPath.row][@"free"] isEqualToString:@"1"]) {
             productionCell.freeImageView.image = [UIImage imageNamed:@"FreeBand.png"];

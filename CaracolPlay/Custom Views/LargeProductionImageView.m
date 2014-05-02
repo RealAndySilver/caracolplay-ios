@@ -54,6 +54,7 @@
     self.scrollView.frame = self.bounds;
     self.scrollView.contentSize = self.largeImageView.image.size;
     self.largeImageView.frame = CGRectMake(0.0, 0.0, self.largeImageView.image.size.width, self.largeImageView.image.size.height);
+    self.largeImageView.center = CGPointMake(self.scrollView.frame.size.width/2.0, self.scrollView.frame.size.height/2.0);
     NSLog(@"large ima size: %@", NSStringFromCGSize(self.largeImageView.image.size));
     //self.closeButton.frame = CGRectMake(self.bounds.size.width - 30.0, 0.0, 30.0, 30.0);
     
@@ -83,6 +84,19 @@
 }
 
 #pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    UIView *subView = [scrollView.subviews objectAtIndex:0];
+    
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
+    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
+    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    
+    subView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                 scrollView.contentSize.height * 0.5 + offsetY);
+}
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return self.largeImageView;

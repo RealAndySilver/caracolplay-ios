@@ -30,6 +30,7 @@
 @property (strong, nonatomic) iCarousel *carousel;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) UIImageView *opacityView;
+@property (strong, nonatomic) UIButton *reloadButton;
 @end
 
 @implementation HomePadViewController
@@ -78,6 +79,7 @@
     self.carousel.dataSource = self;
     self.carousel.delegate = self;
     [self.view addSubview:self.carousel];
+    [self.view bringSubviewToFront:self.reloadButton];
     
     //3. page control setup
     self.pageControl = [[UIPageControl alloc] init];
@@ -109,10 +111,10 @@
     [self.view addSubview:self.backgroundImageView];
     
     //Create a reload button
-    UIButton *reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 35.0, 44.0, 44.0)];
-    [reloadButton setBackgroundImage:[UIImage imageNamed:@"RefreshIcon.png"] forState:UIControlStateNormal];
-    [reloadButton addTarget:self action:@selector(getFeaturedFromServer) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:reloadButton];
+    self.reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 35.0, 44.0, 44.0)];
+    [self.reloadButton setBackgroundImage:[UIImage imageNamed:@"RefreshIcon.png"] forState:UIControlStateNormal];
+    [self.reloadButton addTarget:self action:@selector(getFeaturedFromServer) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.reloadButton];
     
     //Call server
     [self getFeaturedFromServer];
@@ -136,6 +138,16 @@
     NSLog(@"carousel frame: %@", NSStringFromCGRect(self.carousel.frame));
 }
 
+#pragma mark - Custom Methods
+
+-(void)showOpacityView {
+    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
+    [self.tabBarController.view addSubview:self.opacityView];
+}
+
 #pragma mark - Actions 
 
 -(void)scrollCarousel {
@@ -145,6 +157,12 @@
 #pragma mark - Server stuff
 
 -(void)getFeaturedFromServer {
+    [self.carousel removeFromSuperview];
+    self.carousel = nil;
+    [self.pageControl removeFromSuperview];
+    self.pageControl = nil;
+    
+    NSLog(@"llamé al server");
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
@@ -304,11 +322,7 @@
 }
 
 -(void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
-    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.backgroundColor = [UIColor whiteColor];
-    self.opacityView.alpha = 0.3;
-    [self.tabBarController.view addSubview:self.opacityView];
+
     
     //Stop the automatic scrolling of the carousel
     [self.carouselScrollingTimer invalidate];
@@ -323,12 +337,16 @@
     }
     
     if ([selectedProduction.type isEqualToString:@"Series"] || [selectedProduction.type isEqualToString:@"Telenovelas"] || [selectedProduction.type isEqualToString:@"Noticias"]) {
+        [self showOpacityView];
+        
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPad.modalPresentationStyle = UIModalPresentationPageSheet;
         seriesDetailPad.productID = selectedProduction.identifier;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
     } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Eventos en vivo"]) {
+        [self showOpacityView];
+        
         MovieDetailsPadViewController *movieDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailPad.modalPresentationStyle = UIModalPresentationPageSheet;
         movieDetailPad.productID = selectedProduction.identifier;

@@ -131,10 +131,11 @@
     //cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
     
     if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"] || [productInfo[@"type"] isEqualToString:@"Series"]) {
-        cell.showStars = YES;
+        cell.starsView.alpha = 1.0;
         cell.rate = [productInfo[@"rate"] intValue]/20 + 1;
     } else {
-        cell.showStars = NO;
+        cell.starsView.alpha = 0.0;
+        cell.rate = 0;
     }
     cell.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     return cell;
@@ -143,13 +144,11 @@
 #pragma mark - UICollectionViewDelegate 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
-    self.opacityView.backgroundColor = [UIColor whiteColor];
-    self.opacityView.alpha = 0.3;
-    [self.tabBarController.view addSubview:self.opacityView];
+   
     
     if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+        [self showOpacityView];
+        
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         movieDetailsPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -158,6 +157,8 @@
         NSLog(@"peliculas");
         
     } else if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
+        [self showOpacityView];
+        
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
         seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         seriesDetailPadVC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -165,6 +166,15 @@
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         NSLog(@"series");
     }
+}
+
+#pragma mark - Custom methods
+-(void)showOpacityView {
+    self.opacityView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    //self.opacityView.image = [UIImage imageNamed:@"OpacityBackground.png"];
+    self.opacityView.backgroundColor = [UIColor whiteColor];
+    self.opacityView.alpha = 0.3;
+    [self.tabBarController.view addSubview:self.opacityView];
 }
 
 #pragma mark - Actions

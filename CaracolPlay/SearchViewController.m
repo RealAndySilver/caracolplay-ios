@@ -122,8 +122,11 @@
     }
     
     if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Series"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"]) {
-        cell.showStars = YES;
+        cell.starsView.alpha = 1.0;
         cell.stars = [productInfo[@"rate"] intValue]/20.0 + 1;
+    } else {
+        cell.starsView.alpha = 0.0;
+        cell.stars = 0.0;
     }
     
     return cell;
@@ -168,7 +171,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
-        NSLog(@"La petición fue exitosa: %@", responseDictionary);
+        //NSLog(@"La petición fue exitosa: %@", responseDictionary);
         self.searchResultsArrayWithNulls = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

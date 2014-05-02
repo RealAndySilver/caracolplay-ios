@@ -298,6 +298,11 @@
     self.chaptersTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.chaptersTableView.separatorColor = [UIColor blackColor];
     [self.view addSubview:self.chaptersTableView];
+    [self animateTableViewToPosition:self.lastEpisodeSeen];
+}
+
+-(void)animateTableViewToPosition:(NSUInteger)position {
+    [self.chaptersTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 #pragma mark - View lifecycle

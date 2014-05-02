@@ -574,7 +574,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulss];
             [self checkVideoAvailability:video];
         } else {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible en este momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && responseDictionary) {

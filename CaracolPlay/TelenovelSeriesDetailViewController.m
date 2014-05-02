@@ -315,6 +315,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     self.tableView.separatorColor = [UIColor blackColor];
     self.tableView.rowHeight = 50.0;
     [self.view addSubview:self.tableView];
+    [self animateTableViewToPosition:self.lastEpisodeSeen];
+}
+
+-(void)animateTableViewToPosition:(NSUInteger)position {
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 #pragma mark - View Lifecycle
@@ -400,7 +405,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - UITableViewDelegate
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //The user is logged in, so get the selected item ID
     Season *currentSeason = self.production.seasonList[self.selectedSeason];
@@ -640,7 +647,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
             [self checkVideoAvailability:video];
         } else {
-            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Error" message:@"El contenido no está disponible en este momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             NSLog(@"error en el is content: %@", dictionary);
         }
         
