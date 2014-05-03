@@ -41,7 +41,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(transactionFailedNotificationReceived:)
-                                                 name:@"TransacationFailedNotification"
+                                                 name:@"TransactionFailedNotification"
                                                object:nil];
     [self UISetup];
 }
@@ -271,7 +271,7 @@
                         [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
                     }
                 } else if (self.userSelectedSubscribeOption) {
-                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.Subscription"];
+                    [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.subscription"];
                 }
             }
         } else {
