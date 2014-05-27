@@ -61,7 +61,7 @@
     redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:redeemCodeButton];
+    //[self.view addSubview:redeemCodeButton];
     
     //4. Set the 'Skip' button
     UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(250.0, 15.0, 80.0, 44.0)];

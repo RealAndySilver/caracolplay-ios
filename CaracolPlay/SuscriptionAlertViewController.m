@@ -117,7 +117,7 @@
     [redeemCodeButton addTarget:self action:@selector(goToRedeemCodeFormViewController) forControlEvents:UIControlEventTouchUpInside];
     redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:redeemCodeButton];
+    //[self.view addSubview:redeemCodeButton];
 }
 
 #pragma mark - Actions

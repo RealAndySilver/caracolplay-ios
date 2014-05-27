@@ -61,7 +61,7 @@
     self.redeemButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     self.redeemButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.redeemButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [self.view addSubview:self.redeemButton];
+    //[self.view addSubview:self.redeemButton];
     
     //5. 'Saltar' button
     self.skipButton = [[UIButton alloc] init];

@@ -84,7 +84,7 @@
     [self.redeemButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimirPad.png"] forState:UIControlStateNormal];
     [self.redeemButton addTarget:self action:@selector(goToRedeemCodeVC) forControlEvents:UIControlEventTouchUpInside];
     self.redeemButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [self.view addSubview:self.redeemButton];
+    //[self.view addSubview:self.redeemButton];
 }
 
 -(void)viewWillLayoutSubviews {
