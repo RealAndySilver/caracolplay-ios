@@ -108,6 +108,7 @@
 		8BB5222918AAA62E0027CA59 /* HomeScreenPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222718AAA62E0027CA59 /* HomeScreenPlaceholder.png */; };
 		8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */; };
 		8BB5222D18AAE3380027CA59 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5222C18AAE3380027CA59 /* RateView.m */; };
+		8BB8A9BB19A39FC40076E4A7 /* SinopsisView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB8A9BA19A39FC40076E4A7 /* SinopsisView.m */; };
 		8BBB936F18CA5D7700AC7A58 /* RentContentAlertBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BBB936D18CA5D7700AC7A58 /* RentContentAlertBackground.png */; };
 		8BBB937018CA5D7700AC7A58 /* RentContentAlertBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BBB936E18CA5D7700AC7A58 /* RentContentAlertBackground@2x.png */; };
 		8BBB937318CA5EF400AC7A58 /* RentContentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB937218CA5EF400AC7A58 /* RentContentConfirmationViewController.m */; };
@@ -449,6 +450,8 @@
 		8BB5222818AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HomeScreenPlaceholder@2x.png"; path = "Resources/Images/HomeScreenPlaceholder@2x.png"; sourceTree = "<group>"; };
 		8BB5222B18AAE3380027CA59 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RateView.h; path = "Custom Views/RateView.h"; sourceTree = "<group>"; };
 		8BB5222C18AAE3380027CA59 /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RateView.m; path = "Custom Views/RateView.m"; sourceTree = "<group>"; };
+		8BB8A9B919A39FC40076E4A7 /* SinopsisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SinopsisView.h; path = "Custom Views/SinopsisView.h"; sourceTree = "<group>"; };
+		8BB8A9BA19A39FC40076E4A7 /* SinopsisView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinopsisView.m; path = "Custom Views/SinopsisView.m"; sourceTree = "<group>"; };
 		8BBB936D18CA5D7700AC7A58 /* RentContentAlertBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RentContentAlertBackground.png; path = Resources/Images/RentContentAlertBackground.png; sourceTree = "<group>"; };
 		8BBB936E18CA5D7700AC7A58 /* RentContentAlertBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RentContentAlertBackground@2x.png"; path = "Resources/Images/RentContentAlertBackground@2x.png"; sourceTree = "<group>"; };
 		8BBB937118CA5EF400AC7A58 /* RentContentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentContentConfirmationViewController.h; sourceTree = "<group>"; };
@@ -960,6 +963,8 @@
 				8B64F7F818BBE660007E3C06 /* CreateListView.m */,
 				8B64F7FE18BC0086007E3C06 /* AddToListView.h */,
 				8B64F7FF18BC0086007E3C06 /* AddToListView.m */,
+				8BB8A9B919A39FC40076E4A7 /* SinopsisView.h */,
+				8BB8A9BA19A39FC40076E4A7 /* SinopsisView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1896,6 +1901,7 @@
 				A049E33018D27FA80040E051 /* NSDictionary+NullReplacement.m in Sources */,
 				8B164B7E18A9710C001803A9 /* Categoria.m in Sources */,
 				8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */,
+				8BB8A9BB19A39FC40076E4A7 /* SinopsisView.m in Sources */,
 				8B1DB00C18F33F0100C06A53 /* NSString+Base64.m in Sources */,
 				8BFD4F591891653A00A88C8C /* WatchedRecentlyTableViewCell.m in Sources */,
 				A064655518F991BE001563CE /* RedeemCodeFromContentNotAvailbaleViewController.m in Sources */,

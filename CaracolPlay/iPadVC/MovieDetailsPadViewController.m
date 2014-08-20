@@ -26,10 +26,11 @@
 #import "UserInfo.h"
 #import "NSDictionary+NullReplacement.h"
 #import "NSArray+NullReplacement.h"
+#import "SinopsisView.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
-@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
+@interface MovieDetailsPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIActionSheetDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate, SinopsisViewDelegate>
 
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -270,12 +271,22 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
     [self.view addSubview:self.productionDetailTextView];*/
     
+    //Sinopsis webview
     self.webView = [[UIWebView alloc] init];
     self.webView.opaque=NO;
+    self.webView.userInteractionEnabled = NO;
     [self.webView setBackgroundColor:[UIColor clearColor]];
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
     [self.webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:self.webView];
+    
+    //"Ver mas" button
+    UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(214.0, 260.0, 70.0, 40.0)];
+    [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreInfoButton];
     
     ////////////////////////////////////////////////
     //gray view
@@ -345,7 +356,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         self.shareButton.frame = CGRectMake(360.0, 100.0, 130.0, 35.0);
     }
     self.viewProductionButton.frame = CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 130.0, 35.0);
-    self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 130.0);
+    self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 110.0);
     self.grayView.frame = CGRectMake(0.0, 350.0, self.view.bounds.size.width, self.view.bounds.size.height - 350.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
     //self.collectionView.frame = CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0);
@@ -458,6 +469,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Actions
+
+-(void)showMoreInfoView {
+    SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    sinopsisView.delegate = self;
+    sinopsisView.mainTitle.text = self.production.name;
+    sinopsisView.sinopsisString = self.production.detailDescription;
+    [sinopsisView showInView:self.view];
+}
 
 -(void)watchProduction {
     FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -656,6 +675,16 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     if (alertView.tag == 1) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - SinopisDelegate
+
+-(void)closeButtonPressedInSinopsisView:(SinopsisView *)sinopsisView {
+    
+}
+
+-(void)sinopsisViewDidDissapear:(SinopsisView *)sinopsisView {
+    sinopsisView = nil;
 }
 
 @end

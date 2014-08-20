@@ -27,9 +27,10 @@
 #import "ContentNotAvailableForUserPadViewController.h"
 #import "NSDictionary+NullReplacement.h"
 #import "UserInfo.h"
+#import "SinopsisView.h"
 @import QuartzCore;
 
-@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
+@interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate, SinopsisViewDelegate>
 @property (strong, nonatomic) UIButton *dismissButton;
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIView *opacityPatternView;
@@ -270,12 +271,22 @@
     self.productionDetailTextView.font = [UIFont systemFontOfSize:14.0];
     [self.view addSubview:self.productionDetailTextView];*/
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 100.0)];
+    //Sinopsis webview
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(180.0, 150.0, self.view.bounds.size.width - 190.0, 70.0)];
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
+    webView.userInteractionEnabled = NO;
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
+    
+    //"Ver mas" button
+    UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(180.0, 220.0, 70.0, 40.0)];
+    [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreInfoButton];
     
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //8. Seasons table view setup
@@ -499,6 +510,14 @@
 }
 
 #pragma mark - Actions
+
+-(void)showMoreInfoView {
+    SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    sinopsisView.delegate = self;
+    sinopsisView.mainTitle.text = self.production.name;
+    sinopsisView.sinopsisString = self.production.detailDescription;
+    [sinopsisView showInView:self.view];
+}
 
 -(void)goToSuscriptionAlert {
     FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -801,6 +820,16 @@
     if (alertView.tag == 1) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - SinopsisViewDelegate
+
+-(void)closeButtonPressedInSinopsisView:(SinopsisView *)sinopsisView {
+    
+}
+
+-(void)sinopsisViewDidDissapear:(SinopsisView *)sinopsisView {
+    sinopsisView = nil;
 }
 
 @end

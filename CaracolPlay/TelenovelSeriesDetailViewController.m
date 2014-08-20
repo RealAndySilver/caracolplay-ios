@@ -34,8 +34,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "NSDictionary+NullReplacement.h"
 #import "MBProgressHUD.h"
 #import "UserInfo.h"
+#import "SinopsisView.h"
 
-@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate>
+@interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, SinopsisViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *productionInfo;
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
@@ -267,18 +268,28 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         }
     }
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 70.0)];
+    //Sinpsis webview
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 35.0, self.view.frame.size.width - 20.0, 60.0)];
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
+    webView.userInteractionEnabled = NO;
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
     
+    //"Ver mas" button
+    UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, webView.frame.origin.y + webView.frame.size.height, 70.0, 40.0)];
+    [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
+    moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    
+    [self.view addSubview:moreInfoButton];
     
     NSLog(@"HTML %@", self.production.detailDescription);
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         //'Temporadas' button setup
-        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(-5.0, webView.frame.origin.y + webView.frame.size.height + 10.0, self.view.bounds.size.width + 10, 44.0)];
+        self.seasonsButton = [[UIButton alloc] initWithFrame:CGRectMake(-5.0, webView.frame.origin.y + webView.frame.size.height + 50.0, self.view.bounds.size.width + 10, 44.0)];
         if ([self.production.type isEqualToString:@"Noticias"]) {
             [self.seasonsButton setTitle:((Season *)self.production.seasonList[0]).seasonName forState:UIControlStateNormal];
         } else {
@@ -304,9 +315,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (self.production.hasSeasons && [self.production.seasonList count] > 1) {
         tableViewOriginY = self.seasonsButton.frame.origin.y + self.seasonsButton.frame.size.height;
     } else {
-        tableViewOriginY = webView.frame.origin.y + webView.frame.size.height + 20.0;
+        tableViewOriginY = webView.frame.origin.y + webView.frame.size.height + 50.0;
     }
-    //8. Create a TableView to diaply the list of chapters
+    //8. Create a TableView to display the list of chapters
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - self.tabBarController.tabBar.frame.size.height) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
     self.tableView.delegate = self;
@@ -427,6 +438,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Actions
+
+-(void)showMoreInfoView {
+    SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    sinopsisView.delegate = self;
+    sinopsisView.mainTitle.text = self.production.name;
+    sinopsisView.sinopsisString = self.production.detailDescription;
+    [sinopsisView showInView:self.view];
+}
 
 -(void)goToSuscriptionAlert {
     FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -794,6 +813,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [twitterViewController setInitialText:message];
         [self presentViewController:twitterViewController animated:YES completion:nil];
     }
+}
+
+#pragma mark - SinopsisViewDelegate
+
+-(void)closeButtonPressedInSinopsisView:(SinopsisView *)sinopsisView {
+    
+}
+
+-(void)sinopsisViewDidDissapear:(SinopsisView *)sinopsisView {
+    sinopsisView = nil;
 }
 
 #pragma mark - Interface Orientation

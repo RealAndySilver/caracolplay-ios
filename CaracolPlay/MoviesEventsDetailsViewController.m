@@ -26,10 +26,11 @@
 #import "MBProgressHUD.h"
 #import "UserInfo.h"
 #import "NSArray+NullReplacement.h"
+#import "SinopsisView.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
-@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
+@interface MoviesEventsDetailsViewController () <UIActionSheetDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RateViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate, SinopsisViewDelegate>
 @property (strong, nonatomic) Product *production;
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfo;
 @property (strong, nonatomic) NSArray *recommendedProductions;
@@ -322,13 +323,22 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [watchProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:watchProductionButton];
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 40, screenFrame.size.width - 20.0, screenFrame.size.height/8.0)];
+    //Sinopsis webview
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10.0, secondaryMovieEventImageView.frame.origin.y + secondaryMovieEventImageView.frame.size.height + 40, screenFrame.size.width - 20.0, screenFrame.size.height/8.7)];
     webView.opaque=NO;
+    webView.userInteractionEnabled = NO;
     [webView setBackgroundColor:[UIColor clearColor]];
     NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
     
+    //"Ver mas" button
+    UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, webView.frame.origin.y + webView.frame.size.height, 70.0, 30.0)];
+    [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+    [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreInfoButton];
     
     //Add a blur view to display when the user shares the production but an error was produced.
     /*self.blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
@@ -493,6 +503,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff 
 
+-(void)showMoreInfoView {
+    SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    sinopsisView.delegate = self;
+    sinopsisView.mainTitle.text = self.production.name;
+    sinopsisView.sinopsisString = self.production.detailDescription;
+    [sinopsisView showInView:self.view];
+}
+
 -(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Calificando...";
@@ -645,6 +663,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if (alertView.tag == 1) {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+#pragma mark - SinopsisViewDelegate 
+
+-(void)closeButtonPressedInSinopsisView:(SinopsisView *)sinopsisView {
+    
+}
+
+-(void)sinopsisViewDidDissapear:(SinopsisView *)sinopsisView {
+    sinopsisView = nil;
 }
 
 #pragma mark - Interface Orientation 
