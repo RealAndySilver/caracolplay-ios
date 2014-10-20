@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *episodeName;
-@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSString *aDescription;
 @property (strong, nonatomic) NSString *imageURL;
 @property (strong, nonatomic) NSNumber *episodeNumber;
 @property (strong, nonatomic) NSString *identifier;

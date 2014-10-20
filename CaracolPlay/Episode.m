@@ -14,7 +14,7 @@
     if (self = [super init]) {
         _productName = dictionary[@"product_name"];
         _episodeName = dictionary[@"episode_name"];
-        _description = dictionary[@"description"];
+        _aDescription = dictionary[@"description"];
         _imageURL = dictionary[@"image_url"];
         _episodeNumber = dictionary[@"episode_number"];
         _identifier = dictionary[@"id"];

@@ -94,7 +94,7 @@
     Episode *episode = self.episodes[indexPath.row];
     [cell.productionImageView setImageWithURL:[NSURL URLWithString:episode.imageURL] placeholder:[UIImage imageNamed:@"SmallPlaceholder.png"] completionBlock:nil failureBlock:nil];
     cell.productionNameLabel.text = episode.productName;
-    cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %d: %@", [episode.episodeNumber intValue], episode.description];
+    cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %d: %@", [episode.episodeNumber intValue], episode.aDescription];
     return cell;
 }
 
