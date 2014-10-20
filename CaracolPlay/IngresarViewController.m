@@ -21,7 +21,7 @@
 #import "MBProgressHUD.h"
 
 
-@interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
@@ -359,7 +359,10 @@
             }
             
         } else {
-        NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+            NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
         }
         
     } else {
@@ -398,6 +401,14 @@
     
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     [self suscribeUserInServerWithTransactionID:transactionID];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self suscribeUserInServerWithTransactionID:self.transactionID];
+    }
 }
 
 #pragma mark - Interface Orientation

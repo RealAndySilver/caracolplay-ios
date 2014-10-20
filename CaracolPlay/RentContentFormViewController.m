@@ -19,7 +19,7 @@
 #import "IAPProduct.h"
 #import "MBProgressHUD.h"
 
-@interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate, ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate, ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -294,6 +294,9 @@
             [self goToRentConfirmationVC];
         } else {
             NSLog(@"error en la peticion RentContent: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
+            alert.tag = 1;
+            [alert show];
         }
     }
 }
@@ -578,5 +581,12 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self rentContent];
+    }
+}
 
 @end

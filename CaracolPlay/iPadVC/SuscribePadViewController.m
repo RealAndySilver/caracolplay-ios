@@ -20,7 +20,7 @@
 #import "MBProgressHUD.h"
 @import QuartzCore;
 
-@interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+@interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -304,6 +304,10 @@
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
             }
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
         }
     }
 }
@@ -586,6 +590,14 @@
 
 -(BOOL)disablesAutomaticKeyboardDismissal {
     return NO;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self suscribeUserInServerWithTransactionID:self.transactionID];
+    }
 }
 
 @end

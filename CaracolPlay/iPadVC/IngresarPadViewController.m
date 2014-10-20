@@ -19,7 +19,7 @@
 #import "MBProgressHUD.h"
 @import QuartzCore;
 
-@interface IngresarPadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@interface IngresarPadViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPasswordImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
@@ -313,6 +313,9 @@
             [self goToSubscriptionConfirm];
         } else {
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
         }
     
     /////////////////////////////////////////////////////////////////////////
@@ -361,6 +364,14 @@
     suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }*/
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self suscribeUserInServerWithTransactionID:self.transactionID];
+    }
+}
 
 #pragma mark - UITextfieldDelegate
 

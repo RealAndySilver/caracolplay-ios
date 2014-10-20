@@ -19,7 +19,7 @@
 #import "UserInfo.h"
 #import "MBProgressHUD.h"
 
-@interface SuscriptionFormViewController () <ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface SuscriptionFormViewController () <ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -291,6 +291,9 @@
             }
         } else {
             NSLog(@"error en la compra: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
             //Error en la compra. Hay que poner alguna forma para que el usuario reintente comprar
         }
     
@@ -572,6 +575,14 @@
         } else {
             self.genreTextfield.text = @"Femenino";
         }
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self suscribeUserInServerWithTransactionID:self.transactionID];
     }
 }
 

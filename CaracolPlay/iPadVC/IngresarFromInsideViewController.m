@@ -18,7 +18,7 @@
 #import "IAmCoder.h"
 #import "MBProgressHUD.h"
 
-@interface IngresarFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate>
+@interface IngresarFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
@@ -324,6 +324,9 @@
         
         } else {
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
         }
      
     ///////////////////////////////////////////////////////////////////////
@@ -345,6 +348,9 @@
             [self goToRentConfirmationVC];
         } else {
             NSLog(@"error en la respuesta del RentContent: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 2;
+            [alert show];
         }
 
     } else {
@@ -421,6 +427,16 @@
         [self suscribeUserInServerWithTransactionID:transactionID];
     } else if (self.controllerWasPresentedFromRentScreen) {
         [self rentContentInServerWithTransactionID:transactionID];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self suscribeUserInServerWithTransactionID:self.transactionID];
+    } else if (alertView.tag == 2) {
+        [self rentContentInServerWithTransactionID:self.transactionID];
     }
 }
 

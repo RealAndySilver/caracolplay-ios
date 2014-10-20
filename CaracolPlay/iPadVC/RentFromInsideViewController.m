@@ -20,7 +20,7 @@
 #import "MBProgressHUD.h"
 #import "TermsAndConditionsPadViewController.h"
 
-@interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, CheckmarkViewDelegate>
+@interface RentFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, CheckmarkViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
@@ -302,6 +302,9 @@
             [self goToRentConfirmationVC];
         } else {
             NSLog(@"error en la respuesta del RentContent: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+            alert.tag = 1;
+            [alert show];
         }
     }
 }
@@ -548,6 +551,14 @@
         } else {
             self.genreTextfield.text = @"Femenino";
         }
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self rentContent];
     }
 }
 

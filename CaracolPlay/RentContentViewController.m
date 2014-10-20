@@ -17,7 +17,7 @@
 #import "IAmCoder.h"
 #import "MBProgressHUD.h"
 
-@interface RentContentViewController () <UITextFieldDelegate, ServerCommunicatorDelegate>
+@interface RentContentViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UITextField *userTextfield;
@@ -215,6 +215,9 @@
             [self goToRentConfirmationVC];
         } else {
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
+            alert.tag = 1;
+            [alert show];
         }
     }
 }
@@ -256,6 +259,14 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [self rentContent];
+    }
 }
 
 @end
