@@ -21,7 +21,6 @@
 		755DB17D188DEE2C00E5C636 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 755DB15C188DEE2C00E5C636 /* UIKit.framework */; };
 		755DB185188DEE2D00E5C636 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755DB183188DEE2D00E5C636 /* InfoPlist.strings */; };
 		755DB187188DEE2D00E5C636 /* CaracolPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */; };
-		75DF237C19105158003DB9ED /* libOoyalaSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75DF237B19105158003DB9ED /* libOoyalaSDK.a */; };
 		8B0194DB18B3EEBF00380EC7 /* PlayIconHomeScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */; };
 		8B0194DC18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */; };
 		8B0194DF18B3F4CB00380EC7 /* CaracolPlayHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */; };
@@ -128,6 +127,7 @@
 		8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52AD81892AED300792845 /* MediaPlayer.framework */; };
 		8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */; };
 		8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD52ADE189320BF00792845 /* MyNavigationController.m */; };
+		8BDB8B1819F6C131000B7431 /* libBCOVPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */; };
 		8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */; };
 		8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC2188EB5B40066279A /* HomeViewController.m */; };
 		8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */; };
@@ -316,7 +316,6 @@
 		755DB182188DEE2C00E5C636 /* CaracolPlayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaracolPlayTests-Info.plist"; sourceTree = "<group>"; };
 		755DB184188DEE2D00E5C636 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		755DB186188DEE2D00E5C636 /* CaracolPlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CaracolPlayTests.m; sourceTree = "<group>"; };
-		75DF237B19105158003DB9ED /* libOoyalaSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOoyalaSDK.a; sourceTree = "<group>"; };
 		8B0194D918B3EEBF00380EC7 /* PlayIconHomeScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlayIconHomeScreen.png; path = Resources/Images/TabBar/PlayIconHomeScreen.png; sourceTree = "<group>"; };
 		8B0194DA18B3EEBF00380EC7 /* PlayIconHomeScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PlayIconHomeScreen@2x.png"; path = "Resources/Images/TabBar/PlayIconHomeScreen@2x.png"; sourceTree = "<group>"; };
 		8B0194DD18B3F4CB00380EC7 /* CaracolPlayHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CaracolPlayHeader.png; path = Resources/Images/CaracolPlayHeader.png; sourceTree = "<group>"; };
@@ -463,47 +462,6 @@
 		8BD2C5E3189C22BF00C76AA5 /* BotonCerrarSesion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonCerrarSesion.png; path = Resources/Images/BotonCerrarSesion.png; sourceTree = "<group>"; };
 		8BD2C5E4189C22BF00C76AA5 /* BotonCerrarSesion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonCerrarSesion@2x.png"; path = "Resources/Images/BotonCerrarSesion@2x.png"; sourceTree = "<group>"; };
 		8BD2C5E7189C545200C76AA5 /* FormErrorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FormErrorImage@2x.png"; path = "Resources/Images/FormErrorImage@2x.png"; sourceTree = "<group>"; };
-		8BD52A9D1892AD6300792845 /* OOAdSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAdSpot.h; sourceTree = "<group>"; };
-		8BD52A9E1892AD6300792845 /* OOAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAnalytics.h; sourceTree = "<group>"; };
-		8BD52A9F1892AD6300792845 /* OOAuthorizableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOAuthorizableItem.h; sourceTree = "<group>"; };
-		8BD52AA01892AD6300792845 /* OOCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOCallbacks.h; sourceTree = "<group>"; };
-		8BD52AA11892AD6300792845 /* OOCaption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOCaption.h; sourceTree = "<group>"; };
-		8BD52AA21892AD6300792845 /* OOChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOChannel.h; sourceTree = "<group>"; };
-		8BD52AA31892AD6300792845 /* OOChannelSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOChannelSet.h; sourceTree = "<group>"; };
-		8BD52AA41892AD6300792845 /* OOClosedCaptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOClosedCaptions.h; sourceTree = "<group>"; };
-		8BD52AA51892AD6300792845 /* OOClosedCaptionsStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOClosedCaptionsStyle.h; sourceTree = "<group>"; };
-		8BD52AA61892AD6300792845 /* OOContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOContentItem.h; sourceTree = "<group>"; };
-		8BD52AA71892AD6300792845 /* OODefaultPlayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OODefaultPlayerInfo.h; sourceTree = "<group>"; };
-		8BD52AA81892AD6300792845 /* OODynamicChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OODynamicChannel.h; sourceTree = "<group>"; };
-		8BD52AA91892AD6300792845 /* OOEmbeddedSecureURLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOEmbeddedSecureURLGenerator.h; sourceTree = "<group>"; };
-		8BD52AAA1892AD6300792845 /* OOEmbeddedSignatureGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOEmbeddedSignatureGenerator.h; sourceTree = "<group>"; };
-		8BD52AAB1892AD6300792845 /* OOEmbedTokenGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOEmbedTokenGenerator.h; sourceTree = "<group>"; };
-		8BD52AAC1892AD6300792845 /* OOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOModule.h; sourceTree = "<group>"; };
-		8BD52AAD1892AD6300792845 /* OOMoviePlayer_OOAdMoviePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOMoviePlayer_OOAdMoviePlayer.h; sourceTree = "<group>"; };
-		8BD52AAE1892AD6300792845 /* OOOoyalaAdSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOoyalaAdSpot.h; sourceTree = "<group>"; };
-		8BD52AAF1892AD6300792845 /* OOOoyalaAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOoyalaAPIClient.h; sourceTree = "<group>"; };
-		8BD52AB01892AD6300792845 /* OOOoyalaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOoyalaError.h; sourceTree = "<group>"; };
-		8BD52AB11892AD6300792845 /* OOOoyalaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOoyalaPlayer.h; sourceTree = "<group>"; };
-		8BD52AB21892AD6300792845 /* OOOoyalaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOoyalaPlayerViewController.h; sourceTree = "<group>"; };
-		8BD52AB31892AD6300792845 /* OOOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOOrderedDictionary.h; sourceTree = "<group>"; };
-		8BD52AB41892AD6300792845 /* OOPaginatedParentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOPaginatedParentItem.h; sourceTree = "<group>"; };
-		8BD52AB51892AD6300792845 /* OOPlayableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOPlayableItem.h; sourceTree = "<group>"; };
-		8BD52AB61892AD6300792845 /* OOPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOPlayer.h; sourceTree = "<group>"; };
-		8BD52AB71892AD6300792845 /* OOPlayerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOPlayerInfo.h; sourceTree = "<group>"; };
-		8BD52AB81892AD6300792845 /* OOReturnState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOReturnState.h; sourceTree = "<group>"; };
-		8BD52AB91892AD6300792845 /* OOSecureURLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOSecureURLGenerator.h; sourceTree = "<group>"; };
-		8BD52ABA1892AD6300792845 /* OOSignatureGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOSignatureGenerator.h; sourceTree = "<group>"; };
-		8BD52ABB1892AD6300792845 /* OOStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOStream.h; sourceTree = "<group>"; };
-		8BD52ABC1892AD6300792845 /* OOStreamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOStreamPlayer.h; sourceTree = "<group>"; };
-		8BD52ABD1892AD6300792845 /* OOTBXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOTBXML.h; sourceTree = "<group>"; };
-		8BD52ABE1892AD6300792845 /* OOUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOUserInfo.h; sourceTree = "<group>"; };
-		8BD52ABF1892AD6300792845 /* OOVASTAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTAd.h; sourceTree = "<group>"; };
-		8BD52AC01892AD6300792845 /* OOVASTAdSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTAdSpot.h; sourceTree = "<group>"; };
-		8BD52AC11892AD6300792845 /* OOVASTLinearAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTLinearAd.h; sourceTree = "<group>"; };
-		8BD52AC21892AD6300792845 /* OOVASTSequenceItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTSequenceItem.h; sourceTree = "<group>"; };
-		8BD52AC31892AD6300792845 /* OOVASTStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTStream.h; sourceTree = "<group>"; };
-		8BD52AC41892AD6300792845 /* OOVASTWrapperAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVASTWrapperAd.h; sourceTree = "<group>"; };
-		8BD52AC51892AD6300792845 /* OOVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OOVideo.h; sourceTree = "<group>"; };
 		8BD52AC81892AE9500792845 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		8BD52ACA1892AEA000792845 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		8BD52ACC1892AEAA00792845 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -517,6 +475,24 @@
 		8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
 		8BD52ADD189320BF00792845 /* MyNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNavigationController.h; sourceTree = "<group>"; };
 		8BD52ADE189320BF00792845 /* MyNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNavigationController.m; sourceTree = "<group>"; };
+		8BDB8B0419F6C0CB000B7431 /* BCOVBasicSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVBasicSessionProvider.h; sourceTree = "<group>"; };
+		8BDB8B0519F6C0CB000B7431 /* BCOVCatalogConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCatalogConstants.h; sourceTree = "<group>"; };
+		8BDB8B0619F6C0CB000B7431 /* BCOVCatalogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCatalogService.h; sourceTree = "<group>"; };
+		8BDB8B0719F6C0CB000B7431 /* BCOVCuePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePoint.h; sourceTree = "<group>"; };
+		8BDB8B0819F6C0CB000B7431 /* BCOVCuePointCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePointCollection.h; sourceTree = "<group>"; };
+		8BDB8B0919F6C0CB000B7431 /* BCOVCuePointProgressPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePointProgressPolicy.h; sourceTree = "<group>"; };
+		8BDB8B0A19F6C0CB000B7431 /* BCOVDelegatingSessionConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVDelegatingSessionConsumer.h; sourceTree = "<group>"; };
+		8BDB8B0B19F6C0CB000B7431 /* BCOVMediaRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVMediaRequestFactory.h; sourceTree = "<group>"; };
+		8BDB8B0C19F6C0CB000B7431 /* BCOVPlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackController.h; sourceTree = "<group>"; };
+		8BDB8B0D19F6C0CB000B7431 /* BCOVPlaybackSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackSession.h; sourceTree = "<group>"; };
+		8BDB8B0E19F6C0CB000B7431 /* BCOVPlaybackSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackSessionProvider.h; sourceTree = "<group>"; };
+		8BDB8B0F19F6C0CB000B7431 /* BCOVPlayerSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlayerSDK.h; sourceTree = "<group>"; };
+		8BDB8B1019F6C0CB000B7431 /* BCOVPlayerSDKManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlayerSDKManager.h; sourceTree = "<group>"; };
+		8BDB8B1119F6C0CB000B7431 /* BCOVPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaylist.h; sourceTree = "<group>"; };
+		8BDB8B1219F6C0CB000B7431 /* BCOVSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVSource.h; sourceTree = "<group>"; };
+		8BDB8B1319F6C0CB000B7431 /* BCOVVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVVideo.h; sourceTree = "<group>"; };
+		8BDB8B1419F6C0CB000B7431 /* NSDictionary+BCOVURLSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+BCOVURLSupport.h"; sourceTree = "<group>"; };
+		8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBCOVPlayerSDK.a; sourceTree = "<group>"; };
 		8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarViewController.h; sourceTree = "<group>"; };
 		8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarViewController.m; sourceTree = "<group>"; };
 		8BDB8BC1188EB5B40066279A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -737,6 +713,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BDB8B1819F6C131000B7431 /* libBCOVPlayerSDK.a in Frameworks */,
 				A05AC44B18D0F5B000445063 /* MessageUI.framework in Frameworks */,
 				8BED8A8818C62A8A0076EA26 /* StoreKit.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
@@ -754,7 +731,6 @@
 				755DB15B188DEE2C00E5C636 /* CoreGraphics.framework in Frameworks */,
 				755DB15D188DEE2C00E5C636 /* UIKit.framework in Frameworks */,
 				755DB159188DEE2C00E5C636 /* Foundation.framework in Frameworks */,
-				75DF237C19105158003DB9ED /* libOoyalaSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,7 +750,6 @@
 		755DB14C188DEE2C00E5C636 = {
 			isa = PBXGroup;
 			children = (
-				75DF237B19105158003DB9ED /* libOoyalaSDK.a */,
 				755DB15E188DEE2C00E5C636 /* CaracolPlay */,
 				755DB180188DEE2C00E5C636 /* CaracolPlayTests */,
 				755DB157188DEE2C00E5C636 /* Frameworks */,
@@ -821,6 +796,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8BDB8B0219F6C0CB000B7431 /* BrightCove */,
 				8B1DB00318F33F0100C06A53 /* iAmCoder */,
 				8B3F104818EB7484005FA46D /* Plist */,
 				A049E32918D270B20040E051 /* ServerCommunicator */,
@@ -1147,52 +1123,45 @@
 			name = SplitViewController;
 			sourceTree = "<group>";
 		};
-		8BD52A9C1892AD6300792845 /* Ooyala Headers */ = {
+		8BDB8B0219F6C0CB000B7431 /* BrightCove */ = {
 			isa = PBXGroup;
 			children = (
-				8BD52A9D1892AD6300792845 /* OOAdSpot.h */,
-				8BD52A9E1892AD6300792845 /* OOAnalytics.h */,
-				8BD52A9F1892AD6300792845 /* OOAuthorizableItem.h */,
-				8BD52AA01892AD6300792845 /* OOCallbacks.h */,
-				8BD52AA11892AD6300792845 /* OOCaption.h */,
-				8BD52AA21892AD6300792845 /* OOChannel.h */,
-				8BD52AA31892AD6300792845 /* OOChannelSet.h */,
-				8BD52AA41892AD6300792845 /* OOClosedCaptions.h */,
-				8BD52AA51892AD6300792845 /* OOClosedCaptionsStyle.h */,
-				8BD52AA61892AD6300792845 /* OOContentItem.h */,
-				8BD52AA71892AD6300792845 /* OODefaultPlayerInfo.h */,
-				8BD52AA81892AD6300792845 /* OODynamicChannel.h */,
-				8BD52AA91892AD6300792845 /* OOEmbeddedSecureURLGenerator.h */,
-				8BD52AAA1892AD6300792845 /* OOEmbeddedSignatureGenerator.h */,
-				8BD52AAB1892AD6300792845 /* OOEmbedTokenGenerator.h */,
-				8BD52AAC1892AD6300792845 /* OOModule.h */,
-				8BD52AAD1892AD6300792845 /* OOMoviePlayer_OOAdMoviePlayer.h */,
-				8BD52AAE1892AD6300792845 /* OOOoyalaAdSpot.h */,
-				8BD52AAF1892AD6300792845 /* OOOoyalaAPIClient.h */,
-				8BD52AB01892AD6300792845 /* OOOoyalaError.h */,
-				8BD52AB11892AD6300792845 /* OOOoyalaPlayer.h */,
-				8BD52AB21892AD6300792845 /* OOOoyalaPlayerViewController.h */,
-				8BD52AB31892AD6300792845 /* OOOrderedDictionary.h */,
-				8BD52AB41892AD6300792845 /* OOPaginatedParentItem.h */,
-				8BD52AB51892AD6300792845 /* OOPlayableItem.h */,
-				8BD52AB61892AD6300792845 /* OOPlayer.h */,
-				8BD52AB71892AD6300792845 /* OOPlayerInfo.h */,
-				8BD52AB81892AD6300792845 /* OOReturnState.h */,
-				8BD52AB91892AD6300792845 /* OOSecureURLGenerator.h */,
-				8BD52ABA1892AD6300792845 /* OOSignatureGenerator.h */,
-				8BD52ABB1892AD6300792845 /* OOStream.h */,
-				8BD52ABC1892AD6300792845 /* OOStreamPlayer.h */,
-				8BD52ABD1892AD6300792845 /* OOTBXML.h */,
-				8BD52ABE1892AD6300792845 /* OOUserInfo.h */,
-				8BD52ABF1892AD6300792845 /* OOVASTAd.h */,
-				8BD52AC01892AD6300792845 /* OOVASTAdSpot.h */,
-				8BD52AC11892AD6300792845 /* OOVASTLinearAd.h */,
-				8BD52AC21892AD6300792845 /* OOVASTSequenceItem.h */,
-				8BD52AC31892AD6300792845 /* OOVASTStream.h */,
-				8BD52AC41892AD6300792845 /* OOVASTWrapperAd.h */,
-				8BD52AC51892AD6300792845 /* OOVideo.h */,
+				8BDB8B0319F6C0CB000B7431 /* Headers */,
+				8BDB8B1519F6C0CB000B7431 /* Library */,
 			);
-			path = "Ooyala Headers";
+			path = BrightCove;
+			sourceTree = "<group>";
+		};
+		8BDB8B0319F6C0CB000B7431 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8B0419F6C0CB000B7431 /* BCOVBasicSessionProvider.h */,
+				8BDB8B0519F6C0CB000B7431 /* BCOVCatalogConstants.h */,
+				8BDB8B0619F6C0CB000B7431 /* BCOVCatalogService.h */,
+				8BDB8B0719F6C0CB000B7431 /* BCOVCuePoint.h */,
+				8BDB8B0819F6C0CB000B7431 /* BCOVCuePointCollection.h */,
+				8BDB8B0919F6C0CB000B7431 /* BCOVCuePointProgressPolicy.h */,
+				8BDB8B0A19F6C0CB000B7431 /* BCOVDelegatingSessionConsumer.h */,
+				8BDB8B0B19F6C0CB000B7431 /* BCOVMediaRequestFactory.h */,
+				8BDB8B0C19F6C0CB000B7431 /* BCOVPlaybackController.h */,
+				8BDB8B0D19F6C0CB000B7431 /* BCOVPlaybackSession.h */,
+				8BDB8B0E19F6C0CB000B7431 /* BCOVPlaybackSessionProvider.h */,
+				8BDB8B0F19F6C0CB000B7431 /* BCOVPlayerSDK.h */,
+				8BDB8B1019F6C0CB000B7431 /* BCOVPlayerSDKManager.h */,
+				8BDB8B1119F6C0CB000B7431 /* BCOVPlaylist.h */,
+				8BDB8B1219F6C0CB000B7431 /* BCOVSource.h */,
+				8BDB8B1319F6C0CB000B7431 /* BCOVVideo.h */,
+				8BDB8B1419F6C0CB000B7431 /* NSDictionary+BCOVURLSupport.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		8BDB8B1519F6C0CB000B7431 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		8BDB8BBC188EB5080066279A /* Main */ = {
@@ -1390,7 +1359,6 @@
 			isa = PBXGroup;
 			children = (
 				A056721918FC61BC00D4B04A /* MBProgressHUD */,
-				8BD52A9C1892AD6300792845 /* Ooyala Headers */,
 				A05C44921899CEA700E72135 /* FXBlurView */,
 				8B7001A418A05AC3000B5C7B /* iCarousel */,
 				8BB5220D18AA740F0027CA59 /* JMImageCache */,
@@ -2154,8 +2122,9 @@
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2181,9 +2150,10 @@
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2292,8 +2262,9 @@
 					/Users/developer/caracolplay,
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

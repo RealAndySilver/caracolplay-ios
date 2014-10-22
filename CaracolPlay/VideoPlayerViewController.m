@@ -7,15 +7,17 @@
 //
 
 #import "VideoPlayerViewController.h"
-#import "OOOoyalaPlayerViewController.h"
-#import "OOOoyalaPlayer.h"
-#import "OOOoyalaError.h"
+//#import "OOOoyalaPlayerViewController.h"
+//#import "OOOoyalaPlayer.h"
+//#import "OOOoyalaError.h"
 #import <objc/message.h>
 #import "ServerCommunicator.h"
+#import "BCOVPlayerSDK.h"
 
-@interface VideoPlayerViewController () <ServerCommunicatorDelegate>
-@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
+@interface VideoPlayerViewController () <ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate>
+//@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
 @property (assign, nonatomic) BOOL sendProgressSecToServer;
+@property (strong, nonatomic) id <BCOVPlaybackController> controller;
 @end
 
 @implementation VideoPlayerViewController
@@ -33,7 +35,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     if (!self.controllerWasPresenteFromRedeemCode) {
         [self sendPlayVideoPetitionToServer];
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
+    /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
     
     //Create the Ooyala ViewController
     self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:PCODE domain:PLAYERDOMAIN controlType:OOOoyalaPlayerControlTypeInline];
@@ -46,7 +48,47 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
-    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
+    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];*/
+    
+    // create an array of videos
+    NSArray *videos = @[
+                        [self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]],
+                        [self videoWithURL:[NSURL URLWithString:@"http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"]]
+                        ];
+    
+    // add the playback controller
+    self.controller = [[BCOVPlayerSDKManager sharedManager] createPlaybackControllerWithViewStrategy:[self viewStrategy]];
+    self.controller.view.frame = self.view.bounds;
+    // create a playback controller delegate
+    self.controller.delegate = self;
+    
+    self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    // add the controller view as a subview of the SVPViewController's view
+    [self.view addSubview:self.controller.view];
+    
+    // turn on auto-advance
+    self.controller.autoAdvance = YES;
+    // turn on auto-play
+    self.controller.autoPlay = YES;
+    
+    // add the video array to the controller's playback queue
+    [self.controller setVideos:videos];
+    // play the first video
+    [self.controller play];
+}
+
+- (BCOVVideo *)videoWithURL:(NSURL *)url
+{
+    // set the delivery method for BCOVSources that belong to a video
+    BCOVSource *source = [[BCOVSource alloc] initWithURL:url deliveryMethod:kBCOVSourceDeliveryHLS properties:nil];
+    return [[BCOVVideo alloc] initWithSource:source cuePoints:[BCOVCuePointCollection collectionWithArray:@[]] properties:@{}];
+}
+
+- (id)viewStrategy
+{
+    // Most apps can create a playback controller with a `nil` view strategy,
+    // but for the purposes of this demo we use the stock controls.
+    return [[BCOVPlayerSDKManager sharedManager] defaultControlsViewStrategy];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -62,7 +104,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.ooyalaPlayerViewController.view.frame = self.view.bounds;
+    //self.ooyalaPlayerViewController.view.frame = self.view.bounds;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -72,9 +114,12 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
         [self postProgressSecToServer];
     }
     self.tabBarController.tabBar.alpha = 1.0;
-    [self.ooyalaPlayerViewController.player pause];
-    //[self.ooyalaPlayerViewController removeFromParentViewController];
-    NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
+    [self.controller pause];
+    [self.controller.view removeFromSuperview];
+    self.controller = nil;
+    //[self.ooyalaPlayerViewController.player pause]; hay que quitar este coment
+    //[self.ooyalaPlayerViewController removeFromParentViewController]; este si hay que dejarlo
+    //NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 
 #pragma mark - Server Stuff
@@ -87,11 +132,11 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)postProgressSecToServer {
     //FIXME: no está funcionando la petición
-    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    /*ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
     NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.productID, (int)self.ooyalaPlayerViewController.player.playheadTime];
     [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];
-    NSLog(@"parámetros: %@", parameters);
+    NSLog(@"parámetros: %@", parameters);*/
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
@@ -116,13 +161,19 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     self.sendProgressSecToServer = YES;
 }
 
-/*-(void)notificacion:(NSNotification *)notification {
-    NSLog(@"Llegó la notificación");
-}*/
-
 -(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
+
+#pragma mark - PlaybackControllerDelegate
+
+-(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didProgressTo:(NSTimeInterval)progress {
+    NSLog(@"Progresss: %f", progress);
+}
+
+/*-(void)notificacion:(NSNotification *)notification {
+ NSLog(@"Llegó la notificación");
+ }*/
 
 /*-(void)forceLandscapeMode{
     

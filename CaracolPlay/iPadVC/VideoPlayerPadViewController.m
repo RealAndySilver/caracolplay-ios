@@ -7,13 +7,13 @@
 //
 
 #import "VideoPlayerPadViewController.h"
-#import "OOOoyalaPlayerViewController.h"
-#import "OOOoyalaPlayer.h"
-#import "OOOoyalaError.h"
+//#import "OOOoyalaPlayerViewController.h"
+//#import "OOOoyalaPlayer.h"
+//#import "OOOoyalaError.h"
 #import "ServerCommunicator.h"
 
 @interface VideoPlayerPadViewController () < UIBarPositioningDelegate, ServerCommunicatorDelegate>
-@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
+//@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UINavigationItem *navBarItem;
 @property (strong, nonatomic) NSString *pcode;
@@ -32,7 +32,7 @@
         //Add as an observer of the OoyalaPlayerPlayStartedNotification. When this notification is received,
         //the video started playing, so we have to send to the server the progress seconds of the video when the
         //user stops watching it.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
+        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
     }
     
     //Navigation bar setup
@@ -53,7 +53,7 @@
 
 -(void)ooyalaSetup {
     //Create the Ooyala ViewController
-    self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:self.pcode domain:self.playerDomain controlType:OOOoyalaPlayerControlTypeInline];
+    /*self.ooyalaPlayerViewController = [[OOOoyalaPlayerViewController alloc] initWithPcode:self.pcode domain:self.playerDomain controlType:OOOoyalaPlayerControlTypeInline];
     
     //Attach the Oooyala view controller to the view
     //self.ooyalaPlayerViewController.view.frame = self.view.frame;
@@ -63,20 +63,20 @@
     
     //Load the video
     [self.ooyalaPlayerViewController.player setEmbedCode:self.embedCode];
-    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
+    [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];*/
 }
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     NSLog(@"bounds of video: %@", NSStringFromCGRect(self.view.bounds));
-    self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 64.0, self.view.bounds.size.width, self.view.bounds.size.height - 64.0);
+    //self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 64.0, self.view.bounds.size.width, self.view.bounds.size.height - 64.0);
     self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //self.tabBarController.tabBar.alpha = 1.0;
-    [self.ooyalaPlayerViewController.player pause];
+    //[self.ooyalaPlayerViewController.player pause];
     
 }
 
@@ -91,7 +91,7 @@
 
 -(void)dismissVC {
     if (self.videoWasPlayed) {
-        NSLog(@"envié la info de los segundos al server");
+       /* NSLog(@"envié la info de los segundos al server");
         
         //If the video was played, send the progress sec info to the server
         ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
@@ -99,7 +99,7 @@
         int segundos = (int)self.ooyalaPlayerViewController.player.playheadTime;
         NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.episodeID, segundos];
         NSLog(@"parámetros: %@", parameters);
-        [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];
+        [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];*/
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

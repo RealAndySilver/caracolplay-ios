@@ -25,6 +25,7 @@
 @property (nonatomic) int numberOfPages;
 @property (strong, nonatomic) NSTimer *automaticScrollTimer;
 @property (nonatomic) NSInteger automaticCounter;
+@property (assign, nonatomic) BOOL draggingScrollView;
 
 @property (assign, nonatomic) BOOL firstTimeViewAppears;
 
@@ -67,7 +68,9 @@
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
     self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.directionalLockEnabled = YES;
     self.scrollView.userInteractionEnabled = YES;
+    self.scrollView.showsVerticalScrollIndicator = NO;
     
     //Create two pages at the left and right limit of the scroll view, this is used to
     //make the effect of a circular scroll view.
@@ -307,10 +310,16 @@
 #pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //NSLog(@"Offset: %f", scrollView.contentOffset.y);
     float pageWidth = self.scrollView.frame.size.width;
     float fractionalPage = self.scrollView.contentOffset.x / pageWidth;
     NSInteger page = lroundf(fractionalPage);
     self.pageControl.currentPage = page - 1;
+    
+    //NSLog(@"Content offset: %f", scrollView.contentOffset.y);
+    if (self.draggingScrollView && scrollView.contentOffset.y != 0) {
+        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, 0.0) animated:NO];
+    }
 }
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
@@ -332,6 +341,7 @@
     NSLog(@"empezé a draggearme");
     [self.automaticScrollTimer invalidate];
     self.automaticScrollTimer = nil;
+    self.draggingScrollView = YES;
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -348,6 +358,10 @@
     self.automaticCounter = self.pageControl.currentPage + 2;
     NSLog(@"el contador está en %d", self.automaticCounter);
     [self startScrollingTimer];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    self.draggingScrollView = NO;
 }
 
 #pragma mark - Interface Orientation

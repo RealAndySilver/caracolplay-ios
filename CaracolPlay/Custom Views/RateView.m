@@ -146,7 +146,9 @@
                      animations:^(){
                          self.alpha = 0.0;
                          self.transform = CGAffineTransformMakeScale(0.5, 0.5);
-                     } completion:^(BOOL success){}];
+                     } completion:^(BOOL success){
+                         [self removeFromSuperview];
+                     }];
 }
 
 -(void)rateButtonTapped {
@@ -159,7 +161,9 @@
                      animations:^(){
                          self.alpha = 0.0;
                          self.transform = CGAffineTransformMakeScale(0.5, 0.5);
-                     } completion:^(BOOL success){}];
+                     } completion:^(BOOL success){
+                         [self removeFromSuperview];
+                     }];
 }
 
 @end

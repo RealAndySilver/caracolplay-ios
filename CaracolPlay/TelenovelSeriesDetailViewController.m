@@ -529,6 +529,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)showRateView {
+    NSLog(@"Me mostraréeeee ******************************");
     self.opacityView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.opacityView.backgroundColor = [UIColor blackColor];
     self.opacityView.alpha = 0.6;
