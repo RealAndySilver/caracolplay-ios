@@ -320,6 +320,11 @@
                 [UserInfo sharedInstance].isSubscription = YES;
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
+            } else {
+                NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
         
         } else {
@@ -333,19 +338,27 @@
     //RentContent
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
         if (dictionary) {
-            NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+            if ([dictionary[@"status"] boolValue]) {
+                NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+                
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                
+                //Go to Suscription confirmation VC
+                [self goToRentConfirmationVC];
+            } else {
+                NSLog(@"error en la respuesta del RentContent: %@", dictionary);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+                alert.tag = 2;
+                [alert show];
+            }
             
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"Session" : dictionary[@"session"]
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            
-            //Go to Suscription confirmation VC
-            [self goToRentConfirmationVC];
         } else {
             NSLog(@"error en la respuesta del RentContent: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];

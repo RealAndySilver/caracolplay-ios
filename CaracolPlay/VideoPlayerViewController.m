@@ -13,6 +13,7 @@
 #import <objc/message.h>
 #import "ServerCommunicator.h"
 #import "BCOVPlayerSDK.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface VideoPlayerViewController () <ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate>
 //@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
@@ -29,6 +30,7 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    //self.navigationController.navigationBarHidden = YES;
     NSLog(@"embed code: %@", self.embedCode);
     self.sendProgressSecToServer = NO;
     
@@ -51,10 +53,12 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];*/
     
     // create an array of videos
-    NSArray *videos = @[
+    /*NSArray *videos = @[
                         [self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]],
                         [self videoWithURL:[NSURL URLWithString:@"http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"]]
-                        ];
+                        ];*/
+    
+    NSArray *videos = @[[self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]]];
     
     // add the playback controller
     self.controller = [[BCOVPlayerSDKManager sharedManager] createPlaybackControllerWithViewStrategy:[self viewStrategy]];
@@ -69,12 +73,61 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     // turn on auto-advance
     self.controller.autoAdvance = YES;
     // turn on auto-play
-    self.controller.autoPlay = YES;
+    //self.controller.autoPlay = YES;
     
     // add the video array to the controller's playback queue
     [self.controller setVideos:videos];
     // play the first video
-    [self.controller play];
+    //[self.controller play];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected)];
+    [self.controller.view addGestureRecognizer:tapGesture];
+}
+
+-(void)tapDetected {
+    //NSLog(@"Detecté el tap");
+    NSArray *subViews = [self.controller.view subviews];
+    NSLog(@"EL número de subviews: %lu", (unsigned long)[subViews count]);
+    UIView *subview = subViews[1];
+    
+    static BOOL navigationBarHidden = NO;
+    if (!navigationBarHidden) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        subview.hidden = YES;
+        navigationBarHidden = YES;
+    } else {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        navigationBarHidden = NO;
+        subview.hidden = NO;
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.controller.view removeFromSuperview];
+    self.controller = nil;
+}
+
+-(void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    //self.ooyalaPlayerViewController.view.frame = self.view.bounds;
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (!self.controllerWasPresenteFromRedeemCode) {
+        [self postProgressSecToServer];
+    }
+    self.tabBarController.tabBar.alpha = 1.0;
+    [self.controller pause];
+    //[self.ooyalaPlayerViewController.player pause]; hay que quitar este coment
+    //[self.ooyalaPlayerViewController removeFromParentViewController]; este si hay que dejarlo
+    //NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 
 - (BCOVVideo *)videoWithURL:(NSURL *)url
@@ -95,31 +148,6 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.alpha = 0.0;
     //[self.ooyalaPlayerViewController.player playWithInitialTime:self.progressSec];
-
-}
-
--(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
--(void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    //self.ooyalaPlayerViewController.view.frame = self.view.bounds;
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    if (!self.controllerWasPresenteFromRedeemCode) {
-        [self postProgressSecToServer];
-    }
-    self.tabBarController.tabBar.alpha = 1.0;
-    [self.controller pause];
-    [self.controller.view removeFromSuperview];
-    self.controller = nil;
-    //[self.ooyalaPlayerViewController.player pause]; hay que quitar este coment
-    //[self.ooyalaPlayerViewController removeFromParentViewController]; este si hay que dejarlo
-    //NSLog(@"tiempo actual: %f", self.ooyalaPlayerViewController.player.playheadTime);
 }
 
 #pragma mark - Server Stuff
@@ -168,7 +196,16 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
 #pragma mark - PlaybackControllerDelegate
 
 -(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didProgressTo:(NSTimeInterval)progress {
-    NSLog(@"Progresss: %f", progress);
+    //NSLog(@"Progresss: %f", progress);
+}
+
+-(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
+    if ([lifecycleEvent.eventType isEqualToString:kBCOVPlaybackSessionLifecycleEventReady]) {
+        AVPlayer *player = session.player;
+        [player seekToTime:CMTimeMakeWithSeconds(8, 1) completionHandler:^(BOOL finished) {
+            [player play];
+        }];
+    }
 }
 
 /*-(void)notificacion:(NSNotification *)notification {

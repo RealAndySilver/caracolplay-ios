@@ -287,7 +287,10 @@
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                NSLog(@"error en la compra: %@", dictionary);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
         } else {
             NSLog(@"error en la compra: %@", dictionary);

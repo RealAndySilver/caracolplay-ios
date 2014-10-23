@@ -14,7 +14,7 @@
 		<string>https://bitbucket.org/katsuyapr0/caracolplay.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CaracolPlay.xcodeproj/project.xcworkspace</string>
+	<string>CaracolPlay.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>CFDC53F99FE25234D746191D03110B27CE855436</key>

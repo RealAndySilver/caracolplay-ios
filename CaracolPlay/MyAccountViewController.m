@@ -341,10 +341,18 @@
     [UserInfo sharedInstance].isSubscription = NO;
     
     //Erase 'Mis listas' tab & 'Mas' tab
+    if (self.tabBarController) {
+        NSLog(@"SI EXISTE EL TAB BAR");
+    } else {
+        NSLog(@"NO EXISTE EL TAB BAR");
+    }
+    
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
+    NSLog(@"NUMERO DE CONTROLADORES EN EL TAB: %lu", (unsigned long)[self.tabBarController.viewControllers count]);
     [tabViewControllers removeLastObject];
     [tabViewControllers removeLastObject];
     self.tabBarController.viewControllers = tabViewControllers;
+    NSLog(@"NUMERO DE CONTROLADORES DESPUES DE BORRAR: %lu", (unsigned long)[self.tabBarController.viewControllers count]);
     self.tabBarController.selectedIndex = 0;
     
     MyNavigationController *navigationController = (MyNavigationController *)self.tabBarController.viewControllers[0];

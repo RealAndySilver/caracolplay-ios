@@ -277,21 +277,29 @@
         }
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
         if (dictionary) {
-            NSLog(@"Peticion RentContent exitosa: %@", dictionary);
-            
-            //Save a key localy that indicates that the user is logged in
-            FileSaver *fileSaver = [[FileSaver alloc] init];
-            [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
-                                       @"UserName" : [UserInfo sharedInstance].userName,
-                                       @"Password" : [UserInfo sharedInstance].password,
-                                       @"UserID" : dictionary[@"uid"],
-                                       @"Session" : dictionary[@"session"]
-                                       } withKey:@"UserHasLoginDic"];
-            [UserInfo sharedInstance].session = dictionary[@"session"];
-            [UserInfo sharedInstance].userID = dictionary[@"uid"];
-            
-            //Go to Suscription confirmation VC
-            [self goToRentConfirmationVC];
+            if ([dictionary[@"status"] boolValue]) {
+                NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+                
+                //Save a key localy that indicates that the user is logged in
+                FileSaver *fileSaver = [[FileSaver alloc] init];
+                [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
+                                           @"UserName" : [UserInfo sharedInstance].userName,
+                                           @"Password" : [UserInfo sharedInstance].password,
+                                           @"UserID" : dictionary[@"uid"],
+                                           @"Session" : dictionary[@"session"]
+                                           } withKey:@"UserHasLoginDic"];
+                [UserInfo sharedInstance].session = dictionary[@"session"];
+                [UserInfo sharedInstance].userID = dictionary[@"uid"];
+                
+                //Go to Suscription confirmation VC
+                [self goToRentConfirmationVC];
+            } else {
+                NSLog(@"error en la peticion RentContent: %@", dictionary);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
+                alert.tag = 1;
+                [alert show];
+            }
+        
         } else {
             NSLog(@"error en la peticion RentContent: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];

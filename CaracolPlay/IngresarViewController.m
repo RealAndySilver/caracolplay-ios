@@ -203,10 +203,18 @@
     myAccountNavigationController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
     myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
     
-    NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
+    if (self.tabBarController) {
+        NSLog(@"Si existe el tab bar");
+    } else {
+        NSLog(@"No existe el tab bar");
+    }
+    
+    NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.tabBarController.viewControllers];
+    NSLog(@"NUMERO DE CONTROLADORES: %lu", (unsigned long)[viewControllersArray count]);
     [viewControllersArray addObject:myListsNavigationController];
     [viewControllersArray addObject:myAccountNavigationController];
-    self.tabBarController.viewControllers = viewControllersArray;
+    [self.tabBarController setViewControllers:viewControllersArray animated:NO];
+    NSLog(@"NUMEROD E CONTROLADORES ACTUALIZADOS: %lu", (unsigned long)[self.tabBarController.viewControllers count]);
 }
 
 -(NSString *)generateEncodedUserInfoString {
@@ -355,7 +363,10 @@
                 [self goToSubscriptionConfirm];
 
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:dictionary[@"response"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+                alert.tag = 1;
+                [alert show];
             }
             
         } else {
