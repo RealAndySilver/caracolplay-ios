@@ -338,6 +338,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     
+    if (self.tabBarController) {
+        NSLog(@"EXISTE EL TAB EN EL DETALLE DE LA SERIE");
+    } else {
+        NSLog(@"NO EXISTE EL TAB EN EL DETALLE DE LA SERIE");
+    }
+    
     //Add as an observer of the notification -seasonSelectedNotification, to make the
     //chapters table view changes when neccesary
     [[NSNotificationCenter defaultCenter] addObserver:self

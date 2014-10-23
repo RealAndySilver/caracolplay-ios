@@ -35,6 +35,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (self.tabBarController) {
+        NSLog(@"EXISTE EL TAB EN LA PANTALLA DE INGRESO");
+    } else {
+        NSLog(@"NO EXISTE EL TAB EN LA PANTALLA DE INGRESO");
+    }
+    
     [self clearAllWrongImageViews];
     
     self.nameTextfield.delegate = self;
@@ -148,6 +155,7 @@
 }
 
 -(void)returnToProduction {
+    [self createAditionalTabsInTabBarController];
     NSArray *viewControllers = [self.navigationController viewControllers];
     for (int i = [viewControllers count] - 1; i >= 0; i--){
         id obj = [viewControllers objectAtIndex:i];
@@ -159,7 +167,6 @@
             break;
         }
     }
-    [self createAditionalTabsInTabBarController];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
 }
 
@@ -204,9 +211,9 @@
     myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
     
     if (self.tabBarController) {
-        NSLog(@"Si existe el tab bar");
+        NSLog(@"Si existe el tab bar *************");
     } else {
-        NSLog(@"No existe el tab bar");
+        NSLog(@"No existe el tab bar *************");
     }
     
     NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.tabBarController.viewControllers];

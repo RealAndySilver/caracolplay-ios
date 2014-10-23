@@ -27,7 +27,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //Make the navigation bar totally translucent
-    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBarHidden = YES;
     self.tabBarController.tabBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     /*[self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init]
@@ -39,7 +39,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBarHidden = NO;
     self.tabBarController.tabBar.hidden = NO;
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     /*[self.navigationController.navigationBar setBackgroundImage:nil
@@ -86,6 +86,18 @@
 #pragma mark - Actions 
 
 -(void)goToHomeScreen {
+    self.tabBarController.tabBar.hidden = NO;
+    
+    if (!self.userWasAlreadyLoggedin) {
+        //If the user hasn't logged in with his user, create the aditional tabs
+        NSLog(@"crearemos los tabs adicionales");
+        [self createAditionalTabsInTabBarController];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+        
+    } else {
+        NSLog(@"no crearemos los tabs adicionales");
+    }
+    
     NSArray *viewControllers = [self.navigationController viewControllers];
     for (int i = [viewControllers count] - 1; i >= 0; i--){
         id obj = [viewControllers objectAtIndex:i];
@@ -97,18 +109,12 @@
             break;
         }
      }
-    if (!self.userWasAlreadyLoggedin) {
-        //If the user hasn't logged in with his user, create the aditional tabs
-        NSLog(@"crearemos los tabs adicionales");
-        [self createAditionalTabsInTabBarController];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
-
-    } else {
-        NSLog(@"no crearemos los tabs adicionales");
-    }
 }
 
 -(void)createAditionalTabsInTabBarController {
+    self.tabBarController.tabBar.hidden = NO;
+    self.navigationController.navigationBarHidden = NO;
+    
     //4. Fourth view of the TabBar - My Lists
     MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];

@@ -68,6 +68,17 @@
 #pragma mark - Actions 
 
 -(void)returnToProductionScreen {
+    self.tabBarController.tabBar.hidden = NO;
+    
+    if (!self.userWasAlreadyLoggedin) {
+        //If the user hasn't logged in with his user, create the aditional tabs
+        NSLog(@"Cree los tabs");
+        [self createAditionalTabsInTabBarController];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
+    } else  {
+        NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
+    }
+    
     NSArray *viewControllers = [self.navigationController viewControllers];
     for (int i = [viewControllers count] - 1; i >= 0; i--){
         id obj = [viewControllers objectAtIndex:i];
@@ -79,14 +90,6 @@
             break;
         }
     }
-    if (!self.userWasAlreadyLoggedin) {
-        //If the user hasn't logged in with his user, create the aditional tabs
-        NSLog(@"Cree los tabs");
-        [self createAditionalTabsInTabBarController];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateLastSeenCategory" object:nil userInfo:nil];
-    } else  {
-        NSLog(@"no cree los tabs porque el usuario ya estaba ingresado");
-    }
 }
 
 -(void)goToHomeViewController {
@@ -95,6 +98,8 @@
 }
 
 -(void)createAditionalTabsInTabBarController {
+    self.tabBarController.tabBar.hidden = NO;
+    
     //4. Fourth view of the TabBar - My Lists
     MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];

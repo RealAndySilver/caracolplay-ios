@@ -108,6 +108,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (self.tabBarController) {
+        NSLog(@"EXISTE EL TAB EN EL HOME");
+    } else {
+        NSLog(@"NO EXISTE EL TAB EN EL HOME");
+    }
+    
     self.view.backgroundColor = [UIColor blackColor];
     self.firstTimeViewAppears = YES;
     

@@ -23,6 +23,13 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (self.tabBarController) {
+        NSLog(@"EXISTE EL TAB EN LA PANTALLA DE ALERTA DE SUSCRIPCIÓN");
+    } else {
+        NSLog(@"NO EXISTE EL TAB EN LA PANTALLA DE ALERTA DE SUSCRIPCION");
+    }
+    
     [self UISetup];
 }
 
