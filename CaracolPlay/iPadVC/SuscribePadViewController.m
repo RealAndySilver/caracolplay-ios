@@ -149,7 +149,7 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     
     self.backgroundImageView.frame = self.view.bounds;
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 0.0, 44.0, 44.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 44.0, 3.0, 44.0, 44.0);
 }
 
 -(void)viewDidLayoutSubviews {
@@ -343,6 +343,7 @@
     SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
     suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
     suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }
 

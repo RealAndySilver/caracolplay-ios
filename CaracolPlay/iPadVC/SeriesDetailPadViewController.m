@@ -481,9 +481,11 @@
             }
             
             //If the user isn't logged in, he can't watch the video
+            NSLog(@"Entré acáaaaaa");
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
             suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
             suscriptionAlertPadVC.productID = self.selectedEpisodeID;
             suscriptionAlertPadVC.productType = self.production.type;
             suscriptionAlertPadVC.productName = self.production.name;
@@ -528,12 +530,14 @@
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
         
     } else {
         SuscriptionAlertPadViewController *suscriptionAlertPadVC =
         [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         suscriptionAlertPadVC.productID = self.selectedEpisodeID;
         suscriptionAlertPadVC.productType = self.production.type;
         suscriptionAlertPadVC.viewType = self.production.viewType;
@@ -550,6 +554,7 @@
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para ver el trailer de esta producción debes estar conectado a internet." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerPadVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         videoPlayerPadVC.embedCode = self.production.trailerURL;
         videoPlayerPadVC.isWatchingTrailer = YES;
         [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
@@ -578,6 +583,7 @@
 }
 
 -(void)dismissVC {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveOpacityView" object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -600,6 +606,7 @@
                 //The user can watch it with 3g
                 [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia conéctate a nua red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+                videoPlayer.modalPresentationStyle = UIModalPresentationOverFullScreen;
                 videoPlayer.embedCode = video.embedHD;
                 videoPlayer.isWatchingTrailer = NO;
                 videoPlayer.progressSec = video.progressSec;
@@ -615,6 +622,7 @@
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
             VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+            videoPlayer.modalPresentationStyle = UIModalPresentationOverFullScreen;
             videoPlayer.embedCode = video.embedHD;
             videoPlayer.isWatchingTrailer = NO;
             videoPlayer.progressSec = video.progressSec;
@@ -634,6 +642,7 @@
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }
 }

@@ -454,6 +454,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
             videoPlayer.progressSec = video.progressSec;
             videoPlayer.episodeID = self.production.identifier;
             videoPlayer.productID = self.production.identifier;
+            videoPlayer.modalPresentationStyle = UIModalPresentationOverFullScreen;
             [self presentViewController:videoPlayer animated:YES completion:nil];
         }
         
@@ -464,6 +465,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         contentNotAvailableVC.productType = self.production.type;
         contentNotAvailableVC.viewType = self.production.viewType;
         contentNotAvailableVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        contentNotAvailableVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [self presentViewController:contentNotAvailableVC animated:YES completion:nil];
     }
 }
@@ -483,6 +485,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
         SuscriptionAlertPadViewController *suscriptionAlertPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
         suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        suscriptionAlertPadVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         suscriptionAlertPadVC.productID = self.production.identifier;
         suscriptionAlertPadVC.productName = self.production.name;
         suscriptionAlertPadVC.productType = self.production.type;
@@ -503,6 +506,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         [[[UIAlertView alloc] initWithTitle:nil message:@"Para poder ver el trailer de esta producción debes estar conectado a internet" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     } else {
         VideoPlayerPadViewController *videoPlayerPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
+        videoPlayerPadVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
         videoPlayerPadVC.embedCode = self.production.trailerURL;
         [self presentViewController:videoPlayerPadVC animated:YES completion:nil];
     }
@@ -529,6 +533,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 }
 
 -(void)dismissVC {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveOpacityView" object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }

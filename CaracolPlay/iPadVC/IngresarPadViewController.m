@@ -113,7 +113,7 @@
     self.view.layer.masksToBounds = YES;
 
     //Set Subviews frames
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 58, -25.0, 88.0, 88.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 68, -15.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
 
@@ -160,6 +160,7 @@
 
 -(void)goToHomeScreen {
     MainTabBarPadController *mainTabBarPadController = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+    mainTabBarPadController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:mainTabBarPadController animated:YES completion:nil];
 }
 
@@ -219,6 +220,7 @@
     SuscriptionConfirmationPadViewController *suscriptionConfirmationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionConfirmationPad"];
     suscriptionConfirmationVC.controllerWasPresentedFromInitialScreen = YES;
     suscriptionConfirmationVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionConfirmationVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:suscriptionConfirmationVC animated:YES completion:nil];
 }
 

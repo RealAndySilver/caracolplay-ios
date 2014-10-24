@@ -146,7 +146,7 @@
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 67.0, -18.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
 
@@ -234,6 +234,7 @@
     SuscribeConfirmFromInsideViewController *suscribeConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeConfirmFromInside"];
     suscribeConfirmVC.controllerWasPresentedFromSuscribeFormScreen = YES;
     suscribeConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscribeConfirmVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     suscribeConfirmVC.userIsLoggedIn = self.userIsLoggedIn;
     [self presentViewController:suscribeConfirmVC animated:YES completion:nil];
 }

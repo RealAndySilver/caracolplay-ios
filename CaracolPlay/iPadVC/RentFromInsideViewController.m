@@ -144,7 +144,7 @@
     self.view.layer.cornerRadius = 10.0;
     self.view.layer.masksToBounds = YES;
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 67.0, -18.0, 88.0, 88.0);
     self.backgroundImageView.frame = self.view.bounds;
 }
 
@@ -228,6 +228,7 @@
     RentConfirmFromInsideViewController *rentConfirmVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentConfirmFromInside"];
     rentConfirmVC.controllerWasPresentedFromRentFromInside = YES;
     rentConfirmVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    rentConfirmVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     rentConfirmVC.rentedProductionName = self.productName;
     rentConfirmVC.userIsLoggedIn = NO;
     [self presentViewController:rentConfirmVC animated:YES completion:nil];

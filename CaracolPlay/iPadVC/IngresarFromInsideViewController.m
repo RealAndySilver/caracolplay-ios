@@ -60,7 +60,7 @@
     self.view.layer.masksToBounds = YES;
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
     self.backgroundImageView.frame = self.view.bounds;
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -30.0, 88.0, 88.0);
+    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 67.0, -20.0, 88.0, 88.0);
 }
 
 -(void)setupUI {
