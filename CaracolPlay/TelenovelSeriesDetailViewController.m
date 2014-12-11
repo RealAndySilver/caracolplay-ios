@@ -620,7 +620,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?provider=aim", episodeID]];
 }
 
 -(void)getProductionWithID:(NSString *)productID {
@@ -632,10 +632,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, @"0"]];
     } else {
         NSString *userID = [UserInfo sharedInstance].userID;
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, userID]];
     }}
 
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
@@ -668,7 +668,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     } else if ([methodName isEqualToString:@"IsContentAvailableForUser"] && dictionary) {
         if ([dictionary[@"status"] boolValue]) {
             //La petición fue exitosa
-            NSLog(@"info del video: %@", dictionary);
+            NSLog(@"info del video ******************************************: %@", dictionary);
             NSDictionary *dicWithoutNulls = [dictionary dictionaryByReplacingNullWithBlanks];
             Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
             [self checkVideoAvailability:video];
@@ -681,6 +681,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         NSLog(@"llegó la info de la caloficación: %@", dictionary);
         
     } else {
+        NSLog(@"Metodo devueltooooooo: %@", methodName);
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }

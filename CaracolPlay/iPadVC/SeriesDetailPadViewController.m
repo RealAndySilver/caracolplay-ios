@@ -662,7 +662,7 @@
     [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?provider=aim", episodeID]];
 }
 
 -(void)updateUserFeedbackForProductWithRate:(NSInteger)rate {
@@ -684,10 +684,10 @@
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, @"0"]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, @"0"]];
     } else {
         NSString *userID = [UserInfo sharedInstance].userID;
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@", productID, userID]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, userID]];
     }
 }
 

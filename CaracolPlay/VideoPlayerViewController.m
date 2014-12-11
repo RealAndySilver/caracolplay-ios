@@ -14,6 +14,8 @@
 #import "ServerCommunicator.h"
 #import "BCOVPlayerSDK.h"
 #import <AVFoundation/AVFoundation.h>
+//#import "BCOVCatalogService+BCOVWidevineAdditions.h"
+#import "BCOVWidevine.h"
 
 @interface VideoPlayerViewController () <ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate>
 //@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
@@ -23,10 +25,10 @@
 
 @implementation VideoPlayerViewController
 
-NSString * const EMBED_CODE = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
-NSString * const PCODE = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
-NSString * const PLAYERDOMAIN = @"www.ooyala.com";
-
+//NSString * const EMBED_CODE = @"1xZHNqazrsqfsHoMSjFk7Run5dd0DxKT";
+//NSString * const PCODE = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
+//NSString * const PLAYERDOMAIN = @"www.ooyala.com";
+NSString * const TOKEN = @"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_qw..";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
@@ -58,30 +60,65 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
                         [self videoWithURL:[NSURL URLWithString:@"http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"]]
                         ];*/
     
-    NSArray *videos = @[[self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]]];
+    
+   // NSArray *videos = @[[self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]]];
     
     // add the playback controller
-    self.controller = [[BCOVPlayerSDKManager sharedManager] createPlaybackControllerWithViewStrategy:[self viewStrategy]];
+    BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
+    //self.controller = [manager createPlaybackControllerWithViewStrategy:[self viewStrategy]];
+    self.controller = [manager createWidevinePlaybackControllerWithViewStrategy:[self viewStrategy]];
     self.controller.view.frame = self.view.bounds;
     // create a playback controller delegate
-    self.controller.delegate = self;
+    //self.controller.delegate = self;
     
     self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     // add the controller view as a subview of the SVPViewController's view
     [self.view addSubview:self.controller.view];
     
     // turn on auto-advance
-    self.controller.autoAdvance = YES;
-    // turn on auto-play
-    //self.controller.autoPlay = YES;
+    //self.controller.autoAdvance = YES;
     
     // add the video array to the controller's playback queue
-    [self.controller setVideos:videos];
-    // play the first video
-    //[self.controller play];
+    //[self.controller setVideos:videos];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected)];
     [self.controller.view addGestureRecognizer:tapGesture];
+    
+    BCOVCatalogService *service = [[BCOVCatalogService alloc] initWithToken:TOKEN];
+    /*[service findVideoWithVideoID:@"3934819615001" parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+        if (!error) {
+            NSLog(@"Response: %@", jsonResponse);
+            if (video) {
+                NSLog(@"The video exists");
+                [self.controller setVideos:@[video]];
+                [self.controller play];
+            } else {
+                NSLog(@"The video doesn't exist");
+            }
+            
+        } else {
+            NSLog(@"Error description: %@", [error localizedDescription]);
+            NSLog(@"Response: %@", jsonResponse);
+        }
+    }];*/
+    
+    //3936114092001
+    [service findWidevineVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+        if (!error) {
+            NSLog(@"Response: %@", jsonResponse);
+            if (video) {
+                NSLog(@"The video exists");
+                [self.controller setVideos:@[video]];
+                [self.controller play];
+            } else {
+                NSLog(@"The video doesn't exist");
+            }
+            
+        } else {
+            NSLog(@"Error description: %@", [error localizedDescription]);
+            NSLog(@"Response: %@", jsonResponse);
+        }
+    }];
 }
 
 -(void)tapDetected {
@@ -199,14 +236,14 @@ NSString * const PLAYERDOMAIN = @"www.ooyala.com";
     //NSLog(@"Progresss: %f", progress);
 }
 
--(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
+/*-(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
     if ([lifecycleEvent.eventType isEqualToString:kBCOVPlaybackSessionLifecycleEventReady]) {
         AVPlayer *player = session.player;
         [player seekToTime:CMTimeMakeWithSeconds(8, 1) completionHandler:^(BOOL finished) {
             [player play];
         }];
     }
-}
+}*/
 
 /*-(void)notificacion:(NSNotification *)notification {
  NSLog(@"Llegó la notificación");

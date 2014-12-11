@@ -245,7 +245,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:episodeID];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?provider=aim", episodeID]];
 }
 
 -(void)getUserRecentlyWatchedWithFilter:(NSUInteger)filter {

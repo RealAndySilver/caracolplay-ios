@@ -55,6 +55,11 @@
 		8B3BB05D18F742F500626720 /* FreeBand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B3BB05B18F742F500626720 /* FreeBand@2x.png */; };
 		8B3F104A18EB74BA005FA46D /* TermsAndPrivacy.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */; };
 		8B52252718F44A18004ADD20 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B52252618F44A18004ADD20 /* UserInfo.m */; };
+		8B5CDEB31A3A3D3700C8DCFB /* libBCOVWidevine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */; };
+		8B5CDEB41A3A3D3700C8DCFB /* libWViPhoneAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */; };
+		8B5CDEB61A3A3D7600C8DCFB /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */; };
+		8B5CDEB81A3A3D8800C8DCFB /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */; };
+		8B5CDEBA1A3A3D9200C8DCFB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */; };
 		8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */; };
 		8B64F7F918BBE660007E3C06 /* CreateListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B64F7F818BBE660007E3C06 /* CreateListView.m */; };
 		8B64F7FC18BBFEDE007E3C06 /* AddToListIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B64F7FA18BBFEDE007E3C06 /* AddToListIcon.png */; };
@@ -374,6 +379,17 @@
 		8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TermsAndPrivacy.plist; path = Plist/TermsAndPrivacy.plist; sourceTree = "<group>"; };
 		8B52252518F44A18004ADD20 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfo.h; path = Model/UserInfo.h; sourceTree = "<group>"; };
 		8B52252618F44A18004ADD20 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfo.m; path = Model/UserInfo.m; sourceTree = "<group>"; };
+		8B5CDEAA1A3A3D3700C8DCFB /* BCOVCatalogService+BCOVWidevineAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BCOVCatalogService+BCOVWidevineAdditions.h"; sourceTree = "<group>"; };
+		8B5CDEAB1A3A3D3700C8DCFB /* BCOVWidevine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevine.h; sourceTree = "<group>"; };
+		8B5CDEAC1A3A3D3700C8DCFB /* BCOVWidevineComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineComponent.h; sourceTree = "<group>"; };
+		8B5CDEAD1A3A3D3700C8DCFB /* BCOVWidevineConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineConstants.h; sourceTree = "<group>"; };
+		8B5CDEAE1A3A3D3700C8DCFB /* BCOVWidevineSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineSessionProvider.h; sourceTree = "<group>"; };
+		8B5CDEAF1A3A3D3700C8DCFB /* WViPhoneAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WViPhoneAPI.h; sourceTree = "<group>"; };
+		8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBCOVWidevine.a; sourceTree = "<group>"; };
+		8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWViPhoneAPI.a; sourceTree = "<group>"; };
+		8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
+		8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		8B64F7F418BBC3AC007E3C06 /* SeasonsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeasonsListView.h; sourceTree = "<group>"; };
 		8B64F7F518BBC3AC007E3C06 /* SeasonsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeasonsListView.m; sourceTree = "<group>"; };
 		8B64F7F718BBE660007E3C06 /* CreateListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateListView.h; path = "Custom Views/CreateListView.h"; sourceTree = "<group>"; };
@@ -713,11 +729,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B5CDEBA1A3A3D9200C8DCFB /* libz.dylib in Frameworks */,
+				8B5CDEB81A3A3D8800C8DCFB /* libSystem.dylib in Frameworks */,
+				8B5CDEB61A3A3D7600C8DCFB /* libresolv.dylib in Frameworks */,
 				8BDB8B1819F6C131000B7431 /* libBCOVPlayerSDK.a in Frameworks */,
 				A05AC44B18D0F5B000445063 /* MessageUI.framework in Frameworks */,
 				8BED8A8818C62A8A0076EA26 /* StoreKit.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
+				8B5CDEB41A3A3D3700C8DCFB /* libWViPhoneAPI.a in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
+				8B5CDEB31A3A3D3700C8DCFB /* libBCOVWidevine.a in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
 				8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */,
 				8BD52AD71892AECF00792845 /* CoreText.framework in Frameworks */,
@@ -769,6 +790,9 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */,
+				8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */,
+				8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */,
 				A05AC44A18D0F5B000445063 /* MessageUI.framework */,
 				8BED8A8718C62A8A0076EA26 /* StoreKit.framework */,
 				8B164B9118A996F8001803A9 /* ImageIO.framework */,
@@ -796,6 +820,7 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
+				8B5CDEA81A3A3D3700C8DCFB /* Widevine */,
 				8BDB8B0219F6C0CB000B7431 /* BrightCove */,
 				8B1DB00318F33F0100C06A53 /* iAmCoder */,
 				8B3F104818EB7484005FA46D /* Plist */,
@@ -920,6 +945,37 @@
 				8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */,
 			);
 			name = Plist;
+			sourceTree = "<group>";
+		};
+		8B5CDEA81A3A3D3700C8DCFB /* Widevine */ = {
+			isa = PBXGroup;
+			children = (
+				8B5CDEA91A3A3D3700C8DCFB /* Headers */,
+				8B5CDEB01A3A3D3700C8DCFB /* Library */,
+			);
+			path = Widevine;
+			sourceTree = "<group>";
+		};
+		8B5CDEA91A3A3D3700C8DCFB /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				8B5CDEAA1A3A3D3700C8DCFB /* BCOVCatalogService+BCOVWidevineAdditions.h */,
+				8B5CDEAB1A3A3D3700C8DCFB /* BCOVWidevine.h */,
+				8B5CDEAC1A3A3D3700C8DCFB /* BCOVWidevineComponent.h */,
+				8B5CDEAD1A3A3D3700C8DCFB /* BCOVWidevineConstants.h */,
+				8B5CDEAE1A3A3D3700C8DCFB /* BCOVWidevineSessionProvider.h */,
+				8B5CDEAF1A3A3D3700C8DCFB /* WViPhoneAPI.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		8B5CDEB01A3A3D3700C8DCFB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */,
+				8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		8B67769F1896F860006E2241 /* Views */ = {
@@ -2123,6 +2179,7 @@
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
+					"$(PROJECT_DIR)/CaracolPlay/Widevine/Library",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2151,6 +2208,7 @@
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
+					"$(PROJECT_DIR)/CaracolPlay/Widevine/Library",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -2263,6 +2321,7 @@
 					/Users/diegovidal/Documents/Diego/WorkProjects/CaracolPlay,
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
+					"$(PROJECT_DIR)/CaracolPlay/Widevine/Library",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
