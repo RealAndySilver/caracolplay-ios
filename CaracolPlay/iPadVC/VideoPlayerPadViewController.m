@@ -13,29 +13,32 @@
 #import "ServerCommunicator.h"
 #import "BCOVPlayerSDK.h"
 #import <AVFoundation/AVFoundation.h>
+#import "BCOVWidevine.h"
 
 @interface VideoPlayerPadViewController () <UIBarPositioningDelegate, ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate, UINavigationBarDelegate>
 //@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UINavigationItem *navBarItem;
-@property (strong, nonatomic) NSString *pcode;
-@property (strong, nonatomic) NSString *playerDomain;
+//property (strong, nonatomic) NSString *pcode;
+//@property (strong, nonatomic) NSString *playerDomain;
 @property (assign, nonatomic) BOOL videoWasPlayed;
 @property (strong, nonatomic) id <BCOVPlaybackController> controller;
+@property (assign, nonatomic) int progressTime;
 @end
 
 @implementation VideoPlayerPadViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.pcode = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
-    self.playerDomain = @"www.ooyala.com";
+    //self.pcode = @"n728cv9Ro-9N2pIPcA0vqCPxI_1yuaWcz1XaEpkc";
+    //self.playerDomain = @"www.ooyala.com";
     
     if (!self.isWatchingTrailer) {
         //Add as an observer of the OoyalaPlayerPlayStartedNotification. When this notification is received,
         //the video started playing, so we have to send to the server the progress seconds of the video when the
         //user stops watching it.
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStartedPlaying) name:OOOoyalaPlayerPlayStartedNotification object:nil];
+        [self sendPlayVideoPetitionToServer];
     }
     
     //Navigation bar setup
@@ -52,10 +55,11 @@
     
     //////////////////////////////////////////////////////////////////////////////
     //BrightCove Setup
-    NSArray *videos = @[[self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]]];
+    //NSArray *videos = @[[self videoWithURL:[NSURL URLWithString:@"http://cf9c36303a9981e3e8cc-31a5eb2af178214dc2ca6ce50f208bb5.r97.cf1.rackcdn.com/bigger_badminton_600.mp4"]]];
     
     // add the playback controller
-    self.controller = [[BCOVPlayerSDKManager sharedManager] createPlaybackControllerWithViewStrategy:[self viewStrategy]];
+    BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
+    self.controller = [manager createWidevinePlaybackControllerWithViewStrategy:[self viewStrategy]];
     self.controller.view.frame = self.view.bounds;
     // create a playback controller delegate
     self.controller.delegate = self;
@@ -66,15 +70,32 @@
     [self.view bringSubviewToFront:self.navigationBar];
     
     // turn on auto-advance
-    self.controller.autoAdvance = YES;
+    //self.controller.autoAdvance = YES;
     
     // add the video array to the controller's playback queue
-    [self.controller setVideos:videos];
+    //[self.controller setVideos:videos];
+    
+    BCOVCatalogService *service = [[BCOVCatalogService alloc] initWithToken:@"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_qw.."];
+    //3936114092001
+    [service findWidevineVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+        if (!error) {
+            NSLog(@"Response: %@", jsonResponse);
+            if (video) {
+                NSLog(@"The video exists");
+                [self.controller setVideos:@[video]];
+                //[self.controller play];
+            } else {
+                NSLog(@"The video doesn't exist");
+            }
+            
+        } else {
+            NSLog(@"Error description: %@", [error localizedDescription]);
+            NSLog(@"Response: %@", jsonResponse);
+        }
+    }];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected)];
     [self.controller.view addGestureRecognizer:tapGesture];
-    
-    
     
     //Ooyala Setup
     //[self ooyalaSetup];
@@ -115,7 +136,7 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    NSLog(@"bounds of video: %@", NSStringFromCGRect(self.view.bounds));
+    //NSLog(@"bounds of video: %@", NSStringFromCGRect(self.view.bounds));
     //self.ooyalaPlayerViewController.view.frame = CGRectMake(0.0, 64.0, self.view.bounds.size.width, self.view.bounds.size.height - 64.0);
     self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
 }
@@ -123,6 +144,7 @@
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.controller pause];
+    [self postProgressSecToServer];
     //self.tabBarController.tabBar.alpha = 1.0;
     //[self.ooyalaPlayerViewController.player pause];
 }
@@ -149,10 +171,10 @@
 
 #pragma mark - Notification Handlers
 
--(void)videoStartedPlaying {
+/*-(void)videoStartedPlaying {
     NSLog(@"llegó la notificación de que el video empezó a correr");
     self.videoWasPlayed = YES;
-}
+}*/
 
 #pragma mark - Actions
 
@@ -172,29 +194,48 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)sendPlayVideoPetitionToServer {
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"PlayVideo" andParameter:self.productID];
+}
+
+-(void)postProgressSecToServer {
+    //FIXME: no está funcionando la petición
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    NSString *parameters = [NSString stringWithFormat:@"%@/%d", self.productID, self.progressTime];
+    [serverCommunicator callServerWithGETMethod:@"VideoWatched" andParameter:parameters];
+    NSLog(@"parámetros: %@", parameters);
+}
+
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     if ([methodName isEqualToString:@"VideoWatched"] && responseDictionary) {
-        NSLog(@"respuesta de los segundos del video: %@", responseDictionary);
+        NSLog(@"Petición exitosa: %@", responseDictionary);
         
+    } else if ([methodName isEqualToString:@"PlayVideo"] && responseDictionary) {
+        NSLog(@"peticion PlayVideo exitosa: %@", responseDictionary);
     } else {
-        NSLog(@"No se envio la info al server");
+        NSLog(@"Hubo un problema enviando la info al server");
     }
 }
 
 -(void)serverError:(NSError *)error {
-    NSLog(@"no se envió la info al server");
+    NSLog(@"hubo un problema enviando la info al server");
 }
+
 
 #pragma mark - PlaybackControllerDelegate
 
 -(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didProgressTo:(NSTimeInterval)progress {
     //NSLog(@"Progresss: %f", progress);
+    self.progressTime = (int)progress;
 }
 
 -(void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didReceiveLifecycleEvent:(BCOVPlaybackSessionLifecycleEvent *)lifecycleEvent {
     if ([lifecycleEvent.eventType isEqualToString:kBCOVPlaybackSessionLifecycleEventReady]) {
         AVPlayer *player = session.player;
-        [player seekToTime:CMTimeMakeWithSeconds(8, 1) completionHandler:^(BOOL finished) {
+        [player seekToTime:CMTimeMakeWithSeconds(self.progressSec, 1) completionHandler:^(BOOL finished) {
             [player play];
         }];
     }
