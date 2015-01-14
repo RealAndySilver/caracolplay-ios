@@ -11,8 +11,8 @@
 //#define ENDPOINT @"http://10.0.1.9:8080"
 //#define ENDPOINT @"http://iamstudio-sweetwater.herokuapp.com/"
 //#define ENDPOINT @"http://sweetwater.jit.su"
-#define ENDPOINT @"http://appsbetadev.caracolplay.com"
-//#define ENDPOINT @"http://apps.caracolplay.com"
+//#define ENDPOINT @"http://appsbetadev.caracolplay.com"
+#define ENDPOINT @"http://apps.caracolplay.com"
 
 #import "IAmCoder.h"
 #import "UserInfo.h"
@@ -54,6 +54,7 @@
                                                     }];
     [dataTask resume];
 }
+
 -(void)callServerWithPOSTMethod:(NSString *)method andParameter:(NSString *)parameter httpMethod:(NSString *)httpMethod{
     parameter=[parameter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     parameter=[parameter stringByExpandingTildeInPath];

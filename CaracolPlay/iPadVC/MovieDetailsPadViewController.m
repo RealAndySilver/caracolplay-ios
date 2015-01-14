@@ -553,7 +553,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.spinner startAnimating];
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?provider=aim", ProductionID]];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?player_br=aim", ProductionID]];
 }
 
 -(void)getProductWithID:(NSString *)productID {
@@ -564,10 +564,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     FileSaver *fileSaver = [[FileSaver alloc] init];
     if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, @"0"]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?player_br=aim", productID, @"0"]];
     } else {
         NSString *userID = [UserInfo sharedInstance].userID;
-        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?provider=aim", productID, userID]];
+        [serverCommunicator callServerWithGETMethod:@"GetProductWithID" andParameter:[NSString stringWithFormat:@"%@/%@?player_br=aim", productID, userID]];
     }
 }
 
