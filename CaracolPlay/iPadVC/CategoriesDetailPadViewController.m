@@ -316,7 +316,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@?player_br=aim", episodeID]];
+    [serverCommunicator callServerWithGETMethod:@"IsContentAvailableForUser" andParameter:[NSString stringWithFormat:@"%@", episodeID]];
 }
 
 -(void)getUserRecentlyWatched {

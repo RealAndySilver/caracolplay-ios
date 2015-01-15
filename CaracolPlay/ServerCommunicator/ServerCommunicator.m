@@ -30,6 +30,7 @@
 -(void)callServerWithGETMethod:(NSString*)method andParameter:(NSString*)parameter{
     parameter=[parameter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     parameter=[parameter stringByExpandingTildeInPath];
+    parameter = [parameter stringByAppendingString:@"?player_br=aim"];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@",ENDPOINT,method,parameter]];
     NSLog(@"URL : %@", [url description]);
 	//NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
@@ -58,6 +59,7 @@
 -(void)callServerWithPOSTMethod:(NSString *)method andParameter:(NSString *)parameter httpMethod:(NSString *)httpMethod{
     parameter=[parameter stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     parameter=[parameter stringByExpandingTildeInPath];
+    parameter = [parameter stringByAppendingString:@"?player_br=aim"];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",ENDPOINT,method]];
 	//NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url];
     NSMutableURLRequest *theRequest = [self getHeaderForUrl:url];
