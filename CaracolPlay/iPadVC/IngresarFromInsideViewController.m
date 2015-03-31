@@ -28,12 +28,16 @@
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
 @property (strong, nonatomic) NSString *transactionID;
+@property (assign, nonatomic) BOOL rentPurchaseSuccededInItunes;
+@property (assign, nonatomic) BOOL subscribePurchaseSuccededInItunes;
 @end
 
 @implementation IngresarFromInsideViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.rentPurchaseSuccededInItunes = NO;
+    self.subscribePurchaseSuccededInItunes = NO;
     self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self setupUI];
 }
@@ -305,6 +309,7 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]){
+                self.subscribePurchaseSuccededInItunes = NO;
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -339,6 +344,7 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
+                self.rentPurchaseSuccededInItunes = NO;
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -373,7 +379,20 @@
 
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
+    if (self.subscribePurchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+        
+    } else if (self.rentPurchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 2;
+        [alert show];
+        
+    } else {
+           [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Custom Methods
@@ -438,8 +457,10 @@
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
     if (self.controllerWasPresentedFromSuscriptionScreen) {
         [self suscribeUserInServerWithTransactionID:transactionID];
+        self.subscribePurchaseSuccededInItunes = YES;
     } else if (self.controllerWasPresentedFromRentScreen) {
         [self rentContentInServerWithTransactionID:transactionID];
+        self.rentPurchaseSuccededInItunes = YES;
     }
 }
 

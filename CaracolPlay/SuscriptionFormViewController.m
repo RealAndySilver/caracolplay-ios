@@ -51,6 +51,7 @@
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIDatePicker *datePickerView;
 @property (nonatomic) NSTimeInterval birthdayTimeStamp;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation SuscriptionFormViewController
@@ -64,6 +65,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.purchaseSuccededInItunes = false;
     self.navigationController.navigationBarHidden = NO;
     [self setupUI];
 }
@@ -236,6 +238,7 @@
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción, con el transacion id: %@", transactionID);
+    self.purchaseSuccededInItunes = YES;
     [self suscribeUserInServerWithTransactionID:transactionID];
 }
 
@@ -271,6 +274,8 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+                
+                self.purchaseSuccededInItunes = NO;
                 
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -327,7 +332,15 @@
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    if (self.purchaseSuccededInItunes) {
+        //There was a network error after the user make the purchase in itunes...call caracol server againa to complete the subscription
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+    }
+    else {
+         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Actions 

@@ -26,12 +26,16 @@
 @property (assign, nonatomic) BOOL userSelectedSubscribeOption;
 @property (assign, nonatomic) BOOL userSelectedRedeemOption;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
+@property (assign, nonatomic) BOOL subscriptionPurchaseSuccededInItunes;
+@property (assign, nonatomic) BOOL rentPurchaseSuccededInItunes;
 @end
 
 @implementation ContentNotAvailableForUserViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.subscriptionPurchaseSuccededInItunes = NO;
+    self.rentPurchaseSuccededInItunes = NO;
     
     //Reigster as an observer to the user suscribe notification
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -284,6 +288,7 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID]]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
+                self.rentPurchaseSuccededInItunes = NO;
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -317,6 +322,8 @@
         if (dictionary) {
             NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
             if ([dictionary[@"status"] boolValue]) {
+                self.subscriptionPurchaseSuccededInItunes = NO;
+                
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
@@ -350,7 +357,20 @@
 
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
+    if (self.subscriptionPurchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+        
+    } else if (self.rentPurchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 2;
+        [alert show];
+        
+    } else {
+         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Notification Handler 
@@ -372,8 +392,11 @@
     NSString *transactionID = productInfo[@"TransactionID"];
     self.transactionID = transactionID;
     if (self.userSelectedRentOption) {
+        self.rentPurchaseSuccededInItunes = YES;
         [self rentProductInServer];
+        
     } else if (self.userSelectedSubscribeOption) {
+        self.subscriptionPurchaseSuccededInItunes = YES;
         [self subscribeUserInServer];
     }
 }

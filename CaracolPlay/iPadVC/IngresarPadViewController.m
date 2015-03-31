@@ -30,6 +30,7 @@
 @property (strong, nonatomic) UIView *shadowView;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
 @property (strong, nonatomic) NSString *transactionID;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation IngresarPadViewController
@@ -72,6 +73,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.purchaseSuccededInItunes = NO;
     self.view.backgroundColor = [UIColor clearColor];
     [self UISetup];
 }
@@ -301,6 +303,7 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@", @"SubscribeUser", self.transactionID]]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
+                self.purchaseSuccededInItunes = NO;
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -340,7 +343,14 @@
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    if (self.purchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+        
+    } else {
+          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -354,6 +364,7 @@
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    self.purchaseSuccededInItunes = YES;
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];
     self.transactionID = transactionID;

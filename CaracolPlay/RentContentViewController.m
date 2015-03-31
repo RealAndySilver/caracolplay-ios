@@ -25,13 +25,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (strong, nonatomic) NSString *transactionID;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation RentContentViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.purchaseSuccededInItunes = NO;
     //Register as an observer of the notification -UserDidSuscribe.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userDidSuscribeNotificationReceived:)
@@ -199,6 +200,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
+                self.purchaseSuccededInItunes = NO;
                 
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -232,7 +234,15 @@
 
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
+    if (self.purchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
+        alert.tag = 1;
+        [alert show];
+    
+    } else {
+          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -240,6 +250,7 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"recibí la notificación de compra");
+    self.purchaseSuccededInItunes = YES;
     
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];

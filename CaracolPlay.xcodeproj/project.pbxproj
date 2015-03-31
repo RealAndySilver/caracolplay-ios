@@ -2184,6 +2184,7 @@
 					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
 					"$(PROJECT_DIR)/CaracolPlay/Widevine/Library",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2216,7 +2217,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f2e1b1df-c8d2-4b92-9f70-e4dc3643bad4";
+				PROVISIONING_PROFILE = "5a795872-d882-408f-8d87-1ce4f27e4c00";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2326,9 +2327,10 @@
 					"$(PROJECT_DIR)/CaracolPlay/BrightCove/Library",
 					"$(PROJECT_DIR)/CaracolPlay/Widevine/Library",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f2e1b1df-c8d2-4b92-9f70-e4dc3643bad4";
+				PROVISIONING_PROFILE = "d75ff1f8-1c5b-4132-ac9f-c45521d323ac";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;

@@ -54,12 +54,14 @@
 @property (strong, nonatomic) UIDatePicker *datePickerView;
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (assign, nonatomic) NSTimeInterval birthdayTimeStamp;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation RentFromInsideViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.purchaseSuccededInItunes = NO;
     self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self setupUI];
 }
@@ -289,6 +291,7 @@
     } else if ([methodName isEqualToString:[NSString stringWithFormat:@"%@/%@/%@", @"RentContent", self.transactionID, self.productID] ]) {
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
+                self.purchaseSuccededInItunes = NO;
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -321,7 +324,14 @@
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento. " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    if (self.purchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+    
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en un momento. " delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Custom Methods
@@ -496,6 +506,7 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"recibí la notificación de compra");
+    self.purchaseSuccededInItunes = YES;
     
     NSDictionary *userInfo = [notification userInfo];
     NSString *transactionID = userInfo[@"TransactionID"];

@@ -51,6 +51,7 @@
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) UIDatePicker *datePickerView;
 @property (nonatomic) NSTimeInterval birthdayTimeStamp;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation RentContentFormViewController
@@ -64,6 +65,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.purchaseSuccededInItunes = NO;
     self.navigationController.navigationBarHidden = NO;
     
     //Set the wrong image views invinsible
@@ -279,6 +281,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+                self.purchaseSuccededInItunes = NO;
                 
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -312,7 +315,13 @@
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    if (self.purchaseSuccededInItunes) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
+        alert.tag = 1;
+        [alert show];
+    } else {
+           [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en un momento." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Custom Methods
@@ -507,6 +516,7 @@
 
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    self.purchaseSuccededInItunes = YES;
     NSLog(@"me llegó la notficación de que el usuario compró la suscripción");
     NSDictionary *notificationDic = [notification userInfo];
     NSString *transactionID = notificationDic[@"TransactionID"];

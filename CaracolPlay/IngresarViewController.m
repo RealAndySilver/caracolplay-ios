@@ -29,13 +29,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (strong, nonatomic) NSString *transactionID;
 @property (strong, nonatomic) NSDictionary *userInfoDic;
+@property (assign, nonatomic) BOOL purchaseSuccededInItunes;
 @end
 
 @implementation IngresarViewController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.purchaseSuccededInItunes = NO;
     if (self.tabBarController) {
         NSLog(@"EXISTE EL TAB EN LA PANTALLA DE INGRESO");
     } else {
@@ -354,6 +355,8 @@
         if (dictionary) {
             NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
             if ([dictionary[@"status"] boolValue]) {
+                self.purchaseSuccededInItunes = NO;
+                
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
                 [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
@@ -393,7 +396,15 @@
 
 -(void)serverError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    
+    if (self.purchaseSuccededInItunes) {
+        //There was a network error after the user make the purchase in itunes...call caracol server againa to complete the subscription
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
+        alert.tag = 1;
+        [alert show];
+    } else {
+          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error en el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -408,6 +419,7 @@
 -(void)userDidSuscribeNotificationReceived:(NSNotification *)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     NSLog(@"recibí la notificación de compra");
+    self.purchaseSuccededInItunes = YES;
     //FileSaver *fileSaver = [[FileSaver alloc] init];
     //[fileSaver setDictionary:@{@"UserHasLoginKey": @YES} withKey:@"UserHasLoginDic"];
     
