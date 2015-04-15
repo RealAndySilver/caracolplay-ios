@@ -47,10 +47,10 @@
     [self.view addSubview:self.enterButton];
     
     //Tigo button
-    self.tigoButton = [[UIButton alloc] init];
+    /*self.tigoButton = [[UIButton alloc] init];
     [self.tigoButton setBackgroundImage:[UIImage imageNamed:@"BotonTigoPad.png"] forState:UIControlStateNormal];
     [self.tigoButton addTarget:self action:@selector(goToTigo) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.tigoButton];
+    [self.view addSubview:self.tigoButton];*/
     
     //4. 'Redimir' button setup
     self.redeemButton = [[UIButton alloc] init];
@@ -86,7 +86,7 @@
     self.backgroundImageView.frame = self.view.bounds;
     self.suscribeButton.frame = CGRectMake(self.view.bounds.size.width/2 - 173.0, self.view.bounds.size.height/2 + 90.0, 163, 45.0);
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 + 10.0, self.view.bounds.size.height/2 + 90.0, 163, 45.0);
-    self.tigoButton.frame = CGRectMake(self.view.bounds.size.width/2 - 173.0, self.view.bounds.size.height/2 + 160.0, 346.0, 45.0);
+    //self.tigoButton.frame = CGRectMake(self.view.bounds.size.width/2 - 173.0, self.view.bounds.size.height/2 + 160.0, 346.0, 45.0);
     self.redeemButton.frame = CGRectMake(self.view.bounds.size.width/2 - 60.0, self.view.bounds.size.height/2 + 230.0, 120.0, 120.0);
     self.skipButton.frame = CGRectMake(920.0, 30.0, 100.0, 28.0);
 }
