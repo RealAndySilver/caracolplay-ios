@@ -18,6 +18,7 @@
 #import "IAmCoder.h"
 #import "IAPProduct.h"
 #import "MBProgressHUD.h"
+#import "UserDefaultsSaver.h"
 @import QuartzCore;
 
 @interface SuscribePadViewController () <ServerCommunicatorDelegate, CheckmarkViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIAlertViewDelegate>
@@ -291,6 +292,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 self.purchaseSuccededInItunes = NO;
+                [UserDefaultsSaver deletePurchaseDics];
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -307,11 +309,13 @@
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
                 alert.tag = 1;
                 [alert show];
             }
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
             alert.tag = 1;
             [alert show];
@@ -323,6 +327,7 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     if (self.purchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
         alert.tag = 1;
         [alert show];

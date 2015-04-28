@@ -17,6 +17,7 @@
 #import "IAPProduct.h"
 #import "IAmCoder.h"
 #import "MBProgressHUD.h"
+#import "UserDefaultsSaver.h"
 
 @interface IngresarFromInsideViewController () <ServerCommunicatorDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
@@ -310,6 +311,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]){
                 self.subscribePurchaseSuccededInItunes = NO;
+                [UserDefaultsSaver deletePurchaseDics];
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -326,6 +328,7 @@
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
                 NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
                 alert.tag = 1;
@@ -333,6 +336,7 @@
             }
         
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
             alert.tag = 1;
@@ -345,6 +349,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 self.rentPurchaseSuccededInItunes = NO;
+                [UserDefaultsSaver deletePurchaseDics];
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
                 
                 //Save a key localy that indicates that the user is logged in
@@ -359,6 +364,7 @@
                 //Go to Suscription confirmation VC
                 [self goToRentConfirmationVC];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
                 NSLog(@"error en la respuesta del RentContent: %@", dictionary);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
                 alert.tag = 2;
@@ -366,6 +372,7 @@
             }
             
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
             NSLog(@"error en la respuesta del RentContent: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
             alert.tag = 2;
@@ -381,11 +388,13 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     if (self.subscribePurchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al suscribirse en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
         alert.tag = 1;
         [alert show];
         
     } else if (self.rentPurchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en  CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
         alert.tag = 2;
         [alert show];

@@ -16,6 +16,7 @@
 #import "NSDictionary+NullReplacement.h"
 #import "IAmCoder.h"
 #import "MBProgressHUD.h"
+#import "UserDefaultsSaver.h"
 
 @interface RentContentViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
@@ -201,6 +202,7 @@
             if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 self.purchaseSuccededInItunes = NO;
+                [UserDefaultsSaver deletePurchaseDics];
                 
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -217,6 +219,7 @@
                 //Go to Suscription confirmation VC
                 [self goToRentConfirmationVC];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
                 NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
                 alert.tag = 1;
@@ -224,6 +227,7 @@
             }
             
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
             NSLog(@"error en la respuesta del SubscribeUser: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
             alert.tag = 1;
@@ -236,6 +240,7 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     if (self.purchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al alquilar la producción en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
         alert.tag = 1;
         [alert show];

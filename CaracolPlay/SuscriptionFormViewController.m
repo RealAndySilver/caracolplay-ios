@@ -18,6 +18,7 @@
 #import "ServerCommunicator.h"
 #import "UserInfo.h"
 #import "MBProgressHUD.h"
+#import "UserDefaultsSaver.h"
 
 @interface SuscriptionFormViewController () <ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
@@ -275,6 +276,7 @@
                 NSLog(@"Peticion SuscribeUser exitosa: %@", dictionary);
                 
                 self.purchaseSuccededInItunes = NO;
+                [UserDefaultsSaver deletePurchaseDics];
                 
                 //Save a key localy that indicates that the user is logged in
                 FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -291,12 +293,14 @@
                 //Go to Suscription confirmation VC
                 [self goToSubscriptionConfirm];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
                 NSLog(@"error en la compra: %@", dictionary);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
                 alert.tag = 1;
                 [alert show];
             }
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
             NSLog(@"error en la compra: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
             alert.tag = 1;
@@ -332,6 +336,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     if (self.purchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"subscription" transactionId:self.transactionID productId:@""];
         //There was a network error after the user make the purchase in itunes...call caracol server againa to complete the subscription
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles:nil];
         alert.tag = 1;

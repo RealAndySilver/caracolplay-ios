@@ -18,6 +18,7 @@
 #import "IAmCoder.h"
 #import "IAPProduct.h"
 #import "MBProgressHUD.h"
+#import "UserDefaultsSaver.h"
 
 @interface RentContentFormViewController () <CheckmarkViewDelegate, UITextFieldDelegate, ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
@@ -281,6 +282,7 @@
         if (dictionary) {
             if ([dictionary[@"status"] boolValue]) {
                 NSLog(@"Peticion RentContent exitosa: %@", dictionary);
+                [UserDefaultsSaver deletePurchaseDics];
                 self.purchaseSuccededInItunes = NO;
                 
                 //Save a key localy that indicates that the user is logged in
@@ -297,6 +299,7 @@
                 //Go to Suscription confirmation VC
                 [self goToRentConfirmationVC];
             } else {
+                [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
                 NSLog(@"error en la peticion RentContent: %@", dictionary);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
                 alert.tag = 1;
@@ -304,6 +307,7 @@
             }
         
         } else {
+            [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
             NSLog(@"error en la peticion RentContent: %@", dictionary);
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
             alert.tag = 1;
@@ -316,6 +320,7 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     if (self.purchaseSuccededInItunes) {
+        [UserDefaultsSaver savePurchaseInfoWithUserInfo:[self generateEncodedUserInfoString] purchaseType:@"rent" transactionId:self.transactionID productId:self.productID];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Ocurrió un error al crear el usuario en CaracolPlay. Por favor revisa que estés conectado a internet e intenta de nuevo hasta que se complete la compra. No cierres la app" delegate:self cancelButtonTitle:@"Reintentar" otherButtonTitles: nil];
         alert.tag = 1;
         [alert show];

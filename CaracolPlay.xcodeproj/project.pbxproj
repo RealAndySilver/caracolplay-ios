@@ -185,6 +185,7 @@
 		8BF16A23188F361F0021AB03 /* RecommendedProdCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */; };
 		8BF16A25188F3C1F0021AB03 /* OpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */; };
 		8BF16A27188F3E510021AB03 /* HomeScreenPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */; };
+		8BF9819D1AEFBE9B002BEDDC /* UserDefaultsSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9819C1AEFBE9B002BEDDC /* UserDefaultsSaver.m */; };
 		8BFA6431190E919B0065EC5F /* MoreSectionHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA642F190E919B0065EC5F /* MoreSectionHeader.png */; };
 		8BFA6432190E919B0065EC5F /* MoreSectionHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6430190E919B0065EC5F /* MoreSectionHeader@2x.png */; };
 		8BFA6435190E96FD0065EC5F /* SearchBarBackgroundBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */; };
@@ -584,6 +585,8 @@
 		8BF16A22188F361F0021AB03 /* RecommendedProdCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecommendedProdCollectionViewCell.m; path = CustomCells/RecommendedProdCollectionViewCell.m; sourceTree = "<group>"; };
 		8BF16A24188F3C1F0021AB03 /* OpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpacityPattern.png; path = Resources/Images/OpacityPattern.png; sourceTree = "<group>"; };
 		8BF16A26188F3E510021AB03 /* HomeScreenPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HomeScreenPattern.png; path = Resources/Images/HomeScreenPattern.png; sourceTree = "<group>"; };
+		8BF9819B1AEFBE9B002BEDDC /* UserDefaultsSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserDefaultsSaver.h; path = Model/UserDefaultsSaver.h; sourceTree = "<group>"; };
+		8BF9819C1AEFBE9B002BEDDC /* UserDefaultsSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserDefaultsSaver.m; path = Model/UserDefaultsSaver.m; sourceTree = "<group>"; };
 		8BFA642F190E919B0065EC5F /* MoreSectionHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoreSectionHeader.png; path = Resources/Images/iPad/MoreSectionHeader.png; sourceTree = "<group>"; };
 		8BFA6430190E919B0065EC5F /* MoreSectionHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoreSectionHeader@2x.png"; path = "Resources/Images/iPad/MoreSectionHeader@2x.png"; sourceTree = "<group>"; };
 		8BFA6433190E96FD0065EC5F /* SearchBarBackgroundBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarBackgroundBar.png; path = Resources/Images/iPad/SearchBarBackgroundBar.png; sourceTree = "<group>"; };
@@ -906,6 +909,8 @@
 				8B164B8618A974AD001803A9 /* Featured.m */,
 				8B6B716818E9D22D00F9B098 /* Video.h */,
 				8B6B716918E9D22D00F9B098 /* Video.m */,
+				8BF9819B1AEFBE9B002BEDDC /* UserDefaultsSaver.h */,
+				8BF9819C1AEFBE9B002BEDDC /* UserDefaultsSaver.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1938,6 +1943,7 @@
 				8BFD4F5618915F6B00A88C8C /* WatchedRecentlyViewController.m in Sources */,
 				A0A367E618FB5D0500B3B327 /* ContentNotAvailableForUserPadViewController.m in Sources */,
 				8BED8A9118C679AF0076EA26 /* SuscriptionAlertPadViewController.m in Sources */,
+				8BF9819D1AEFBE9B002BEDDC /* UserDefaultsSaver.m in Sources */,
 				755DB169188DEE2C00E5C636 /* AppDelegate.m in Sources */,
 				8B164B6C18A95460001803A9 /* User.m in Sources */,
 				8B1DB00A18F33F0100C06A53 /* IAmCoder.m in Sources */,
