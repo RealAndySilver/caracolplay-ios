@@ -1726,6 +1726,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = iAmStudio;
 				TargetAttributes = {
+					755DB154188DEE2C00E5C636 = {
+						DevelopmentTeam = VY536C84VC;
+					};
 					755DB178188DEE2C00E5C636 = {
 						TestTargetID = 755DB154188DEE2C00E5C636;
 					};
@@ -2191,6 +2194,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2221,6 +2225,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2334,6 +2339,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;
