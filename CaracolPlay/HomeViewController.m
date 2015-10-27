@@ -221,7 +221,7 @@
         telenovelSeriesDetailVC.serieID = featuredProduction.identifier;
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
         
-    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"]) {
+    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Documentales"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"]) {
         //The production is a movie, news or live event
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = featuredProduction.identifier;

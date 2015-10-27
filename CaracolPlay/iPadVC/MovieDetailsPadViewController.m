@@ -404,7 +404,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         seriesDetailPad.productID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self presentViewController:seriesDetailPad animated:YES completion:nil];*/
         
-    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Documentales"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
         /*MovieDetailsPadViewController *movieDetailsPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
         movieDetailsPad.modalPresentationStyle = UIModalPresentationFormSheet;
         movieDetailsPad.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

@@ -121,7 +121,7 @@
         cell.freeImageView.image = nil;
     }
     
-    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Series"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"]) {
+    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Documentales"] || [productInfo[@"type"] isEqualToString:@"Series"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"]) {
         cell.starsView.alpha = 1.0;
         cell.stars = [productInfo[@"rate"] intValue]/20.0 + 1;
     } else {
@@ -141,7 +141,7 @@
         telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     
-    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];

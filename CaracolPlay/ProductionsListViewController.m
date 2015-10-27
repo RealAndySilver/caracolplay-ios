@@ -113,11 +113,11 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
         }
         cell.productionNameLabel.text = productDic[@"product_name"];
-        if (![productDic[@"type"] isEqualToString:@"Noticias"] && ![productDic[@"type"] isEqualToString:@"Eventos en vivo"] && ![productDic[@"type"] isEqualToString:@"Telenovelas"] && ![productDic[@"type"] isEqualToString:@"Series"] && ![productDic[@"type"] isEqualToString:@"Películas"]) {
+        if (![productDic[@"type"] isEqualToString:@"Noticias"] && ![productDic[@"type"] isEqualToString:@"Eventos en vivo"] && ![productDic[@"type"] isEqualToString:@"Telenovelas"] && ![productDic[@"type"] isEqualToString:@"Series"] && ![productDic[@"type"] isEqualToString:@"Películas"] && ![productDic[@"type"] isEqualToString:@"Documentales"]) {
             
             cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", productDic[@"episode_number"], productDic[@"episode_name"]];
         } else {
-            if ([productDic[@"type"] isEqualToString:@"Películas"] || [productDic[@"type"] isEqualToString:@"Noticias"] || [productDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+            if ([productDic[@"type"] isEqualToString:@"Películas"] || [productDic[@"type"] isEqualToString:@"Documentales"] || [productDic[@"type"] isEqualToString:@"Noticias"] || [productDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
                 cell.productionDetailLabel.text = @"";
             } else {
                 cell.productionDetailLabel.text = [NSString stringWithFormat:@"Capítulo %@: %@", productDic[@"episode_number"], productDic[@"episode_name"]];
@@ -168,7 +168,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
         return;
     }
     
-    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];

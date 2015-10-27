@@ -387,7 +387,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         telenovelSeriesVC.serieID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
         
-    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Películas"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Documentales"] || [self.recommendedProductions[indexPath.item][@"product"][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *moviesEventDetail = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         moviesEventDetail.productionID = self.recommendedProductions[indexPath.item][@"product"][@"id"];
         [self.navigationController pushViewController:moviesEventDetail animated:YES];

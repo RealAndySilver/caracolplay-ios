@@ -286,7 +286,7 @@
             telenovelSeriesDetailVC.serieID = productID;
             [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
             
-        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
+        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Documentales"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
             //The production is a movie, news or live event
             MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
             movieEventDetailsVC.productionID = productID;

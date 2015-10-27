@@ -344,7 +344,7 @@
         seriesDetailPad.productID = selectedProduction.identifier;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
-    } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Eventos en vivo"]) {
+    } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Documentales"] || [selectedProduction.type isEqualToString:@"Eventos en vivo"]) {
         [self showOpacityView];
         
         MovieDetailsPadViewController *movieDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];

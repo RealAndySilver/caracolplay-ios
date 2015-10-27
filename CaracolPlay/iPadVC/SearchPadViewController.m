@@ -130,7 +130,7 @@
     cell.productionNameLabel.text = productInfo[@"name"];
     //cell.productionStarsView.rate = [self.searchResultsArray[indexPath.item][@"rate"] intValue]/20 + 1;
     
-    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"] || [productInfo[@"type"] isEqualToString:@"Series"]) {
+    if ([productInfo[@"type"] isEqualToString:@"Películas"] || [productInfo[@"type"] isEqualToString:@"Documentales"] || [productInfo[@"type"] isEqualToString:@"Telenovelas"] || [productInfo[@"type"] isEqualToString:@"Series"]) {
         cell.starsView.alpha = 1.0;
         cell.rate = [productInfo[@"rate"] intValue]/20 + 1;
     } else {
@@ -146,7 +146,7 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
    
     
-    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    if ([self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Documentales"] || [self.searchResultsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         [self showOpacityView];
         
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];

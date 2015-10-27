@@ -309,7 +309,7 @@
             telenovelSeriesDetailVC.modalPresentationStyle = UIModalPresentationFormSheet;
             [self presentViewController:telenovelSeriesDetailVC animated:YES completion:nil];
             
-        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
+        } else if ([rentedProductionInfo[@"type"] isEqualToString:@"Películas"] || [rentedProductionInfo[@"type"] isEqualToString:@"Documentales"] || [rentedProductionInfo[@"type"] isEqualToString:@"Eventos en vivo"]) {
             [self showOpacityView];
             
             //The production is a movie, news or live event

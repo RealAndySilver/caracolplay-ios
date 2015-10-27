@@ -157,7 +157,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     //////////////////////////////////////////////////////////
     //Goldstars
     if (![self.categoryID isEqualToString:@"1"]) {
-        if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"]) {
+        if ([producDic[@"type"] isEqualToString:@"Series"] || [producDic[@"type"] isEqualToString:@"Telenovelas"] || [producDic[@"type"] isEqualToString:@"Películas"] || [producDic[@"type"] isEqualToString:@"Documentales"]) {
             NSLog(@"los productos si tienen estrellas");
             cell.starsView.alpha = 1.0;
             cell.goldStars = ([producDic[@"rate"] intValue]/20) + 1;
@@ -188,13 +188,13 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
             NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
             cell.titleLabel.text = text;
         }*/
-        if (![producDic[@"type"] isEqualToString:@"Películas"] && ![producDic[@"type"] isEqualToString:@"Noticias"] && ![producDic[@"type"] isEqualToString:@"Telenovelas"] && ![producDic[@"type"] isEqualToString:@"Series"] && ![producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+        if (![producDic[@"type"] isEqualToString:@"Películas"] && ![producDic[@"type"] isEqualToString:@"Documentales"] && ![producDic[@"type"] isEqualToString:@"Noticias"] && ![producDic[@"type"] isEqualToString:@"Telenovelas"] && ![producDic[@"type"] isEqualToString:@"Series"] && ![producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
             
             NSString *text = [NSString stringWithFormat:@"Capítulo %@: %@", producDic[@"episode_number"], producDic[@"episode_name"]];
             cell.titleLabel.text = text;
             
         } else {
-            if ([producDic[@"type"] isEqualToString:@"Películas"] || [producDic[@"type"] isEqualToString:@"Noticias"] || [producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
+            if ([producDic[@"type"] isEqualToString:@"Películas"] || [producDic[@"type"] isEqualToString:@"Documentales"] || [producDic[@"type"] isEqualToString:@"Noticias"] || [producDic[@"type"] isEqualToString:@"Eventos en vivo"]) {
                 NSString *text = producDic[@"episode_name"];
                 cell.titleLabel.text = text;
             } else {
@@ -232,7 +232,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         
-    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Documentales"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
         [self addOpacityView];
         
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];

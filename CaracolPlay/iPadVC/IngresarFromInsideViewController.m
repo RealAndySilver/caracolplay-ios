@@ -276,13 +276,13 @@
                 if (![dictionary[@"user"][@"is_suscription"] boolValue]) {
                     //Request products from Apple because the user is not suscribe
                     if ([dictionary[@"region"] intValue] == 0) {
-                        if ([self.productType isEqualToString:@"Eventos en vivo"] || [self.productType isEqualToString:@"Películas"]) {
+                        if ([self.productType isEqualToString:@"Eventos en vivo"] || [self.productType isEqualToString:@"Películas"] || [self.productType isEqualToString:@"Documentales"]) {
                             [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.event1"];
                         } else {
                             [self buyProductWithIdentifier:@"net.icck.CaracolPlay.Colombia.rent1"];
                         }
                     } else if ([dictionary[@"region"] intValue] == 1) {
-                        if ([self.productType isEqualToString:@"Eventos en vivo"] || [self.productType isEqualToString:@"Películas"]) {
+                        if ([self.productType isEqualToString:@"Eventos en vivo"] || [self.productType isEqualToString:@"Películas"] || [self.productType isEqualToString:@"Documentales"]) {
                             [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.event1"];
                         } else {
                             [self buyProductWithIdentifier:@"net.icck.CaracolPlay.RM.rent1"];
