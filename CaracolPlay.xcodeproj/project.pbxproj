@@ -257,6 +257,7 @@
 		A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */; };
 		A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */; };
 		A06C2D6A18A41DD700044F81 /* MoviesOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */; };
+		A08656BF1D0EE66B004D96AF /* VideoWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */; };
 		A095A04318B531EF004F05BB /* MyListsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A04218B531EF004F05BB /* MyListsDetailsViewController.m */; };
 		A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A04618B54631004F05BB /* SuscriptionAlertViewController.m */; };
 		A095A04A18B54B11004F05BB /* SuscriptionAlertBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A095A04818B54B11004F05BB /* SuscriptionAlertBackground.png */; };
@@ -675,6 +676,8 @@
 		A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FondoBarraBusqueda.png; path = Resources/Images/FondoBarraBusqueda.png; sourceTree = "<group>"; };
 		A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoviesOpacityPattern.png; path = Resources/Images/MoviesOpacityPattern.png; sourceTree = "<group>"; };
 		A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoviesOpacityPattern@2x.png"; path = "Resources/Images/MoviesOpacityPattern@2x.png"; sourceTree = "<group>"; };
+		A08656BD1D0EE66B004D96AF /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoWebViewController.h; sourceTree = "<group>"; };
+		A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoWebViewController.m; sourceTree = "<group>"; };
 		A095A04118B531EF004F05BB /* MyListsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyListsDetailsViewController.h; sourceTree = "<group>"; };
 		A095A04218B531EF004F05BB /* MyListsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsDetailsViewController.m; sourceTree = "<group>"; };
 		A095A04518B54631004F05BB /* SuscriptionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionAlertViewController.h; sourceTree = "<group>"; };
@@ -1241,6 +1244,8 @@
 			children = (
 				8B70019718A05402000B5C7B /* iPhone ViewControllers */,
 				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
+				A08656BD1D0EE66B004D96AF /* VideoWebViewController.h */,
+				A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1726,9 +1731,6 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = iAmStudio;
 				TargetAttributes = {
-					755DB154188DEE2C00E5C636 = {
-						DevelopmentTeam = VY536C84VC;
-					};
 					755DB178188DEE2C00E5C636 = {
 						TestTargetID = 755DB154188DEE2C00E5C636;
 					};
@@ -1959,6 +1961,7 @@
 				8BA9B26A189FFFF9003DBBDC /* LoginPadViewController.m in Sources */,
 				A095A04318B531EF004F05BB /* MyListsDetailsViewController.m in Sources */,
 				8B33682818B6A5A6000DD1B5 /* MyAccountDetailPadViewController.m in Sources */,
+				A08656BF1D0EE66B004D96AF /* VideoWebViewController.m in Sources */,
 				8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */,
 				8BDC828818AD2EDC00E72B0E /* Reachability.m in Sources */,
 				755DB165188DEE2C00E5C636 /* main.m in Sources */,
@@ -2175,6 +2178,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2206,6 +2210,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2320,6 +2325,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,

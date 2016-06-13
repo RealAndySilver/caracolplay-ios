@@ -26,6 +26,8 @@
         _free = dictionary[@"free"];
         _statusRent = [dictionary[@"status_rent"] boolValue];
         _viewType = [dictionary[@"type_view"] intValue];
+        _isWebView = [dictionary[@"is_webview"] boolValue];
+        _webviewUrl = dictionary[@"alias"];
     }
     return self;
 }

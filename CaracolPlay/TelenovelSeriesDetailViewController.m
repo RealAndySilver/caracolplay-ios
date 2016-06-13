@@ -71,6 +71,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 -(void)setUnparsedProductionInfoDic:(NSDictionary *)unparsedProductionInfoDic {
+    NSLog(@" *************************************Dictionary for production: %@", unparsedProductionInfoDic);
     _unparsedProductionInfoDic = unparsedProductionInfoDic;
     NSDictionary *parsedProductionInfoDic = [self dictionaryWithParsedProductionInfo:unparsedProductionInfoDic];
     self.production = [[Product alloc] initWithDictionary:parsedProductionInfoDic];
@@ -478,7 +479,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     suscriptionAlertVC.productName = productionName;
     suscriptionAlertVC.viewType = self.production.viewType;
     [self.navigationController pushViewController:suscriptionAlertVC animated:YES];
-    NSLog(@"no puedo ver la producción porque no he ingresado");
+    NSLog(@"no puedo ver la producción porque no he ingresado. El view type es: %i", suscriptionAlertVC.viewType);
 }
 
 -(void)showSeasonsList {
@@ -598,6 +599,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         contentNotAvailableForUser.productName = self.production.name;
         contentNotAvailableForUser.productType = self.production.type;
         contentNotAvailableForUser.viewType = self.production.viewType;
+        NSLog(@"View Type: %i", contentNotAvailableForUser.viewType);
         [self.navigationController pushViewController:contentNotAvailableForUser animated:YES];
     }
 }

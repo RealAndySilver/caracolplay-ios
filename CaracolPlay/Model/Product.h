@@ -24,6 +24,8 @@
 @property (strong, nonatomic) NSString *free;
 @property (assign, nonatomic) BOOL statusRent;
 @property (assign, nonatomic) NSUInteger viewType;
+@property (assign, nonatomic) BOOL isWebView;
+@property (assign, nonatomic) NSString *webviewUrl;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

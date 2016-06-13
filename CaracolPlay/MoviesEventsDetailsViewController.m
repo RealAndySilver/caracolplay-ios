@@ -27,6 +27,7 @@
 #import "UserInfo.h"
 #import "NSArray+NullReplacement.h"
 #import "SinopsisView.h"
+#import "VideoWebViewController.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -119,6 +120,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //Add as an observer of the -VideoShouldBeDisplayed notification, to show
     //the production video inmediatly
+    NSLog(@"MoviesEventsDetailsVC entreee");
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(videoShoulBeDisplayedNotification:)
                                                  name:@"VideoShouldBeDisplayed"
@@ -423,7 +425,20 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             }
             
         } else if (status == ReachableViaWiFi) {
-            //The user can watch the video
+            //The user can watch the video. If this is an event, check if we should open it in Widevine or in a Webview
+            NSLog(@"Rechable via WiFi");
+            if ([self.production.type isEqualToString:@"Eventos"] || [self.production.type isEqualToString:@"eventos"]) {
+                if (self.production.isWebView == YES) {
+                    //We should open this event in a WebView, not in WideVine
+                    VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
+                    videoWebViewVC.videoUrlString = self.production.webviewUrl;
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:videoWebViewVC];
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    return;
+                }
+            }
+            
             VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.embedCode = video.embedHD;
             videoPlayer.progressSec = video.progressSec;
@@ -561,6 +576,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     } else if ([methodName isEqualToString:@"GetProductWithID"]) {
         //FIXME: la posición en la cual llega la info de la producción no será la que se está usando
         //en este momento.
+        NSLog(@"Get product with id responde: %@", responseDictionary);
         if (![responseDictionary[@"products"][@"status"] boolValue]) {
             NSLog(@"El producto no está disponible");
             //Hubo algún problema y no se pudo acceder al producto
@@ -599,7 +615,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         NSLog(@"llegó la info de la calificación: %@", responseDictionary);
         
     } else {
-          [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        NSLog(@"Error in method name: %@", methodName);
+          //[[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 
