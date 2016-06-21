@@ -54,7 +54,10 @@
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
         [UserInfo sharedInstance].userID = userDic[@"UserID"];
-        [UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
+        [UserInfo sharedInstance].myListIds = [[NSMutableArray alloc] initWithArray:userDic[@"MyLists"]];
+        NSLog(@"LoadingViewController: my lists: %@", userDic[@"MyLists"]);
+        //[UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
+        [UserInfo sharedInstance].isSubscription = @YES;
         
         //The user is login, so go to the home screen directly
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];

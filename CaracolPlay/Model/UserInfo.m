@@ -7,6 +7,7 @@
 //
 
 #import "UserInfo.h"
+#import "FileSaver.h"
 
 @implementation UserInfo
 
@@ -19,6 +20,13 @@
         });
     }
     return shared;
+}
+
+-(void)persistUserLists {
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    NSMutableDictionary *userDict = [fileSaver getDictionary:@"UserHasLoginDic"].mutableCopy;
+    userDict[@"MyLists"] = self.myListIds;
+    [fileSaver setDictionary:userDict withKey:@"UserHasLoginDic"];
 }
 
 @end

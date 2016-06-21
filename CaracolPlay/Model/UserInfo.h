@@ -12,8 +12,10 @@
 @property (strong, nonatomic) NSString *userName;
 @property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) NSString *userID;
+@property (strong, nonatomic) NSMutableArray *myListIds; //Of String
 @property (strong, nonatomic) NSString *session;
 @property (assign, nonatomic) NSUInteger *region;
 @property (assign, nonatomic) BOOL isSubscription;
 +(UserInfo *)sharedInstance;
+-(void)persistUserLists;
 @end

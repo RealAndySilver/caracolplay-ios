@@ -97,6 +97,8 @@
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     if ([methodName isEqualToString:@"AuthenticateUser"]) {
         NSLog(@"respuesta de la autenticacion: %@", dictionary);
+    } else {
+        NSLog(@"Respuesta del %@: %@", methodName, dictionary);
     }
 }
 

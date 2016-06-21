@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TelenovelSeriesTableViewCell.h"
 
+@protocol TelenovelSeriesDetailDelegate
+-(void)productionRemovedWithId:(NSString *)productionId;
+-(void)productionAddedToMyListWithId:(NSString *)productionId;
+@end
+
 @interface TelenovelSeriesDetailViewController : UIViewController
 @property (strong, nonatomic) NSString *serieID;
+@property (strong, nonatomic) id <TelenovelSeriesDetailDelegate> delegate;
 @end

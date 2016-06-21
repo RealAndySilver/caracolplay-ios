@@ -287,11 +287,19 @@
         if ([dictionary[@"status"] boolValue]) {
             NSLog(@"autenticación exitosa: %@", dictionary);
             
+            NSArray *myListsArray = dictionary[@"user"][@"my_list"];
+            NSMutableArray *myListIds = [[NSMutableArray alloc] init];
+            for (NSDictionary *myListDict in myListsArray) {
+                [myListIds addObject:myListDict[@"id"]];
+            }
+            [UserInfo sharedInstance].myListIds = myListIds;
+            NSLog(@"IngresarViewController: UserInfo MyListsIDs: %@", myListIds);
             //Save a key localy that indicates that the user is logged in
             FileSaver *fileSaver = [[FileSaver alloc] init];
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
+                                       @"MyLists": [UserInfo sharedInstance].myListIds,
                                        @"Session" : dictionary[@"session"],
                                        @"UserID" : dictionary[@"uid"],
                                        @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue])
@@ -299,8 +307,10 @@
             
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
-            [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            //[UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            [UserInfo sharedInstance].isSubscription = @YES;
             NSLog(@"is_suscription: %hhd", [UserInfo sharedInstance].isSubscription);
+            
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];
             

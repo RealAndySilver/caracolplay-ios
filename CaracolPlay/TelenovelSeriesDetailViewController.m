@@ -36,6 +36,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "UserInfo.h"
 #import "SinopsisView.h"
 
+
+/////////////////////////////////////////////////////////////////////////
+
 @interface TelenovelSeriesDetailViewController () <UIActionSheetDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, RateViewDelegate, SeasonListViewDelegate, TelenovelSeriesTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, SinopsisViewDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *productionInfo;
@@ -48,6 +51,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIView *opacityView;
 @property (strong, nonatomic) StarsView *starsView;
 @property (assign, nonatomic) NSUInteger selectedSeason;
+@property (strong, nonatomic) UIButton *addToMyListButton;
 
 //BOOL that indicates if the view controller received a notification
 //indicating that ith has to display the production video automaticly
@@ -252,10 +256,29 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         
         [self.view addSubview:watchTrailerButton];
     }
+    
+    //Add a button to add the production to "My List", only if the user is logged in
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
+        self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 190.0, 30.0)];
+        
+        if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+            [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+        } else {
+            [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+        }
+        
+        [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+        self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+        [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.addToMyListButton];
+    }
   
     //Create the button to watch the production, only if the user is log out
     if ([self.production.free isEqualToString:@"0"]) {
-        FileSaver *fileSaver = [[FileSaver alloc] init];
+        //FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
             if (!self.production.statusRent) {
                 self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0)];
@@ -445,6 +468,32 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 }
 
 #pragma mark - Actions
+
+-(void)myListsButtonPressed {
+    if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+        [self removeFromMyList];
+    } else {
+        [self addToMyList];
+    }
+}
+
+-(void)removeFromMyList {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Removiendo...";
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
+
+-(void)addToMyList {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Añadiendo...";
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
 
 -(void)showMoreInfoView {
     SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -682,6 +731,39 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"] && dictionary){
         NSLog(@"llegó la info de la caloficación: %@", dictionary);
+        
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del add to my list: %@", dictionary);
+        if (dictionary) {
+            if ([dictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds addObject:self.production.identifier];                
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.delegate productionAddedToMyListWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha agregado a tu lista correctamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al agregar esta producción a tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            NSLog(@"No ha info del add to my list: %@", dictionary);
+              [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del remove from list: %@", dictionary);
+        if (dictionary) {
+            if ([dictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds removeObject:self.production.identifier];
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+                [self.delegate productionRemovedWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha removido de tu lista exitosamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al remover la producción de tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         
     } else {
         NSLog(@"Metodo devueltooooooo: %@", methodName);

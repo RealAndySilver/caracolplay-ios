@@ -18,10 +18,11 @@
 
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface ProductionsListViewController () <ServerCommunicatorDelegate>
+@interface ProductionsListViewController () <ServerCommunicatorDelegate, TelenovelSeriesDetailDelegate>
 @property (strong, nonatomic) NSArray *moviesArray;
+@property (strong, nonatomic) NSMutableArray *removedProductions;
 @property (strong, nonatomic) NSArray *unparsedProductionsArray;
-@property (strong, nonatomic) NSArray *productionsArray;
+@property (strong, nonatomic) NSMutableArray *productionsArray;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSString *selectedEpisodeID;
 @end
@@ -30,16 +31,16 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Setters & Getters
 
--(NSArray *)productionsArray {
+-(NSMutableArray *)productionsArray {
     if (!_productionsArray) {
-        _productionsArray = [[NSArray alloc] init];
+        _productionsArray = [[NSMutableArray alloc] init];
     }
     return _productionsArray;
 }
 
 -(void)setUnparsedProductionsArray:(NSArray *)unparsedProductionsArray {
     _unparsedProductionsArray = unparsedProductionsArray;
-    self.productionsArray = [_unparsedProductionsArray arrayByReplacingNullsWithBlanks];
+    self.productionsArray = [_unparsedProductionsArray arrayByReplacingNullsWithBlanks].mutableCopy;
     [self.tableView reloadData];
 }
 
@@ -48,7 +49,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 -(void)UISetup {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     
-    if (![self.categoryID isEqualToString:@"1"]) {
+    if (![self.categoryID isEqualToString:@"1"] && ![self.categoryID isEqualToString:@"2"]) {
         UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo Último", @"+Visto", @"+Votado", @"Todo"]];
         segmentedControl.frame = CGRectMake(20.0, 10.0, self.view.bounds.size.width - 40.0, 29.0);
         segmentedControl.selectedSegmentIndex = 0;
@@ -77,6 +78,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.removedProductions = [[NSMutableArray alloc] init];
     [self UISetup];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.title = self.navigationBarTitle;
@@ -87,6 +89,11 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     if ([self.categoryID isEqualToString:@"1"]) {
         [self getUserRecentlyWatchedWithFilter:1];
+    }
+    
+    else if ([self.categoryID isEqualToString:@"2"]) {
+        [self getUserList];
+        
     } else {
         [self getListFromCategoryID:self.categoryID withFilter:1];
     }
@@ -176,6 +183,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.productionsArray[indexPath.row][@"id"];
+        telenovelSeriesVC.delegate = self;
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     }
 }
@@ -239,6 +247,15 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff
 
+-(void)getUserList {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Cargando...";
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"my_list/get" andParameter:@""];
+}
+
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Cargando...";
@@ -285,6 +302,20 @@ static NSString *cellIdentifier = @"CellIdentifier";
         Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
         [self checkVideoAvailability:video];
         
+    } else if ([methodName isEqualToString:@"my_list/get"]) {
+        if (responseDictionary) {
+            NSLog(@"Respuesta del get my list: %@", responseDictionary);
+            if ([responseDictionary[@"status"] boolValue]) {
+                self.unparsedProductionsArray = responseDictionary[@"my_list"];
+                
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error accediendo a tu lista, por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
     } else {
           [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -295,6 +326,39 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     NSLog(@"server errror: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - TelenovelSeriesDelegate
+
+-(void)productionAddedToMyListWithId:(NSString *)addedProductionId {
+    int indexToAdd = -1;
+    for (int i = 0; i < self.removedProductions.count; i++) {
+        NSDictionary *productDict = self.removedProductions[i];
+        if ([productDict[@"id"] isEqualToString:addedProductionId]) {
+            indexToAdd = i;
+            break;
+        }
+    }
+    if (indexToAdd != -1) {
+        [self.productionsArray addObject:self.removedProductions[indexToAdd]];
+        [self.tableView reloadData];
+    }
+}
+
+-(void)productionRemovedWithId:(NSString *)removedProductionId {
+    int indexToRemove = -1;
+    for (int i = 0; i < self.productionsArray.count; i++) {
+        NSDictionary *productDict = self.productionsArray[i];
+        if ([productDict[@"id"] isEqualToString:removedProductionId]) {
+            indexToRemove = i;
+            [self.removedProductions addObject:productDict];
+            break;
+        }
+    }
+    if (indexToRemove != -1) {
+        [self.productionsArray removeObjectAtIndex:indexToRemove];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - Notification Handlers 
