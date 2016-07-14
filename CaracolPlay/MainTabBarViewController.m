@@ -45,11 +45,11 @@
     
     if (!self.userDidSkipRegisterProcess) {
         //4. Fourth view of the TabBar - MyLists
-        MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
+        /*MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
         MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
         myListsNavigationController.tabBarItem.title = @"Mis Listas";
         myListsNavigationController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
-        myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
+        myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];*/
         
         //5. Fifth view of the TabBar - My Account
         ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
@@ -58,7 +58,7 @@
         myAccountNavigationController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
         myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
         
-        self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myListsNavigationController, myAccountNavigationController];
+        self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myAccountNavigationController];
         return;
     }
     self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController];

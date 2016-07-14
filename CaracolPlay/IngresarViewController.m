@@ -199,11 +199,11 @@
     //the five tabs.
     
     //4. Fourth view of the TabBar - MyLists
-    MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
+    /*MyListsViewController *myListsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyLists"];
     MyNavigationController *myListsNavigationController = [[MyNavigationController alloc] initWithRootViewController:myListsViewController];
     myListsNavigationController.tabBarItem.title = @"Mis Listas";
     myListsNavigationController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
-    myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
+    myListsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];*/
     
     //5. Fifth view of the TabBar - My Account
     ConfigurationViewController *myAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Configuration"];
@@ -220,7 +220,7 @@
     
     NSMutableArray *viewControllersArray = [NSMutableArray arrayWithArray:self.tabBarController.viewControllers];
     NSLog(@"NUMERO DE CONTROLADORES: %lu", (unsigned long)[viewControllersArray count]);
-    [viewControllersArray addObject:myListsNavigationController];
+    //[viewControllersArray addObject:myListsNavigationController];
     [viewControllersArray addObject:myAccountNavigationController];
     [self.tabBarController setViewControllers:viewControllersArray animated:NO];
     NSLog(@"NUMEROD E CONTROLADORES ACTUALIZADOS: %lu", (unsigned long)[self.tabBarController.viewControllers count]);

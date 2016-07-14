@@ -12,6 +12,12 @@
 #import <Social/Social.h>
 #import "FXBlurView.h"
 
+@protocol MoviesDocumentariesDetailDelegate
+-(void)movieRemovedWithId:(NSString *)productionId;
+-(void)movieAddedToMyListWithId:(NSString *)productionId;
+@end
+
 @interface MoviesEventsDetailsViewController : UIViewController
+@property (strong, nonatomic) id <MoviesDocumentariesDetailDelegate> delegate;
 @property (strong, nonatomic) NSString *productionID;
 @end

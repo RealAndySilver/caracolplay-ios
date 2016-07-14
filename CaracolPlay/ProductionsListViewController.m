@@ -18,7 +18,7 @@
 
 static NSString *cellIdentifier = @"CellIdentifier";
 
-@interface ProductionsListViewController () <ServerCommunicatorDelegate, TelenovelSeriesDetailDelegate>
+@interface ProductionsListViewController () <ServerCommunicatorDelegate, TelenovelSeriesDetailDelegate, MoviesDocumentariesDetailDelegate>
 @property (strong, nonatomic) NSArray *moviesArray;
 @property (strong, nonatomic) NSMutableArray *removedProductions;
 @property (strong, nonatomic) NSArray *unparsedProductionsArray;
@@ -178,6 +178,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
+        movieAndEventDetailsVC.delegate = self;
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
     }
     else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
@@ -326,6 +327,39 @@ static NSString *cellIdentifier = @"CellIdentifier";
     
     NSLog(@"server errror: %@, %@", error, [error localizedDescription]);
     [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+}
+
+#pragma mark - MovieEventDetailsDelegate
+
+-(void)movieRemovedWithId:(NSString *)productionId {
+    int indexToRemove = -1;
+    for (int i = 0; i < self.productionsArray.count; i++) {
+        NSDictionary *productDict = self.productionsArray[i];
+        if ([productDict[@"id"] isEqualToString:productionId]) {
+            indexToRemove = i;
+            [self.removedProductions addObject:productDict];
+            break;
+        }
+    }
+    if (indexToRemove != -1) {
+        [self.productionsArray removeObjectAtIndex:indexToRemove];
+        [self.tableView reloadData];
+    }
+}
+
+-(void)movieAddedToMyListWithId:(NSString *)productionId {
+    int indexToAdd = -1;
+    for (int i = 0; i < self.removedProductions.count; i++) {
+        NSDictionary *productDict = self.removedProductions[i];
+        if ([productDict[@"id"] isEqualToString:productionId]) {
+            indexToAdd = i;
+            break;
+        }
+    }
+    if (indexToAdd != -1) {
+        [self.productionsArray addObject:self.removedProductions[indexToAdd]];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - TelenovelSeriesDelegate

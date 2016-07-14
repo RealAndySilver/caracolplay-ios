@@ -62,7 +62,7 @@
     /*-----------------------------------------------------------*/
     //1. Create a ScrollView to display the main images
     self.scrollView = [[UIScrollView alloc] init];
-    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, self.view.bounds.size.height - self.tabBarController.tabBar.frame.size.height);
+    self.scrollView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - self.tabBarController.tabBar.frame.size.height);
     
     self.scrollView.backgroundColor = [UIColor blackColor];
     self.scrollView.pagingEnabled = YES;
@@ -84,7 +84,7 @@
     }
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width*(self.numberOfPages + 2), self.scrollView.frame.size.height);
-    self.scrollView.contentOffset = CGPointMake(320.0, 0.0);
+    self.scrollView.contentOffset = CGPointMake(self.view.bounds.size.width, 0.0);
     [self.view addSubview:self.scrollView];
     
     //Create a tap gesture and add it to the scroll view
@@ -331,14 +331,14 @@
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     NSLog(@"terminé de animarme");
-    if (self.scrollView.contentOffset.x < 320.0) {
+    if (self.scrollView.contentOffset.x < self.view.bounds.size.width) {
         //the user scroll from page 1 to the left, so we have to set the content offset
         //of the scroll view to the last page
-        [self.scrollView setContentOffset:CGPointMake(320.0*self.numberOfPages, 0.0) animated:NO];
+        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width*self.numberOfPages, 0.0) animated:NO];
         self.pageControl.currentPage = [self.parsedFeaturedProductions count] - 1;
-    } else if (self.scrollView.contentOffset.x >= 320 * (self.numberOfPages + 1)) {
+    } else if (self.scrollView.contentOffset.x >= self.view.bounds.size.width * (self.numberOfPages + 1)) {
         NSLog(@"llegué al final");
-        [self.scrollView setContentOffset:CGPointMake(320.0, 0.0) animated:NO];
+        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width, 0.0) animated:NO];
         self.pageControl.currentPage = 0;
         self.automaticCounter = 2;
     }
@@ -352,13 +352,13 @@
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (self.scrollView.contentOffset.x < 320.0) {
+    if (self.scrollView.contentOffset.x < self.view.bounds.size.width) {
         //the user scroll from page 1 to the left, so we have to set the content offset
         //of the scroll view to the last page
-        [self.scrollView setContentOffset:CGPointMake(320.0*self.numberOfPages, 0.0) animated:NO];
+        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width*self.numberOfPages, 0.0) animated:NO];
         self.pageControl.currentPage = [self.parsedFeaturedProductions count] - 1;
-    } else if (self.scrollView.contentOffset.x >= 320 * (self.numberOfPages + 1)) {
-        [self.scrollView setContentOffset:CGPointMake(320.0, 0.0) animated:NO];
+    } else if (self.scrollView.contentOffset.x >= self.view.bounds.size.width * (self.numberOfPages + 1)) {
+        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width, 0.0) animated:NO];
         self.pageControl.currentPage = 0;
     }
     NSLog(@"Estoy en la página %d", self.pageControl.currentPage);

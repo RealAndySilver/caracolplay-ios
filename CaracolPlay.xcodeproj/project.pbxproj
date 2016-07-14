@@ -257,6 +257,7 @@
 		A06C2D6218A3F80600044F81 /* FondoBarraBusqueda.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */; };
 		A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */; };
 		A06C2D6A18A41DD700044F81 /* MoviesOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */; };
+		A06D27C21D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A06D27C11D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard */; };
 		A08656BF1D0EE66B004D96AF /* VideoWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */; };
 		A095A04318B531EF004F05BB /* MyListsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A04218B531EF004F05BB /* MyListsDetailsViewController.m */; };
 		A095A04718B54631004F05BB /* SuscriptionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A095A04618B54631004F05BB /* SuscriptionAlertViewController.m */; };
@@ -676,6 +677,7 @@
 		A06C2D6118A3F80600044F81 /* FondoBarraBusqueda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FondoBarraBusqueda.png; path = Resources/Images/FondoBarraBusqueda.png; sourceTree = "<group>"; };
 		A06C2D6718A41DD700044F81 /* MoviesOpacityPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MoviesOpacityPattern.png; path = Resources/Images/MoviesOpacityPattern.png; sourceTree = "<group>"; };
 		A06C2D6818A41DD700044F81 /* MoviesOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MoviesOpacityPattern@2x.png"; path = "Resources/Images/MoviesOpacityPattern@2x.png"; sourceTree = "<group>"; };
+		A06D27C11D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneLaunchScreen.storyboard; sourceTree = "<group>"; };
 		A08656BD1D0EE66B004D96AF /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoWebViewController.h; sourceTree = "<group>"; };
 		A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoWebViewController.m; sourceTree = "<group>"; };
 		A095A04118B531EF004F05BB /* MyListsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyListsDetailsViewController.h; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 				755DB161188DEE2C00E5C636 /* InfoPlist.strings */,
 				755DB164188DEE2C00E5C636 /* main.m */,
 				755DB166188DEE2C00E5C636 /* CaracolPlay-Prefix.pch */,
+				A06D27C11D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1731,6 +1734,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = iAmStudio;
 				TargetAttributes = {
+					755DB154188DEE2C00E5C636 = {
+						DevelopmentTeam = VY536C84VC;
+					};
 					755DB178188DEE2C00E5C636 = {
 						TestTargetID = 755DB154188DEE2C00E5C636;
 					};
@@ -1832,6 +1838,7 @@
 				A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */,
 				8BFA6435190E96FD0065EC5F /* SearchBarBackgroundBar.png in Resources */,
 				8BE7FDEF189823950087A7E2 /* Loading@2x.png in Resources */,
+				A06D27C21D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard in Resources */,
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
 				8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */,
 				8B223A4E18C0F82100AC0A33 /* Checkmark@2x.png in Resources */,
@@ -2176,8 +2183,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2197,7 +2204,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2208,8 +2215,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2229,7 +2236,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2323,8 +2330,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2344,7 +2351,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};

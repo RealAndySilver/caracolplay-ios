@@ -21,7 +21,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
 @implementation ConfigurationViewController
 
 -(void)UISetup {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];

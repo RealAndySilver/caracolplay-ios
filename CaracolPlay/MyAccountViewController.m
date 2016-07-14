@@ -350,7 +350,7 @@
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
     NSLog(@"NUMERO DE CONTROLADORES EN EL TAB: %lu", (unsigned long)[self.tabBarController.viewControllers count]);
     [tabViewControllers removeLastObject];
-    [tabViewControllers removeLastObject];
+    //[tabViewControllers removeLastObject];
     self.tabBarController.viewControllers = tabViewControllers;
     NSLog(@"NUMERO DE CONTROLADORES DESPUES DE BORRAR: %lu", (unsigned long)[self.tabBarController.viewControllers count]);
     self.tabBarController.selectedIndex = 0;
