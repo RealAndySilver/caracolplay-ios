@@ -199,6 +199,7 @@
 		8BFD4F6218918E3200A88C8C /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F6118918E3200A88C8C /* SearchViewController.m */; };
 		8BFD4F651891906900A88C8C /* MyListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F641891906900A88C8C /* MyListsViewController.m */; };
 		8BFD4F681891BB0200A88C8C /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */; };
+		A010E5471D3D6CCE00A51D1E /* iPadLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A010E5461D3D6CCE00A51D1E /* iPadLaunchScreen.storyboard */; };
 		A0321BDC18FDE75600F5F0E9 /* BotonTigo.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDA18FDE75600F5F0E9 /* BotonTigo.png */; };
 		A0321BDD18FDE75600F5F0E9 /* BotonTigo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDB18FDE75600F5F0E9 /* BotonTigo@2x.png */; };
 		A0321BE018FDED6700F5F0E9 /* BotonTigoPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0321BDE18FDED6700F5F0E9 /* BotonTigoPad.png */; };
@@ -609,6 +610,7 @@
 		8BFD4F641891906900A88C8C /* MyListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyListsViewController.m; sourceTree = "<group>"; };
 		8BFD4F661891BB0200A88C8C /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
 		8BFD4F671891BB0200A88C8C /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
+		A010E5461D3D6CCE00A51D1E /* iPadLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadLaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0321BDA18FDE75600F5F0E9 /* BotonTigo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonTigo.png; path = Resources/Images/BotonTigo.png; sourceTree = "<group>"; };
 		A0321BDB18FDE75600F5F0E9 /* BotonTigo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BotonTigo@2x.png"; path = "Resources/Images/BotonTigo@2x.png"; sourceTree = "<group>"; };
 		A0321BDE18FDED6700F5F0E9 /* BotonTigoPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BotonTigoPad.png; path = Resources/Images/iPad/BotonTigoPad.png; sourceTree = "<group>"; };
@@ -857,6 +859,7 @@
 				755DB164188DEE2C00E5C636 /* main.m */,
 				755DB166188DEE2C00E5C636 /* CaracolPlay-Prefix.pch */,
 				A06D27C11D33FA29009BF7E8 /* iPhoneLaunchScreen.storyboard */,
+				A010E5461D3D6CCE00A51D1E /* iPadLaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1881,6 +1884,7 @@
 				8BFA643A190EEA0B0065EC5F /* OpacityBackground@2x.png in Resources */,
 				A06C2D6918A41DD700044F81 /* MoviesOpacityPattern.png in Resources */,
 				A058B2AB190DEE2900AAFCB7 /* SearchTabBarIconSelected.png in Resources */,
+				A010E5471D3D6CCE00A51D1E /* iPadLaunchScreen.storyboard in Resources */,
 				A095A04A18B54B11004F05BB /* SuscriptionAlertBackground.png in Resources */,
 				A095A05518B56582004F05BB /* SuscriptionConfirmationBackground.png in Resources */,
 				8BFA6432190E919B0065EC5F /* MoreSectionHeader@2x.png in Resources */,
@@ -2182,7 +2186,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Diego Fernando Vidal Illera (KMY476JSGC)";
 				ENABLE_BITCODE = NO;
@@ -2193,6 +2196,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2205,6 +2209,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2214,7 +2219,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
@@ -2225,6 +2229,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2237,6 +2242,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2329,7 +2335,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
@@ -2340,6 +2345,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
 				INFOPLIST_FILE = "CaracolPlay/CaracolPlay-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
@@ -2352,6 +2358,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};

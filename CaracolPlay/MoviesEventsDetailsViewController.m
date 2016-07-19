@@ -329,19 +329,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
-        self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(watchProductionButton.frame.origin.x + watchProductionButton.frame.size.width + 10.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 90.0, 30.0)];
-        
-        if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
-            [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
-        } else {
-            [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+        if (![self.production.type isEqualToString:@"Eventos en vivo"]) {
+            self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(watchProductionButton.frame.origin.x + watchProductionButton.frame.size.width + 10.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 90.0, 30.0)];
+            
+            if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+            }
+            
+            [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:self.addToMyListButton];
         }
-        
-        [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
-        self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:self.addToMyListButton];
     }
     
     //Sinopsis webview
@@ -482,7 +484,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 videoPlayer.progressSec = video.progressSec;
                 [self.navigationController pushViewController:videoPlayer animated:YES];
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu conexión a internet es muy lenta. Por favor conéctate a una red Wi-Fi para poder ver el video." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Alerta" message:@"Para poder visualizar este contenido es necesario que te conectes a una red WiFi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else if (status == ReachableViaWiFi) {

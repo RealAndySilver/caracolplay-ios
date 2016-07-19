@@ -627,7 +627,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 [self.navigationController pushViewController:videoPlayer animated:YES];
             } else {
                 //The user can't watch the video because the connection is to slow
-                [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Para ver este contenido conéctese a una red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [[[UIAlertView alloc] initWithTitle:@"Alerta" message:@"Para poder visualizar este contenido es necesario que te conectes a una red WiFi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             }
             
         } else if (status == ReachableViaWiFi) {
