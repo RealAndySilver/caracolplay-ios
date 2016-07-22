@@ -24,8 +24,8 @@
     HomeViewController *homeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Home"];
     MyNavigationController *homeNavigationController = [[MyNavigationController alloc] initWithRootViewController:homeViewController];
     homeNavigationController.tabBarItem.title = @"Inicio";
-    homeNavigationController.tabBarItem.image = [UIImage imageNamed:@"HomeTabBarIcon.png"];
-    homeNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"HomeTabBarIconSelected.png"];
+    homeNavigationController.tabBarItem.image = [UIImage imageNamed:@"TabBarHomeIcon"];
+    //homeNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"HomeTabBarIconSelected.png"];
     
     //2. Second view of the TabBar - Categories
     CategoriesViewController *categoriesViewController;
@@ -33,15 +33,15 @@
     categoriesViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Categories"];
     categoriesNavigationController = [[MyNavigationController alloc] initWithRootViewController:categoriesViewController];
     categoriesNavigationController.tabBarItem.title = @"Categorías";
-    categoriesNavigationController.tabBarItem.image = [UIImage imageNamed:@"CategoriesTabBarIcon.png"];
-    categoriesNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"CategoriesTabBarIconSelected.png"];
+    categoriesNavigationController.tabBarItem.image = [UIImage imageNamed:@"TabBarCategoriesIcon"];
+    //categoriesNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"CategoriesTabBarIconSelected.png"];
     
     //3. Third view of the TabBar - Search
     SearchViewController *searchViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Search"];
     MyNavigationController *SearchNavigationController = [[MyNavigationController alloc] initWithRootViewController:searchViewController];
     SearchNavigationController.tabBarItem.title = @"Buscar";
     SearchNavigationController.tabBarItem.image = [UIImage imageNamed:@"SearchTabBarIcon.png"];
-    SearchNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"SearchTabBarIconSelected.png"];
+    //SearchNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"SearchTabBarIconSelected.png"];
     
     if (!self.userDidSkipRegisterProcess) {
         //4. Fourth view of the TabBar - MyLists
@@ -56,7 +56,7 @@
         MyNavigationController*myAccountNavigationController = [[MyNavigationController alloc] initWithRootViewController:myAccountViewController];
         myAccountNavigationController.tabBarItem.title = @"Más";
         myAccountNavigationController.tabBarItem.image = [UIImage imageNamed:@"MoreTabBarIcon.png"];
-        myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
+        //myAccountNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
         
         self.viewControllers = @[homeNavigationController, categoriesNavigationController, SearchNavigationController, myAccountNavigationController];
         return;

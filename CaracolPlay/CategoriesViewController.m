@@ -11,6 +11,7 @@
 #import "ServerCommunicator.h"
 #import "MBProgressHUD.h"
 #import "FileSaver.h"
+#import "UIColor+AppColors.h"
 
 static NSString *CellIdentifier = @"CellIdentifier";
 
@@ -60,7 +61,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
                                                                     style:UITableViewStylePlain];
     self.categoriesTableView.delegate = self;
     self.categoriesTableView.dataSource = self;
-    self.categoriesTableView.backgroundColor = [UIColor blackColor];
+    self.categoriesTableView.backgroundColor = [UIColor caracolLightGrayColor];
     self.categoriesTableView.rowHeight = 50.0;
     self.categoriesTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.categoriesTableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
@@ -71,13 +72,13 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     self.navigationItem.title = @"Categorías";
     [self getCategoriesFromServer];
     
     //Create a bar button item to recall the getCategoriesFromServer method
-    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                          target:self
+    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed:@"NewRefreshIcon"]
+                                                                             style: UIBarButtonItemStylePlain                                                                                          target:self
                                                                                           action:@selector(getCategoriesFromServer)];
     self.navigationItem.rightBarButtonItem = refreshBarButtonItem;
     
@@ -94,7 +95,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavBarBackgroundNoLogo"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource
@@ -107,15 +108,15 @@ static NSString *CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        cell.selectedBackgroundView = selectedView;
+        cell.selectedBackgroundView = selectedView;*/
     }
     
     Categoria *category = self.parsedCategoriesList[indexPath.row];
     cell.textLabel.text = category.name;
     cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;

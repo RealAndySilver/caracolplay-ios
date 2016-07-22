@@ -12,6 +12,7 @@
 #import "UserDefaultsSaver.h"
 #import "MBProgressHUD.h"
 #import "ServerCommunicator.h"
+#import "UIColor+AppColors.h"
 
 @interface AppDelegate() <UIAlertViewDelegate, ServerCommunicatorDelegate>
 @property (assign, nonatomic) NSUInteger currentPurchaseType; //0 - subscription  1 - rent
@@ -24,8 +25,9 @@
     [CPIAPHelper sharedInstance];
     [UserInfo sharedInstance];
     // Override point for customization after application launch.
-    [UITabBar appearance].barTintColor = [UIColor blackColor];
-    [UITabBar appearance].tintColor = [UIColor orangeColor];
+    [UITabBar appearance].barTintColor = [UIColor caracolMediumBlueColor];
+    //[UITabBar appearance].translucent = NO;
+    [UITabBar appearance].tintColor = [UIColor whiteColor];
     [UINavigationBar appearance].barTintColor = [UIColor blackColor];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     [UINavigationBar appearance].titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};

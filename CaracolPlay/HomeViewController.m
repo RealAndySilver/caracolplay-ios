@@ -16,6 +16,7 @@
 #import "ServerCommunicator.h"
 #import "NSDictionary+NullReplacement.h"
 #import "MBProgressHUD.h"
+#import "UIColor+AppColors.h"
 
 @interface HomeViewController () <ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -119,7 +120,7 @@
     self.firstTimeViewAppears = YES;
     
     //Create a bar button item to recall the getFeaturedProductsFromServer
-    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NewRefreshIcon"] style:UIBarButtonItemStylePlain
                                                                                           target:self
                                                                                           action:@selector(getFeaturedProductsFromServer)];
     self.navigationItem.rightBarButtonItem = refreshBarButtonItem;
@@ -143,7 +144,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavigationBarBackground"]
                                                   forBarMetrics:UIBarMetricsDefault];
     //Start the automatic scrolling timer
     if (!self.firstTimeViewAppears) {
@@ -266,43 +267,43 @@
     [page addSubview:opacityPatternView];
     
     // image view for displaying the play icon
-    UIImageView *playIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.scrollView.frame.size.height - 95.0, 55.0, 55)];
+    /*UIImageView *playIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.scrollView.frame.size.height - 95.0, 55.0, 55)];
     playIconImageView.image = [UIImage imageNamed:@"PlayIconHomeScreen.png"];
     playIconImageView.clipsToBounds = YES;
     playIconImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [page addSubview:playIconImageView];
+    [page addSubview:playIconImageView];*/
     
     //2. Label to display the type of video (Series, movie, tv show...)
-    UILabel *videoTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        playIconImageView.frame.origin.y - 10.0,
-                                                                        self.scrollView.frame.size.width - 70.0,
+    UILabel *videoTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0,
+                                                                        self.scrollView.frame.size.height - 115.0,
+                                                                        self.scrollView.frame.size.width - 30.0,
                                                                         30.0)];
-    videoTypeLabel.text = featuredProduction.type;
+    videoTypeLabel.text = featuredProduction.name.uppercaseString;
     videoTypeLabel.textAlignment = NSTextAlignmentLeft;
-    videoTypeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0];
-    videoTypeLabel.textColor = [UIColor whiteColor];
+    videoTypeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:23.0];
+    videoTypeLabel.textColor = [UIColor caracolMediumBlueColor];
     [page addSubview:videoTypeLabel];
     
     //3. Label to display the video name (La selección, Mentiras Perfectas ...)
-    UILabel *videoNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        videoTypeLabel.frame.origin.y + 20.0,
-                                                                        self.scrollView.frame.size.width - 70.0,
+    UILabel *videoNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0,
+                                                                        videoTypeLabel.frame.origin.y + 25.0,
+                                                                        self.scrollView.frame.size.width - 30.0,
                                                                         30.0)];
-    videoNameLabel.text = featuredProduction.name;
+    videoNameLabel.text = featuredProduction.type;
     videoNameLabel.textColor = [UIColor whiteColor];
     videoNameLabel.textAlignment = NSTextAlignmentLeft;
     videoNameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18.0];
     [page addSubview:videoNameLabel];
     
     //4. Label to display the season and episode of the video (Temporada 3, episodio 4...)
-    UILabel *videoInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0,
-                                                                        videoTypeLabel.frame.origin.y + 40.0,
-                                                                        self.scrollView.frame.size.width - 70.0,
+    UILabel *videoInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0,
+                                                                        videoTypeLabel.frame.origin.y + 45.0,
+                                                                        self.scrollView.frame.size.width - 30.0,
                                                                         30.0)];
     videoInfoLabel.text = featuredProduction.featureText;
     videoInfoLabel.textAlignment = NSTextAlignmentLeft;
     videoInfoLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0];
-    videoInfoLabel.textColor = [UIColor whiteColor];
+    videoInfoLabel.textColor = [UIColor lightGrayColor];
     [page addSubview:videoInfoLabel];
     
     [self.scrollView addSubview:page];

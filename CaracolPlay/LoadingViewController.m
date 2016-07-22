@@ -28,7 +28,7 @@
     
     //1. Set the background image of the view
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    backgroundImageView.image = [UIImage imageNamed:@"Loading.png"];
+    backgroundImageView.image = [UIImage imageNamed:@"NewRootBackground"];
   
     [self.view addSubview:backgroundImageView];
     

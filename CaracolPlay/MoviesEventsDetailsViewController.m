@@ -329,7 +329,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
-        if (![self.production.type isEqualToString:@"Eventos en vivo"]) {
+        NSLog(@"Production type: %@", self.production.type);
+        if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
             self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(watchProductionButton.frame.origin.x + watchProductionButton.frame.size.width + 10.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 90.0, 30.0)];
             
             if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {

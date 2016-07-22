@@ -287,6 +287,7 @@
 		A0C0F12818D780B60069F321 /* AddToListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0F12718D780B60069F321 /* AddToListViewController.m */; };
 		A0C0F12A18D78A400069F321 /* NewHomeOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */; };
 		A0C0F12D18D79F710069F321 /* RentContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0F12C18D79F710069F321 /* RentContentViewController.m */; };
+		A0C449EF1D411B6C00A4BC49 /* UIColor+AppColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C449EE1D411B6C00A4BC49 /* UIColor+AppColors.m */; };
 		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
 		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
 		A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */; };
@@ -722,6 +723,8 @@
 		A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NewHomeOpacityPattern@2x.png"; path = "Resources/Images/NewHomeOpacityPattern@2x.png"; sourceTree = "<group>"; };
 		A0C0F12B18D79F710069F321 /* RentContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentContentViewController.h; sourceTree = "<group>"; };
 		A0C0F12C18D79F710069F321 /* RentContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentContentViewController.m; sourceTree = "<group>"; };
+		A0C449ED1D411B6C00A4BC49 /* UIColor+AppColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+AppColors.h"; path = "Categories/UIColor+AppColors.h"; sourceTree = "<group>"; };
+		A0C449EE1D411B6C00A4BC49 /* UIColor+AppColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+AppColors.m"; path = "Categories/UIColor+AppColors.m"; sourceTree = "<group>"; };
 		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
 		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
 		A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsMasterPadViewController.h; path = iPadVC/MyListsMasterPadViewController.h; sourceTree = "<group>"; };
@@ -1573,6 +1576,8 @@
 				A049E32F18D27FA80040E051 /* NSDictionary+NullReplacement.m */,
 				8B18BED618EA189900E61EFE /* NSArray+NullReplacement.h */,
 				8B18BED718EA189900E61EFE /* NSArray+NullReplacement.m */,
+				A0C449ED1D411B6C00A4BC49 /* UIColor+AppColors.h */,
+				A0C449EE1D411B6C00A4BC49 /* UIColor+AppColors.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2008,6 +2013,7 @@
 				8B164B8418A97412001803A9 /* Rented.m in Sources */,
 				A069A75318EF7706003BF3AD /* RentConfirmFromInsideViewController.m in Sources */,
 				8BE7A37E189B098300AF8E90 /* RedeemCodeViewController.m in Sources */,
+				A0C449EF1D411B6C00A4BC49 /* UIColor+AppColors.m in Sources */,
 				8BE7A364189AC6F000AF8E90 /* IngresarViewController.m in Sources */,
 				8BF16A12188F1F5E0021AB03 /* MoviesEventsDetailsViewController.m in Sources */,
 				8BF16A20188F29A80021AB03 /* MyUtilities.m in Sources */,

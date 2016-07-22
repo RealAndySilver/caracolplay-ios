@@ -23,8 +23,6 @@
 
 
 @interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *wrongPassImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongUserImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
@@ -88,7 +86,8 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"]
+    //self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavigationBarBackground"]
                                                   forBarMetrics:UIBarMetricsDefault];
     
     //Register as an observer of the notification -UserDidSuscribe.
@@ -115,8 +114,8 @@
 #pragma mark - Custom Methods
 
 -(void)clearAllWrongImageViews {
-    self.wrongPassImageView.alpha = 0.0;
-    self.wrongUserImageView.alpha = 0.0;
+    //self.wrongPassImageView.alpha = 0.0;
+    //self.wrongUserImageView.alpha = 0.0;
 }
 
 -(void)tap {
@@ -134,13 +133,13 @@
     if ([self.nameTextfield.text length] > 0) {
         userIsCorrect = YES;
     } else {
-        self.wrongUserImageView.alpha = 1.0;
+        //self.wrongUserImageView.alpha = 1.0;
     }
     
     if ([self.passwordTextfield.text length] > 0 ){
         passIsCorrect = YES;
     } else {
-        self.wrongPassImageView.alpha = 1.0;
+        //self.wrongPassImageView.alpha = 1.0;
     }
     
     if (userIsCorrect && passIsCorrect) {
@@ -355,8 +354,8 @@
             
         } else {
             NSLog(@"la autenticación no fue exitosa: %@", dictionary);
-            self.wrongPassImageView.alpha = 1.0;
-            self.wrongUserImageView.alpha = 1.0;
+            //self.wrongPassImageView.alpha = 1.0;
+            //self.wrongUserImageView.alpha = 1.0;
             [UserInfo sharedInstance].userName = nil;
             [UserInfo sharedInstance].password = nil;
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Tu usuario o contraseña no son válidos. Por favor intenta de nuevo" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

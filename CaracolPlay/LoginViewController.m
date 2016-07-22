@@ -25,24 +25,28 @@
     
     //1. Set the background image of the view
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:screenFrame];
-    backgroundImageView.image = [UIImage imageNamed:@"Inicio.png"];
+    backgroundImageView.image = [UIImage imageNamed:@"NewRootBackground"];
     [self.view addSubview:backgroundImageView];
     
     //2. Set the enter and suscribe button
     UIButton *enterButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.8, 240.0, 45.0)];
     [enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    enterButton.layer.borderWidth = 1.0;
+    enterButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    //[enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
-    enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
     [self.view addSubview:enterButton];
     
     //Suscribe
     UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2 - 120.0, screenFrame.size.height/1.52, 240.0, 45.0)];
     [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    suscribeButton.layer.borderWidth = 1.0;
+    suscribeButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    //[suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
     [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:suscribeButton];
     
@@ -66,7 +70,7 @@
     //4. Set the 'Skip' button
     UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(250.0, 15.0, 80.0, 44.0)];
     [skipButton setTitle:@"Saltar ▶︎" forState:UIControlStateNormal];
-    [skipButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     skipButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [skipButton addTarget:self action:@selector(skipAndGoToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:skipButton];
