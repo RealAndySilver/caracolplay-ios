@@ -10,6 +10,7 @@
 #import "TermsAndConditionsViewController.h"
 #import "MyAccountViewController.h"
 #import <MessageUI/MessageUI.h>
+#import "UIColor+AppColors.h"
 
 NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -23,7 +24,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
 -(void)UISetup {
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.frame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height))];
     self.tableView.delegate = self;
-    self.tableView.backgroundColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor caracolLightGrayColor];
     self.tableView.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 50.0;
@@ -41,7 +42,7 @@ NSString *const cellIdentifier = @"CellIdentifier";
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavBarBackgroundNoLogo"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource
@@ -54,13 +55,13 @@ NSString *const cellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        cell.selectedBackgroundView = selectedView;
+        cell.selectedBackgroundView = selectedView;*/
     }
     cell.backgroundColor = [UIColor clearColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0];
     cell.textLabel.text = self.menuItemsArray[indexPath.row];
     return cell;

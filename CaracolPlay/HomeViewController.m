@@ -255,7 +255,7 @@
     UIImage *opacityPatternImage = nil;
     if (self.view.frame.size.height > 480) {
         opacityPatternView.frame = CGRectMake(0.0, 0.0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-        opacityPatternImage = [UIImage imageNamed:@"NewHomeOpacityPattern.png"];
+        opacityPatternImage = [UIImage imageNamed:@"HomePageOpacity"];
         opacityPatternImage = [MyUtilities imageWithName:opacityPatternImage ScaleToSize:CGSizeMake(1.0, self.scrollView.frame.size.height)];
 
     } else {

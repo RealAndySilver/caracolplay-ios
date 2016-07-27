@@ -19,16 +19,17 @@
 #import "UserInfo.h"
 #import "MBProgressHUD.h"
 #import "UserDefaultsSaver.h"
+#import "UIColor+AppColors.h"
 
 @interface SuscriptionFormViewController () <ServerCommunicatorDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongEmailImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongAliasImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongGenreImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongPasswordImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *wrongConfirmPassImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongBirthdayImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongNameImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongLastNameImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongEmailImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongAliasImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongGenreImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongPasswordImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *wrongConfirmPassImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongTermsImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *wrongPoliticsImageView;
 
@@ -115,7 +116,8 @@
     //'Continuar' button setup
     self.nextButton = [[UIButton alloc] init];
     [self.nextButton setTitle:@"Continuar" forState:UIControlStateNormal];
-    [self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    [self.nextButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+    //[self.nextButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
     self.nextButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
@@ -157,7 +159,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeaderWithLogo.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavigationBarBackground"] forBarMetrics:UIBarMetricsDefault];
     
     //Register as an observer of the notification -UserDidSuscribe.
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -387,14 +389,14 @@
 #pragma mark - Custom Methods
 
 -(void)setAllWrongImageViewsInvisible {
-    self.wrongNameImageView.alpha = 0.0;
+    /*self.wrongNameImageView.alpha = 0.0;
     self.wrongLastNameImageView.alpha = 0.0;
     self.wrongAliasImageView.alpha = 0.0;
     self.wrongEmailImageView.alpha = 0.0;
     self.wrongGenreImageView.alpha = 0.0;
     self.wrongBirthdayImageView.alpha = 0.0;
     self.wrongPasswordImageView.alpha = 0.0;
-    self.wrongConfirmPassImageView.alpha = 0.0;
+    self.wrongConfirmPassImageView.alpha = 0.0;*/
     self.wrongPoliticsImageView.alpha = 0.0;
     self.wrongTermsImageView.alpha = 0.0;
 }
@@ -432,58 +434,58 @@
     if ([self.nameTextfield.text length] > 0) {
         nameIsCorrect = YES;
     } else {
-        self.wrongNameImageView.alpha = 1.0;
+        //self.wrongNameImageView.alpha = 1.0;
     }
     
     if ([self.lastNameTextfield.text length] > 0) {
         lastNameIsCorrect = YES;
     } else {
-        self.wrongLastNameImageView.alpha = 1.0;
+        //self.wrongLastNameImageView.alpha = 1.0;
     }
     
     if ([self.aliasTextfield.text length] > 0) {
         aliasIsCorrect = YES;
     } else {
-        self.wrongAliasImageView.alpha = 1.0;
+        //self.wrongAliasImageView.alpha = 1.0;
     }
     
     if ([self NSStringIsValidEmail:self.emailTextfield.text]) {
         emailIsCorrect = YES;
         self.emailTextfield.textColor = [UIColor whiteColor];
     } else {
-        self.wrongEmailImageView.alpha = 1.0;
+        //self.wrongEmailImageView.alpha = 1.0;
         self.emailTextfield.textColor = [UIColor redColor];
     }
     
     if ([self.genreTextfield.text length] > 0) {
         genreIsCorrect = YES;
     } else {
-        self.wrongGenreImageView.alpha = 1.0;
+        //self.wrongGenreImageView.alpha = 1.0;
     }
     
     if ([self.birthdayTextfield.text length] > 0) {
         birthdayIsCorrect = YES;
     } else {
-        self.wrongBirthdayImageView.alpha = 1.0;
+        //self.wrongBirthdayImageView.alpha = 1.0;
     }
     
     if ([self.passwordTextfield.text length] > 0) {
         passwordIsCorrect = YES;
     } else {
-        self.wrongPasswordImageView.alpha = 1.0;
+        //self.wrongPasswordImageView.alpha = 1.0;
     }
     
     if ([self.confirmPasswordTextfield.text length] > 0) {
         confirmPasswordIsCorrect = YES;
     } else {
-        self.wrongConfirmPassImageView.alpha = 1.0;
+        //self.wrongConfirmPassImageView.alpha = 1.0;
     }
     
     if ([self.passwordTextfield.text isEqualToString:self.confirmPasswordTextfield.text]) {
         bothPasswordsAreCorrect = YES;
     } else {
-        self.wrongPasswordImageView.alpha = 1.0;
-        self.wrongConfirmPassImageView.alpha = 1.0;
+        //self.wrongPasswordImageView.alpha = 1.0;
+        //self.wrongConfirmPassImageView.alpha = 1.0;
     }
     
     if (nameIsCorrect && lastNameIsCorrect && aliasIsCorrect && emailIsCorrect && genreIsCorrect && birthdayIsCorrect && passwordIsCorrect && confirmPasswordIsCorrect && bothPasswordsAreCorrect) {

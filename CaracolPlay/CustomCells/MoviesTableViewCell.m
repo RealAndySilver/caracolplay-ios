@@ -22,10 +22,10 @@
         self.backgroundColor = [UIColor clearColor];
         
         self.shadowView = [[UIView alloc] init];
-        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-        self.shadowView.layer.shadowOpacity = 0.8;
-        self.shadowView.layer.shadowRadius = 4.0;
+        //self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        //self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+        //self.shadowView.layer.shadowOpacity = 0.8;
+        //self.shadowView.layer.shadowRadius = 4.0;
         [self.contentView addSubview:self.shadowView];
         
         //1. Create an ImageView to display the movie image
@@ -41,7 +41,7 @@
       
         //2. Create a label to display the movie title.
         self.movieTitleLabel = [[UILabel alloc] init];
-        self.movieTitleLabel.textColor = [UIColor whiteColor];
+        self.movieTitleLabel.textColor = [UIColor darkGrayColor];
         self.movieTitleLabel.font = [UIFont boldSystemFontOfSize:16.0];
         [self.contentView addSubview:self.movieTitleLabel];
         

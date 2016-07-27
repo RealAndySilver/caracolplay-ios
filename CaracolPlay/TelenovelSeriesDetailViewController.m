@@ -391,7 +391,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavBarBackgroundNoLogo"] forBarMetrics:UIBarMetricsDefault];
     
     if (self.receivedVideoNotification) {
         NSLog(@"iré al video de unaaaa");

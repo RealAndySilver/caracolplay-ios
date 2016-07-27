@@ -15,6 +15,7 @@
 #import "MyListsPadTableViewCell.h"
 #import "Video.h"
 #import "VideoPlayerViewController.h"
+#import "UIColor+AppColors.h"
 
 static NSString *cellIdentifier = @"CellIdentifier";
 
@@ -25,6 +26,10 @@ static NSString *cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) NSMutableArray *productionsArray;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSString *selectedEpisodeID;
+@property (strong, nonatomic) UIButton *loUltimoButton;
+@property (strong, nonatomic) UIButton *masVistoButton;
+@property (strong, nonatomic) UIButton *masVotadoButton;
+@property (strong, nonatomic) UIButton *allButton;
 @end
 
 @implementation ProductionsListViewController
@@ -50,28 +55,75 @@ static NSString *cellIdentifier = @"CellIdentifier";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     
     if (![self.categoryID isEqualToString:@"1"] && ![self.categoryID isEqualToString:@"2"]) {
-        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo Último", @"+Visto", @"+Votado", @"Todo"]];
+        /*UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo Último", @"+Visto", @"+Votado", @"Todo"]];
         segmentedControl.frame = CGRectMake(20.0, 10.0, self.view.bounds.size.width - 40.0, 29.0);
         segmentedControl.selectedSegmentIndex = 0;
         segmentedControl.tintColor = [UIColor whiteColor];
         [segmentedControl addTarget:self action:@selector(sortProductionList:) forControlEvents:UIControlEventValueChanged];
-        [self.view addSubview:segmentedControl];
+        [self.view addSubview:segmentedControl];*/
+        
+        self.loUltimoButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width/4.0, 44.0)];
+        [self.loUltimoButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+        self.loUltimoButton.tag = 0;
+        [self.loUltimoButton setTitle:@"Lo último" forState:UIControlStateNormal];
+        [self.loUltimoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.loUltimoButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
+        [self.loUltimoButton addTarget:self action:@selector(sortProductionList:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.loUltimoButton];
+        
+        self.masVistoButton = [[UIButton alloc] initWithFrame:CGRectMake(self.loUltimoButton.frame.origin.x + self.loUltimoButton.frame.size.width, 0.0, self.view.bounds.size.width/4.0, 44.0)];
+        [self.masVistoButton setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:1.0]];
+        self.masVistoButton.tag = 1;
+        [self.masVistoButton setTitle:@"+Visto" forState:UIControlStateNormal];
+        [self.masVistoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.masVistoButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
+        [self.masVistoButton addTarget:self action:@selector(sortProductionList:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.masVistoButton];
+        
+        self.masVotadoButton = [[UIButton alloc] initWithFrame:CGRectMake(self.loUltimoButton.frame.origin.x + self.loUltimoButton.frame.size.width*2.0, 0.0, self.view.bounds.size.width/4.0, 44.0)];
+        self.masVotadoButton.tag = 2;
+        [self.masVotadoButton setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:1.0]];
+        [self.masVotadoButton setTitle:@"+Votado" forState:UIControlStateNormal];
+        [self.masVotadoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.masVotadoButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
+        [self.masVotadoButton addTarget:self action:@selector(sortProductionList:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.masVotadoButton];
+        
+        self.allButton = [[UIButton alloc] initWithFrame:CGRectMake(self.loUltimoButton.frame.origin.x + self.loUltimoButton.frame.size.width*3.0, 0.0, self.view.bounds.size.width/4.0, 44.0)];
+        self.allButton.tag = 3;
+        [self.allButton setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:1.0]];
+        [self.allButton setTitle:@"Todo" forState:UIControlStateNormal];
+        [self.allButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.allButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
+        [self.allButton addTarget:self action:@selector(sortProductionList:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.allButton];
+        
+        UIView *blueLineView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.loUltimoButton.frame.origin.y + self.loUltimoButton.frame.size.height - 5.0, self.view.bounds.size.width, 5.0)];
+        blueLineView.backgroundColor = [UIColor caracolMediumBlueColor];
+        [self.view addSubview:blueLineView];
         
         self.tableView.frame = CGRectMake(0.0,
-                                          segmentedControl.frame.origin.y + segmentedControl.frame.size.height + 10.0,
+                                          self.loUltimoButton.frame.origin.y + self.loUltimoButton.frame.size.height,
                                           self.view.frame.size.width,
-                                          self.view.frame.size.height - (segmentedControl.frame.origin.y + segmentedControl.frame.size.height) - 44.0 - 64.0 - 15.0);
+                                          self.view.frame.size.height - (self.loUltimoButton.frame.origin.y + self.loUltimoButton.frame.size.height) - 44.0 - 64.0 - 5.0);
     } else {
         self.tableView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height - 44.0 - 64.0);
     }
     
     self.tableView.delegate = self;
-    self.tableView.separatorColor = [UIColor blackColor];
-    self.tableView.backgroundColor = [UIColor colorWithRed:40.0/255.0 green:40.0/255.0 blue:40.0/255.0 alpha:1.0];
+    self.tableView.separatorColor = [UIColor darkGrayColor];
+    self.tableView.backgroundColor = [UIColor caracolLightGrayColor];
     self.tableView.rowHeight = 140.0;
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.tableView];
+}
+
+-(void)changeAllFilterButtonsColorTo:(UIColor *)color {
+    self.loUltimoButton.backgroundColor = color;
+    self.allButton.backgroundColor = color;
+    self.masVotadoButton.backgroundColor = color;
+    self.masVistoButton.backgroundColor = color;
 }
 
 #pragma mark - View Lifecycle
@@ -80,7 +132,7 @@ static NSString *cellIdentifier = @"CellIdentifier";
     [super viewDidLoad];
     self.removedProductions = [[NSMutableArray alloc] init];
     [self UISetup];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor darkGrayColor];
     self.navigationItem.title = self.navigationBarTitle;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eraseLastSeenCategory)
@@ -114,9 +166,9 @@ static NSString *cellIdentifier = @"CellIdentifier";
         if (!cell) {
             cell = [[MyListsPadTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+            /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-            cell.selectedBackgroundView = selectedView;
+            cell.selectedBackgroundView = selectedView;*/
 
         }
         cell.productionNameLabel.text = productDic[@"product_name"];
@@ -142,9 +194,9 @@ static NSString *cellIdentifier = @"CellIdentifier";
         if (productionCell==nil) {
             productionCell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             productionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, productionCell.contentView.bounds.size.width, productionCell.contentView.bounds.size.height)];
+            /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, productionCell.contentView.bounds.size.width, productionCell.contentView.bounds.size.height)];
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-            productionCell.selectedBackgroundView = selectedView;
+            productionCell.selectedBackgroundView = selectedView;*/
         }
         
         if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
@@ -191,10 +243,13 @@ static NSString *cellIdentifier = @"CellIdentifier";
 
 #pragma mark - Actions 
 
--(void)sortProductionList:(UISegmentedControl *)segmentedControl {
+-(void)sortProductionList:(UIButton *)sender {
     //We add 1 to the filter number because if the user selects the number 1 segment
     //of the segmented control (+visto), ths filter is the number 2 in the server.
-    [self getListFromCategoryID:self.categoryID withFilter:segmentedControl.selectedSegmentIndex + 1];
+    NSLog(@"Sender tag: %li", (long)sender.tag);
+    [self changeAllFilterButtonsColorTo:[UIColor colorWithWhite:0.1 alpha:1.0]];
+    sender.backgroundColor = [UIColor caracolMediumBlueColor];
+    [self getListFromCategoryID:self.categoryID withFilter:sender.tag + 1];
 }
 
 #pragma mark - Custom Methods

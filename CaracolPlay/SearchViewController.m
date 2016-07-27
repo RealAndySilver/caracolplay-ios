@@ -13,6 +13,7 @@
 #import "MoviesEventsDetailsViewController.h"
 #import "ServerCommunicator.h"
 #import "NSArray+NullReplacement.h"
+#import "UIColor+AppColors.h"
 
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UISearchBar *searchBar;
@@ -56,8 +57,8 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 130.0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.tableView.separatorColor = [UIColor blackColor];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.tableView.separatorColor = [UIColor darkGrayColor];
+    self.tableView.backgroundColor = [UIColor caracolLightGrayColor];
     [self.view addSubview:self.tableView];
 }
 
@@ -81,7 +82,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     self.navigationItem.title = @"Buscar";
     [self UISetup];
     [self createTapGesture];
@@ -93,7 +94,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"CaracolPlayHeader.png"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NewNavBarBackgroundNoLogo"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - UITableViewDataSource 
@@ -106,9 +107,9 @@
     MoviesTableViewCell *cell = (MoviesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     if (!cell) {
         cell = [[MoviesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
-        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        cell.selectedBackgroundView = selectedView;
+        cell.selectedBackgroundView = selectedView;*/
     }
     
     NSDictionary *productInfo = self.searchResultsArray[indexPath.row];

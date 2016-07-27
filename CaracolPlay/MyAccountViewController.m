@@ -18,6 +18,7 @@
 #import "MBProgressHUD.h"
 #import "TelenovelSeriesDetailViewController.h"
 #import "MoviesEventsDetailsViewController.h"
+#import "UIColor+AppColors.h"
 
 @interface MyAccountViewController () <UITableViewDataSource, UITableViewDelegate,  ServerCommunicatorDelegate>
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -82,7 +83,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"Mi Cuenta";
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     [self getUser];
 }
 
@@ -92,15 +93,15 @@
     
     //1. Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 50.0)];
-    self.scrollView.backgroundColor = [UIColor blackColor];
+    self.scrollView.backgroundColor = [UIColor caracolLightGrayColor];
     self.scrollView.alwaysBounceVertical = YES;
     [self.view addSubview:self.scrollView];
     
     //2. label 'Datos Personales'
     UILabel *personalInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 150.0, 30.0)];
-    personalInfoLabel.text = @"DATOS PERSONALES:";
+    personalInfoLabel.text = @"DATOS PERSONALES";
     personalInfoLabel.font = [UIFont systemFontOfSize:13.0];
-    personalInfoLabel.textColor = [UIColor lightGrayColor];
+    personalInfoLabel.textColor = [UIColor blackColor];
     [self.scrollView addSubview:personalInfoLabel];
     
     //3. Personal info table view
@@ -110,22 +111,22 @@
     personalInfoTableView.dataSource  = self;
     personalInfoTableView.userInteractionEnabled = NO;
     personalInfoTableView.tag = 1;
-    personalInfoTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    personalInfoTableView.backgroundColor = [UIColor whiteColor];
     personalInfoTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
     personalInfoTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.scrollView addSubview:personalInfoTableView];
     
     //4. Some informative text label
     NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editables en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
-    NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor orangeColor]};
+    NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
+    NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor caracolMediumBlueColor]};
     [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 20)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(90, 61)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 69)];
     
     UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(10.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.view.frame.size.width-20, 64.0)];
     informativeTextLabel.attributedText = informativeString;
-    informativeTextLabel.backgroundColor = [UIColor blackColor];
+    informativeTextLabel.backgroundColor = [UIColor clearColor];
     informativeTextLabel.userInteractionEnabled = NO;
     informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
     [self.scrollView addSubview:informativeTextLabel];
@@ -142,7 +143,7 @@
     rentedTableView.delegate = self;
     rentedTableView.dataSource = self;
     rentedTableView.tag = 3;
-    rentedTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    rentedTableView.backgroundColor = [UIColor whiteColor];
     rentedTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
     rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.scrollView addSubview:rentedTableView];
@@ -161,7 +162,7 @@
     suscriptionInfoTableView.tag = 2;
     suscriptionInfoTableView.userInteractionEnabled = NO;
     suscriptionInfoTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-    suscriptionInfoTableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    suscriptionInfoTableView.backgroundColor = [UIColor whiteColor];
     [self.scrollView addSubview:suscriptionInfoTableView];
     
     //7. 'Cerrar Sesión' button
@@ -176,7 +177,7 @@
     //8. 'Terminos y condiciones' button
     UIButton *termsAndConditionsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, closeSessionButton.frame.origin.y + closeSessionButton.frame.size.height + 20.0, self.view.frame.size.width - 100.0, 30.0)];
     [termsAndConditionsButton setTitle:@"Términos y Condiciones" forState:UIControlStateNormal];
-    [termsAndConditionsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [termsAndConditionsButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     [termsAndConditionsButton addTarget:self action:@selector(goToConditionsTerms) forControlEvents:UIControlEventTouchUpInside];
     termsAndConditionsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:termsAndConditionsButton];
@@ -184,7 +185,7 @@
     //9. 'Politicas del servicio' button
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.view.frame.size.width - 100.0, 30.0)];
     [serviceTermsButton setTitle:@"Políticas de privacidad" forState:UIControlStateNormal];
-    [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [serviceTermsButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:serviceTermsButton];
@@ -222,13 +223,13 @@
         }
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.text = self.personalInfoTableViewTitles[indexPath.row];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         
         UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(150.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
         secondaryLabel.text = self.personalInfoTableViewSecondaryInfo[indexPath.row];
         secondaryLabel.textAlignment = NSTextAlignmentRight;
-        secondaryLabel.textColor = [UIColor lightGrayColor];
+        secondaryLabel.textColor = [UIColor darkGrayColor];
         secondaryLabel.font = [UIFont systemFontOfSize:14.0];
         [cell.contentView addSubview:secondaryLabel];
         
@@ -242,12 +243,12 @@
         }
         cell.textLabel.text = self.suscriptionInfoTableViewTitles[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.backgroundColor = [UIColor clearColor];
         
         UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(150.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
         secondaryLabel.text = self.suscriptionInfoTableViewSecondaryInfo[indexPath.row];
-        secondaryLabel.textColor = [UIColor lightGrayColor];
+        secondaryLabel.textColor = [UIColor darkGrayColor];
         secondaryLabel.font = [UIFont systemFontOfSize:14.0];
         secondaryLabel.textAlignment = NSTextAlignmentRight;
         [cell.contentView addSubview:secondaryLabel];

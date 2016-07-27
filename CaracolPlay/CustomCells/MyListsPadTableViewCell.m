@@ -23,10 +23,10 @@
         self.backgroundColor = [UIColor clearColor];
         
         self.shadowView = [[UIView alloc] init];
-        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-        self.shadowView.layer.shadowOpacity = 0.8;
-        self.shadowView.layer.shadowRadius = 5.0;
+        //self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        //self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
+        //self.shadowView.layer.shadowOpacity = 0.8;
+        //self.shadowView.layer.shadowRadius = 5.0;
         [self.contentView addSubview:self.shadowView];
         
         // 1. Production image view
@@ -37,7 +37,7 @@
         
         // 2. Production name label setup
         self.productionNameLabel = [[UILabel alloc] init];
-        self.productionNameLabel.textColor = [UIColor whiteColor];
+        self.productionNameLabel.textColor = [UIColor darkGrayColor];
         self.productionNameLabel.font = [UIFont boldSystemFontOfSize:20.0];
         [self.contentView addSubview:self.productionNameLabel];
         
