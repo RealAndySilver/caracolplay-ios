@@ -14,4 +14,5 @@
 @interface ProductionsListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) NSString *navigationBarTitle;
 @property (strong, nonatomic) NSString *categoryID;
+@property (strong, nonatomic) NSString *displayType;
 @end

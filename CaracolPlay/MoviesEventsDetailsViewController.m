@@ -330,6 +330,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
         NSLog(@"Production type: %@", self.production.type);
+        
         if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
             self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(watchProductionButton.frame.origin.x + watchProductionButton.frame.size.width + 10.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 90.0, 30.0)];
             
@@ -449,6 +450,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Custom Methods
 
 -(void)checkVideoAvailability:(Video *)video {
+    NSString *productionType = [self.production.type lowercaseString];
     if (video.status) {
         //The video is available to the user, so check the network connection to
         //decide if the user can watch the video
@@ -463,11 +465,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         } else if (status == ReachableViaWWAN) {
             //The user can't watch the video because the connection is to slow
             if (video.is3G) {
+                if ([productionType containsString:@"evento"]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Alerta" message:@"Para poder visualizar este contenido es necesario que te conectes a una red WiFi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                    return;
+                }
+                
                 //The user can watch it with 3G
                 [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una conexión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 NSLog(@"Rechable via WiFi");
                 
-                if ([self.production.type isEqualToString:@"Eventos"] || [self.production.type isEqualToString:@"eventos"]) {
+                /*if ([self.production.type isEqualToString:@"Eventos"] || [self.production.type isEqualToString:@"eventos"]) {
                     if (self.production.isWebView == YES) {
                         //We should open this event in a WebView, not in WideVine
                         VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
@@ -477,7 +484,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                         [self.tabBarController presentViewController:navController animated:YES completion:nil];
                         return;
                     }
-                }
+                }*/
                 
                 VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
                 videoPlayer.embedCode = video.embedHD;
@@ -491,7 +498,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video. If this is an event, check if we should open it in Widevine or in a Webview
             NSLog(@"Rechable via WiFi");
-            if ([self.production.type isEqualToString:@"Eventos"] || [self.production.type isEqualToString:@"eventos"]) {
+            if ([productionType containsString:@"evento"]) {
                 if (self.production.isWebView == YES) {
                     //We should open this event in a WebView, not in WideVine
                     VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];

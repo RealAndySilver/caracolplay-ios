@@ -221,24 +221,57 @@ static NSString *cellIdentifier = @"CellIdentifier";
 #pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *productionType = [((NSString *)self.productionsArray[indexPath.row][@"type"]) lowercaseString];
+    
     if ([self.categoryID isEqualToString:@"1"]) {
+        //Ultimso vistos
         [self getIsContentAvailableForUserWithID:self.productionsArray[indexPath.row][@"id"]];
         self.selectedEpisodeID = self.productionsArray[indexPath.row][@"id"];
-        return;
     }
     
-    if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    else if ([self.categoryID isEqualToString:@"2"]) {
+        //Mi Lista
+        if ([productionType isEqualToString:@"películas"] || [productionType isEqualToString:@"documentales"] || [productionType containsString:@"evento"]) {
+            MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+            movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
+            movieAndEventDetailsVC.delegate = self;
+            [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
+        }
+        else if ([productionType isEqualToString:@"series"] || [productionType isEqualToString:@"telenovelas"] || [productionType isEqualToString:@"noticias"]) {
+            TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+            telenovelSeriesVC.serieID = self.productionsArray[indexPath.row][@"id"];
+            telenovelSeriesVC.delegate = self;
+            [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
+        }
+
+    } else {
+        //Regular Category
+        if ([self.displayType isEqualToString:@"production"]) {
+            TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
+            telenovelSeriesVC.serieID = self.productionsArray[indexPath.row][@"id"];
+            telenovelSeriesVC.delegate = self;
+            [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
+        
+        } else if ([self.displayType isEqualToString:@"node"]) {
+            MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
+            movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
+            movieAndEventDetailsVC.delegate = self;
+            [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
+        }
+    }
+    
+    /*if ([productionType isEqualToString:@"películas"] || [productionType isEqualToString:@"documentales"] || [productionType containsString:@"evento"]) {
         MoviesEventsDetailsViewController *movieAndEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieAndEventDetailsVC.productionID = self.productionsArray[indexPath.row][@"id"];
         movieAndEventDetailsVC.delegate = self;
         [self.navigationController pushViewController:movieAndEventDetailsVC animated:YES];
     }
-    else if ([self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+    else if ([productionType isEqualToString:@"series"] || [productionType isEqualToString:@"telenovelas"] || [productionType isEqualToString:@"noticias"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.productionsArray[indexPath.row][@"id"];
         telenovelSeriesVC.delegate = self;
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
-    }
+    }*/
 }
 
 #pragma mark - Actions 

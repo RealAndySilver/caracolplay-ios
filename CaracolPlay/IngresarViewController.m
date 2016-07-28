@@ -23,7 +23,11 @@
 
 
 @interface IngresarViewController () <UITextFieldDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *usernameIconImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordIconImageView;
 @property (weak, nonatomic) IBOutlet UIButton *enterButton;
+@property (weak, nonatomic) IBOutlet UIView *userTextFieldBottomLine;
+@property (weak, nonatomic) IBOutlet UIView *passwordTextFieldBottomLine;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (strong, nonatomic) NSString *transactionID;
@@ -114,6 +118,10 @@
 #pragma mark - Custom Methods
 
 -(void)clearAllWrongImageViews {
+    self.userTextFieldBottomLine.backgroundColor = [UIColor lightGrayColor];
+    self.passwordTextFieldBottomLine.backgroundColor = [UIColor lightGrayColor];
+    self.passwordIconImageView.tintColor = [UIColor lightGrayColor];
+    self.usernameIconImageView.tintColor = [UIColor lightGrayColor];
     //self.wrongPassImageView.alpha = 0.0;
     //self.wrongUserImageView.alpha = 0.0;
 }
@@ -133,12 +141,16 @@
     if ([self.nameTextfield.text length] > 0) {
         userIsCorrect = YES;
     } else {
+        self.usernameIconImageView.tintColor = [UIColor redColor];
+        self.userTextFieldBottomLine.backgroundColor = [UIColor redColor];
         //self.wrongUserImageView.alpha = 1.0;
     }
     
     if ([self.passwordTextfield.text length] > 0 ){
         passIsCorrect = YES;
     } else {
+        self.passwordIconImageView.tintColor = [UIColor redColor];
+        self.passwordTextFieldBottomLine.backgroundColor = [UIColor redColor];
         //self.wrongPassImageView.alpha = 1.0;
     }
     

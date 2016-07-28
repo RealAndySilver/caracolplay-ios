@@ -769,9 +769,11 @@
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="UserIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ct3-xj-Upd">
                                 <rect key="frame" x="30" y="158" width="44" height="44"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PasswordIcon" translatesAutoresizingMaskIntoConstraints="NO" id="DE3-hb-B5h">
                                 <rect key="frame" x="30" y="203" width="44" height="44"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274509803915" green="0.96078431372549022" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -779,7 +781,11 @@
                     <connections>
                         <outlet property="enterButton" destination="Om6-Ht-KJ8" id="EV6-bi-GGf"/>
                         <outlet property="nameTextfield" destination="ugW-eH-f4s" id="BWt-Hu-R01"/>
+                        <outlet property="passwordIconImageView" destination="DE3-hb-B5h" id="VFI-0s-QyZ"/>
+                        <outlet property="passwordTextFieldBottomLine" destination="zwk-2W-Y0q" id="LeS-T2-H7t"/>
                         <outlet property="passwordTextfield" destination="yNc-WA-z6g" id="mMF-Oc-cwQ"/>
+                        <outlet property="userTextFieldBottomLine" destination="7kN-Gt-xvd" id="eQA-Lt-zVA"/>
+                        <outlet property="usernameIconImageView" destination="Ct3-xj-Upd" id="YtK-j0-loE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8X-x6-cwg" userLabel="First Responder" sceneMemberID="firstResponder"/>

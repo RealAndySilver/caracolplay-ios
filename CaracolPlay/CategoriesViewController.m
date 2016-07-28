@@ -129,6 +129,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
     ProductionsListViewController *productionListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Movies"];
     productionListVC.categoryID = category.identifier;
     productionListVC.navigationBarTitle = category.name;
+    productionListVC.displayType = category.displayType;
     [self.navigationController pushViewController:productionListVC animated:YES];
 }
 

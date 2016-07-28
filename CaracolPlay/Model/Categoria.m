@@ -14,6 +14,7 @@
     if (self = [super init]) {
         _name = dictionary[@"name"];
         _identifier = dictionary[@"id"];
+        _displayType = dictionary[@"display_type"];
     }
     return self;
 }

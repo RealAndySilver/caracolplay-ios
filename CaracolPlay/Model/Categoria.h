@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *identifier;
+@property (strong, nonatomic) NSString *displayType;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

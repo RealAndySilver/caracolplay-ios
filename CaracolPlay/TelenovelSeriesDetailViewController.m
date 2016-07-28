@@ -35,6 +35,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "MBProgressHUD.h"
 #import "UserInfo.h"
 #import "SinopsisView.h"
+#import "VideoWebViewController.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -261,19 +262,21 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     FileSaver *fileSaver = [[FileSaver alloc] init];
     NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
-        self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 190.0, 30.0)];
-        
-        if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
-            [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
-        } else {
-            [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+        if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
+            self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y +  shareButton.frame.size.height + 10.0, 190.0, 30.0)];
+            
+            if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+            }
+            
+            [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:self.addToMyListButton];
         }
-        
-        [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
-        self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:self.addToMyListButton];
     }
   
     //Create the button to watch the production, only if the user is log out
@@ -606,6 +609,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #pragma mark - Custom Methods
 
 -(void)checkVideoAvailability:(Video *)video {
+    NSString *productionType = [self.production.type lowercaseString];
     if (video.status) {
         //The video is available for the user, so check the network connection to decide
         //if the user can pass to watch it or not.
@@ -618,6 +622,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else if (status == ReachableViaWWAN) {
             if (video.is3G) {
+                //The live events can't be watched in 3G.
+                if ([productionType containsString:@"evento"]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Alerta" message:@"Para poder visualizar este contenido es necesario que te conectes a una red WiFi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                    return;
+                }
+                
                 //The user can watch it with 3G
                 [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia, se recomienda usar una conexión Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
@@ -632,6 +642,18 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
+            if ([productionType containsString:@"evento"]) {
+                if (self.production.isWebView == YES) {
+                    //We should open this event in a WebView, not in WideVine
+                    VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
+                    videoWebViewVC.videoUrlString = self.production.webviewUrl;
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:videoWebViewVC];
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    return;
+                }
+            }
+            
             VideoPlayerViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.embedCode = video.embedHD;
             videoPlayer.progressSec = video.progressSec;
