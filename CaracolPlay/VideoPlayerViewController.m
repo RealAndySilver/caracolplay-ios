@@ -12,10 +12,11 @@
 //#import "OOOoyalaError.h"
 #import <objc/message.h>
 #import "ServerCommunicator.h"
-#import "BCOVPlayerSDK.h"
+//#import "BCOVPlayerSDK.h"
 #import <AVFoundation/AVFoundation.h>
+#import <BrightcovePlayerSDK/BrightcovePlayerSDK.h>
 //#import "BCOVCatalogService+BCOVWidevineAdditions.h"
-#import "BCOVWidevine.h"
+//#import "BCOVWidevine.h"
 
 @interface VideoPlayerViewController () <ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate>
 @property (assign, nonatomic) BOOL sendProgressSecToServer;
@@ -62,14 +63,19 @@ NSString * const TOKEN = @"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_q
     
     // add the playback controller
     BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
-    self.controller = [manager createWidevinePlaybackControllerWithViewStrategy:[self viewStrategy]];
-    self.controller.view.frame = self.view.bounds;
+    self.controller = [manager createPlaybackController];
+    //self.controller.view.frame = self.view.bounds;
     // create a playback controller delegate
     self.controller.delegate = self;
     
-    self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    BCOVPUIPlayerView *playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:self.controller];
+    playerView.frame = self.view.bounds;
+    playerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:playerView];
+    
+    //self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     // add the controller view as a subview of the SVPViewController's view
-    [self.view addSubview:self.controller.view];
+    //[self.view addSubview:self.controller.view];
     
     // turn on auto-advance
     //self.controller.autoAdvance = YES;
@@ -77,12 +83,12 @@ NSString * const TOKEN = @"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_q
     // add the video array to the controller's playback queue
     //[self.controller setVideos:videos];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected:)];
-    [self.controller.view addGestureRecognizer:tapGesture];
+    //UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapDetected:)];
+    //[self.controller.view addGestureRecognizer:tapGesture];
     
     BCOVCatalogService *service = [[BCOVCatalogService alloc] initWithToken:TOKEN];
     //3936114092001
-    [service findWidevineVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+    [service findVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
         if (!error) {
             NSLog(@"Response: %@", jsonResponse);
             if (video) {
@@ -100,7 +106,7 @@ NSString * const TOKEN = @"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_q
     }];
 }
 
--(void)tapDetected:(UITapGestureRecognizer *)tap {
+/*-(void)tapDetected:(UITapGestureRecognizer *)tap {
     if ([tap locationInView:self.view].y < self.view.bounds.size.height - 60.0) {
         NSLog(@"Detecté el tap");
         NSArray *subViews = [self.controller.view subviews];
@@ -118,7 +124,7 @@ NSString * const TOKEN = @"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_q
             subview.hidden = NO;
         }
     }
-}
+}*/
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

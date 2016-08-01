@@ -7,6 +7,7 @@
 //
 
 #import "SinopsisView.h"
+#import "UIColor+AppColors.h"
 
 @interface SinopsisView()
 @property (strong, nonatomic) UIWebView *sinopsisWebView;
@@ -18,7 +19,7 @@
 
 -(void)setSinopsisString:(NSString *)sinopsisString {
     _sinopsisString = sinopsisString;
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>", sinopsisString];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:black; font-family: helvetica;'>%@</body></html>", sinopsisString];
     [self.sinopsisWebView loadHTMLString:str baseURL:nil];
 }
 
@@ -31,7 +32,7 @@
         // Initialization code
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor caracolLightGrayColor];
         
         //Close button
         UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 53.0, -27.0, 80.0, 80.0)];
@@ -42,7 +43,7 @@
         //Main Title
         self.mainTitle = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 40.0, frame.size.width, 40.0)];
         self.mainTitle.font = [UIFont boldSystemFontOfSize:25.0];
-        self.mainTitle.textColor = [UIColor whiteColor];
+        self.mainTitle.textColor = [UIColor caracolMediumBlueColor];
         self.mainTitle.textAlignment = NSTextAlignmentCenter;
         [self addSubview:self.mainTitle];
         

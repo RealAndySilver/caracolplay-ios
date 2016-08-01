@@ -28,6 +28,8 @@
         _watchedOn = dictionary[@"watched_on"];
         _is3G = [dictionary[@"is_3g"] boolValue];
         _lastChapter = [dictionary[@"last_chapter"] boolValue];
+        _beginDate = [dictionary[@"date_event"][@"begin"] doubleValue];
+        _endDate = [dictionary[@"date_event"][@"end"] doubleValue];
     }
     return self;
 }

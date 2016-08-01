@@ -165,7 +165,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)dictionary withMethodName:(NSString *)methodName {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     if ([methodName isEqualToString:@"GetFeatured"]) {
-        //NSLog(@"Si recibí info del server: %@", dictionary);
+        NSLog(@"Si recibí info del server: %@", dictionary);
         if (!dictionary) {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         } else {
@@ -281,7 +281,7 @@
     videoTypeLabel.text = featuredProduction.name.uppercaseString;
     videoTypeLabel.textAlignment = NSTextAlignmentLeft;
     videoTypeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:23.0];
-    videoTypeLabel.textColor = [UIColor caracolMediumBlueColor];
+    videoTypeLabel.textColor = [UIColor whiteColor];
     [page addSubview:videoTypeLabel];
     
     //3. Label to display the video name (La selección, Mentiras Perfectas ...)

@@ -11,9 +11,10 @@
 //#import "OOOoyalaPlayer.h"
 //#import "OOOoyalaError.h"
 #import "ServerCommunicator.h"
-#import "BCOVPlayerSDK.h"
+#import <BrightcovePlayerSDK/BrightcovePlayerSDK.h>
+//#import "BCOVPlayerSDK.h"
 #import <AVFoundation/AVFoundation.h>
-#import "BCOVWidevine.h"
+//#import "BCOVWidevine.h"
 
 @interface VideoPlayerPadViewController () <UIBarPositioningDelegate, ServerCommunicatorDelegate, BCOVPlaybackControllerDelegate, UINavigationBarDelegate>
 //@property (strong, nonatomic) OOOoyalaPlayerViewController *ooyalaPlayerViewController;
@@ -59,14 +60,19 @@
     
     // add the playback controller
     BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
-    self.controller = [manager createWidevinePlaybackControllerWithViewStrategy:[self viewStrategy]];
-    self.controller.view.frame = self.view.bounds;
+    self.controller = [manager createPlaybackController];
+    //self.controller.view.frame = self.view.bounds;
     // create a playback controller delegate
     self.controller.delegate = self;
     
-    self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    BCOVPUIPlayerView *playerView = [[BCOVPUIPlayerView alloc] initWithPlaybackController:self.controller];
+    playerView.frame = self.view.bounds;
+    playerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:playerView];
+    
+    //self.controller.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     // add the controller view as a subview of the SVPViewController's view
-    [self.view addSubview:self.controller.view];
+    //[self.view addSubview:self.controller.view];
     [self.view bringSubviewToFront:self.navigationBar];
     
     // turn on auto-advance
@@ -77,7 +83,7 @@
     
     BCOVCatalogService *service = [[BCOVCatalogService alloc] initWithToken:@"23n6CnmhPeRe86DDzyGEpd49MDVnmYzUkSUqGaVv2oDVJSgcev5_qw.."];
     //3936114092001
-    [service findWidevineVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
+    [service findVideoWithVideoID:self.embedCode parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
         if (!error) {
             NSLog(@"Response: %@", jsonResponse);
             if (video) {

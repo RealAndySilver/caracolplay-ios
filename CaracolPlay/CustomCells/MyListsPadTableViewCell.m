@@ -43,7 +43,7 @@
         
         //3. Production detail label setup
         self.productionDetailLabel = [[UILabel alloc] init];
-        self.productionDetailLabel.textColor = [UIColor whiteColor];
+        self.productionDetailLabel.textColor = [UIColor darkGrayColor];
         self.productionDetailLabel.font = [UIFont systemFontOfSize:15.0];
         [self.contentView addSubview:self.productionDetailLabel];
         

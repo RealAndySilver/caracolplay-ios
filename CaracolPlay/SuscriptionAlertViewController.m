@@ -56,10 +56,20 @@
     // 1. Background image
     CGRect screenFrame = [UIScreen mainScreen].bounds;
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:screenFrame];
-    backgroundImageView.image = [UIImage imageNamed:@"SuscriptionAlertBackground.png"];
+    backgroundImageView.image = [UIImage imageNamed:@"NewBackgroundNoLogo"];
     backgroundImageView.clipsToBounds = YES;
     backgroundImageView.contentMode = UIViewContentModeScaleToFill;
     [self.view addSubview:backgroundImageView];
+    
+    UIImageView *whiteTextImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 60.0, self.view.bounds.size.width - 60.0, 50.0)];
+    whiteTextImageView.image = [UIImage imageNamed:@"CaracolPlayWhiteText"];
+    whiteTextImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:whiteTextImageView];
+    
+    UIImageView *warningImageView = [[UIImageView alloc] initWithFrame:CGRectMake(50.0, whiteTextImageView.frame.origin.y + whiteTextImageView.frame.size.height + 20.0, self.view.bounds.size.width - 100.0, 80.0)];
+    warningImageView.contentMode = UIViewContentModeScaleAspectFit;
+    warningImageView.image = [UIImage imageNamed:@"WarningButton"];
+    [self.view addSubview:warningImageView];
     
     // 2. textview setup
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/2 - 40.0, screenFrame.size.width - 40.0, 100.0)];
@@ -77,7 +87,9 @@
     [enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [enterButton addTarget:self action:@selector(goToEnterViewController) forControlEvents:UIControlEventTouchUpInside];
     enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-    [enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    enterButton.layer.borderWidth = 1.0;
+    enterButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    //[enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.view addSubview:enterButton];
     
     //'Alquilar' button setup
@@ -93,7 +105,9 @@
         [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [rentButton addTarget:self action:@selector(goToRentViewController) forControlEvents:UIControlEventTouchUpInside];
         rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        rentButton.layer.borderWidth = 1.0;
+        rentButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        //[rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         [self.view addSubview:rentButton];
     }
     
@@ -109,7 +123,9 @@
         [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [suscribeButton addTarget:self action:@selector(goToSuscribeViewController) forControlEvents:UIControlEventTouchUpInside];
-        [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        suscribeButton.layer.borderWidth = 1.0;
+        suscribeButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        //[suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.view addSubview:suscribeButton];
     }

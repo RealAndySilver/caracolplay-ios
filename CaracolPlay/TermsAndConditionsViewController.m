@@ -21,7 +21,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.mainTitle;
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     
     //[self getTerms];
@@ -49,7 +49,7 @@
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenFrame.size.width, screenFrame.size.height - 110.0)];
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
-    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:black;color:white !important;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
+    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:white;color:black !important;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
     [webView loadHTMLString:formattedHtml baseURL:nil];
     [self.view addSubview:webView];
 }

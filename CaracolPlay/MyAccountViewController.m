@@ -170,7 +170,9 @@
     [closeSessionButton setTitle:@"Cerrar Sesión" forState:UIControlStateNormal];
     closeSessionButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [closeSessionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [closeSessionButton setBackgroundImage:[UIImage imageNamed:@"BotonCerrarSesion"] forState:UIControlStateNormal];
+    [closeSessionButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+    closeSessionButton.layer.cornerRadius = 5.0;
+    //[closeSessionButton setBackgroundImage:[UIImage imageNamed:@"BotonCerrarSesion"] forState:UIControlStateNormal];
     [closeSessionButton addTarget:self action:@selector(closeSession) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:closeSessionButton];
     

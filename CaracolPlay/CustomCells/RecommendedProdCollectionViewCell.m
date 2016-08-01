@@ -20,10 +20,10 @@
     if (self) {
         // Initialization code
         self.shadowView = [[UIView alloc] init];
-        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
         self.shadowView.layer.shadowOffset = CGSizeMake(4.0, 4.0);
         self.shadowView.layer.shadowOpacity = 1.0;
-        self.shadowView.layer.shadowRadius = 4.0;
+        self.shadowView.layer.shadowRadius = 4.0;*/
         [self.contentView addSubview:self.shadowView];
         
         self.cellImageView = [[UIImageView alloc] init];

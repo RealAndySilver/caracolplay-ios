@@ -36,6 +36,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 #import "UserInfo.h"
 #import "SinopsisView.h"
 #import "VideoWebViewController.h"
+#import "UIColor+AppColors.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -168,10 +169,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                   20.0,
                                                                   90.0,
                                                                   y_position)];
-    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowOpacity = 0.9;
-    shadowView.layer.shadowRadius = 5.0;
+    shadowView.layer.shadowRadius = 5.0;*/
     [self.view addSubview:shadowView];
     
     UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
@@ -207,8 +208,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                              200.0,
                                                                              30.0)];
     movieEventNameLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    movieEventNameLabel.text = self.production.name;
-    movieEventNameLabel.textColor = [UIColor whiteColor];
+    movieEventNameLabel.text = [self.production.name uppercaseString];
+    movieEventNameLabel.textColor = [UIColor caracolMediumBlueColor];
     movieEventNameLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:movieEventNameLabel];
     
@@ -218,13 +219,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    [shareButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+    [shareButton setBackgroundColor:[UIColor blackColor]];
+    //[shareButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
-    shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
     shareButton.layer.shadowOpacity = 0.8;
     shareButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-    shareButton.layer.shadowRadius = 5.0;
+    shareButton.layer.shadowRadius = 5.0;*/
     
     [self.view addSubview:shareButton];
     
@@ -245,15 +247,16 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                   90.0,
                                                                                   30.0)];
         [watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
-        [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+        [watchTrailerButton setBackgroundColor:[UIColor blackColor]];
+        //[watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
         
-        watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
         watchTrailerButton.layer.shadowOpacity = 0.8;
         watchTrailerButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-        watchTrailerButton.layer.shadowRadius = 5.0;
+        watchTrailerButton.layer.shadowRadius = 5.0;*/
         
         [self.view addSubview:watchTrailerButton];
     }
@@ -272,7 +275,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             }
             
             [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+            //[self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
             self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
             [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:self.addToMyListButton];
@@ -287,7 +291,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                 self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0)];
                 [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+                [self.watchProductionButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+                //[self.watchProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
                 self.watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
                 [self.watchProductionButton addTarget:self action:@selector(goToSuscriptionAlert) forControlEvents:UIControlEventTouchUpInside];
                 [self.view addSubview:self.watchProductionButton];
@@ -300,14 +305,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     webView.opaque=NO;
     [webView setBackgroundColor:[UIColor clearColor]];
     webView.userInteractionEnabled = NO;
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:black; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
     
     //"Ver mas" button
     UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, webView.frame.origin.y + webView.frame.size.height, 70.0, 40.0)];
     [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
-    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
     moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     
@@ -346,7 +351,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     }
     //8. Create a TableView to display the list of chapters
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, tableViewOriginY, self.view.frame.size.width, self.view.frame.size.height - tableViewOriginY - self.tabBarController.tabBar.frame.size.height) style:UITableViewStylePlain];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -386,7 +391,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                object:nil];
     //[self parseProductionInfo];
     //[self parseEpisodesInfo];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     //[self UISetup];
     [self getProductionWithID:self.serieID];
 }
@@ -433,9 +438,9 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     TelenovelSeriesTableViewCell *cell = (TelenovelSeriesTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[TelenovelSeriesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
+        /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.bounds.size.width, cell.contentView.bounds.size.height)];
         selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        cell.selectedBackgroundView = selectedView;
+        cell.selectedBackgroundView = selectedView;*/
     }
     if (indexPath.row == self.lastEpisodeSeen) {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -456,6 +461,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     //The user is logged in, so get the selected item ID
     Season *currentSeason = self.production.seasonList[self.selectedSeason];
     Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
+    NSTimeInterval currentDateInterval = [[NSDate date] timeIntervalSince1970];
+    //NSLog(@"CURRENT DATEEEEEEE: %f", currentDate);
+    
+    if (selectedEpisode.beginDate != 0 && selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
+        if (currentDateInterval <= selectedEpisode.beginDate || currentDateInterval >= selectedEpisode.endDate) {
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Este evento no está disponible en este momento" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            return;
+        }
+    }
     self.selectedEpisodeID = selectedEpisode.identifier;
     NSLog(@"selected episode id: %@", self.selectedEpisodeID);
     

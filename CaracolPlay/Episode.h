@@ -24,6 +24,8 @@
 @property (strong, nonatomic) NSString *categoryID;
 @property (strong, nonatomic) NSNumber *progressSec;
 @property (strong, nonatomic) NSString *watchedOn;
+@property (assign, nonatomic) NSTimeInterval beginDate;
+@property (assign, nonatomic) NSTimeInterval endDate;
 @property (assign, nonatomic) BOOL is3G;
 @property (assign, nonatomic) BOOL lastChapter;
 

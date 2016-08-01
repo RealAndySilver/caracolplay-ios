@@ -15,8 +15,9 @@
 #import "NSArray+NullReplacement.h"
 #import "UIColor+AppColors.h"
 
-@interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate>
+@interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) UITextField *searchTextField;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *searchResultsArray;
 @property (strong, nonatomic) NSMutableArray *searchResultsArrayWithNulls;
@@ -52,7 +53,7 @@
 }
 
 -(void)setupTableView {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 50.0 - (self.searchBar.frame.origin.y + self.searchBar.frame.size.height + 10.0)) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchTextField.frame.origin.y + self.searchTextField.frame.size.height + 10.0, self.view.frame.size.width, self.view.frame.size.height - 50.0 - (self.searchTextField.frame.origin.y + self.searchTextField.frame.size.height + 10.0)) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 130.0;
@@ -65,13 +66,42 @@
 -(void)UISetup {
     
     //1. Search bar
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 10.0, self.view.frame.size.width, 30.0)];
-    self.searchBar.translucent = YES;
+    /*self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 10.0, self.view.frame.size.width, 30.0)];
+    self.searchBar.translucent = NO;
+    self.searchBar.backgroundColor = [UIColor redColor];
     self.searchBar.delegate = self;
     self.searchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarBackground.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
-    [self.view addSubview:self.searchBar];
+    [self.view addSubview:self.searchBar];*/
+    
+    self.searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(20.0, 10.0, self.view.bounds.size.width - 40.0, 44.0)];
+    //searchTextField.backgroundColor = [UIColor redColor];
+    self.searchTextField.textColor = [UIColor darkGrayColor];
+    self.searchTextField.font = [UIFont systemFontOfSize:25.0];
+    self.searchTextField.spellCheckingType = UITextSpellCheckingTypeNo;
+    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.delegate = self;
+    self.searchTextField.placeholder = @"Buscar...";
+    [self.searchTextField addTarget:self action:@selector(textFieldTextChanged:) forControlEvents:UIControlEventEditingChanged];
+    [self.view addSubview:self.searchTextField];
+    
+    UIView *grayLine = [[UIView alloc] initWithFrame:CGRectMake(self.searchTextField.frame.origin.x, self.searchTextField.frame.origin.y + self.searchTextField.frame.size.height, self.self.searchTextField.frame.size.width, 1.0)];
+    grayLine.backgroundColor = [UIColor lightGrayColor];
+    [self.view addSubview:grayLine];
+}
+
+-(void)textFieldTextChanged:(UITextField *)textField {
+    NSLog(@"Textfield text: %@", textField.text);
+    [self.timer invalidate];
+    if ([textField.text length] > 0) {
+        [self.spinner startAnimating];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSearchResultsFromServer) userInfo:nil repeats:NO];
+    } else {
+        [self.searchResultsArray removeAllObjects];
+        [self.spinner stopAnimating];
+        [self.tableView reloadData];
+    }
 }
 
 -(void)createTapGesture {
@@ -166,7 +196,7 @@
     
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"GetListFromSearchWithKey" andParameter:self.searchBar.text];
+    [serverCommunicator callServerWithGETMethod:@"GetListFromSearchWithKey" andParameter:self.searchTextField.text];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
@@ -187,7 +217,7 @@
 
 #pragma mark - UISearchBarDelegate
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+/*-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"Cambió el texto de la barra de búsqueda");
     [self.timer invalidate];
     if ([searchBar.text length] > 0) {
@@ -202,6 +232,13 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
+}*/
+
+#pragma mark - UITextFieldDelegate 
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - Interface Orientation

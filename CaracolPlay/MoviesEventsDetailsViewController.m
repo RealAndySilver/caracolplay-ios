@@ -28,6 +28,7 @@
 #import "NSArray+NullReplacement.h"
 #import "SinopsisView.h"
 #import "VideoWebViewController.h"
+#import "UIColor+AppColors.h"
 
 static NSString *const cellIdentifier = @"CellIdentifier";
 
@@ -126,7 +127,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                  name:@"VideoShouldBeDisplayed"
                                                object:nil];
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     self.navigationItem.title = self.production.type;
     [self getProductWithID:self.productionID];
 }
@@ -169,13 +170,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     
     //8. Create a background view and set it's color to gray
     UIView *grayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, screenRect.size.height/2.0, screenRect.size.width, screenRect.size.height - 300.0 - 44.0)];
-    grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
+    //grayView.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:30.0/255.0 blue:30.0/255.0 alpha:1.0];
+    [grayView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:grayView];
     
     //9. 'Producciones recomendadas'
     UILabel *recomendedProductionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 200.0, 20.0)];
     recomendedProductionsLabel.textAlignment = NSTextAlignmentLeft;
-    recomendedProductionsLabel.textColor = [UIColor whiteColor];
+    recomendedProductionsLabel.textColor = [UIColor caracolMediumBlueColor];
     recomendedProductionsLabel.font = [UIFont boldSystemFontOfSize:13.0];
     recomendedProductionsLabel.text = @"Producciones Recomendadas";
     [grayView addSubview:recomendedProductionsLabel];
@@ -230,10 +232,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                  20.0,
                                                                  90.0,
                                                                   y_position)];
-    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowOpacity = 0.9;
-    shadowView.layer.shadowRadius = 5.0;
+    shadowView.layer.shadowRadius = 5.0;*/
     [self.view addSubview:shadowView];
     
     UIImageView *secondaryMovieEventImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
@@ -267,8 +269,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                              self.view.frame.size.width - 50.0,
                                                                              30.0)];
     movieEventNameLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    movieEventNameLabel.text = self.production.name;
-    movieEventNameLabel.textColor = [UIColor whiteColor];
+    movieEventNameLabel.text = [self.production.name uppercaseString];
+    movieEventNameLabel.textColor = [UIColor caracolMediumBlueColor];
     movieEventNameLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:movieEventNameLabel];
     
@@ -277,12 +279,13 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     [shareButton setTitle:@"Compartir" forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    [shareButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+    [shareButton setBackgroundColor:[UIColor blackColor]];
+    //[shareButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-    shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
     shareButton.layer.shadowOpacity = 0.8;
     shareButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-    shareButton.layer.shadowRadius = 5.0;
+    shareButton.layer.shadowRadius = 5.0;*/
     [self.view addSubview:shareButton];
     
     //4. Create the stars images
@@ -305,14 +308,15 @@ static NSString *const cellIdentifier = @"CellIdentifier";
                                                                                   90.0,
                                                                                   30.0)];
         [watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
-        [watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+        [watchTrailerButton setBackgroundColor:[UIColor blackColor]];
+        //[watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         [watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         [watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
         watchTrailerButton.layer.shadowOpacity = 0.8;
         watchTrailerButton.layer.shadowOffset = CGSizeMake(4.0, 4.0);
-        watchTrailerButton.layer.shadowRadius = 5.0;
+        watchTrailerButton.layer.shadowRadius = 5.0;*/
         [self.view addSubview:watchTrailerButton];
     }
     
@@ -320,7 +324,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     UIButton *watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 90.0, 30.0)];
     [watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
     [watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [watchProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+    [watchProductionButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+    //[watchProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     watchProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0];
     [watchProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:watchProductionButton];
@@ -341,7 +346,8 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             }
             
             [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+            //[self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
             self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
             [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:self.addToMyListButton];
@@ -353,14 +359,14 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     webView.opaque=NO;
     webView.userInteractionEnabled = NO;
     [webView setBackgroundColor:[UIColor clearColor]];
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:black; font-family: helvetica; font-size:14px'>%@</body></html>",self.production.detailDescription];
     [webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:webView];
     
     //"Ver mas" button
     UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(10.0, webView.frame.origin.y + webView.frame.size.height, 70.0, 30.0)];
     [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
-    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moreInfoButton];

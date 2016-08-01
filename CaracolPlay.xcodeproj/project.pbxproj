@@ -55,8 +55,6 @@
 		8B3BB05D18F742F500626720 /* FreeBand@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B3BB05B18F742F500626720 /* FreeBand@2x.png */; };
 		8B3F104A18EB74BA005FA46D /* TermsAndPrivacy.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */; };
 		8B52252718F44A18004ADD20 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B52252618F44A18004ADD20 /* UserInfo.m */; };
-		8B5CDEB31A3A3D3700C8DCFB /* libBCOVWidevine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */; };
-		8B5CDEB41A3A3D3700C8DCFB /* libWViPhoneAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */; };
 		8B5CDEB61A3A3D7600C8DCFB /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */; };
 		8B5CDEB81A3A3D8800C8DCFB /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */; };
 		8B5CDEBA1A3A3D9200C8DCFB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */; };
@@ -132,7 +130,6 @@
 		8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD52AD81892AED300792845 /* MediaPlayer.framework */; };
 		8BD52ADC1892AF6500792845 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */; };
 		8BD52ADF189320BF00792845 /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD52ADE189320BF00792845 /* MyNavigationController.m */; };
-		8BDB8B1819F6C131000B7431 /* libBCOVPlayerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */; };
 		8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */; };
 		8BDB8BC3188EB5B40066279A /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC2188EB5B40066279A /* HomeViewController.m */; };
 		8BDB8BC7188EB8130066279A /* MentirasPerfectas.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BDB8BC6188EB8130066279A /* MentirasPerfectas.jpg */; };
@@ -288,6 +285,10 @@
 		A0C0F12A18D78A400069F321 /* NewHomeOpacityPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C0F12918D78A400069F321 /* NewHomeOpacityPattern@2x.png */; };
 		A0C0F12D18D79F710069F321 /* RentContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C0F12C18D79F710069F321 /* RentContentViewController.m */; };
 		A0C449EF1D411B6C00A4BC49 /* UIColor+AppColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A0C449EE1D411B6C00A4BC49 /* UIColor+AppColors.m */; };
+		A0C944E31D4A441A00C158F4 /* BrightcovePlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C944E21D4A441A00C158F4 /* BrightcovePlayerSDK.framework */; };
+		A0C944E51D4A443800C158F4 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C944E41D4A443800C158F4 /* SafariServices.framework */; };
+		A0C944E71D4A445400C158F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C944E61D4A445400C158F4 /* WebKit.framework */; };
+		A0C944E91D4A49AF00C158F4 /* bcovpuiiconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0C944E81D4A49AF00C158F4 /* bcovpuiiconfont.ttf */; };
 		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
 		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
 		A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */; };
@@ -384,14 +385,6 @@
 		8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TermsAndPrivacy.plist; path = Plist/TermsAndPrivacy.plist; sourceTree = "<group>"; };
 		8B52252518F44A18004ADD20 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfo.h; path = Model/UserInfo.h; sourceTree = "<group>"; };
 		8B52252618F44A18004ADD20 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfo.m; path = Model/UserInfo.m; sourceTree = "<group>"; };
-		8B5CDEAA1A3A3D3700C8DCFB /* BCOVCatalogService+BCOVWidevineAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BCOVCatalogService+BCOVWidevineAdditions.h"; sourceTree = "<group>"; };
-		8B5CDEAB1A3A3D3700C8DCFB /* BCOVWidevine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevine.h; sourceTree = "<group>"; };
-		8B5CDEAC1A3A3D3700C8DCFB /* BCOVWidevineComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineComponent.h; sourceTree = "<group>"; };
-		8B5CDEAD1A3A3D3700C8DCFB /* BCOVWidevineConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineConstants.h; sourceTree = "<group>"; };
-		8B5CDEAE1A3A3D3700C8DCFB /* BCOVWidevineSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVWidevineSessionProvider.h; sourceTree = "<group>"; };
-		8B5CDEAF1A3A3D3700C8DCFB /* WViPhoneAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WViPhoneAPI.h; sourceTree = "<group>"; };
-		8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBCOVWidevine.a; sourceTree = "<group>"; };
-		8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWViPhoneAPI.a; sourceTree = "<group>"; };
 		8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -496,24 +489,6 @@
 		8BD52ADB1892AF6500792845 /* VideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerViewController.m; sourceTree = "<group>"; };
 		8BD52ADD189320BF00792845 /* MyNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNavigationController.h; sourceTree = "<group>"; };
 		8BD52ADE189320BF00792845 /* MyNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNavigationController.m; sourceTree = "<group>"; };
-		8BDB8B0419F6C0CB000B7431 /* BCOVBasicSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVBasicSessionProvider.h; sourceTree = "<group>"; };
-		8BDB8B0519F6C0CB000B7431 /* BCOVCatalogConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCatalogConstants.h; sourceTree = "<group>"; };
-		8BDB8B0619F6C0CB000B7431 /* BCOVCatalogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCatalogService.h; sourceTree = "<group>"; };
-		8BDB8B0719F6C0CB000B7431 /* BCOVCuePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePoint.h; sourceTree = "<group>"; };
-		8BDB8B0819F6C0CB000B7431 /* BCOVCuePointCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePointCollection.h; sourceTree = "<group>"; };
-		8BDB8B0919F6C0CB000B7431 /* BCOVCuePointProgressPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVCuePointProgressPolicy.h; sourceTree = "<group>"; };
-		8BDB8B0A19F6C0CB000B7431 /* BCOVDelegatingSessionConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVDelegatingSessionConsumer.h; sourceTree = "<group>"; };
-		8BDB8B0B19F6C0CB000B7431 /* BCOVMediaRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVMediaRequestFactory.h; sourceTree = "<group>"; };
-		8BDB8B0C19F6C0CB000B7431 /* BCOVPlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackController.h; sourceTree = "<group>"; };
-		8BDB8B0D19F6C0CB000B7431 /* BCOVPlaybackSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackSession.h; sourceTree = "<group>"; };
-		8BDB8B0E19F6C0CB000B7431 /* BCOVPlaybackSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaybackSessionProvider.h; sourceTree = "<group>"; };
-		8BDB8B0F19F6C0CB000B7431 /* BCOVPlayerSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlayerSDK.h; sourceTree = "<group>"; };
-		8BDB8B1019F6C0CB000B7431 /* BCOVPlayerSDKManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlayerSDKManager.h; sourceTree = "<group>"; };
-		8BDB8B1119F6C0CB000B7431 /* BCOVPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVPlaylist.h; sourceTree = "<group>"; };
-		8BDB8B1219F6C0CB000B7431 /* BCOVSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVSource.h; sourceTree = "<group>"; };
-		8BDB8B1319F6C0CB000B7431 /* BCOVVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCOVVideo.h; sourceTree = "<group>"; };
-		8BDB8B1419F6C0CB000B7431 /* NSDictionary+BCOVURLSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+BCOVURLSupport.h"; sourceTree = "<group>"; };
-		8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBCOVPlayerSDK.a; sourceTree = "<group>"; };
 		8BDB8BBE188EB5610066279A /* MainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarViewController.h; sourceTree = "<group>"; };
 		8BDB8BBF188EB5610066279A /* MainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarViewController.m; sourceTree = "<group>"; };
 		8BDB8BC1188EB5B40066279A /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -725,6 +700,10 @@
 		A0C0F12C18D79F710069F321 /* RentContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentContentViewController.m; sourceTree = "<group>"; };
 		A0C449ED1D411B6C00A4BC49 /* UIColor+AppColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+AppColors.h"; path = "Categories/UIColor+AppColors.h"; sourceTree = "<group>"; };
 		A0C449EE1D411B6C00A4BC49 /* UIColor+AppColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+AppColors.m"; path = "Categories/UIColor+AppColors.m"; sourceTree = "<group>"; };
+		A0C944E21D4A441A00C158F4 /* BrightcovePlayerSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BrightcovePlayerSDK.framework; sourceTree = "<group>"; };
+		A0C944E41D4A443800C158F4 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		A0C944E61D4A445400C158F4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		A0C944E81D4A49AF00C158F4 /* bcovpuiiconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = bcovpuiiconfont.ttf; path = CaracolPlay/bcovpuiiconfont.ttf; sourceTree = "<group>"; };
 		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
 		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
 		A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsMasterPadViewController.h; path = iPadVC/MyListsMasterPadViewController.h; sourceTree = "<group>"; };
@@ -742,19 +721,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0C944E71D4A445400C158F4 /* WebKit.framework in Frameworks */,
+				A0C944E51D4A443800C158F4 /* SafariServices.framework in Frameworks */,
 				8B5CDEBA1A3A3D9200C8DCFB /* libz.dylib in Frameworks */,
 				8B5CDEB81A3A3D8800C8DCFB /* libSystem.dylib in Frameworks */,
 				8B5CDEB61A3A3D7600C8DCFB /* libresolv.dylib in Frameworks */,
-				8BDB8B1819F6C131000B7431 /* libBCOVPlayerSDK.a in Frameworks */,
 				A05AC44B18D0F5B000445063 /* MessageUI.framework in Frameworks */,
 				8BED8A8818C62A8A0076EA26 /* StoreKit.framework in Frameworks */,
 				8BE7A37B189AF72A00AF8E90 /* Social.framework in Frameworks */,
-				8B5CDEB41A3A3D3700C8DCFB /* libWViPhoneAPI.a in Frameworks */,
 				A05C44971899CEF000E72135 /* Accelerate.framework in Frameworks */,
-				8B5CDEB31A3A3D3700C8DCFB /* libBCOVWidevine.a in Frameworks */,
 				A05C448F1899CA2800E72135 /* QuartzCore.framework in Frameworks */,
 				8BD52AD91892AED300792845 /* MediaPlayer.framework in Frameworks */,
 				8BD52AD71892AECF00792845 /* CoreText.framework in Frameworks */,
+				A0C944E31D4A441A00C158F4 /* BrightcovePlayerSDK.framework in Frameworks */,
 				8BD52AD51892AEC400792845 /* AVFoundation.framework in Frameworks */,
 				8BD52AD31892AEBC00792845 /* CoreMedia.framework in Frameworks */,
 				8BD52AD11892AEB800792845 /* Security.framework in Frameworks */,
@@ -784,6 +763,8 @@
 		755DB14C188DEE2C00E5C636 = {
 			isa = PBXGroup;
 			children = (
+				A0C944E81D4A49AF00C158F4 /* bcovpuiiconfont.ttf */,
+				A0C944E21D4A441A00C158F4 /* BrightcovePlayerSDK.framework */,
 				755DB15E188DEE2C00E5C636 /* CaracolPlay */,
 				755DB180188DEE2C00E5C636 /* CaracolPlayTests */,
 				755DB157188DEE2C00E5C636 /* Frameworks */,
@@ -803,6 +784,8 @@
 		755DB157188DEE2C00E5C636 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A0C944E61D4A445400C158F4 /* WebKit.framework */,
+				A0C944E41D4A443800C158F4 /* SafariServices.framework */,
 				8B5CDEB91A3A3D9200C8DCFB /* libz.dylib */,
 				8B5CDEB71A3A3D8800C8DCFB /* libSystem.dylib */,
 				8B5CDEB51A3A3D7600C8DCFB /* libresolv.dylib */,
@@ -833,8 +816,6 @@
 		755DB15E188DEE2C00E5C636 /* CaracolPlay */ = {
 			isa = PBXGroup;
 			children = (
-				8B5CDEA81A3A3D3700C8DCFB /* Widevine */,
-				8BDB8B0219F6C0CB000B7431 /* BrightCove */,
 				8B1DB00318F33F0100C06A53 /* iAmCoder */,
 				8B3F104818EB7484005FA46D /* Plist */,
 				A049E32918D270B20040E051 /* ServerCommunicator */,
@@ -962,37 +943,6 @@
 				8B3F104918EB74BA005FA46D /* TermsAndPrivacy.plist */,
 			);
 			name = Plist;
-			sourceTree = "<group>";
-		};
-		8B5CDEA81A3A3D3700C8DCFB /* Widevine */ = {
-			isa = PBXGroup;
-			children = (
-				8B5CDEA91A3A3D3700C8DCFB /* Headers */,
-				8B5CDEB01A3A3D3700C8DCFB /* Library */,
-			);
-			path = Widevine;
-			sourceTree = "<group>";
-		};
-		8B5CDEA91A3A3D3700C8DCFB /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				8B5CDEAA1A3A3D3700C8DCFB /* BCOVCatalogService+BCOVWidevineAdditions.h */,
-				8B5CDEAB1A3A3D3700C8DCFB /* BCOVWidevine.h */,
-				8B5CDEAC1A3A3D3700C8DCFB /* BCOVWidevineComponent.h */,
-				8B5CDEAD1A3A3D3700C8DCFB /* BCOVWidevineConstants.h */,
-				8B5CDEAE1A3A3D3700C8DCFB /* BCOVWidevineSessionProvider.h */,
-				8B5CDEAF1A3A3D3700C8DCFB /* WViPhoneAPI.h */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
-		8B5CDEB01A3A3D3700C8DCFB /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				8B5CDEB11A3A3D3700C8DCFB /* libBCOVWidevine.a */,
-				8B5CDEB21A3A3D3700C8DCFB /* libWViPhoneAPI.a */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		8B67769F1896F860006E2241 /* Views */ = {
@@ -1194,47 +1144,6 @@
 				8BB5221918AA91A10027CA59 /* CategoriesDetailPadViewController.m */,
 			);
 			name = SplitViewController;
-			sourceTree = "<group>";
-		};
-		8BDB8B0219F6C0CB000B7431 /* BrightCove */ = {
-			isa = PBXGroup;
-			children = (
-				8BDB8B0319F6C0CB000B7431 /* Headers */,
-				8BDB8B1519F6C0CB000B7431 /* Library */,
-			);
-			path = BrightCove;
-			sourceTree = "<group>";
-		};
-		8BDB8B0319F6C0CB000B7431 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				8BDB8B0419F6C0CB000B7431 /* BCOVBasicSessionProvider.h */,
-				8BDB8B0519F6C0CB000B7431 /* BCOVCatalogConstants.h */,
-				8BDB8B0619F6C0CB000B7431 /* BCOVCatalogService.h */,
-				8BDB8B0719F6C0CB000B7431 /* BCOVCuePoint.h */,
-				8BDB8B0819F6C0CB000B7431 /* BCOVCuePointCollection.h */,
-				8BDB8B0919F6C0CB000B7431 /* BCOVCuePointProgressPolicy.h */,
-				8BDB8B0A19F6C0CB000B7431 /* BCOVDelegatingSessionConsumer.h */,
-				8BDB8B0B19F6C0CB000B7431 /* BCOVMediaRequestFactory.h */,
-				8BDB8B0C19F6C0CB000B7431 /* BCOVPlaybackController.h */,
-				8BDB8B0D19F6C0CB000B7431 /* BCOVPlaybackSession.h */,
-				8BDB8B0E19F6C0CB000B7431 /* BCOVPlaybackSessionProvider.h */,
-				8BDB8B0F19F6C0CB000B7431 /* BCOVPlayerSDK.h */,
-				8BDB8B1019F6C0CB000B7431 /* BCOVPlayerSDKManager.h */,
-				8BDB8B1119F6C0CB000B7431 /* BCOVPlaylist.h */,
-				8BDB8B1219F6C0CB000B7431 /* BCOVSource.h */,
-				8BDB8B1319F6C0CB000B7431 /* BCOVVideo.h */,
-				8BDB8B1419F6C0CB000B7431 /* NSDictionary+BCOVURLSupport.h */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
-		8BDB8B1519F6C0CB000B7431 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				8BDB8B1619F6C0CB000B7431 /* libBCOVPlayerSDK.a */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		8BDB8BBC188EB5080066279A /* Main */ = {
@@ -1850,6 +1759,7 @@
 				8BE7A371189AEF4C00AF8E90 /* SearchTabBarIcon.png in Resources */,
 				8BB5222A18AAA62E0027CA59 /* HomeScreenPlaceholder@2x.png in Resources */,
 				8B223A4E18C0F82100AC0A33 /* Checkmark@2x.png in Resources */,
+				A0C944E91D4A49AF00C158F4 /* bcovpuiiconfont.ttf in Resources */,
 				A0A9B77118A301A000D6D222 /* PlayIcon.png in Resources */,
 				8BA9B26E18A0078F003DBBDC /* BotonRedimirPad@2x.png in Resources */,
 				A0A9B76718A2EB6A00D6D222 /* Escobar.jpg in Resources */,
@@ -2198,6 +2108,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
@@ -2231,6 +2142,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";
@@ -2347,6 +2259,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/developer/caracolplay,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CaracolPlay/CaracolPlay-Prefix.pch";

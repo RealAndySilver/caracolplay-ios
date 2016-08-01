@@ -24,22 +24,22 @@
     if (self) {
         // Initialization code
         //self.backgroundColor = [UIColor colorWithRed:40.0/255.0 green:40.0/255.0 blue:40.0/255.0 alpha:1.0];
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor whiteColor];
         
         self.capLabel = [[UILabel alloc] init];
         self.capLabel.text = @"Cap";
-        self.capLabel.textColor = [UIColor whiteColor];
+        self.capLabel.textColor = [UIColor blackColor];
         self.capLabel.font = [UIFont boldSystemFontOfSize:12.0];
         [self.contentView addSubview:self.capLabel];
         
         self.chapterNumberLabel = [[UILabel alloc] init];
-        self.chapterNumberLabel.textColor = [UIColor whiteColor];
+        self.chapterNumberLabel.textColor = [UIColor blackColor];
         self.chapterNumberLabel.font = [UIFont boldSystemFontOfSize:20.0];
         self.chapterNumberLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:self.chapterNumberLabel];
         
         self.chapterNameLabel = [[UILabel alloc] init];
-        self.chapterNameLabel.textColor = [UIColor whiteColor];
+        self.chapterNameLabel.textColor = [UIColor darkGrayColor];
         self.chapterNameLabel.font = [UIFont boldSystemFontOfSize:14.0];
         [self.contentView addSubview:self.chapterNameLabel];
         
