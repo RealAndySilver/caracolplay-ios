@@ -144,7 +144,7 @@
     rentedTableView.dataSource = self;
     rentedTableView.tag = 3;
     rentedTableView.backgroundColor = [UIColor whiteColor];
-    rentedTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    //rentedTableView.separatorColor = [UIColor colorWithWhite:1.0 alpha:0.3];
     rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.scrollView addSubview:rentedTableView];
     
@@ -262,16 +262,16 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:suscriptionInfoCellIdentifier];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:suscriptionInfoCellIdentifier];
-            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
+            /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-            cell.selectedBackgroundView = selectedView;
+            cell.selectedBackgroundView = selectedView;*/
         }
         
         NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
         cell.textLabel.text = rentedProductionInfo[@"name"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.backgroundColor = [UIColor clearColor];
 
         return cell;

@@ -50,27 +50,27 @@
         self.starsView = [[UIView alloc] init];
         [self.contentView addSubview:self.starsView];
         
-        self.star1 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*1, 0.0, 20.0, 20.0)];
+        self.star1 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*0, 0.0, 20.0, 20.0)];
         self.star1.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star1.tag = 1;
         [self.starsView addSubview:self.star1];
         
-        self.star2 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*2, 0.0, 20.0, 20.0)];
+        self.star2 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*1, 0.0, 20.0, 20.0)];
         self.star2.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star2.tag = 2;
         [self.starsView addSubview:self.star2];
         
-        self.star3 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*3, 0.0, 20.0, 20.0)];
+        self.star3 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*2, 0.0, 20.0, 20.0)];
         self.star3.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star3.tag = 3;
         [self.starsView addSubview:self.star3];
         
-        self.star4 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*4, 0.0, 20.0, 20.0)];
+        self.star4 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*3, 0.0, 20.0, 20.0)];
         self.star4.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star4.tag = 4;
         [self.starsView addSubview:self.star4];
         
-        self.star5 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*5, 0.0, 20.0, 20.0)];
+        self.star5 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*4, 0.0, 20.0, 20.0)];
         self.star5.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star5.tag = 5;
         [self.starsView addSubview:self.star5];

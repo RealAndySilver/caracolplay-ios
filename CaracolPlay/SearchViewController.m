@@ -167,12 +167,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Elegí uno de los resultados");
-    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"]) {
+    if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Series"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Telenovelas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Noticias"] || [[self.searchResultsArray[indexPath.row][@"type"] lowercaseString] containsString:@"evento"]) {
         TelenovelSeriesDetailViewController *telenovelSeriesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesVC.serieID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:telenovelSeriesVC animated:YES];
     
-    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    }else if ([self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Películas"] || [self.searchResultsArray[indexPath.row][@"type"] isEqualToString:@"Documentales"]) {
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = self.searchResultsArray[indexPath.row][@"id"];
         [self.navigationController pushViewController:movieEventDetailsVC animated:YES];
@@ -202,7 +202,7 @@
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [self.spinner stopAnimating];
     if ([methodName isEqualToString:@"GetListFromSearchWithKey"] && responseDictionary) {
-        //NSLog(@"La petición fue exitosa: %@", responseDictionary);
+        NSLog(@"La petición fue exitosa: %@", responseDictionary);
         self.searchResultsArrayWithNulls = [NSMutableArray arrayWithArray:responseDictionary[@"products"]];
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
