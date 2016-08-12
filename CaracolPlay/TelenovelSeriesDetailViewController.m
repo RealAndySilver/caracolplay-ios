@@ -54,6 +54,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) StarsView *starsView;
 @property (assign, nonatomic) NSUInteger selectedSeason;
 @property (strong, nonatomic) UIButton *addToMyListButton;
+@property (strong, nonatomic) Episode *selectedEpisode;
 
 //BOOL that indicates if the view controller received a notification
 //indicating that ith has to display the production video automaticly
@@ -460,17 +461,17 @@ static NSString *const cellIdentifier = @"CellIdentifier";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //The user is logged in, so get the selected item ID
     Season *currentSeason = self.production.seasonList[self.selectedSeason];
-    Episode *selectedEpisode = currentSeason.episodes[indexPath.row];
+    self.selectedEpisode = currentSeason.episodes[indexPath.row];
     NSTimeInterval currentDateInterval = [[NSDate date] timeIntervalSince1970];
     //NSLog(@"CURRENT DATEEEEEEE: %f", currentDate);
     
-    if (selectedEpisode.beginDate != 0 && selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
+    /*if (selectedEpisode.beginDate != 0 && selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
         if (currentDateInterval <= selectedEpisode.beginDate || currentDateInterval >= selectedEpisode.endDate) {
             [[[UIAlertView alloc] initWithTitle:@"" message:@"Este evento no está disponible en este momento" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             return;
         }
-    }
-    self.selectedEpisodeID = selectedEpisode.identifier;
+    }*/
+    self.selectedEpisodeID = self.selectedEpisode.identifier;
     NSLog(@"selected episode id: %@", self.selectedEpisodeID);
     
     //Check if the user is logged in.
@@ -480,7 +481,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         [self goToSuscriptionAlertVCWithEpisodeID:self.selectedEpisodeID productionName:self.production.name];
         
     } else {
-        [self getIsContentAvailableForUserWithID:selectedEpisode.identifier];
+        [self getIsContentAvailableForUserWithID:self.selectedEpisode.identifier];
     }
 }
 
@@ -657,10 +658,10 @@ static NSString *const cellIdentifier = @"CellIdentifier";
         } else if (status == ReachableViaWiFi) {
             //The user can watch the video
             if ([productionType containsString:@"evento"]) {
-                if (self.production.isWebView == YES) {
+                if (self.selectedEpisode.isWebView == YES) {
                     //We should open this event in a WebView, not in WideVine
                     VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
-                    videoWebViewVC.videoUrlString = self.production.webviewUrl;
+                    videoWebViewVC.videoUrlString = self.selectedEpisode.alias;
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:videoWebViewVC];
                     [self.tabBarController presentViewController:navController animated:YES completion:nil];

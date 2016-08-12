@@ -313,14 +313,21 @@
                                        @"MyLists": [UserInfo sharedInstance].myListIds,
                                        @"Session" : dictionary[@"session"],
                                        @"UserID" : dictionary[@"uid"],
-                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue])
+                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue]),
+                                       @"Session_Key" : dictionary[@"session_key"],
+                                       @"Session_Expires" : dictionary[@"session_expires"]
                                        } withKey:@"UserHasLoginDic"];
             
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
+            [UserInfo sharedInstance].sessionKey = dictionary[@"session_key"];
+            int expiresTimestamp = [dictionary[@"session_expires"] intValue];
+            [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:expiresTimestamp];
+            NSLog(@"UserInfoSessionExpires: %@", [UserInfo sharedInstance].session_expires);
             //[UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
-            [UserInfo sharedInstance].isSubscription = @YES;
-            NSLog(@"is_suscription: %hhd", [UserInfo sharedInstance].isSubscription);
+            [UserInfo sharedInstance].isSubscription = YES;
+            NSLog(@"is_suscription: %i", [UserInfo sharedInstance].isSubscription);
+            [[UserInfo sharedInstance] setAuthCookieForWebView];
             
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];

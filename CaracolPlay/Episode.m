@@ -30,6 +30,12 @@
         _lastChapter = [dictionary[@"last_chapter"] boolValue];
         _beginDate = [dictionary[@"date_event"][@"begin"] doubleValue];
         _endDate = [dictionary[@"date_event"][@"end"] doubleValue];
+        if (dictionary[@"is_webview"] == nil || dictionary[@"is_webview"] == [NSNull null]) {
+            _isWebView = NO;
+        } else {
+            _isWebView = [dictionary[@"is_webview"] boolValue];
+        }
+        _alias = dictionary[@"alias"];
     }
     return self;
 }

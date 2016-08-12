@@ -16,7 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://www.caracolplay.com/%@", self.videoUrlString]]]];
+    [self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://premium.icck.net/%@", self.videoUrlString]]]];
+    NSLog(@"ViewWebViewController: Opening: http://www.caracolplay.com/%@", self.videoUrlString);
+    //[self.webView loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:@"http://www.caracolplay.com"]]];
 }
 
 - (IBAction)dismissVC:(id)sender {

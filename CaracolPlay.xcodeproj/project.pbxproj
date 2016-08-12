@@ -289,6 +289,8 @@
 		A0C944E51D4A443800C158F4 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C944E41D4A443800C158F4 /* SafariServices.framework */; };
 		A0C944E71D4A445400C158F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C944E61D4A445400C158F4 /* WebKit.framework */; };
 		A0C944E91D4A49AF00C158F4 /* bcovpuiiconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0C944E81D4A49AF00C158F4 /* bcovpuiiconfont.ttf */; };
+		A0CBA0221D5397C100FC1618 /* SuscriptionWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0CBA0211D5397C100FC1618 /* SuscriptionWelcomeViewController.m */; };
+		A0CBA0261D53A5D300FC1618 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A0CBA0251D53A5D300FC1618 /* TTTAttributedLabel.m */; };
 		A0CC06C918AC305B0051097F /* SmallPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C718AC305B0051097F /* SmallPlaceholder.png */; };
 		A0CC06CA18AC305B0051097F /* SmallPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */; };
 		A0D1DBC618AEDBB0007A434F /* MyListsMasterPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC518AEDBB0007A434F /* MyListsMasterPadViewController.m */; };
@@ -704,6 +706,10 @@
 		A0C944E41D4A443800C158F4 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		A0C944E61D4A445400C158F4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		A0C944E81D4A49AF00C158F4 /* bcovpuiiconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = bcovpuiiconfont.ttf; path = CaracolPlay/bcovpuiiconfont.ttf; sourceTree = "<group>"; };
+		A0CBA0201D5397C100FC1618 /* SuscriptionWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuscriptionWelcomeViewController.h; sourceTree = "<group>"; };
+		A0CBA0211D5397C100FC1618 /* SuscriptionWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuscriptionWelcomeViewController.m; sourceTree = "<group>"; };
+		A0CBA0241D53A5D300FC1618 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		A0CBA0251D53A5D300FC1618 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		A0CC06C718AC305B0051097F /* SmallPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallPlaceholder.png; path = Resources/Images/SmallPlaceholder.png; sourceTree = "<group>"; };
 		A0CC06C818AC305B0051097F /* SmallPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SmallPlaceholder@2x.png"; path = "Resources/Images/SmallPlaceholder@2x.png"; sourceTree = "<group>"; };
 		A0D1DBC418AEDBB0007A434F /* MyListsMasterPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyListsMasterPadViewController.h; path = iPadVC/MyListsMasterPadViewController.h; sourceTree = "<group>"; };
@@ -993,6 +999,8 @@
 		8B70019718A05402000B5C7B /* iPhone ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A0CBA0201D5397C100FC1618 /* SuscriptionWelcomeViewController.h */,
+				A0CBA0211D5397C100FC1618 /* SuscriptionWelcomeViewController.m */,
 				A056721D18FC628100D4B04A /* Video */,
 				A095A04418B54617004F05BB /* Alerts ViewControllers */,
 				8BE8292E189BFD32003EE7A6 /* Loading & Login  */,
@@ -1160,10 +1168,10 @@
 		8BDB8BBD188EB5110066279A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8B70019718A05402000B5C7B /* iPhone ViewControllers */,
-				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
 				A08656BD1D0EE66B004D96AF /* VideoWebViewController.h */,
 				A08656BE1D0EE66B004D96AF /* VideoWebViewController.m */,
+				8B70019718A05402000B5C7B /* iPhone ViewControllers */,
+				8BE7FDE1189819740087A7E2 /* iPad ViewControllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1342,6 +1350,7 @@
 		8BED8A8218C629B90076EA26 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A0CBA0231D53A5D300FC1618 /* TTTAttributedLabel */,
 				A056721918FC61BC00D4B04A /* MBProgressHUD */,
 				A05C44921899CEA700E72135 /* FXBlurView */,
 				8B7001A418A05AC3000B5C7B /* iCarousel */,
@@ -1604,6 +1613,15 @@
 			name = "Video Player";
 			sourceTree = "<group>";
 		};
+		A0CBA0231D53A5D300FC1618 /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				A0CBA0241D53A5D300FC1618 /* TTTAttributedLabel.h */,
+				A0CBA0251D53A5D300FC1618 /* TTTAttributedLabel.m */,
+			);
+			path = TTTAttributedLabel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1853,6 +1871,7 @@
 				A0A9B76518A2E86F00D6D222 /* SeriesDetailPadViewController.m in Sources */,
 				A095A05918B565A5004F05BB /* SuscriptionConfirmationViewController.m in Sources */,
 				8BDB8BC0188EB5610066279A /* MainTabBarViewController.m in Sources */,
+				A0CBA0221D5397C100FC1618 /* SuscriptionWelcomeViewController.m in Sources */,
 				A0A9B77618A3047400D6D222 /* SearchPadViewController.m in Sources */,
 				8B64F80018BC0086007E3C06 /* AddToListView.m in Sources */,
 				A049E33018D27FA80040E051 /* NSDictionary+NullReplacement.m in Sources */,
@@ -1914,6 +1933,7 @@
 				8B892B2818B27F4A0066926C /* MyListsPadTableViewCell.m in Sources */,
 				8BEE1B4C18C4EE01004559EF /* SearchPadCollectionViewCell.m in Sources */,
 				8B67769C1896DB7C006E2241 /* SuscriptionFormViewController.m in Sources */,
+				A0CBA0261D53A5D300FC1618 /* TTTAttributedLabel.m in Sources */,
 				8BE79D3818A15AB80049B64B /* MovieDetailsPadViewController.m in Sources */,
 				8B7000B418A03FFE000B5C7B /* RedeemCodePadViewController.m in Sources */,
 				A053521A18F6077400BF9578 /* RedeemCodeFormViewController.m in Sources */,
@@ -2125,7 +2145,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				PROVISIONING_PROFILE = "397e893d-d4d3-467c-975f-26298f55dc24";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -2136,7 +2156,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2159,7 +2179,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				PROVISIONING_PROFILE = "397e893d-d4d3-467c-975f-26298f55dc24";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -2253,7 +2273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2276,7 +2296,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "920a0aba-61a7-4c15-bb24-488a72ab89b0";
+				PROVISIONING_PROFILE = "397e893d-d4d3-467c-975f-26298f55dc24";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;

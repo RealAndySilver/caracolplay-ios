@@ -14,8 +14,11 @@
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSMutableArray *myListIds; //Of String
 @property (strong, nonatomic) NSString *session;
+@property (strong, nonatomic) NSString *sessionKey;
+@property (strong, nonatomic) NSDate *session_expires;
 @property (assign, nonatomic) NSUInteger *region;
 @property (assign, nonatomic) BOOL isSubscription;
 +(UserInfo *)sharedInstance;
 -(void)persistUserLists;
+-(void)setAuthCookieForWebView;
 @end

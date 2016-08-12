@@ -201,9 +201,9 @@
     // Invalidate the automatic scrolling timer
     [self.automaticScrollTimer invalidate];
     self.automaticScrollTimer = nil;
-    
     Featured *featuredProduction = self.parsedFeaturedProductions[self.pageControl.currentPage];
-    
+    NSLog(@"Production type: %@", featuredProduction.type);
+
     if (featuredProduction.isCampaign) {
         NSLog(@"el producto es campaña");
         //If the item is a campaign, we have to open a url externally
@@ -216,13 +216,13 @@
         return;
     }
     
-    if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"] || [featuredProduction.type isEqualToString:@"Noticias"]) {
+    if ([featuredProduction.type isEqualToString:@"Series"] || [featuredProduction.type isEqualToString:@"Telenovelas"] || [featuredProduction.type isEqualToString:@"Noticias"] || [[featuredProduction.type lowercaseString] containsString:@"evento"] || [[featuredProduction.type lowercaseString] containsString:@"reality"]) {
         //The production is a serie
         TelenovelSeriesDetailViewController *telenovelSeriesDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"TelenovelSeries"];
         telenovelSeriesDetailVC.serieID = featuredProduction.identifier;
         [self.navigationController pushViewController:telenovelSeriesDetailVC animated:YES];
         
-    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Documentales"] || [featuredProduction.type isEqualToString:@"Eventos en vivo"]) {
+    } else if ([featuredProduction.type isEqualToString:@"Películas"] || [featuredProduction.type isEqualToString:@"Documentales"]) {
         //The production is a movie, news or live event
         MoviesEventsDetailsViewController *movieEventDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieEventDetails"];
         movieEventDetailsVC.productionID = featuredProduction.identifier;

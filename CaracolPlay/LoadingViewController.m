@@ -54,10 +54,14 @@
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
         [UserInfo sharedInstance].userID = userDic[@"UserID"];
+        [UserInfo sharedInstance].sessionKey = userDic[@"Session_Key"];
+        int sessionExpires = [userDic[@"Session_Expires"] intValue];
+        [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:sessionExpires];
         [UserInfo sharedInstance].myListIds = [[NSMutableArray alloc] initWithArray:userDic[@"MyLists"]];
-        NSLog(@"LoadingViewController: my lists: %@", userDic[@"MyLists"]);
+        NSLog(@"LoadingViewController: Session expires: %@, Session key: %@", [UserInfo sharedInstance].session_expires, [UserInfo sharedInstance].sessionKey);
         //[UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
-        [UserInfo sharedInstance].isSubscription = @YES;
+        [UserInfo sharedInstance].isSubscription = YES;
+        [[UserInfo sharedInstance] setAuthCookieForWebView];
         
         //The user is login, so go to the home screen directly
         MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
@@ -65,10 +69,13 @@
         
     } else {
         //The user isn't login, so go to the login screen.
-        LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+        /*LoginViewController *loginVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
         MyNavigationController *navigationController = [[MyNavigationController alloc] initWithRootViewController:loginVC];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:navigationController animated:YES completion:nil];
+        [self presentViewController:navigationController animated:YES completion:nil];*/
+        MainTabBarViewController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        mainTabBarVC.userDidSkipRegisterProcess = YES;
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];
     }
 }
 

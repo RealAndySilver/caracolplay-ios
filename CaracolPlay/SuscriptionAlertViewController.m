@@ -14,6 +14,7 @@
 #import "RentContentFormViewController.h"
 #import "RedeemCodeFormViewController.h"
 #import "ValidateCodeViewController.h"
+#import "SuscriptionWelcomeViewController.h"
 
 @interface SuscriptionAlertViewController ()
 
@@ -93,7 +94,7 @@
     [self.view addSubview:enterButton];
     
     //'Alquilar' button setup
-    if (self.viewType == 1 || self.viewType == 3) {
+    /*if (self.viewType == 1 || self.viewType == 3) {
         CGRect rentButtonFrame;
         if (self.viewType != 3) {
             rentButtonFrame = CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/1.44, 160.0, 40.0);
@@ -109,7 +110,7 @@
         rentButton.layer.borderColor = [UIColor whiteColor].CGColor;
         //[rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         [self.view addSubview:rentButton];
-    }
+    }*/
     
     if (self.viewType == 2 || self.viewType == 3) {
         // 'Suscribete' button setup
@@ -166,9 +167,12 @@
 }
 
 -(void)goToSuscribeViewController {
-    SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
+    /*SuscriptionFormViewController *suscriptionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Suscription"];
     suscriptionViewController.controllerWasPresentedFromProductionScreen = YES;
-    [self.navigationController pushViewController:suscriptionViewController animated:YES];
+    [self.navigationController pushViewController:suscriptionViewController animated:YES];*/
+    
+    SuscriptionWelcomeViewController *suscriptionWelcomeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionWelcome"];
+    [self.navigationController pushViewController:suscriptionWelcomeVC animated:YES];
 }
 
 #pragma mark - Interface Orientation

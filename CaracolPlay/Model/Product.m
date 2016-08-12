@@ -14,7 +14,11 @@
     if (self = [super init]) {
         _name = dictionary[@"name"];
         _type = dictionary[@"type"];
-        _rate = dictionary[@"rate"];
+        if (dictionary[@"rate"] == nil || dictionary[@"rate"] == [NSNull null]) {
+            _rate = @0;
+        } else {
+            _rate = dictionary[@"rate"];
+        }
         _categoryID = dictionary[@"category_id"];
         _identifier = dictionary[@"id"];
         _imageURL = dictionary[@"image_url"];
@@ -26,7 +30,11 @@
         _free = dictionary[@"free"];
         _statusRent = [dictionary[@"status_rent"] boolValue];
         _viewType = [dictionary[@"type_view"] intValue];
-        _isWebView = [dictionary[@"is_webview"] boolValue];
+        if (dictionary[@"is_webview"] == nil || dictionary[@"is_webview"] == [NSNull null]) {
+            _isWebView = NO;
+        } else {
+            _isWebView = [dictionary[@"is_webview"] boolValue];
+        }
         _webviewUrl = dictionary[@"alias"];
     }
     return self;

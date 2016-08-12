@@ -20,6 +20,7 @@
 #import "MBProgressHUD.h"
 #import "ValidateCodeViewController.h"
 #import "UserDefaultsSaver.h"
+#import "SuscriptionWelcomeViewController.h"
 
 @interface ContentNotAvailableForUserViewController () <ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) NSString *transactionID;
@@ -73,10 +74,15 @@
     // 1. Background image
     CGRect screenFrame = [UIScreen mainScreen].bounds;
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:screenFrame];
-    backgroundImageView.image = [UIImage imageNamed:@"SuscriptionAlertBackground.png"];
+    backgroundImageView.image = [UIImage imageNamed:@"NewBackgroundNoLogo"];
     backgroundImageView.clipsToBounds = YES;
     backgroundImageView.contentMode = UIViewContentModeScaleToFill;
     [self.view addSubview:backgroundImageView];
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(60.0, self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height + 20.0, self.view.bounds.size.width - 120.0, 100.0)];
+    logoImageView.image = [UIImage imageNamed:@"CaracolPlayWhiteText"];
+    logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:logoImageView];
     
     // 2. textview setup
     UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(20.0, screenFrame.size.height/2 - 40.0, screenFrame.size.width - 40.0, 100.0)];
@@ -89,7 +95,7 @@
     [self.view addSubview:detailTextView];
     
     //'Alquilar' button setup
-    if (self.viewType == 1 || self.viewType == 3) {
+    /*if (self.viewType == 1 || self.viewType == 3) {
         UIButton *rentButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.73, 200.0, 44.0)];
         [rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
         [rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -97,15 +103,17 @@
         rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         [self.view addSubview:rentButton];
-    }
+    }*/
     
     if (self.viewType == 2 || self.viewType == 3) {
         // 'Suscribete' button setup
         UIButton *suscribeButton = [[UIButton alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 100.0, screenFrame.size.height/1.47, 200.0, 44.0)];
         [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        suscribeButton.layer.borderWidth = 1.0;
+        suscribeButton.layer.borderColor = [UIColor whiteColor].CGColor;
         [suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
-        [suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        //[suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.view addSubview:suscribeButton];
     }
@@ -132,10 +140,13 @@
 }
 
 -(void)startSubscriptionProcess {
-    self.userSelectedRedeemOption = NO;
+    /*self.userSelectedRedeemOption = NO;
     self.userSelectedSubscribeOption = YES;
     self.userSelectedRentOption = NO;
-    [self authenticateUser];
+    [self authenticateUser];*/
+    
+    SuscriptionWelcomeViewController *suscriptionWelcomeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionWelcome"];
+    [self.navigationController pushViewController:suscriptionWelcomeVC animated:YES];
 }
 
 -(void)goToRedeemCodeFromContentNotAvailable {
