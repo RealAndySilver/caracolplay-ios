@@ -351,7 +351,11 @@ static NSString *const cellIdentifier = @"CellIdentifier";
             self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
             [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:self.addToMyListButton];
+        } else {
+            watchProductionButton.frame = CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0);
         }
+    } else {
+         watchProductionButton.frame = CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0);
     }
     
     //Sinopsis webview

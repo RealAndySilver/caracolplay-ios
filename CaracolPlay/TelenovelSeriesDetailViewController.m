@@ -465,12 +465,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     NSTimeInterval currentDateInterval = [[NSDate date] timeIntervalSince1970];
     //NSLog(@"CURRENT DATEEEEEEE: %f", currentDate);
     
-    /*if (selectedEpisode.beginDate != 0 && selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
-        if (currentDateInterval <= selectedEpisode.beginDate || currentDateInterval >= selectedEpisode.endDate) {
+    if (self.selectedEpisode.beginDate != 0 && self.selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
+        if (currentDateInterval >= self.selectedEpisode.beginDate || currentDateInterval <= self.selectedEpisode.endDate) {
             [[[UIAlertView alloc] initWithTitle:@"" message:@"Este evento no está disponible en este momento" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             return;
         }
-    }*/
+    }
     self.selectedEpisodeID = self.selectedEpisode.identifier;
     NSLog(@"selected episode id: %@", self.selectedEpisodeID);
     
