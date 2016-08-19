@@ -369,6 +369,8 @@
     [UserInfo sharedInstance].session = @"";
     [UserInfo sharedInstance].userID = @"";
     [UserInfo sharedInstance].isSubscription = NO;
+    [UserInfo sharedInstance].sessionKey = @"";
+    [UserInfo sharedInstance].session_expires = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"EraseLastSeenCategory"
                                                         object:nil
@@ -376,7 +378,6 @@
     
     //Erase 'Mis listas' tab & 'Mas' tab
     NSMutableArray *tabViewControllers = [self.tabBarController.viewControllers mutableCopy];
-    [tabViewControllers removeLastObject];
     [tabViewControllers removeLastObject];
     self.tabBarController.viewControllers = tabViewControllers;
     self.tabBarController.selectedIndex = 0;

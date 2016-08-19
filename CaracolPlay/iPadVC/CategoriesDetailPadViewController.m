@@ -18,8 +18,11 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #import "NSDictionary+NullReplacement.h"
 #import "Video.h"
 #import "VideoPlayerPadViewController.h"
+#import "UserInfo.h"
+#import "Product.h"
 
-@interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate>
+@interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate, TelenovelSeriesDetailDelegate, MoviesDocumentariesDetailDelegate>
+@property (strong, nonatomic) NSMutableArray *removedProductions;
 @property (strong, nonatomic) UINavigationBar *navigationBar;
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UICollectionView *collectionView;
@@ -43,6 +46,10 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     if ([categoryID isEqualToString:@"1"]) {
         [self getUserRecentlyWatched];
         self.segmentedControl.hidden = YES;
+    
+    } else if ([self.categoryID isEqualToString:@"2"]) {
+            [self getUserList];
+        
     } else {
         [self getListFromCategoryID:categoryID withFilter:1];
         self.segmentedControl.hidden = NO;
@@ -107,6 +114,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.removedProductions = [[NSMutableArray alloc] init];
     self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
     [self.view addSubview:self.spinner];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -223,7 +231,33 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         return;
     }
     
-    if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Series"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Telenovelas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Noticias"]) {
+    if ([self.categoryID isEqualToString:@"2"]) {
+        //My Lists
+        Product *production = [[Product alloc] initWithDictionary:self.productionsArray[indexPath.row]];
+        if ([production.type isEqualToString:@"Series"] || [production.type isEqualToString:@"Telenovelas"] || [production.type isEqualToString:@"Noticias"] || [[production.type lowercaseString] containsString:@"evento"] || [[production.type lowercaseString] containsString:@"reality"]) {
+            [self addOpacityView];
+            
+            SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
+            seriesDetailPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
+            seriesDetailPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
+            seriesDetailPadVC.delegate = self;
+            [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
+        
+        } else if([production.type isEqualToString:@"Películas"] || [production.type isEqualToString:@"Documentales"]) {
+            [self addOpacityView];
+            
+            MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
+            movieDetailsPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            movieDetailsPadVC.modalPresentationStyle = UIModalPresentationPageSheet;
+            movieDetailsPadVC.productID = self.productionsArray[indexPath.item][@"id"];
+            movieDetailsPadVC.delegate = self;
+            [self presentViewController:movieDetailsPadVC animated:YES completion:nil];
+        }
+        return;
+    }
+    
+    if ([self.displayType isEqualToString:@"production"]) {
         [self addOpacityView];
         
         SeriesDetailPadViewController *seriesDetailPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
@@ -232,7 +266,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         seriesDetailPadVC.productID = self.productionsArray[indexPath.item][@"id"];
         [self presentViewController:seriesDetailPadVC animated:YES completion:nil];
         
-    } else if ([self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Películas"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Documentales"] || [self.productionsArray[indexPath.item][@"type"] isEqualToString:@"Eventos en vivo"]) {
+    } else if ([self.displayType isEqualToString:@"node"]) {
         [self addOpacityView];
         
         MovieDetailsPadViewController *movieDetailsPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];
@@ -310,6 +344,15 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 
 #pragma mark - Server Stuff
 
+-(void)getUserList {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithGETMethod:@"my_list/get" andParameter:@""];
+}
+
 -(void)getIsContentAvailableForUserWithID:(NSString *)episodeID {
     [self.view bringSubviewToFront:self.spinner];
     [self.spinner startAnimating];
@@ -365,6 +408,27 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
         Video *video = [[Video alloc] initWithDictionary:dicWithoutNulls[@"video"]];
         [self checkVideoAvailability:video];
         
+    } else if ([methodName isEqualToString:@"my_list/get"]) {
+        if (responseDictionary) {
+            NSLog(@"Respuesta del get my list: %@", responseDictionary);
+            if ([responseDictionary[@"status"] boolValue]) {
+                self.unparsedProductionsArray = [NSMutableArray arrayWithArray:responseDictionary[@"my_list"]];
+                NSArray *myListsArray = self.unparsedProductionsArray;
+                NSMutableArray *myListIds = [[NSMutableArray alloc] init];
+                for (NSDictionary *myListDict in myListsArray) {
+                    [myListIds addObject:myListDict[@"id"]];
+                }
+                [UserInfo sharedInstance].myListIds = myListIds;
+                [[UserInfo sharedInstance] persistUserLists];
+                
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error accediendo a tu lista, por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+            
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -411,6 +475,72 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     } else {
         [self getListFromCategoryID:categoryID withFilter:1];
         self.segmentedControl.hidden = NO;
+    }
+}
+
+#pragma mark - TelenovelSeriesDelegate
+
+-(void)productionAddedToMyListWithId:(NSString *)addedProductionId {
+    int indexToAdd = -1;
+    for (int i = 0; i < self.removedProductions.count; i++) {
+        NSDictionary *productDict = self.removedProductions[i];
+        if ([productDict[@"id"] isEqualToString:addedProductionId]) {
+            indexToAdd = i;
+            break;
+        }
+    }
+    if (indexToAdd != -1) {
+        [self.productionsArray addObject:self.removedProductions[indexToAdd]];
+        [self.collectionView reloadData];
+    }
+}
+
+-(void)productionRemovedWithId:(NSString *)removedProductionId {
+    int indexToRemove = -1;
+    for (int i = 0; i < self.productionsArray.count; i++) {
+        NSDictionary *productDict = self.productionsArray[i];
+        if ([productDict[@"id"] isEqualToString:removedProductionId]) {
+            indexToRemove = i;
+            [self.removedProductions addObject:productDict];
+            break;
+        }
+    }
+    if (indexToRemove != -1) {
+        [self.productionsArray removeObjectAtIndex:indexToRemove];
+        [self.collectionView reloadData];
+    }
+}
+
+#pragma mark - MovieEventDetailsDelegate
+
+-(void)movieRemovedWithId:(NSString *)productionId {
+    int indexToRemove = -1;
+    for (int i = 0; i < self.productionsArray.count; i++) {
+        NSDictionary *productDict = self.productionsArray[i];
+        if ([productDict[@"id"] isEqualToString:productionId]) {
+            indexToRemove = i;
+            [self.removedProductions addObject:productDict];
+            break;
+        }
+    }
+    if (indexToRemove != -1) {
+        [self.productionsArray removeObjectAtIndex:indexToRemove];
+        [self.collectionView reloadData];
+    }
+}
+
+-(void)movieAddedToMyListWithId:(NSString *)productionId {
+    int indexToAdd = -1;
+    for (int i = 0; i < self.removedProductions.count; i++) {
+        NSDictionary *productDict = self.removedProductions[i];
+        if ([productDict[@"id"] isEqualToString:productionId]) {
+            indexToAdd = i;
+            break;
+        }
+    }
+    if (indexToAdd != -1) {
+        [self.productionsArray addObject:self.removedProductions[indexToAdd]];
+        [self.collectionView reloadData];
     }
 }
 

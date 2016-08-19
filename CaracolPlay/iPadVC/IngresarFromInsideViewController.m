@@ -246,12 +246,29 @@
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
                                        @"UserName" : [UserInfo sharedInstance].userName,
                                        @"Password" : [UserInfo sharedInstance].password,
+                                       @"MyLists": [UserInfo sharedInstance].myListIds,
                                        @"Session" : dictionary[@"session"],
-                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue])
+                                       @"UserID" : dictionary[@"uid"],
+                                       @"IsSuscription" : @([dictionary[@"user"][@"is_suscription"] boolValue]),
+                                       @"Session_Key" : dictionary[@"session_key"],
+                                       @"Session_Expires" : dictionary[@"session_expires"]
                                        } withKey:@"UserHasLoginDic"];
+
             [UserInfo sharedInstance].userID = dictionary[@"uid"];
             [UserInfo sharedInstance].session = dictionary[@"session"];
             [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            [UserInfo sharedInstance].sessionKey = dictionary[@"session_key"];
+            int expiresTimestamp = [dictionary[@"session_expires"] intValue];
+            [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:expiresTimestamp];
+            [[UserInfo sharedInstance] setAuthCookieForWebView];
+            
+            NSArray *myListsArray = dictionary[@"user"][@"my_list"];
+            NSMutableArray *myListIds = [[NSMutableArray alloc] init];
+            for (NSDictionary *myListDict in myListsArray) {
+                [myListIds addObject:myListDict[@"id"]];
+            }
+            [UserInfo sharedInstance].myListIds = myListIds;
+            [[UserInfo sharedInstance] persistUserLists];
             
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];

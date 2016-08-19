@@ -10,4 +10,5 @@
 
 @interface CategoriesDetailPadViewController : UIViewController
 @property (strong, nonatomic) NSString *categoryID;
+@property (strong, nonatomic) NSString *displayType;
 @end

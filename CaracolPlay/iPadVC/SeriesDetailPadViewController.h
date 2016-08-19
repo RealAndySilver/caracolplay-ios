@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TelenovelSeriesDetailDelegate
+-(void)productionRemovedWithId:(NSString *)productionId;
+-(void)productionAddedToMyListWithId:(NSString *)productionId;
+@end
+
 @interface SeriesDetailPadViewController : UIViewController
+@property (strong, nonatomic) id <TelenovelSeriesDetailDelegate> delegate;
 @property (strong, nonatomic) NSString *productID;
 @end

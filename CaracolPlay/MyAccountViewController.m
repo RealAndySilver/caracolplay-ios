@@ -342,6 +342,8 @@
     [UserInfo sharedInstance].session = @"";
     [UserInfo sharedInstance].userID = @"";
     [UserInfo sharedInstance].isSubscription = NO;
+    [UserInfo sharedInstance].session_expires = nil;
+    [UserInfo sharedInstance].sessionKey = @"";
     
     //Erase 'Mis listas' tab & 'Mas' tab
     if (self.tabBarController) {

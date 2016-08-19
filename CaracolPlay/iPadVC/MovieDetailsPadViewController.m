@@ -27,6 +27,7 @@
 #import "NSDictionary+NullReplacement.h"
 #import "NSArray+NullReplacement.h"
 #import "SinopsisView.h"
+#import "UIColor+AppColors.h"
 
 NSString *const moviesCellIdentifier = @"CellIdentifier";
 
@@ -48,6 +49,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 @property (strong, nonatomic) UIImageView *smallProductionImageView;
 @property (strong, nonatomic) UIImageView *freeBandImageView;
 @property (strong, nonatomic) UIView *grayView;
+@property (strong, nonatomic) UIButton *addToMyListButton;
 
 @property (strong, nonatomic) NSDictionary *unparsedProductionInfoDic;
 @property (strong, nonatomic) NSMutableArray *recommendedProductions;
@@ -245,6 +247,28 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     self.shareButton.layer.shadowRadius = 5.0;
     [self.view addSubview:self.shareButton];
+    
+    //Add a button to add the production to "My List", only if the user is logged in
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
+        if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
+            self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, self.shareButton.frame.origin.y, 190.0, 30.0)];
+            
+            if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+            }
+            
+            [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+            //[self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:self.addToMyListButton];
+        }
+    }
     
     //View production button
     self.viewProductionButton = [[UIButton alloc] init];
@@ -472,6 +496,32 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 #pragma mark - Actions
 
+-(void)myListsButtonPressed {
+    if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+        [self removeFromMyList];
+    } else {
+        [self addToMyList];
+    }
+}
+
+-(void)removeFromMyList {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
+
+-(void)addToMyList {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
+
 -(void)showMoreInfoView {
     SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
     sinopsisView.delegate = self;
@@ -619,13 +669,52 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         Video *video = [[Video alloc] initWithDictionary:responseDictionary[@"video"]];
         [self checkVideoAvailability:video];
         
-    } else if ([methodName isEqualToString:@"GetRecommendationsWithProductID"] && responseDictionary) {
-        NSArray *responseArray = responseDictionary[@"recommended_products"];
-        NSArray *arrayWithoutNulls = [responseArray arrayByReplacingNullsWithBlanks];
-        self.recommendedProductions = [arrayWithoutNulls mutableCopy];
+    } else if ([methodName isEqualToString:@"GetRecommendationsWithProductID"]) {
+        if (responseDictionary) {
+            NSArray *responseArray = responseDictionary[@"recommended_products"];
+            NSArray *arrayWithoutNulls = [responseArray arrayByReplacingNullsWithBlanks];
+            self.recommendedProductions = [arrayWithoutNulls mutableCopy];
+            
+        } else {
+            
+        }
         
     } else if ([methodName isEqualToString:@"UpdateUserFeedbackForProduct"]) {
         NSLog(@"llegó la info de la calificación: %@", responseDictionary);
+        
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del add to my list: %@", responseDictionary);
+        if (responseDictionary) {
+            if ([responseDictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds addObject:self.production.identifier];
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.delegate movieAddedToMyListWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha agregado a tu lista correctamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al agregar esta producción a tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            NSLog(@"No ha info del add to my list: %@", responseDictionary);
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
+        
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del remove from list: %@", responseDictionary);
+        if (responseDictionary) {
+            if ([responseDictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds removeObject:self.production.identifier];
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+                [self.delegate movieRemovedWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha removido de tu lista exitosamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al remover la producción de tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         
     } else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Error al conectarse con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];

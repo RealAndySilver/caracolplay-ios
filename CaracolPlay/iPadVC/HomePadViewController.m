@@ -201,13 +201,13 @@
     //the five tabs.
     
     //4. MyLists View
-    UISplitViewController *myListsSplitViewController = [[UISplitViewController alloc] init];
+    /*UISplitViewController *myListsSplitViewController = [[UISplitViewController alloc] init];
     MyListsMasterPadViewController *myListsMasterVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsMaster"];
     MyListsDetailPadViewController *myListsDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyListsDetail"];
     myListsSplitViewController.viewControllers = @[myListsMasterVC, myListsDetailVC];
     myListsSplitViewController.tabBarItem.title = @"Mis Listas";
     myListsSplitViewController.tabBarItem.image = [UIImage imageNamed:@"MyListsTabBarIcon.png"];
-    myListsSplitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];
+    myListsSplitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"MyListsTabBarIconSelected.png"];*/
     
     //5 'Mas' splitview controller
     UISplitViewController *moreSplitViewController = [[UISplitViewController alloc] init];
@@ -219,7 +219,7 @@
     moreSplitViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"MoreTabBarIconSelected.png"];
     
     NSMutableArray *viewControllersArray = [self.tabBarController.viewControllers mutableCopy];
-    [viewControllersArray addObject:myListsSplitViewController];
+    //[viewControllersArray addObject:myListsSplitViewController];
     [viewControllersArray addObject:moreSplitViewController];
     self.tabBarController.viewControllers = viewControllersArray;
 }

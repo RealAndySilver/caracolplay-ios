@@ -60,8 +60,13 @@
         [UserInfo sharedInstance].userName = userDic[@"UserName"];
         [UserInfo sharedInstance].password = userDic[@"Password"];
         [UserInfo sharedInstance].session = userDic[@"Session"];
+        [UserInfo sharedInstance].sessionKey = userDic[@"Session_Key"];
+        int sessionExpires = [userDic[@"Session_Expires"] intValue];
+        [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:sessionExpires];
         [UserInfo sharedInstance].userID = userDic[@"UserID"];
         [UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
+        [UserInfo sharedInstance].myListIds = [[NSMutableArray alloc] initWithArray:userDic[@"MyLists"]];
+        [[UserInfo sharedInstance] setAuthCookieForWebView];
         MainTabBarPadController *mainTabBarPadVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
         [self presentViewController:mainTabBarPadVC animated:YES completion:nil];
     

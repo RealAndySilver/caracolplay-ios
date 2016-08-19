@@ -28,6 +28,8 @@
 #import "NSDictionary+NullReplacement.h"
 #import "UserInfo.h"
 #import "SinopsisView.h"
+#import "UIColor+AppColors.h"
+#import "VideoWebViewController.h"
 @import QuartzCore;
 
 @interface SeriesDetailPadViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, RateViewDelegate, EpisodesPadTableViewCellDelegate, AddToListViewDelegate, ServerCommunicatorDelegate, UIAlertViewDelegate, SinopsisViewDelegate>
@@ -42,6 +44,7 @@
 @property (strong, nonatomic) UITextView *productionDetailTextView;
 @property (strong, nonatomic) UITableView *seasonsTableView;
 @property (strong, nonatomic) UITableView *chaptersTableView;
+@property (strong, nonatomic) UIButton *addToMyListButton;
 
 //@property (strong, nonatomic) NSArray *unparsedEpisodesInfo;
 //@property (strong, nonatomic) NSDictionary *productionInfo;
@@ -50,6 +53,7 @@
 @property (strong, nonatomic) Product *production;
 
 @property (strong, nonatomic) UIView *opacityView;
+@property (strong, nonatomic) Episode *selectedEpisode;
 @property (strong, nonatomic) StarsView *starsView;
 @property (assign, nonatomic) NSInteger selectedSeason;
 
@@ -227,6 +231,28 @@
         self.watchTrailerButton.layer.shadowRadius = 5.0;
         
         [self.view addSubview:self.watchTrailerButton];
+    }
+    
+    //Add a button to add the production to "My List", only if the user is logged in
+    FileSaver *fileSaver = [[FileSaver alloc] init];
+    NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
+    if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
+        if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
+            self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, self.shareButton.frame.origin.y, 190.0, 30.0)];
+            
+            if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+            }
+            
+            [self.addToMyListButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.addToMyListButton setBackgroundColor:[UIColor caracolMediumBlueColor]];
+            //[self.addToMyListButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+            self.addToMyListButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            [self.addToMyListButton addTarget:self action:@selector(myListsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:self.addToMyListButton];
+        }
     }
     
     //Create a tap gesture and add it to the small image view, to display
@@ -472,8 +498,8 @@
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
             if (self.production.hasSeasons) {
                 Season *currentSeason = self.production.seasonList[self.selectedSeason];
-                Episode *episode = currentSeason.episodes[indexPath.row];
-                self.selectedEpisodeID = episode.identifier;
+                self.selectedEpisode = currentSeason.episodes[indexPath.row];
+                self.selectedEpisodeID = self.selectedEpisode.identifier;
                 
             } else {
                 Episode *episode = self.production.episodes[indexPath.row];
@@ -512,6 +538,32 @@
 }
 
 #pragma mark - Actions
+
+-(void)myListsButtonPressed {
+    if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
+        [self removeFromMyList];
+    } else {
+        [self addToMyList];
+    }
+}
+
+-(void)removeFromMyList {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
+
+-(void)addToMyList {
+    [self.view bringSubviewToFront:self.spinner];
+    [self.spinner startAnimating];
+    
+    ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
+    serverCommunicator.delegate = self;
+    [serverCommunicator callServerWithPOSTMethod:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier] andParameter:nil httpMethod:@"POST"];
+}
 
 -(void)showMoreInfoView {
     SinopsisView *sinopsisView = [[SinopsisView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -591,6 +643,7 @@
 #pragma mark - Custom Methods
 
 -(void)checkVideoAvailability:(Video *)video {
+    NSString *productionType = [self.production.type lowercaseString];
     if (video.status) {
         //The video is available for the user, so check the network connection to decide
         //if the user can pass to watch it or not.
@@ -603,6 +656,12 @@
             
         } else if (status == ReachableViaWWAN) {
             if (video.is3G) {
+                //The live events can't be watched in 3G.
+                if ([productionType containsString:@"evento"]) {
+                    [[[UIAlertView alloc] initWithTitle:@"Alerta" message:@"Para poder visualizar este contenido es necesario que te conectes a una red WiFi" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                    return;
+                }
+                
                 //The user can watch it with 3g
                 [[[UIAlertView alloc] initWithTitle:nil message:@"Para una mejor experiencia conéctate a nua red Wi-Fi." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
@@ -620,6 +679,19 @@
             }
             
         } else if (status == ReachableViaWiFi) {
+            //The user can watch the video
+            if ([productionType containsString:@"evento"]) {
+                if (self.selectedEpisode.isWebView == YES) {
+                    //We should open this event in a WebView, not in WideVine
+                    VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
+                    videoWebViewVC.videoUrlString = self.selectedEpisode.alias;
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:videoWebViewVC];
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    return;
+                }
+            }
+            
             //The user can watch the video
             VideoPlayerPadViewController *videoPlayer = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoPlayer"];
             videoPlayer.modalPresentationStyle = UIModalPresentationOverFullScreen;
@@ -732,6 +804,40 @@
         NSDictionary *videoDicWithoutNulls = [videoDicWithNulls dictionaryByReplacingNullWithBlanks];
         Video *video = [[Video alloc] initWithDictionary:videoDicWithoutNulls];
         [self checkVideoAvailability:video];
+        
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/add/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del add to my list: %@", responseDictionary);
+        if (responseDictionary) {
+            if ([responseDictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds addObject:self.production.identifier];
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.delegate productionAddedToMyListWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha agregado a tu lista correctamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al agregar esta producción a tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            NSLog(@"No ha info del add to my list: %@", responseDictionary);
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+        
+    
+    } else if ([methodName isEqualToString:[NSString stringWithFormat:@"my_list/remove/produccion/%@", self.production.identifier]]) {
+        NSLog(@"Respuesta del remove from list: %@", responseDictionary);
+        if (responseDictionary) {
+            if ([responseDictionary[@"status"] boolValue]) {
+                [[UserInfo sharedInstance].myListIds removeObject:self.production.identifier];
+                [[UserInfo sharedInstance] persistUserLists];
+                [self.addToMyListButton setTitle:@"Agregar a Mi Lista" forState:UIControlStateNormal];
+                [self.delegate productionRemovedWithId:self.production.identifier];
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"La producción se ha removido de tu lista exitosamente" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un problema al remover la producción de tu lista. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+            }
+        } else {
+            [[[UIAlertView alloc] initWithTitle:@"" message:@"Hubo un error en el servidor. Por favor intenta de nuevo" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
         
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Hubo un problema conectándose con el servidor. Por favor intenta de nuevo en unos momentos." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];

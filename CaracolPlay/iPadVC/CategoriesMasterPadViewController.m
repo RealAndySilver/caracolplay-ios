@@ -157,6 +157,7 @@
     Categoria *category = self.parsedCategoriesList[indexPath.row];
     self.categoriesDetailVC = self.splitViewController.viewControllers[1];
     self.categoriesDetailVC.categoryID = category.identifier;
+    self.categoriesDetailVC.displayType = category.displayType;
 }
 
 #pragma mark - Server Stuff 

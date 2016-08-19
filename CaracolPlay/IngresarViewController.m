@@ -304,6 +304,7 @@
                 [myListIds addObject:myListDict[@"id"]];
             }
             [UserInfo sharedInstance].myListIds = myListIds;
+            [[UserInfo sharedInstance] persistUserLists];
             NSLog(@"IngresarViewController: UserInfo MyListsIDs: %@", myListIds);
             //Save a key localy that indicates that the user is logged in
             FileSaver *fileSaver = [[FileSaver alloc] init];
