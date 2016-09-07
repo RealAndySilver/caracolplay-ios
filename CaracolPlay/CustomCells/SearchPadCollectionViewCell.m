@@ -20,10 +20,10 @@
     if (self) {
         // Initialization code
         self.shadowView = [[UIView alloc] init];
-        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
         self.shadowView.layer.shadowOffset = CGSizeMake(3.0, 3.0);
         self.shadowView.layer.shadowOpacity = 0.8;
-        self.shadowView.layer.shadowRadius = 3.0;
+        self.shadowView.layer.shadowRadius = 3.0;*/
         [self.contentView addSubview:self.shadowView];
         
         self.productionImageView = [[UIImageView alloc] init];
@@ -32,7 +32,7 @@
         [self.shadowView addSubview:self.productionImageView];
         
         self.productionNameLabel = [[UILabel alloc] init];
-        self.productionNameLabel.textColor = [UIColor whiteColor];
+        self.productionNameLabel.textColor = [UIColor blackColor];
         self.productionNameLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.contentView addSubview:self.productionNameLabel];
         

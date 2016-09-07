@@ -20,7 +20,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     //Access the terms and conditions string saved in our plist
     //NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TermsAndPrivacy" ofType:@"plist"];
@@ -59,7 +59,7 @@
     self.webView = [[UIWebView alloc] init];
     self.webView.opaque=NO;
     [self.webView setBackgroundColor:[UIColor clearColor]];
-    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:black;color:white;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
+    NSString *formattedHtml=[NSString stringWithFormat:@"<div style=\"background:white;color:black;font-family:helvetica;font-size:12;\">%@</div>",self.termsAndConditionsString];
     [self.webView loadHTMLString:formattedHtml baseURL:nil];
     [self.view addSubview:self.webView];
 }

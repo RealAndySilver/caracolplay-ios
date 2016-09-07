@@ -83,7 +83,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0, 370.0, self.view.bounds.size.width, self.view.bounds.size.height - 370.0) collectionViewLayout:self.collectionViewFlowLayout];
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:moviesCellIdentifier];
-    self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -175,10 +175,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     
     //3. small production image view
     UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(30.0, 30.0, 160.0, 260.0)];
-    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(10.0, 10.0);
     shadowView.layer.shadowRadius = 6.0;
-    shadowView.layer.shadowOpacity = 0.8;
+    shadowView.layer.shadowOpacity = 0.8;*/
     [self.view addSubview:shadowView];
     
     self.smallProductionImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, shadowView.frame.size.width, shadowView.frame.size.height)];
@@ -207,15 +207,16 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         self.watchTrailerButton = [[UIButton alloc] init];
         [self.watchTrailerButton setTitle:@"Ver Tráiler" forState:UIControlStateNormal];
         [self.watchTrailerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+        self.watchTrailerButton.backgroundColor = [UIColor caracolMediumBlueColor];
+        //[self.watchTrailerButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
         self.watchTrailerButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
         self.watchTrailerButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.watchTrailerButton addTarget:self action:@selector(watchTrailer) forControlEvents:UIControlEventTouchUpInside];
         
-        self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*self.watchTrailerButton.layer.shadowColor = [UIColor blackColor].CGColor;
         self.watchTrailerButton.layer.shadowOpacity = 0.8;
         self.watchTrailerButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-        self.watchTrailerButton.layer.shadowRadius = 5.0;
+        self.watchTrailerButton.layer.shadowRadius = 5.0;*/
         
         [self.view addSubview:self.watchTrailerButton];
     }
@@ -229,7 +230,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     //4. Production name label setup
     self.productionNameLabel = [[UILabel alloc] init];
     self.productionNameLabel.text = self.production.name;
-    self.productionNameLabel.textColor = [UIColor whiteColor];
+    self.productionNameLabel.textColor = [UIColor caracolMediumBlueColor];
     self.productionNameLabel.font = [UIFont boldSystemFontOfSize:25.0];
     [self.view addSubview:self.productionNameLabel];
     
@@ -240,12 +241,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.shareButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.shareButton addTarget:self action:@selector(shareProduction) forControlEvents:UIControlEventTouchUpInside];
-    [self.shareButton setBackgroundImage:[UIImage imageNamed:@"ShareButton.png"] forState:UIControlStateNormal];
+    self.shareButton.backgroundColor = [UIColor caracolMediumBlueColor];
+    //[self.shareButton setBackgroundImage:[UIImage imageNamed:@"ShareButton.png"] forState:UIControlStateNormal];
     self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
-    self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*self.shareButton.layer.shadowColor = [UIColor blackColor].CGColor;
     self.shareButton.layer.shadowOpacity = 0.8;
     self.shareButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    self.shareButton.layer.shadowRadius = 5.0;
+    self.shareButton.layer.shadowRadius = 5.0;*/
     [self.view addSubview:self.shareButton];
     
     //Add a button to add the production to "My List", only if the user is logged in
@@ -253,7 +255,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     NSLog(@"TelenovelSeriesViewController: %@", [UserInfo sharedInstance].myListIds);
     if ([[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || [UserInfo sharedInstance].isSubscription) {
         if (![self.production.type isEqualToString:@"Eventos en vivo"] && ![self.production.type isEqualToString:@"Eventos"]) {
-            self.addToMyListButton = [[UIButton alloc] initWithFrame:CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, self.shareButton.frame.origin.y, 190.0, 30.0)];
+            self.addToMyListButton = [[UIButton alloc] init];
             
             if ([[UserInfo sharedInstance].myListIds containsObject:self.production.identifier]) {
                 [self.addToMyListButton setTitle:@"Remover de Mi Lista" forState:UIControlStateNormal];
@@ -276,12 +278,13 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     [self.viewProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.viewProductionButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.viewProductionButton addTarget:self action:@selector(watchProduction) forControlEvents:UIControlEventTouchUpInside];
-    [self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
+    self.viewProductionButton.backgroundColor = [UIColor caracolMediumBlueColor];
+    //[self.viewProductionButton setBackgroundImage:[UIImage imageNamed:@"OrangeButton.png"] forState:UIControlStateNormal];
     
-    self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*self.viewProductionButton.layer.shadowColor = [UIColor blackColor].CGColor;
     self.viewProductionButton.layer.shadowOpacity = 0.8;
     self.viewProductionButton.layer.shadowOffset = CGSizeMake(5.0, 5.0);
-    self.viewProductionButton.layer.shadowRadius = 5.0;
+    self.viewProductionButton.layer.shadowRadius = 5.0;*/
     [self.view addSubview:self.viewProductionButton];
     
     
@@ -300,14 +303,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     self.webView.opaque=NO;
     self.webView.userInteractionEnabled = NO;
     [self.webView setBackgroundColor:[UIColor clearColor]];
-    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:white; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
+    NSString *str = [NSString stringWithFormat:@"<html><body style='background-color: transparent; color:black; font-family: helvetica;'>%@</body></html>",self.production.detailDescription];
     [self.webView loadHTMLString:str baseURL:nil];
     [self.view addSubview:self.webView];
     
     //"Ver mas" button
     UIButton *moreInfoButton = [[UIButton alloc] initWithFrame:CGRectMake(214.0, 260.0, 70.0, 40.0)];
     [moreInfoButton setTitle:@"Ver más" forState:UIControlStateNormal];
-    [moreInfoButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [moreInfoButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     moreInfoButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [moreInfoButton addTarget:self action:@selector(showMoreInfoView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moreInfoButton];
@@ -315,14 +318,14 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     ////////////////////////////////////////////////
     //gray view
     self.grayView = [[UIView alloc] init];
-    self.grayView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    self.grayView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.grayView];
     
     
     //9. Recommended productions label setup
     self.recommendedProductionsLabel = [[UILabel alloc] init];
     self.recommendedProductionsLabel.text = @"Producciones Recomendadas";
-    self.recommendedProductionsLabel.textColor = [UIColor whiteColor];
+    self.recommendedProductionsLabel.textColor = [UIColor caracolMediumBlueColor];
     self.recommendedProductionsLabel.font = [UIFont boldSystemFontOfSize:17.0];
     [self.view addSubview:self.recommendedProductionsLabel];
 }
@@ -344,7 +347,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor caracolLightGrayColor];
     [self.view addSubview:self.spinner];
     [self getProductWithID:self.productID];
     
@@ -380,6 +383,7 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
         self.shareButton.frame = CGRectMake(360.0, 100.0, 130.0, 35.0);
     }
     self.viewProductionButton.frame = CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 100.0, 130.0, 35.0);
+    self.addToMyListButton.frame = CGRectMake(self.shareButton.frame.origin.x + self.shareButton.frame.size.width + 20.0, 60.0, 130.0, 35.0);
     self.webView.frame = CGRectMake(210.0, 150.0, self.view.bounds.size.width - 210.0, 110.0);
     self.grayView.frame = CGRectMake(0.0, 350.0, self.view.bounds.size.width, self.view.bounds.size.height - 350.0);
     self.recommendedProductionsLabel.frame = CGRectMake(20.0, 360.0, 250.0, 30.0);
@@ -396,10 +400,10 @@ NSString *const moviesCellIdentifier = @"CellIdentifier";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:moviesCellIdentifier forIndexPath:indexPath];
     
     UIView *shadowView = [[UIView alloc] initWithFrame:cell.contentView.bounds];
-    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    /*shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
     shadowView.layer.shadowRadius = 5.0;
-    shadowView.layer.shadowOpacity = 1.0;
+    shadowView.layer.shadowOpacity = 1.0;*/
     [cell.contentView addSubview:shadowView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 10.0, cell.contentView.bounds.size.width - 20.0, cell.contentView.bounds.size.height - 20.0)];

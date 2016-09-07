@@ -14,6 +14,7 @@
 #import "UserInfo.h"
 #import "SeriesDetailPadViewController.h"
 #import "MovieDetailsPadViewController.h"
+#import "UIColor+AppColors.h"
 
 @interface MyAccountDetailPadViewController () <UIBarPositioningDelegate, UITableViewDataSource, UITableViewDelegate, ServerCommunicatorDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
@@ -27,6 +28,11 @@
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) NSArray *rentedProductions;
 @property (strong, nonatomic) UIImageView *opacityView;
+@property (strong, nonatomic) UITableView *personalInfoTableView;
+@property (strong, nonatomic) UITableView *rentedTableView;
+@property (strong, nonatomic) UITextView *informativeTextLabel;
+@property (strong, nonatomic) UITableView *suscriptionInfoTableView;
+@property (strong, nonatomic) UILabel *suscriptionLabel;
 @end
 
 @implementation MyAccountDetailPadViewController
@@ -81,7 +87,7 @@
 
 -(void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(removeOpacityView)
                                                  name:@"RemoveOpacityView"
@@ -102,7 +108,7 @@
     
     //1. Scroll view
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(80.0, 64.0, screenFrame.size.width - 160.0, screenFrame.size.height - (self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height) - 44.0)];
-    self.scrollView.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    self.scrollView.backgroundColor = [UIColor whiteColor];
     self.scrollView.alwaysBounceVertical = YES;
     self.scrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:self.scrollView];
@@ -111,87 +117,87 @@
     UILabel *personalInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 10.0, 150.0, 30.0)];
     personalInfoLabel.text = @"DATOS PERSONALES:";
     personalInfoLabel.font = [UIFont systemFontOfSize:13.0];
-    personalInfoLabel.textColor = [UIColor lightGrayColor];
+    personalInfoLabel.textColor = [UIColor blackColor];
     [self.scrollView addSubview:personalInfoLabel];
     
     //3. Personal info table view
-    UITableView *personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 262.0)
-                                                                      style:UITableViewStylePlain];
-    personalInfoTableView.delegate = self;
-    personalInfoTableView.dataSource  = self;
-    personalInfoTableView.userInteractionEnabled = NO;
-    personalInfoTableView.tag = 1;
-    personalInfoTableView.showsVerticalScrollIndicator = NO;
-    personalInfoTableView.backgroundColor = [UIColor blackColor];
-    personalInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    personalInfoTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.scrollView addSubview:personalInfoTableView];
+    self.personalInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, self.view.frame.size.width, 262.0) style:UITableViewStylePlain];
+    self.personalInfoTableView.delegate = self;
+    self.personalInfoTableView.dataSource  = self;
+    self.personalInfoTableView.userInteractionEnabled = NO;
+    self.personalInfoTableView.tag = 1;
+    self.personalInfoTableView.showsVerticalScrollIndicator = NO;
+    self.personalInfoTableView.backgroundColor = [UIColor whiteColor];
+    //personalInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.personalInfoTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.scrollView addSubview:self.personalInfoTableView];
     
     //4. Some informative text label
-    NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editable en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
-    NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor orangeColor]};
+    NSMutableAttributedString *informativeString = [[NSMutableAttributedString alloc] initWithString:@"Tus datos no son editables en la versión móvil del sitio. Conéctate a www.caracolplay.com desde tu computador para poder modificar tus datos personales."];
+    NSDictionary *firstAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
+    NSDictionary *secondAttributes = @{NSForegroundColorAttributeName: [UIColor caracolMediumBlueColor]};
     [informativeString setAttributes:secondAttributes range:NSMakeRange(69, 19)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(89, 61)];
     [informativeString setAttributes:firstAttributes range:NSMakeRange(0, 68)];
     
-    UITextView *informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(2.0, personalInfoTableView.frame.origin.y + personalInfoTableView.frame.size.height, self.scrollView.frame.size.width - 4.0, 40.0)];
-    informativeTextLabel.attributedText = informativeString;
-    informativeTextLabel.backgroundColor = [UIColor clearColor];
-    informativeTextLabel.textAlignment = NSTextAlignmentJustified;
-    informativeTextLabel.userInteractionEnabled = NO;
-    informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
-    [self.scrollView addSubview:informativeTextLabel];
+    self.informativeTextLabel = [[UITextView alloc] initWithFrame:CGRectMake(2.0, self.personalInfoTableView.frame.origin.y + self.personalInfoTableView.frame.size.height, self.scrollView.frame.size.width - 4.0, 40.0)];
+    self.informativeTextLabel.attributedText = informativeString;
+    self.informativeTextLabel.backgroundColor = [UIColor clearColor];
+    self.informativeTextLabel.textAlignment = NSTextAlignmentJustified;
+    self.informativeTextLabel.userInteractionEnabled = NO;
+    self.informativeTextLabel.font = [UIFont systemFontOfSize:12.0];
+    [self.scrollView addSubview:self.informativeTextLabel];
     
     //'Mis Alquilados'
-    UILabel *rentedLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, informativeTextLabel.frame.origin.y + informativeTextLabel.frame.size.height + 20.0, 200.0, 30.0)];
+    UILabel *rentedLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, self.informativeTextLabel.frame.origin.y + self.informativeTextLabel.frame.size.height + 20.0, 200.0, 30.0)];
     rentedLabel.text = @"MIS ALQUILADOS";
     rentedLabel.font = [UIFont systemFontOfSize:13.0];
-    rentedLabel.textColor = [UIColor lightGrayColor];
+    rentedLabel.textColor = [UIColor blackColor];
     [self.scrollView addSubview:rentedLabel];
     
     //4. 'Mis alquilados' table view
-    UITableView *rentedTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, informativeTextLabel.frame.origin.y + informativeTextLabel.frame.size.height + 50.0, self.view.frame.size.width, 160.0) style:UITableViewStylePlain];
-    rentedTableView.delegate = self;
-    rentedTableView.dataSource = self;
-    rentedTableView.tag = 3;
-    rentedTableView.backgroundColor = [UIColor blackColor];
-    rentedTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.scrollView addSubview:rentedTableView];
+    self.rentedTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.informativeTextLabel.frame.origin.y + self.informativeTextLabel.frame.size.height + 50.0, self.view.frame.size.width, 160.0) style:UITableViewStylePlain];
+    self.rentedTableView.delegate = self;
+    self.rentedTableView.dataSource = self;
+    self.rentedTableView.tag = 3;
+    self.rentedTableView.backgroundColor = [UIColor whiteColor];
+    //rentedTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.rentedTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.scrollView addSubview:self.rentedTableView];
 
     
     //5. Suscription label
-    UILabel *suscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, rentedTableView.frame.origin.y + rentedTableView.frame.size.height + 10.0, 100.0, 30.0)];
-    suscriptionLabel.text = @"SUSCRIPCIÓN:";
-    suscriptionLabel.textColor = [UIColor lightGrayColor];
-    suscriptionLabel.font = [UIFont systemFontOfSize:13.0];
-    [self.scrollView addSubview:suscriptionLabel];
+    self.suscriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, self.rentedTableView.frame.origin.y + self.rentedTableView.frame.size.height + 10.0, 100.0, 30.0)];
+    self.suscriptionLabel.text = @"SUSCRIPCIÓN:";
+    self.suscriptionLabel.textColor = [UIColor blackColor];
+    self.suscriptionLabel.font = [UIFont systemFontOfSize:13.0];
+    [self.scrollView addSubview:self.suscriptionLabel];
     
     //6. SuscriptionInfo table view
-    UITableView *suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, suscriptionLabel.frame.origin.y + suscriptionLabel.frame.size.height, self.view.frame.size.width, 86.0) style:UITableViewStylePlain];
-    suscriptionInfoTableView.delegate = self;
-    suscriptionInfoTableView.dataSource = self;
-    suscriptionInfoTableView.tag = 2;
-    suscriptionInfoTableView.showsVerticalScrollIndicator = NO;
-    suscriptionInfoTableView.userInteractionEnabled = NO;
-    suscriptionInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
-    suscriptionInfoTableView.backgroundColor = [UIColor blackColor];
-    [self.scrollView addSubview:suscriptionInfoTableView];
+    self.suscriptionInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.suscriptionLabel.frame.origin.y + self.suscriptionLabel.frame.size.height, self.view.frame.size.width, 86.0) style:UITableViewStylePlain];
+    self.suscriptionInfoTableView.delegate = self;
+    self.suscriptionInfoTableView.dataSource = self;
+    self.suscriptionInfoTableView.tag = 2;
+    self.suscriptionInfoTableView.showsVerticalScrollIndicator = NO;
+    self.suscriptionInfoTableView.userInteractionEnabled = NO;
+    //suscriptionInfoTableView.separatorColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.suscriptionInfoTableView.backgroundColor = [UIColor whiteColor];
+    [self.scrollView addSubview:self.suscriptionInfoTableView];
     
     //7. 'Cerrar Sesión' button
-    UIButton *closeSessionButton = [[UIButton alloc] initWithFrame:CGRectMake(80.0, suscriptionInfoTableView.frame.origin.y + suscriptionInfoTableView.frame.size.height + 30.0, self.scrollView.frame.size.width - 160.0, 40.0)];
+    UIButton *closeSessionButton = [[UIButton alloc] initWithFrame:CGRectMake(80.0, self.suscriptionInfoTableView.frame.origin.y + self.suscriptionInfoTableView.frame.size.height + 30.0, self.scrollView.frame.size.width - 160.0, 40.0)];
     [closeSessionButton setTitle:@"Cerrar Sesión" forState:UIControlStateNormal];
     closeSessionButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [closeSessionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [closeSessionButton setBackgroundImage:[UIImage imageNamed:@"BotonCerrarSesion"] forState:UIControlStateNormal];
+    closeSessionButton.backgroundColor = [UIColor caracolMediumBlueColor];
+    //[closeSessionButton setBackgroundImage:[UIImage imageNamed:@"BotonCerrarSesion"] forState:UIControlStateNormal];
     [closeSessionButton addTarget:self action:@selector(closeSession) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:closeSessionButton];
     
     //8. 'Terminos y condiciones' button
     UIButton *termsAndConditionsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, closeSessionButton.frame.origin.y + closeSessionButton.frame.size.height + 20.0, self.scrollView.frame.size.width - 100.0, 30.0)];
     [termsAndConditionsButton setTitle:@"Términos y Condiciones" forState:UIControlStateNormal];
-    [termsAndConditionsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [termsAndConditionsButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     [termsAndConditionsButton addTarget:self action:@selector(goToConditionsTerms) forControlEvents:UIControlEventTouchUpInside];
     termsAndConditionsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:termsAndConditionsButton];
@@ -199,7 +205,7 @@
     //9. 'Politicas del servicio' button
     UIButton *serviceTermsButton = [[UIButton alloc] initWithFrame:CGRectMake(50.0, termsAndConditionsButton.frame.origin.y + termsAndConditionsButton.frame.size.height + 10.0, self.scrollView.frame.size.width - 100.0, 30.0)];
     [serviceTermsButton setTitle:@"Políticas de privacidad" forState:UIControlStateNormal];
-    [serviceTermsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [serviceTermsButton setTitleColor:[UIColor caracolMediumBlueColor] forState:UIControlStateNormal];
     [serviceTermsButton addTarget:self action:@selector(goToPrivacyTerms) forControlEvents:UIControlEventTouchUpInside];
     serviceTermsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
     [self.scrollView addSubview:serviceTermsButton];
@@ -220,6 +226,13 @@
     NSLog(@"bounds: %@", NSStringFromCGRect(self.view.bounds));
     //Set subviews frame
     self.navigationBar.frame = CGRectMake(0.0, 20.0, self.view.bounds.size.width, 44.0);
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.personalInfoTableView.frame = CGRectMake(0.0, 40.0, self.view.frame.size.width, 262.0);
+    self.rentedTableView.frame = CGRectMake(0.0, self.informativeTextLabel.frame.origin.y + self.informativeTextLabel.frame.size.height + 50.0, self.view.frame.size.width, 160.0);
+    self.suscriptionInfoTableView.frame = CGRectMake(0.0, self.suscriptionLabel.frame.origin.y + self.suscriptionLabel.frame.size.height, self.view.frame.size.width, 86.0);
 }
 
 #pragma mark - UITableViewDataSource
@@ -243,7 +256,7 @@
         }
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.text = self.personalInfoTableViewTitles[indexPath.row];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
         
         UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(300.0, cell.contentView.frame.size.height/2 - 15.0, 220.0, 30.0)];
@@ -263,7 +276,7 @@
         }
         cell.textLabel.text = self.suscriptionInfoTableViewTitles[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.backgroundColor = [UIColor clearColor];
         
         UILabel *secondaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(330.0, cell.contentView.frame.size.height/2 - 15.0, 160.0, 30.0)];
@@ -280,15 +293,15 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:suscriptionInfoCellIdentifier];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:suscriptionInfoCellIdentifier];
-            UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
+            /*UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, cell.contentView.frame.size.width, cell.contentView.frame.size.height)];
             selectedView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-            cell.selectedBackgroundView = selectedView;
+            cell.selectedBackgroundView = selectedView;*/
         }
         NSDictionary *rentedProductionInfo = self.rentedProductions[indexPath.row][0][0];
         cell.textLabel.text = rentedProductionInfo[@"name"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
         cell.backgroundColor = [UIColor clearColor];
         
         return cell;

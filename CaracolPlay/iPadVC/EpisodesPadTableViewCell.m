@@ -23,12 +23,12 @@
         self.backgroundColor = [UIColor clearColor];
         
         self.episodeNumberLabel = [[UILabel alloc] init];
-        self.episodeNumberLabel.textColor = [UIColor whiteColor];
+        self.episodeNumberLabel.textColor = [UIColor darkGrayColor];
         self.episodeNumberLabel.font = [UIFont  boldSystemFontOfSize:15.0];
         [self.contentView addSubview:self.episodeNumberLabel];
         
         self.episodeNameLabel = [[UILabel alloc] init];
-        self.episodeNameLabel.textColor = [UIColor whiteColor];
+        self.episodeNameLabel.textColor = [UIColor darkGrayColor];
         self.episodeNameLabel.font = [UIFont boldSystemFontOfSize:13.0];
         [self.contentView addSubview:self.episodeNameLabel];
         

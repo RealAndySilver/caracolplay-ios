@@ -11,11 +11,12 @@
 #import "RentFromInsideViewController.h"
 #import "SuscribeFromInsideViewController.h"
 #import "ValidateCodePadViewController.h"
+#import "SuscriptionWelcomePadViewController.h"
 
 @interface SuscriptionAlertPadViewController ()
 @property (strong, nonatomic) UIImageView *backgroundImageView;
 @property (strong, nonatomic) UIButton *dismissButton;
-@property (strong, nonatomic) UITextView *detailTextView;
+//@property (strong, nonatomic) UITextView *detailTextView;
 @property (strong, nonatomic) UIButton *rentButton;
 @property (strong, nonatomic) UIButton *suscribeButton;
 @property (strong, nonatomic) UIButton *redeemButton;
@@ -31,7 +32,7 @@
 }
 
 -(void)UISetup {
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SuscriptionAlertFullScreenBackground.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iPadLoadingBackground"]];
     [self.view addSubview:self.backgroundImageView];
     
     //1. dismiss buton setup
@@ -41,20 +42,22 @@
     [self.view addSubview:self.dismissButton];
     
     //2. textview
-    self.detailTextView = [[UITextView alloc] init];
+    /*self.detailTextView = [[UITextView alloc] init];
     self.detailTextView.text = @"En este momento te encuentras fuera del sistema. Escoge una de las siguientes opciones para reproducir el video.";
     self.detailTextView.textColor = [UIColor whiteColor];
     self.detailTextView.font = [UIFont boldSystemFontOfSize:15];
     self.detailTextView.backgroundColor = [UIColor clearColor];
     self.detailTextView.textAlignment = NSTextAlignmentCenter;
     self.detailTextView.userInteractionEnabled = NO;
-    [self.view addSubview:self.detailTextView];
+    [self.view addSubview:self.detailTextView];*/
     
     // enter Button
     self.enterButton = [[UIButton alloc] init];
     [self.enterButton setTitle:@"Ingresar" forState:UIControlStateNormal];
     [self.enterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.enterButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.enterButton.layer.borderWidth = 1.0;
+    //[self.enterButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.enterButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.enterButton addTarget:self action:@selector(goToIngresarFromInside) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.enterButton];
@@ -63,7 +66,9 @@
     self.rentButton = [[UIButton alloc] init];
     [self.rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [self.rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.rentButton.layer.borderWidth = 1.0;
+    self.rentButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    //[self.rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.rentButton addTarget:self action:@selector(goToRentFromInside) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.rentButton];
@@ -72,7 +77,9 @@
     self.suscribeButton = [[UIButton alloc] init];
     [self.suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [self.suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.suscribeButton.layer.borderWidth = 1.0;
+    self.suscribeButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    //[self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     [self.suscribeButton addTarget:self action:@selector(goToSuscriptionVC) forControlEvents:UIControlEventTouchUpInside];
     self.suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.view addSubview:self.suscribeButton];
@@ -95,7 +102,7 @@
     self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);*/
     self.backgroundImageView.frame = self.view.bounds;
     self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 57.0, -10.0, 88.0, 88.0);
-    self.detailTextView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, self.view.bounds.size.height/2 - 40.0, 340.0, 100.0);
+    //self.detailTextView.frame = CGRectMake(self.view.bounds.size.width/2.0 - 170.0, self.view.bounds.size.height/2 - 40.0, 340.0, 100.0);
     self.enterButton.frame = CGRectMake(self.view.bounds.size.width/2 - 150.0, self.view.bounds.size.height/1.65, 300.0, 45.0);
     if (self.viewType == 1 || self.viewType == 3) {
         CGRect rentButtonFrame;
@@ -149,11 +156,17 @@
 }
 
 -(void)goToSuscriptionVC {
-    SuscribeFromInsideViewController *suscribeFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeFromInside"];
+    /*SuscribeFromInsideViewController *suscribeFromInsideVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscribeFromInside"];
     suscribeFromInsideVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     suscribeFromInsideVC.modalPresentationStyle = UIModalPresentationPageSheet;
     suscribeFromInsideVC.userIsLoggedIn = NO;
-    [self presentViewController:suscribeFromInsideVC animated:YES completion:nil];
+    [self presentViewController:suscribeFromInsideVC animated:YES completion:nil];*/
+    
+    SuscriptionWelcomePadViewController *suscriptionWelcomeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionWelcomePad"];
+    suscriptionWelcomeVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionWelcomeVC.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self presentViewController:suscriptionWelcomeVC animated:YES completion:nil];
+    
 }
 
 -(void)dismissVC {

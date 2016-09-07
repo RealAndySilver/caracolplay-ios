@@ -9,6 +9,7 @@
 #import "RateView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MyUtilities.h"
+#import "UIColor+AppColors.h"
 
 @interface RateView()
 @property (strong, nonatomic) UIImageView *starImageView1;
@@ -31,14 +32,14 @@
         //////////////////////////////////////////////////////
         [MyUtilities addParallaxEffectWithMovementRange:20.0 inView:self];
         
-        self.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+        self.backgroundColor = [UIColor caracolLightGrayColor];
         self.layer.cornerRadius = 5.0;
         self.alpha = 0.0;
         self.transform = CGAffineTransformMakeScale(0.5, 0.5);
         
         self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, frame.size.width, 30.0)];
         self.label.text = @"Califica esta producción";
-        self.label.textColor = [UIColor whiteColor];
+        self.label.textColor = [UIColor blackColor];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font = [UIFont boldSystemFontOfSize:12.0];
         [self addSubview:self.label];
@@ -47,7 +48,8 @@
         [self.rateButton setTitle:@"Calificar" forState:UIControlStateNormal];
         [self.rateButton addTarget:self action:@selector(rateButtonTapped) forControlEvents:UIControlEventTouchUpInside];
         self.rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
-        [self.rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+        self.rateButton.backgroundColor = [UIColor caracolMediumBlueColor];
+        //[self.rateButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
         [self.rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:self.rateButton];
         

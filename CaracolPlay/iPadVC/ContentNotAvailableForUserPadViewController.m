@@ -19,6 +19,7 @@
 #import "ValidateCodePadViewController.h"
 #import "MBProgressHUD.h"
 #import "UserDefaultsSaver.h"
+#import "SuscriptionWelcomePadViewController.h"
 
 @interface ContentNotAvailableForUserPadViewController () <ServerCommunicatorDelegate, UIAlertViewDelegate>
 @property (strong, nonatomic) UIImageView *backgroundImageView;
@@ -78,7 +79,7 @@
 }
 
 -(void)UISetup {
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SuscriptionAlertFullScreenBackground.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iPadHomeScreenBackground"]];
     [self.view addSubview:self.backgroundImageView];
     
     //1. dismiss buton setup
@@ -98,49 +99,56 @@
     [self.view addSubview:self.detailTextView];
     
     //'Alquilar' button setup
-    self.rentButton = [[UIButton alloc] init];
+    /*self.rentButton = [[UIButton alloc] init];
     [self.rentButton setTitle:@"Alquilar" forState:UIControlStateNormal];
     [self.rentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.rentButton addTarget:self action:@selector(startRentProcess) forControlEvents:UIControlEventTouchUpInside];
     self.rentButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.rentButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
-    [self.view addSubview:self.rentButton];
+    [self.view addSubview:self.rentButton];*/
     
     // 'Suscribete' button setup
     self.suscribeButton = [[UIButton alloc] init];
     [self.suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
     [self.suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.suscribeButton addTarget:self action:@selector(startSubscriptionProcess) forControlEvents:UIControlEventTouchUpInside];
-    [self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
+    self.suscribeButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.suscribeButton.layer.borderWidth = 1.0;
+    //[self.suscribeButton setBackgroundImage:[UIImage imageNamed:@"BotonInicio.png"] forState:UIControlStateNormal];
     self.suscribeButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
     [self.view addSubview:self.suscribeButton];
     
     // 'Redimir código' button setup
-    self.redeemCodeButton = [[UIButton alloc] init];
+    /*self.redeemCodeButton = [[UIButton alloc] init];
     [self.redeemCodeButton setTitle:@"Redimir\nCódigo" forState:UIControlStateNormal];
     [self.redeemCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.redeemCodeButton setBackgroundImage:[UIImage imageNamed:@"BotonRedimirPad.png"] forState:UIControlStateNormal];
     self.redeemCodeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
     [self.redeemCodeButton addTarget:self action:@selector(goToRedeemCodeFromContentNotAvailable) forControlEvents:UIControlEventTouchUpInside];
     self.redeemCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.redeemCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;*/
     //[self.view addSubview:self.redeemCodeButton];
 }
 
 #pragma mark - Actions 
 
--(void)startRentProcess {
+/*-(void)startRentProcess {
     self.userSelectedRentOption = YES;
     self.userSelectedRedeemOption = NO;
     self.userSelectedSubscribeOption = NO;
     [self authenticateUser];
-}
+}*/
 
 -(void)startSubscriptionProcess {
-    self.userSelectedRedeemOption = NO;
+    /*self.userSelectedRedeemOption = NO;
     self.userSelectedSubscribeOption = YES;
     self.userSelectedRentOption = NO;
-    [self authenticateUser];
+    [self authenticateUser];*/
+    
+    SuscriptionWelcomePadViewController *suscriptionWelcomeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionWelcomePad"];
+    suscriptionWelcomeVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    suscriptionWelcomeVC.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self presentViewController:suscriptionWelcomeVC animated:YES completion:nil];
 }
 
 -(void)goToRedeemCodeFromContentNotAvailable {

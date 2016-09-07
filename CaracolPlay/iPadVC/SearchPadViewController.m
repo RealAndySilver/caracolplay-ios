@@ -15,10 +15,12 @@
 #import "ServerCommunicator.h"
 #import "NSArray+NullReplacement.h"
 #import "NSDictionary+NullReplacement.h"
+#import "UIColor+AppColors.h"
 
-@interface SearchPadViewController () < UIBarPositioningDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate>
+@interface SearchPadViewController () < UIBarPositioningDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, ServerCommunicatorDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) UINavigationBar *navigationBar;
-@property (strong, nonatomic) UISearchBar *mySearchBar;
+//@property (strong, nonatomic) UISearchBar *mySearchBar;
+@property (strong, nonatomic) UITextField *searchTextField;
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
@@ -66,7 +68,7 @@
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.contentInset = UIEdgeInsetsMake(0.0, 20.0, 0.0, 20.0);
     [self.collectionView registerClass:[SearchPadCollectionViewCell class] forCellWithReuseIdentifier:@"CellIdentifier"];
-    self.collectionView.backgroundColor = [UIColor blackColor];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.collectionView];
 }
 
@@ -87,18 +89,32 @@
     navigationItem.rightBarButtonItem = spinnerBarButtonItem;
     
     //Search bar background bar image
-    UIImageView *searchBarBackgroundBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 1.0, screenFrame.size.width, 42.0)];
+    /*UIImageView *searchBarBackgroundBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 1.0, screenFrame.size.width, 42.0)];
     searchBarBackgroundBarImage.image = [UIImage imageNamed:@"SearchBarBackgroundBar.png"];
-    [self.view addSubview:searchBarBackgroundBarImage];
+    [self.view addSubview:searchBarBackgroundBarImage];*/
     
     //2. SearchBar setup
-    self.mySearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 200.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, 400.0, 28.0)];
+    /*self.mySearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 200.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, 400.0, 28.0)];
     self.mySearchBar.translucent = YES;
     self.mySearchBar.delegate = self;
     self.mySearchBar.backgroundImage = [UIImage imageNamed:@"FondoBarraBusqueda.png"];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"SearchBarPad.png"] forState:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
-    [self.view addSubview:self.mySearchBar];
+    [self.view addSubview:self.mySearchBar];*/
+    
+    self.searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(screenFrame.size.width/2.0 - 200.0, self.navigationBar.frame.origin.y + self.navigationBar.frame.size.height + 10.0, 400.0, 28.0)];
+    self.searchTextField.textColor = [UIColor darkGrayColor];
+    self.searchTextField.font = [UIFont systemFontOfSize:25.0];
+    self.searchTextField.spellCheckingType = UITextSpellCheckingTypeNo;
+    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.delegate = self;
+    self.searchTextField.placeholder = @"Buscar...";
+    [self.searchTextField addTarget:self action:@selector(textFieldTextChanged:) forControlEvents:UIControlEventEditingChanged];
+    [self.view addSubview:self.searchTextField];
+    
+    UIView *grayLine = [[UIView alloc] initWithFrame:CGRectMake(self.searchTextField.frame.origin.x, self.searchTextField.frame.origin.y + self.searchTextField.frame.size.height, self.self.searchTextField.frame.size.width, 1.0)];
+    grayLine.backgroundColor = [UIColor lightGrayColor];
+    [self.view addSubview:grayLine];
 }
 
 -(void)viewDidLoad {
@@ -106,9 +122,22 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeOpacityView)
                                                  name:@"RemoveOpacityView"
                                                object:nil];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self UISetup];
     [self createTapGesture];
+}
+
+-(void)textFieldTextChanged:(UITextField *)textField {
+    NSLog(@"Textfield text: %@", textField.text);
+    [self.timer invalidate];
+    if ([textField.text length] > 0) {
+        [self.spinner startAnimating];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(getSearchResultsFromServer) userInfo:nil repeats:NO];
+    } else {
+        [self.searchResultsArray removeAllObjects];
+        [self.spinner stopAnimating];
+        [self.collectionView reloadData];
+    }
 }
 
 -(void)createTapGesture {
@@ -137,7 +166,7 @@
         cell.starsView.alpha = 0.0;
         cell.rate = 0;
     }
-    cell.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    cell.backgroundColor = [UIColor caracolLightGrayColor];
     return cell;
 }
 
@@ -180,7 +209,8 @@
 #pragma mark - Actions
 
 -(void)hideSearchKeyboard {
-    [self.mySearchBar resignFirstResponder];
+    [self.searchTextField resignFirstResponder];
+    //[self.mySearchBar resignFirstResponder];
 }
 
 #pragma mark - Server Stuff
@@ -193,7 +223,7 @@
     NSLog(@"llamé al server");
     ServerCommunicator *serverCommunicator = [[ServerCommunicator alloc] init];
     serverCommunicator.delegate = self;
-    [serverCommunicator callServerWithGETMethod:@"GetListFromSearchWithKey" andParameter:self.mySearchBar.text];
+    [serverCommunicator callServerWithGETMethod:@"GetListFromSearchWithKey" andParameter:self.searchTextField.text];
 }
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
@@ -219,9 +249,16 @@
     [self.opacityView removeFromSuperview];
 }
 
+#pragma mark - UITextFieldDelegate
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
 #pragma mark - UISearchBarDelegate
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+/*-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"Cambió el texto de la barra de búsqueda");
     [self.timer invalidate];
     if ([searchBar.text length] > 0) {
@@ -237,6 +274,6 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-}
+}*/
 
 @end

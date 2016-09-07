@@ -304,7 +304,6 @@
                 [myListIds addObject:myListDict[@"id"]];
             }
             [UserInfo sharedInstance].myListIds = myListIds;
-            [[UserInfo sharedInstance] persistUserLists];
             NSLog(@"IngresarViewController: UserInfo MyListsIDs: %@", myListIds);
             //Save a key localy that indicates that the user is logged in
             FileSaver *fileSaver = [[FileSaver alloc] init];
@@ -327,6 +326,7 @@
             NSLog(@"UserInfoSessionExpires: %@", [UserInfo sharedInstance].session_expires);
             //[UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
             [UserInfo sharedInstance].isSubscription = YES;
+            [[UserInfo sharedInstance] persistUserLists];
             NSLog(@"is_suscription: %i", [UserInfo sharedInstance].isSubscription);
             [[UserInfo sharedInstance] setAuthCookieForWebView];
             

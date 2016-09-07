@@ -106,13 +106,13 @@
                                                object:nil];
     
     //1. background image setup
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HomeScreenBackgroundPad.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iPadHomeScreenBackground"]];
     self.backgroundImageView.frame = CGRectMake(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT - 44.0);
     [self.view addSubview:self.backgroundImageView];
     
     //Create a reload button
-    self.reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 35.0, 44.0, 44.0)];
-    [self.reloadButton setBackgroundImage:[UIImage imageNamed:@"RefreshIcon.png"] forState:UIControlStateNormal];
+    self.reloadButton = [[UIButton alloc] initWithFrame:CGRectMake(800.0, 45.0, 44.0, 44.0)];
+    [self.reloadButton setImage:[UIImage imageNamed:@"iPadReloadIcon"] forState:UIControlStateNormal];
     [self.reloadButton addTarget:self action:@selector(getFeaturedFromServer) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.reloadButton];
     
@@ -336,7 +336,7 @@
         return;
     }
     
-    if ([selectedProduction.type isEqualToString:@"Series"] || [selectedProduction.type isEqualToString:@"Telenovelas"] || [selectedProduction.type isEqualToString:@"Noticias"]) {
+    if ([selectedProduction.type isEqualToString:@"Series"] || [selectedProduction.type isEqualToString:@"Telenovelas"] || [selectedProduction.type isEqualToString:@"Noticias"] || [selectedProduction.type.lowercaseString containsString:@"evento"] || [selectedProduction.type.lowercaseString containsString:@"reality"]) {
         [self showOpacityView];
         
         SeriesDetailPadViewController *seriesDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"SeriesDetailPad"];
@@ -344,7 +344,7 @@
         seriesDetailPad.productID = selectedProduction.identifier;
         [self presentViewController:seriesDetailPad animated:YES completion:nil];
         
-    } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Documentales"] || [selectedProduction.type isEqualToString:@"Eventos en vivo"]) {
+    } else if ([selectedProduction.type isEqualToString:@"Películas"] || [selectedProduction.type isEqualToString:@"Documentales"]) {
         [self showOpacityView];
         
         MovieDetailsPadViewController *movieDetailPad = [self.storyboard instantiateViewControllerWithIdentifier:@"MovieDetails"];

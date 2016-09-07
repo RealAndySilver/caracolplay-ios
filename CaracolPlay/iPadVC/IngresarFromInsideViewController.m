@@ -39,7 +39,6 @@
     [super viewDidLoad];
     self.rentPurchaseSuccededInItunes = NO;
     self.subscribePurchaseSuccededInItunes = NO;
-    self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     [self setupUI];
 }
 
@@ -60,12 +59,12 @@
 
 -(void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 617.0);
-    self.view.layer.cornerRadius = 10.0;
-    self.view.layer.masksToBounds = YES;
-    self.view.frame = CGRectMake(-10.0, -10.0, 320.0 + 20.0, 617.0 + 20.0);
+    self.view.superview.bounds = CGRectMake(0.0, 0.0, 320.0, 400.0);
+    //self.view.layer.cornerRadius = 10.0;
+    //self.view.layer.masksToBounds = YES;
+    self.view.frame = CGRectMake(0.0, 0.0, 320.0, 400.0);
     self.backgroundImageView.frame = self.view.bounds;
-    self.dismissButton.frame = CGRectMake(self.view.bounds.size.width - 67.0, -20.0, 88.0, 88.0);
+    self.dismissButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);
 }
 
 -(void)setupUI {
@@ -74,13 +73,13 @@
     self.userTextfield.delegate = self;
     self.passwordTextfield.delegate = self;
     
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
+    /*self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BackgroundFormularioPad.png"]];
     [self.view addSubview:self.backgroundImageView];
-    [self.view sendSubviewToBack:self.backgroundImageView];
+    [self.view sendSubviewToBack:self.backgroundImageView];*/
     
     //1. dismiss buton setup
     self.dismissButton = [[UIButton alloc] init];
-    [self.dismissButton setImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
+    [self.dismissButton setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
     [self.dismissButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.dismissButton];
     
@@ -241,6 +240,14 @@
         if ([dictionary[@"status"] boolValue]) {
             NSLog(@"autenticación exitosa: %@", dictionary);
             
+            
+            NSArray *myListsArray = dictionary[@"user"][@"my_list"];
+            NSMutableArray *myListIds = [[NSMutableArray alloc] init];
+            for (NSDictionary *myListDict in myListsArray) {
+                [myListIds addObject:myListDict[@"id"]];
+            }
+            [UserInfo sharedInstance].myListIds = myListIds;
+            
             //Save a key localy that indicates that the user is logged in
             FileSaver *fileSaver = [[FileSaver alloc] init];
             [fileSaver setDictionary:@{@"UserHasLoginKey": @YES,
@@ -261,14 +268,8 @@
             int expiresTimestamp = [dictionary[@"session_expires"] intValue];
             [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:expiresTimestamp];
             [[UserInfo sharedInstance] setAuthCookieForWebView];
-            
-            NSArray *myListsArray = dictionary[@"user"][@"my_list"];
-            NSMutableArray *myListIds = [[NSMutableArray alloc] init];
-            for (NSDictionary *myListDict in myListsArray) {
-                [myListIds addObject:myListDict[@"id"]];
-            }
-            [UserInfo sharedInstance].myListIds = myListIds;
             [[UserInfo sharedInstance] persistUserLists];
+         
             
             NSDictionary *userInfoDicWithNulls = dictionary[@"user"][@"data"];
             self.userInfoDic = [userInfoDicWithNulls dictionaryByReplacingNullWithBlanks];

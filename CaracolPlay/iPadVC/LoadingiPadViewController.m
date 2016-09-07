@@ -22,7 +22,7 @@
 -(void)UISetup {
     
     //1. background image setup
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoadingiPad.png"]];
+    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iPadLoadingBackground"]];
     [self.view addSubview:self.backgroundImageView];
     
     //2. spinner setup
@@ -72,9 +72,12 @@
     
     } else {
         //If the user hasn't logged in, go to the login view controller.
-        LoginPadViewController *loginPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginPad"];
+        /*LoginPadViewController *loginPadViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginPad"];
         loginPadViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:loginPadViewController animated:YES completion:nil];
+        [self presentViewController:loginPadViewController animated:YES completion:nil];*/
+        MainTabBarPadController *mainTabBarVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MainTabBar"];
+        mainTabBarVC.userDidSkipRegisterProcess = YES;
+        [self presentViewController:mainTabBarVC animated:YES completion:nil];
     }
 }
 

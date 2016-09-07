@@ -288,7 +288,7 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     if ([self.production.free isEqualToString:@"0"]) {
         //FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue] || ![UserInfo sharedInstance].isSubscription) {
-            if (!self.production.statusRent) {
+            if (!self.production.statusRent && ![self.production.type.lowercaseString containsString:@"evento"]) {
                 self.watchProductionButton = [[UIButton alloc] initWithFrame:CGRectMake(secondaryMovieEventImageView.frame.origin.x + secondaryMovieEventImageView.frame.size.width + 20.0, shareButton.frame.origin.y + shareButton.frame.size.height + 10.0, 190.0, 30.0)];
                 [self.watchProductionButton setTitle:@"Ver Producción" forState:UIControlStateNormal];
                 [self.watchProductionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

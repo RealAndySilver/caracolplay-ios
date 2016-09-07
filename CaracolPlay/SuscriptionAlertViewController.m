@@ -159,11 +159,11 @@
 }
 
 -(void)goToRentViewController {
-    RentContentFormViewController *rentContentFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentForm"];
+    /*RentContentFormViewController *rentContentFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RentContentForm"];
     rentContentFormVC.productID = self.productID;
     rentContentFormVC.rentedProductName = self.productName;
     rentContentFormVC.productType = self.productType;
-    [self.navigationController pushViewController:rentContentFormVC animated:YES];
+    [self.navigationController pushViewController:rentContentFormVC animated:YES];*/
 }
 
 -(void)goToSuscribeViewController {

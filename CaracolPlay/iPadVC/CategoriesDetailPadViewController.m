@@ -20,6 +20,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 #import "VideoPlayerPadViewController.h"
 #import "UserInfo.h"
 #import "Product.h"
+#import "UIColor+AppColors.h"
 
 @interface CategoriesDetailPadViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIBarPositioningDelegate, ServerCommunicatorDelegate, TelenovelSeriesDetailDelegate, MoviesDocumentariesDetailDelegate>
 @property (strong, nonatomic) NSMutableArray *removedProductions;
@@ -96,9 +97,9 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
     [self.view addSubview:self.navigationBar];
     
     //2. Segmented Control
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo mas visto", @"Lo mas votado", @"Todo"]];
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Lo último", @"Lo más visto", @"Lo más votado", @"Todo"]];
     self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControl.tintColor = [UIColor whiteColor];
+    self.segmentedControl.tintColor = [UIColor caracolMediumBlueColor];
     [self.segmentedControl addTarget:self action:@selector(changeCategoryFilter) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.segmentedControl];
     
@@ -115,7 +116,7 @@ NSString *const splitCollectionViewCellIdentifier = @"CellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     self.removedProductions = [[NSMutableArray alloc] init];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.15 alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:226.0/255.0 blue:226.0/255.0 alpha:1.0];
     [self.view addSubview:self.spinner];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(categoryIDNotificationReceived:)

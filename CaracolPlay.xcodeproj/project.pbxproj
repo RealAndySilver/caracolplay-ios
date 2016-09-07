@@ -297,6 +297,7 @@
 		A0D1DBC918AEDBD8007A434F /* MyListsDetailPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */; };
 		A0D1DBCC18AEE001007A434F /* MyListsOrangeTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */; };
 		A0D1DBCD18AEE001007A434F /* MyListsOrangeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */; };
+		A0F262001D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F261FF1D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.m */; };
 		A0FF73ED18D3AE260062543A /* SeasonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FF73EC18D3AE260062543A /* SeasonsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -718,6 +719,8 @@
 		A0D1DBC818AEDBD8007A434F /* MyListsDetailPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyListsDetailPadViewController.m; path = iPadVC/MyListsDetailPadViewController.m; sourceTree = "<group>"; };
 		A0D1DBCA18AEE001007A434F /* MyListsOrangeTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MyListsOrangeTitle.png; path = Resources/Images/iPad/MyListsOrangeTitle.png; sourceTree = "<group>"; };
 		A0D1DBCB18AEE001007A434F /* MyListsOrangeTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MyListsOrangeTitle@2x.png"; path = "Resources/Images/iPad/MyListsOrangeTitle@2x.png"; sourceTree = "<group>"; };
+		A0F261FE1D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuscriptionWelcomePadViewController.h; path = iPadVC/SuscriptionWelcomePadViewController.h; sourceTree = "<group>"; };
+		A0F261FF1D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuscriptionWelcomePadViewController.m; path = iPadVC/SuscriptionWelcomePadViewController.m; sourceTree = "<group>"; };
 		A0FF73EB18D3AE260062543A /* SeasonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeasonsViewController.h; sourceTree = "<group>"; };
 		A0FF73EC18D3AE260062543A /* SeasonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeasonsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1059,6 +1062,8 @@
 			children = (
 				8B8A215A18E6270A004C262D /* IngresarFromInsideViewController.h */,
 				8B8A215B18E6270A004C262D /* IngresarFromInsideViewController.m */,
+				A0F261FE1D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.h */,
+				A0F261FF1D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.m */,
 				A069A74E18EF7018003BF3AD /* RentFromInsideViewController.h */,
 				A069A74F18EF7018003BF3AD /* RentFromInsideViewController.m */,
 				A069A75118EF7706003BF3AD /* RentConfirmFromInsideViewController.h */,
@@ -1976,6 +1981,7 @@
 				8B892B3018B2B0460066926C /* MorePadMasterViewController.m in Sources */,
 				A069A75018EF7018003BF3AD /* RentFromInsideViewController.m in Sources */,
 				8B164B7218A95808001803A9 /* List.m in Sources */,
+				A0F262001D6CAECE0073CAD1 /* SuscriptionWelcomePadViewController.m in Sources */,
 				8B98669B18AE911900AEA77A /* StarsView.m in Sources */,
 				8BDC828E18AD611600E72B0E /* LargeProductionImageView.m in Sources */,
 				8B64F7F618BBC3AC007E3C06 /* SeasonsListView.m in Sources */,

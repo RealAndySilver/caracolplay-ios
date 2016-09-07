@@ -22,10 +22,10 @@
     if (self) {
         // Initialization code
         self.shadowView = [[UIView alloc] init];
-        self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        /*self.shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
         self.shadowView.layer.shadowOffset = CGSizeMake(8.0, 8.0);
         self.shadowView.layer.shadowOpacity = 0.6;
-        self.shadowView.layer.shadowRadius = 5.0;
+        self.shadowView.layer.shadowRadius = 5.0;*/
         [self.contentView addSubview:self.shadowView];
         
         self.productionImageView = [[UIImageView alloc] init];
@@ -42,13 +42,13 @@
         
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        self.titleLabel.textColor = [UIColor whiteColor];
+        self.titleLabel.textColor = [UIColor darkGrayColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         self.titleLabel.numberOfLines = 2;
         [self.contentView addSubview:self.titleLabel];
         
         self.starsView = [[UIView alloc] init];
-        [self.contentView addSubview:self.starsView];
+        /*[self.contentView addSubview:self.starsView];
         
         self.star1 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*1, 0.0, 20.0, 20.0)];
         self.star1.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -73,7 +73,7 @@
         self.star5 = [[UIImageView alloc]initWithFrame:CGRectMake(20.0*5, 0.0, 20.0, 20.0)];
         self.star5.image = [[UIImage imageNamed:@"Estrella.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.star5.tag = 5;
-        [self.starsView addSubview:self.star5];
+        [self.starsView addSubview:self.star5];*/
     }
     return self;
 }
@@ -84,7 +84,7 @@
     self.shadowView.frame = CGRectMake(10.0, 10.0, contentRect.size.width - 20.0, 200.0);
     self.productionImageView.frame = CGRectMake(0.0, 0.0, self.shadowView.frame.size.width, self.shadowView.frame.size.height);
     self.freeImageView.frame = CGRectMake(0.0, self.productionImageView.frame.size.height - 20.0, self.productionImageView.frame.size.width, 20.0);
-    self.titleLabel.frame = CGRectMake(13.0, self.productionImageView.frame.size.height + 20, self.productionImageView.frame.size.width, 40.0);
+    self.titleLabel.frame = CGRectMake(13.0, self.productionImageView.frame.size.height + 20.0, self.productionImageView.frame.size.width, 40.0);
     self.starsView.frame = CGRectMake(6.0, self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height, 120.0, 20.0);
     //[self createStarsImageViewsWithGoldStarsNumber:self.goldStars];
 }
