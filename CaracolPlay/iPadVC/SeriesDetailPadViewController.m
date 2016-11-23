@@ -495,7 +495,7 @@
         [self.chaptersTableView reloadData];
     }
     
-    if (tableView.tag == 2) {
+    else if (tableView.tag == 2) {
         //Episodes table view
         FileSaver *fileSaver = [[FileSaver alloc] init];
         if (![[fileSaver getDictionary:@"UserHasLoginDic"][@"UserHasLoginKey"] boolValue]) {
@@ -510,7 +510,6 @@
             }
             
             //If the user isn't logged in, he can't watch the video
-            NSLog(@"Entré acáaaaaa");
             SuscriptionAlertPadViewController *suscriptionAlertPadVC =
             [self.storyboard instantiateViewControllerWithIdentifier:@"SuscriptionAlertPad"];
             suscriptionAlertPadVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -525,17 +524,30 @@
             //The user is already logged in, so check if the video is available
             if (self.production.hasSeasons) {
                 Season *currentSeason = self.production.seasonList[self.selectedSeason];
-                Episode *episode = currentSeason.episodes[indexPath.row];
-                self.selectedEpisodeID = episode.identifier;
+                self.selectedEpisode = currentSeason.episodes[indexPath.row];
+                /*self.selectedEpisodeID = episode.identifier;
                 [self getIsContentAvailableForUserWithID:episode.identifier];
-                NSLog(@"el identificador del capítulo es: %@", episode.identifier);
+                NSLog(@"el identificador del capítulo es: %@", episode.identifier);*/
                 
             } else {
-                Episode *episode = self.production.episodes[indexPath.row];
-                self.selectedEpisodeID = episode.identifier;
+                self.selectedEpisode = self.production.episodes[indexPath.row];
+                /*self.selectedEpisodeID = episode.identifier;
                 NSLog(@"el dientifcador del episodio es %@", self.selectedEpisodeID);
-                [self getIsContentAvailableForUserWithID:episode.identifier];
+                [self getIsContentAvailableForUserWithID:episode.identifier];*/
             }
+            NSTimeInterval currentDateInterval = [[NSDate date] timeIntervalSince1970];
+            if (self.selectedEpisode.beginDate != 0 && self.selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
+                NSLog(@"Selected episode begin date: %f", self.selectedEpisode.beginDate);
+                NSLog(@"Selected episode end date: %f", self.selectedEpisode.endDate);
+                if (!(currentDateInterval >= self.selectedEpisode.beginDate && currentDateInterval <= self.selectedEpisode.endDate)) {
+                    [[[UIAlertView alloc] initWithTitle:@"" message:@"Este evento no está disponible en este momento" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+                    return;
+                }
+            }
+            NSLog(@"selected episode name: %@", self.selectedEpisode.episodeName);
+            self.selectedEpisodeID = self.selectedEpisode.identifier;
+            [self getIsContentAvailableForUserWithID:self.selectedEpisode.identifier];
+            NSLog(@"el identificador del capítulo es: %@", self.selectedEpisode.identifier);
         }
     }
 }
@@ -647,6 +659,7 @@
 
 -(void)checkVideoAvailability:(Video *)video {
     NSString *productionType = [self.production.type lowercaseString];
+    NSLog(@"production type: %@", productionType);
     if (video.status) {
         //The video is available for the user, so check the network connection to decide
         //if the user can pass to watch it or not.
@@ -686,11 +699,11 @@
             if ([productionType containsString:@"evento"]) {
                 if (self.selectedEpisode.isWebView == YES) {
                     //We should open this event in a WebView, not in WideVine
-                    VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWeb"];
+                    VideoWebViewController *videoWebViewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoWebb"];
                     videoWebViewVC.videoUrlString = self.selectedEpisode.alias;
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:videoWebViewVC];
-                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    [self presentViewController:navController animated:YES completion:nil];
                     return;
                 }
             }

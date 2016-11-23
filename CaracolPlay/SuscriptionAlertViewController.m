@@ -115,11 +115,12 @@
     if (self.viewType == 2 || self.viewType == 3) {
         // 'Suscribete' button setup
         CGRect suscribeButtonFrame;
-        if (self.viewType != 3) {
+        /*if (self.viewType != 3) {
             suscribeButtonFrame = CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/1.44, 160.0, 40.0);
         } else {
             suscribeButtonFrame = CGRectMake(screenFrame.size.width/2 + 5.0, screenFrame.size.height/1.44, screenFrame.size.width/2.0 - 25.0, 40.0);
-        }
+        }*/
+        suscribeButtonFrame = CGRectMake(screenFrame.size.width/2 - 80.0, screenFrame.size.height/1.44, 160.0, 40.0);
         UIButton *suscribeButton = [[UIButton alloc] initWithFrame:suscribeButtonFrame];
         [suscribeButton setTitle:@"Suscribirse" forState:UIControlStateNormal];
         [suscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

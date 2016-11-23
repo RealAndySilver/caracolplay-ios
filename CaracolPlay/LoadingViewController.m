@@ -59,8 +59,8 @@
         [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:sessionExpires];
         [UserInfo sharedInstance].myListIds = [[NSMutableArray alloc] initWithArray:userDic[@"MyLists"]];
         NSLog(@"LoadingViewController: Session expires: %@, Session key: %@", [UserInfo sharedInstance].session_expires, [UserInfo sharedInstance].sessionKey);
-        //[UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
-        [UserInfo sharedInstance].isSubscription = YES;
+        [UserInfo sharedInstance].isSubscription = [userDic[@"IsSuscription"] boolValue];
+        //[UserInfo sharedInstance].isSubscription = YES;
         [[UserInfo sharedInstance] setAuthCookieForWebView];
         
         //The user is login, so go to the home screen directly

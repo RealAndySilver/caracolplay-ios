@@ -324,8 +324,8 @@
             int expiresTimestamp = [dictionary[@"session_expires"] intValue];
             [UserInfo sharedInstance].session_expires = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:expiresTimestamp];
             NSLog(@"UserInfoSessionExpires: %@", [UserInfo sharedInstance].session_expires);
-            //[UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
-            [UserInfo sharedInstance].isSubscription = YES;
+            [UserInfo sharedInstance].isSubscription = [dictionary[@"user"][@"is_suscription"] boolValue];
+            //[UserInfo sharedInstance].isSubscription = YES;
             [[UserInfo sharedInstance] persistUserLists];
             NSLog(@"is_suscription: %i", [UserInfo sharedInstance].isSubscription);
             [[UserInfo sharedInstance] setAuthCookieForWebView];

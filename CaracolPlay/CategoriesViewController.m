@@ -146,7 +146,7 @@ static NSString *CellIdentifier = @"CellIdentifier";
 
 -(void)receivedDataFromServer:(NSDictionary *)responseDictionary withMethodName:(NSString *)methodName {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    NSLog(@"Recibí una respuesta del server");
+    NSLog(@"Recibí una respuesta del server: %@", responseDictionary);
     if ([methodName isEqualToString:@"GetCategories"] && responseDictionary) {
         NSLog(@"la petición fue exitosa. results dic: %@", responseDictionary);
         self.unparsedCategoriesList = responseDictionary[@"categories"];

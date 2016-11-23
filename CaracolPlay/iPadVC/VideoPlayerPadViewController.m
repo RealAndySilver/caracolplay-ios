@@ -61,6 +61,7 @@
     // add the playback controller
     BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
     self.controller = [manager createPlaybackController];
+    [self.controller setAllowsExternalPlayback:YES];
     //self.controller.view.frame = self.view.bounds;
     // create a playback controller delegate
     self.controller.delegate = self;

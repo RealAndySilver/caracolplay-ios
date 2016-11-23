@@ -463,10 +463,12 @@ static NSString *const cellIdentifier = @"CellIdentifier";
     Season *currentSeason = self.production.seasonList[self.selectedSeason];
     self.selectedEpisode = currentSeason.episodes[indexPath.row];
     NSTimeInterval currentDateInterval = [[NSDate date] timeIntervalSince1970];
-    //NSLog(@"CURRENT DATEEEEEEE: %f", currentDate);
+    NSLog(@"CURRENT DATEEEEEEE: %f", currentDateInterval);
     
     if (self.selectedEpisode.beginDate != 0 && self.selectedEpisode.endDate != 0 && [[self.production.type lowercaseString] containsString:@"evento"]) {
-        if (currentDateInterval >= self.selectedEpisode.beginDate || currentDateInterval <= self.selectedEpisode.endDate) {
+        //NSLog(@"Selected episode begin date: %f", self.selectedEpisode.beginDate);
+        //NSLog(@"Selected episode end date: %f", self.selectedEpisode.endDate);
+        if (!(currentDateInterval >= self.selectedEpisode.beginDate && currentDateInterval <= self.selectedEpisode.endDate)) {
             [[[UIAlertView alloc] initWithTitle:@"" message:@"Este evento no está disponible en este momento" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
             return;
         }
